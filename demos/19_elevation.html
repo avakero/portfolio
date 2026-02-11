@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ELEVATION（エレベーション）— 富裕層向け完全会員制フィットネスクラブ。静寂の中に、強さがある。">
+<title>ELEVATION — WHERE SILENCE MEETS STRENGTH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Sans+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#0c0c0c;--charcoal:#1a1a1a;--offwhite:#f7f5f0;--warmgray:#a09a90;
+--gold:#c5a55a;--lightgray:#e8e6e0;--gold-dim:rgba(197,165,90,0.08);
+--ff-serif:'Cormorant Garamond','Noto Serif JP',serif;
+--ff-serif-jp:'Noto Serif JP',serif;
+--ff-sans:'Noto Sans JP',sans-serif;
+--section-gap:clamp(120px,20vw,300px);
+--ease-elegant:cubic-bezier(0.25,0.1,0.25,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{background:var(--black);color:var(--offwhite);font-family:var(--ff-sans);font-weight:300;line-height:2.0;overflow-x:hidden;cursor:default}
+::selection{background:var(--gold);color:var(--black)}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* Cursor Glow */
+#cursor-glow{position:fixed;width:400px;height:400px;border-radius:50%;pointer-events:none;z-index:9999;
+background:radial-gradient(circle,rgba(197,165,90,0.06) 0%,transparent 70%);
+transform:translate(-50%,-50%);transition:opacity .4s;opacity:0}
+body:hover #cursor-glow{opacity:1}
+
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:clamp(20px,3vw,40px) clamp(24px,5vw,60px);
+display:flex;justify-content:space-between;align-items:center;
+transition:background .6s,backdrop-filter .6s}
+nav.scrolled{background:rgba(12,12,12,0.85);backdrop-filter:blur(20px)}
+.nav-logo{font-family:var(--ff-serif);font-weight:300;font-size:clamp(14px,1.5vw,18px);
+letter-spacing:0.35em;color:var(--offwhite);text-transform:uppercase}
+.nav-links{display:flex;gap:clamp(20px,3vw,40px);list-style:none}
+.nav-links a{font-family:var(--ff-serif);font-weight:300;font-size:11px;letter-spacing:0.25em;
+text-transform:uppercase;color:var(--warmgray);transition:color .4s}
+.nav-links a:hover{color:var(--offwhite)}
+.nav-menu-btn{display:none;background:none;border:none;cursor:pointer;
+width:28px;height:20px;position:relative;z-index:101}
+.nav-menu-btn span{display:block;width:100%;height:1px;background:var(--offwhite);
+position:absolute;left:0;transition:all .4s var(--ease-elegant)}
+.nav-menu-btn span:nth-child(1){top:0}
+.nav-menu-btn span:nth-child(2){top:50%;transform:translateY(-50%)}
+.nav-menu-btn span:nth-child(3){bottom:0}
+.nav-menu-btn.active span:nth-child(1){top:50%;transform:translateY(-50%) rotate(45deg)}
+.nav-menu-btn.active span:nth-child(2){opacity:0}
+.nav-menu-btn.active span:nth-child(3){bottom:50%;transform:translateY(50%) rotate(-45deg)}
+
+/* Mobile Menu */
+.mobile-menu{position:fixed;inset:0;background:var(--black);z-index:99;display:flex;
+flex-direction:column;align-items:center;justify-content:center;gap:40px;
+opacity:0;pointer-events:none;transition:opacity .6s var(--ease-elegant)}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{font-family:var(--ff-serif);font-weight:300;font-size:clamp(18px,4vw,24px);
+letter-spacing:0.3em;text-transform:uppercase;color:var(--warmgray);transition:color .4s}
+.mobile-menu a:hover{color:var(--offwhite)}
+
+/* Fade-in Animation */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity 1.2s var(--ease-elegant),transform 1.2s var(--ease-elegant)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-slow{opacity:0;transform:translateY(20px);transition:opacity 1.8s var(--ease-elegant),transform 1.5s var(--ease-elegant)}
+.fade-in-slow.visible{opacity:1;transform:translateY(0)}
+.fade-in-delay-1{transition-delay:.2s}
+.fade-in-delay-2{transition-delay:.4s}
+.fade-in-delay-3{transition-delay:.6s}
+
+/* ===== HERO ===== */
+.hero{height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+position:relative;overflow:hidden;
+background:linear-gradient(175deg,#0c0c0c 0%,#141210 30%,#1a1814 60%,#0c0c0c 100%)}
+.hero::before{content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(197,165,90,0.03),transparent);pointer-events:none}
+.hero-brand{font-family:var(--ff-serif);font-weight:300;font-size:clamp(32px,7vw,90px);
+letter-spacing:0.4em;text-transform:uppercase;color:var(--offwhite);text-indent:0.4em;
+opacity:0;animation:heroFadeIn 2.5s var(--ease-elegant) .5s forwards}
+.hero-sub{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,1.2vw,14px);
+letter-spacing:0.35em;color:var(--warmgray);margin-top:clamp(12px,2vw,24px);text-indent:0.35em;
+opacity:0;animation:heroFadeIn 2s var(--ease-elegant) 1.5s forwards}
+.hero-tagline{font-family:var(--ff-serif-jp);font-weight:200;font-size:clamp(11px,1.1vw,14px);
+letter-spacing:0.2em;color:var(--warmgray);margin-top:8px;opacity:0;
+animation:heroFadeIn 2s var(--ease-elegant) 2s forwards}
+
+/* Scroll Indicator */
+.scroll-indicator{position:absolute;bottom:clamp(30px,5vh,60px);left:50%;transform:translateX(-50%);
+display:flex;flex-direction:column;align-items:center;gap:12px;
+opacity:0;animation:heroFadeIn 1.5s var(--ease-elegant) 3s forwards}
+.scroll-indicator span{font-family:var(--ff-serif);font-size:9px;letter-spacing:0.3em;
+color:var(--warmgray);text-transform:uppercase}
+.scroll-line{width:1px;height:50px;position:relative;overflow:hidden;background:rgba(160,154,144,0.15)}
+.scroll-line::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;
+background:linear-gradient(to bottom,transparent,var(--gold));animation:scrollLine 2.5s var(--ease-elegant) infinite}
+
+@keyframes heroFadeIn{to{opacity:1}}
+@keyframes scrollLine{0%{top:-100%}50%{top:0}100%{top:100%}}
+
+/* Gold Divider */
+.gold-line{width:40px;height:1px;background:var(--gold);margin:0 auto;opacity:0.5}
+
+/* ===== PHILOSOPHY ===== */
+.philosophy{padding:var(--section-gap) clamp(24px,8vw,120px);display:flex;flex-direction:column;
+align-items:center;text-align:center;min-height:80vh;justify-content:center}
+.philosophy-text{font-family:var(--ff-serif-jp);font-weight:200;font-size:clamp(16px,2.2vw,28px);
+letter-spacing:0.15em;line-height:2.4;color:var(--offwhite)}
+.philosophy-en{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,1vw,13px);
+letter-spacing:0.35em;color:var(--warmgray);margin-top:clamp(40px,6vw,80px);text-transform:uppercase}
+
+/* ===== FACILITY SECTIONS ===== */
+.facility{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.facility-visual{position:relative;overflow:hidden;min-height:50vh}
+.facility-visual-inner{width:100%;height:100%;position:relative;
+background:var(--charcoal);overflow:hidden}
+.facility-visual-inner::after{content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(26,26,20,0.9),rgba(40,38,32,0.7));transition:opacity 1.5s}
+/* Subtle texture */
+.facility-visual-inner::before{content:'';position:absolute;inset:0;opacity:0.04;
+background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c5a55a' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.fv-strength .facility-visual-inner::after{background:linear-gradient(135deg,rgba(20,18,14,0.92),rgba(35,30,22,0.75))}
+.fv-flow .facility-visual-inner::after{background:linear-gradient(135deg,rgba(14,18,22,0.92),rgba(20,28,35,0.75))}
+.fv-rest .facility-visual-inner::after{background:linear-gradient(135deg,rgba(22,18,14,0.92),rgba(35,28,20,0.75))}
+.fv-connect .facility-visual-inner::after{background:linear-gradient(135deg,rgba(18,16,12,0.92),rgba(30,25,18,0.75))}
+
+.facility-content{display:flex;flex-direction:column;justify-content:center;
+padding:clamp(40px,8vw,120px);position:relative}
+.facility-keyword{font-family:var(--ff-serif);font-weight:300;
+font-size:clamp(48px,8vw,120px);letter-spacing:0.2em;text-transform:uppercase;
+color:rgba(247,245,240,0.06);position:absolute;top:50%;left:50%;
+transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;text-indent:0.2em}
+.facility-label{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,1vw,12px);
+letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.facility-title{font-family:var(--ff-serif-jp);font-weight:200;
+font-size:clamp(22px,3vw,36px);letter-spacing:0.2em;line-height:1.6;margin-bottom:clamp(24px,3vw,40px)}
+.facility-desc{font-weight:200;font-size:clamp(12px,1vw,14px);line-height:2.2;
+color:var(--warmgray);max-width:400px}
+.facility-line{width:30px;height:1px;background:var(--gold);margin-top:clamp(30px,4vw,50px);opacity:0.6}
+
+/* Facility Alt Layout */
+.facility-alt{grid-template-columns:1fr 1fr}
+.facility-alt .facility-visual{order:2}
+.facility-alt .facility-content{order:1}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials{padding:var(--section-gap) clamp(24px,8vw,120px);background:var(--black);
+text-align:center;min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.testimonial-heading{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,1vw,12px);
+letter-spacing:0.4em;text-transform:uppercase;color:var(--warmgray);margin-bottom:clamp(60px,10vw,120px)}
+.testimonial-list{display:flex;flex-direction:column;gap:clamp(50px,8vw,100px);max-width:700px;width:100%}
+.testimonial-item{position:relative}
+.testimonial-quote{font-family:var(--ff-serif-jp);font-weight:200;
+font-size:clamp(15px,1.8vw,22px);letter-spacing:0.12em;line-height:2.0;
+color:var(--offwhite);font-style:normal}
+.testimonial-quote::before{content:'—';margin-right:0.5em;color:var(--gold);opacity:0.6}
+.testimonial-author{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,0.9vw,12px);
+letter-spacing:0.25em;color:var(--warmgray);margin-top:20px}
+
+/* ===== MEMBERSHIP ===== */
+.membership{padding:var(--section-gap) clamp(24px,8vw,120px);min-height:70vh;
+display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.membership-label{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,1vw,12px);
+letter-spacing:0.4em;text-transform:uppercase;color:var(--warmgray);margin-bottom:clamp(40px,6vw,80px)}
+.membership-title{font-family:var(--ff-serif-jp);font-weight:200;
+font-size:clamp(18px,2.5vw,32px);letter-spacing:0.2em;line-height:2.0}
+.membership-note{font-weight:200;font-size:clamp(12px,1vw,14px);letter-spacing:0.1em;
+color:var(--warmgray);margin-top:clamp(20px,3vw,40px);line-height:2.0}
+
+/* ===== CTA ===== */
+.cta-section{padding:var(--section-gap) clamp(24px,8vw,120px);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+text-align:center;min-height:60vh;position:relative}
+.cta-section::before{content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(197,165,90,0.03),transparent);pointer-events:none}
+.cta-title{font-family:var(--ff-serif);font-weight:300;font-size:clamp(24px,4vw,50px);
+letter-spacing:0.3em;text-transform:uppercase;text-indent:0.3em;margin-bottom:12px}
+.cta-sub{font-family:var(--ff-serif-jp);font-weight:200;font-size:clamp(12px,1.2vw,16px);
+letter-spacing:0.15em;color:var(--warmgray);margin-bottom:clamp(40px,6vw,70px)}
+.btn-gold{display:inline-block;font-family:var(--ff-serif);font-weight:300;
+font-size:clamp(11px,1vw,13px);letter-spacing:0.3em;text-transform:uppercase;
+padding:clamp(16px,2vw,22px) clamp(40px,6vw,70px);
+border:1px solid var(--gold);color:var(--gold);background:transparent;
+cursor:pointer;transition:all .6s var(--ease-elegant);position:relative;overflow:hidden}
+.btn-gold::before{content:'';position:absolute;inset:0;background:var(--gold);
+transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease-elegant)}
+.btn-gold:hover::before{transform:scaleX(1)}
+.btn-gold:hover{color:var(--black)}
+.btn-gold span{position:relative;z-index:1}
+
+/* ===== FOOTER ===== */
+footer{padding:clamp(60px,10vw,120px) clamp(24px,8vw,120px) clamp(30px,5vw,60px);
+border-top:1px solid rgba(160,154,144,0.08)}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;
+grid-template-columns:1fr auto;gap:clamp(40px,6vw,80px);align-items:start}
+.footer-brand{font-family:var(--ff-serif);font-weight:300;font-size:clamp(16px,2vw,22px);
+letter-spacing:0.35em;text-transform:uppercase;margin-bottom:20px}
+.footer-address{font-weight:200;font-size:clamp(11px,0.9vw,13px);
+letter-spacing:0.08em;color:var(--warmgray);line-height:2.2}
+.footer-links{display:flex;flex-direction:column;gap:12px;text-align:right}
+.footer-links a{font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,0.85vw,12px);
+letter-spacing:0.25em;text-transform:uppercase;color:var(--warmgray);transition:color .4s}
+.footer-links a:hover{color:var(--offwhite)}
+.footer-bottom{max-width:1200px;margin:clamp(40px,6vw,80px) auto 0;
+padding-top:clamp(20px,3vw,40px);border-top:1px solid rgba(160,154,144,0.06);
+display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-copy{font-family:var(--ff-serif);font-weight:300;font-size:10px;
+letter-spacing:0.2em;color:var(--warmgray);opacity:0.5}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-menu-btn{display:block}
+  .facility{grid-template-columns:1fr;min-height:auto}
+  .facility-visual{min-height:50vh}
+  .facility-alt .facility-visual{order:0}
+  .facility-alt .facility-content{order:1}
+  .facility-keyword{font-size:clamp(40px,15vw,80px)}
+  .footer-inner{grid-template-columns:1fr;gap:40px}
+  .footer-links{text-align:left}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){
+  .hero-brand{letter-spacing:0.25em;text-indent:0.25em}
+  .facility-content{padding:clamp(40px,10vw,80px) clamp(24px,6vw,40px)}
+}
+
+/* Smooth page load */
+body{animation:pageLoad 1s ease forwards}
+@keyframes pageLoad{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<!-- Cursor Glow -->
+<div id="cursor-glow"></div>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Elevation</a>
+  <ul class="nav-links">
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#strength">Facility</a></li>
+    <li><a href="#voices">Voices</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-menu-btn" id="menuBtn" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#philosophy" onclick="closeMenu()">Philosophy</a>
+  <a href="#strength" onclick="closeMenu()">Facility</a>
+  <a href="#voices" onclick="closeMenu()">Voices</a>
+  <a href="#membership" onclick="closeMenu()">Membership</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <h1 class="hero-brand">Elevation</h1>
+  <p class="hero-sub">Private Fitness Club</p>
+  <p class="hero-tagline">静寂の中に、強さがある。</p>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== PHILOSOPHY ===== -->
+<section class="philosophy" id="philosophy">
+  <div class="gold-line fade-in"></div>
+  <div style="margin-top:clamp(40px,6vw,80px)">
+    <p class="philosophy-text fade-in fade-in-delay-1">
+      鍛えるのではなく、整える。<br>
+      自らと向き合う、静かな時間を。
+    </p>
+    <p class="philosophy-en fade-in fade-in-delay-2">Where Silence Meets Strength</p>
+  </div>
+</section>
+
+<!-- ===== STRENGTH ===== -->
+<section class="facility" id="strength">
+  <div class="facility-visual fv-strength fade-in">
+    <div class="facility-visual-inner">
+      <svg viewBox="0 0 600 800" style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.08">
+        <line x1="100" y1="350" x2="500" y2="350" stroke="#c5a55a" stroke-width="2"/>
+        <circle cx="100" cy="350" r="30" stroke="#c5a55a" stroke-width="1" fill="none"/>
+        <circle cx="500" cy="350" r="30" stroke="#c5a55a" stroke-width="1" fill="none"/>
+        <circle cx="100" cy="350" r="45" stroke="#c5a55a" stroke-width="1" fill="none"/>
+        <circle cx="500" cy="350" r="45" stroke="#c5a55a" stroke-width="1" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="facility-content">
+    <div class="facility-keyword">Strength</div>
+    <span class="facility-label fade-in">01 — Gym Floor</span>
+    <h2 class="facility-title fade-in fade-in-delay-1">STRENGTH</h2>
+    <p class="facility-desc fade-in fade-in-delay-2">
+      完全プライベートな空間で、自分だけの鍛錬を。<br>
+      最新鋭の設備と専属トレーナーが、<br>
+      あなたの理想を静かに、確実に導きます。
+    </p>
+    <div class="facility-line fade-in fade-in-delay-3"></div>
+  </div>
+</section>
+
+<!-- ===== FLOW ===== -->
+<section class="facility facility-alt" id="flow">
+  <div class="facility-visual fv-flow fade-in">
+    <div class="facility-visual-inner">
+      <svg viewBox="0 0 600 800" style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.07">
+        <path d="M0,400 Q150,340 300,400 Q450,460 600,400" stroke="#c5a55a" stroke-width="1" fill="none"/>
+        <path d="M0,420 Q150,360 300,420 Q450,480 600,420" stroke="#c5a55a" stroke-width="0.5" fill="none"/>
+        <path d="M0,440 Q150,380 300,440 Q450,500 600,440" stroke="#c5a55a" stroke-width="0.5" fill="none" opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+  <div class="facility-content">
+    <div class="facility-keyword">Flow</div>
+    <span class="facility-label fade-in">02 — Pool & Yoga</span>
+    <h2 class="facility-title fade-in fade-in-delay-1">FLOW</h2>
+    <p class="facility-desc fade-in fade-in-delay-2">
+      水の揺らぎと呼吸の流れ。<br>
+      25mの温水プールとプライベートヨガスタジオが、<br>
+      心身の調和をもたらします。
+    </p>
+    <div class="facility-line fade-in fade-in-delay-3"></div>
+  </div>
+</section>
+
+<!-- ===== REST ===== -->
+<section class="facility" id="rest">
+  <div class="facility-visual fv-rest fade-in">
+    <div class="facility-visual-inner">
+      <svg viewBox="0 0 600 800" style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.06">
+        <circle cx="300" cy="380" r="80" stroke="#c5a55a" stroke-width="0.5" fill="none"/>
+        <circle cx="300" cy="380" r="120" stroke="#c5a55a" stroke-width="0.5" fill="none" opacity="0.5"/>
+        <circle cx="300" cy="380" r="160" stroke="#c5a55a" stroke-width="0.3" fill="none" opacity="0.3"/>
+      </svg>
+    </div>
+  </div>
+  <div class="facility-content">
+    <div class="facility-keyword">Rest</div>
+    <span class="facility-label fade-in">03 — Spa & Sauna</span>
+    <h2 class="facility-title fade-in fade-in-delay-1">REST</h2>
+    <p class="facility-desc fade-in fade-in-delay-2">
+      疲れを癒すのではなく、深く休む。<br>
+      フィンランド式サウナと天然温泉が、<br>
+      真の回復をもたらす至福の空間。
+    </p>
+    <div class="facility-line fade-in fade-in-delay-3"></div>
+  </div>
+</section>
+
+<!-- ===== CONNECT ===== -->
+<section class="facility facility-alt" id="connect">
+  <div class="facility-visual fv-connect fade-in">
+    <div class="facility-visual-inner">
+      <svg viewBox="0 0 600 800" style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:0.06">
+        <line x1="200" y1="300" x2="400" y2="460" stroke="#c5a55a" stroke-width="0.5"/>
+        <line x1="400" y1="300" x2="200" y2="460" stroke="#c5a55a" stroke-width="0.5"/>
+        <rect x="200" y="300" width="200" height="160" stroke="#c5a55a" stroke-width="0.5" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="facility-content">
+    <div class="facility-keyword">Connect</div>
+    <span class="facility-label fade-in">04 — Members Lounge</span>
+    <h2 class="facility-title fade-in fade-in-delay-1">CONNECT</h2>
+    <p class="facility-desc fade-in fade-in-delay-2">
+      選ばれた方だけが集う場所。<br>
+      厳選されたワインとともに、<br>
+      静かな対話が新たな価値を生む。
+    </p>
+    <div class="facility-line fade-in fade-in-delay-3"></div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials" id="voices">
+  <p class="testimonial-heading fade-in">Members' Voices</p>
+  <div class="testimonial-list">
+    <div class="testimonial-item fade-in fade-in-delay-1">
+      <p class="testimonial-quote">ここでは、誰の目も気にならない。自分だけの時間がある。</p>
+      <p class="testimonial-author">T. K. — 52</p>
+    </div>
+    <div class="testimonial-item fade-in fade-in-delay-2">
+      <p class="testimonial-quote">心身の質が変わった。それ以上の言葉は要らない。</p>
+      <p class="testimonial-author">M. S. — 44</p>
+    </div>
+    <div class="testimonial-item fade-in fade-in-delay-3">
+      <p class="testimonial-quote">この静けさこそが、最大の贅沢だと気づいた。</p>
+      <p class="testimonial-author">R. A. — 61</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MEMBERSHIP ===== -->
+<section class="membership" id="membership">
+  <p class="membership-label fade-in">Membership</p>
+  <div class="gold-line fade-in fade-in-delay-1" style="margin-bottom:clamp(40px,6vw,80px)"></div>
+  <h2 class="membership-title fade-in fade-in-delay-1">
+    完全紹介制。<br>詳しくはお問い合わせください。
+  </h2>
+  <p class="membership-note fade-in fade-in-delay-2">
+    既存会員様からのご紹介により、入会のご案内をいたします。
+  </p>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="contact">
+  <h2 class="cta-title fade-in">Contact</h2>
+  <p class="cta-sub fade-in fade-in-delay-1">まずは、お気軽にご連絡ください。</p>
+  <a href="mailto:info@elevation.jp" class="btn-gold fade-in fade-in-delay-2">
+    <span>お問い合わせ — Inquiry</span>
+  </a>
+  <p class="fade-in fade-in-delay-3" style="margin-top:clamp(30px,4vw,50px);font-family:var(--ff-serif);font-weight:300;font-size:clamp(10px,0.85vw,12px);letter-spacing:0.25em;color:var(--warmgray)">
+    TEL — 03-0000-0000
+  </p>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">Elevation</p>
+      <address class="footer-address" style="font-style:normal">
+        〒106-0032 東京都港区六本木 0-0-0<br>
+        Elevation Building 1F–3F<br>
+        営業時間 6:00–23:00（年中無休）
+      </address>
+    </div>
+    <div class="footer-links">
+      <a href="#philosophy">Philosophy</a>
+      <a href="#strength">Facility</a>
+      <a href="#voices">Voices</a>
+      <a href="#membership">Membership</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2026 Elevation Private Fitness Club. All rights reserved.</p>
+    <p class="footer-copy">Crafted with Next.js &times; WordPress</p>
+  </div>
+</footer>
+
+<script>
+// Cursor Glow
+const glow = document.getElementById('cursor-glow');
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+function animateGlow() {
+  glowX += (mouseX - glowX) * 0.08;
+  glowY += (mouseY - glowY) * 0.08;
+  glow.style.left = glowX + 'px';
+  glow.style.top = glowY + 'px';
+  requestAnimationFrame(animateGlow);
+}
+animateGlow();
+
+// Navigation Scroll Effect
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+}, { passive: true });
+
+// Mobile Menu
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => {
+  menuBtn.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMenu() {
+  menuBtn.classList.remove('active');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Intersection Observer — Fade In
+const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in, .fade-in-slow').forEach(el => observer.observe(el));
+
+// Parallax on facility keywords (subtle)
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.facility-keyword').forEach(kw => {
+    const rect = kw.closest('.facility').getBoundingClientRect();
+    const progress = -rect.top / window.innerHeight;
+    kw.style.transform = `translate(-50%, calc(-50% + ${progress * 30}px))`;
+  });
+}, { passive: true });
+</script>
+</body>
+</html>

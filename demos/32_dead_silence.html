@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>絶叫廃病院 — DEAD SILENCE | 期間限定ホラーイベント</title>
+<meta name="description" content="ここから先、音を立てるな。廃病院を舞台にした究極の体感型ホラーイベント「絶叫廃病院 DEAD SILENCE」期間限定開催。">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#0a0a0a;--red:#8b0000;--green:#2d4a1e;--rust:#3a3a3a;
+--neon:#39ff14;--bone:#e8e0d0;--red-bright:#cc0000;
+--font-mono:'Courier New',monospace;
+--font-title:'MS Gothic','ヒラギノ角ゴ','Hiragino Kaku Gothic Pro',monospace;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+background:var(--black);color:var(--bone);
+font-family:var(--font-mono);line-height:1.8;
+overflow-x:hidden;cursor:none;
+}
+::selection{background:var(--red);color:var(--bone)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red)}
+
+/* ===== FLASHLIGHT CURSOR ===== */
+#flashlight{
+position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:9000;
+background:radial-gradient(circle 180px at var(--mx,50%) var(--my,50%),
+  transparent 0%, transparent 30%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.92) 100%);
+transition:opacity 0.3s;
+}
+#flashlight.off{opacity:0}
+#custom-cursor{
+position:fixed;width:20px;height:20px;
+border:2px solid var(--neon);border-radius:50%;
+pointer-events:none;z-index:9999;
+transform:translate(-50%,-50%);
+box-shadow:0 0 10px var(--neon),inset 0 0 5px var(--neon);
+transition:transform 0.05s;
+}
+
+/* ===== REC INDICATOR ===== */
+#rec-indicator{
+position:fixed;top:20px;right:20px;z-index:8000;
+font-family:var(--font-mono);font-size:clamp(10px,1.2vw,14px);
+color:var(--bone);opacity:0.7;pointer-events:none;
+display:flex;align-items:center;gap:8px;
+}
+#rec-indicator .dot{
+width:10px;height:10px;background:var(--red-bright);
+border-radius:50%;animation:recBlink 1s infinite;
+}
+#rec-indicator .timestamp{opacity:0.6}
+@keyframes recBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ===== INTRO / JUMP SCARE ===== */
+#intro-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:var(--black);z-index:10000;
+display:flex;align-items:center;justify-content:center;
+flex-direction:column;
+}
+#intro-overlay .scare-text{
+font-size:clamp(32px,8vw,80px);font-family:var(--font-title);
+color:var(--red-bright);opacity:0;
+text-shadow:0 0 30px var(--red-bright),0 0 60px var(--red);
+letter-spacing:0.3em;
+animation:scareAppear 0.15s 2.8s forwards;
+}
+#intro-overlay .scare-sub{
+font-size:clamp(12px,2vw,18px);color:var(--bone);
+opacity:0;margin-top:20px;
+animation:scareSub 0.5s 3.2s forwards;
+}
+@keyframes scareAppear{
+0%{opacity:0;transform:scale(3)}
+50%{opacity:1;transform:scale(0.95)}
+100%{opacity:1;transform:scale(1)}
+}
+@keyframes scareSub{to{opacity:0.7}}
+#intro-overlay.fade-out{
+animation:introFade 0.8s 4.5s forwards;
+}
+@keyframes introFade{to{opacity:0;pointer-events:none;visibility:hidden}}
+
+/* ===== SCREEN GLITCH / BUG ===== */
+#screen-glitch{
+position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:8500;opacity:0;
+background:var(--bone);mix-blend-mode:difference;
+}
+#screen-glitch.active{animation:screenBug 0.12s forwards}
+@keyframes screenBug{
+0%{opacity:0.9}30%{opacity:0.5}60%{opacity:0.8}100%{opacity:0}
+}
+
+/* ===== SECTION FLICKER ===== */
+.section-flicker{animation:sectionFlicker 0.3s}
+@keyframes sectionFlicker{
+0%{opacity:1}15%{opacity:0}25%{opacity:0.7}35%{opacity:0.1}
+50%{opacity:0.8}65%{opacity:0.2}80%{opacity:1}100%{opacity:1}
+}
+
+/* ===== VHS SCANLINES ===== */
+.vhs-overlay{
+position:absolute;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:2;
+}
+.vhs-overlay::before{
+content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+background:repeating-linear-gradient(
+  0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);
+animation:scanMove 8s linear infinite;
+}
+.vhs-overlay::after{
+content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(transparent 50%,rgba(0,0,0,0.05) 50%);
+background-size:100% 4px;
+animation:vhsFlicker 0.1s infinite;
+}
+@keyframes scanMove{0%{transform:translateY(0)}100%{transform:translateY(100%)}}
+@keyframes vhsFlicker{
+0%{opacity:0.3}25%{opacity:0.35}50%{opacity:0.25}75%{opacity:0.4}100%{opacity:0.3}
+}
+
+/* ===== GLITCH TEXT ===== */
+.glitch{
+position:relative;display:inline-block;
+}
+.glitch::before,.glitch::after{
+content:attr(data-text);position:absolute;top:0;left:0;
+width:100%;height:100%;
+}
+.glitch::before{
+color:var(--red-bright);z-index:-1;
+animation:glitch1 3s infinite linear alternate-reverse;
+}
+.glitch::after{
+color:var(--neon);z-index:-2;
+animation:glitch2 2s infinite linear alternate-reverse;
+}
+@keyframes glitch1{
+0%{clip-path:inset(20% 0 60% 0);transform:translate(-3px,-2px)}
+20%{clip-path:inset(50% 0 10% 0);transform:translate(3px,1px)}
+40%{clip-path:inset(10% 0 70% 0);transform:translate(-2px,3px)}
+60%{clip-path:inset(80% 0 5% 0);transform:translate(2px,-1px)}
+80%{clip-path:inset(30% 0 40% 0);transform:translate(-1px,2px)}
+100%{clip-path:inset(60% 0 20% 0);transform:translate(3px,-3px)}
+}
+@keyframes glitch2{
+0%{clip-path:inset(60% 0 10% 0);transform:translate(3px,2px)}
+20%{clip-path:inset(10% 0 50% 0);transform:translate(-3px,-1px)}
+40%{clip-path:inset(70% 0 10% 0);transform:translate(2px,-3px)}
+60%{clip-path:inset(5% 0 80% 0);transform:translate(-2px,1px)}
+80%{clip-path:inset(40% 0 30% 0);transform:translate(1px,-2px)}
+100%{clip-path:inset(20% 0 60% 0);transform:translate(-3px,3px)}
+}
+
+/* ===== HORROR TITLE STYLE ===== */
+.horror-title{
+font-family:var(--font-title);
+font-weight:900;
+letter-spacing:0.15em;
+text-shadow:2px 2px 0 var(--red),
+  -1px -1px 0 var(--neon),
+  3px 0 10px rgba(139,0,0,0.5);
+}
+.horror-title span{
+display:inline-block;
+}
+
+/* ===== NAV ===== */
+#nav{
+position:fixed;top:0;left:0;width:100%;
+padding:15px 30px;z-index:7000;
+background:linear-gradient(180deg,rgba(10,10,10,0.95) 0%,transparent 100%);
+display:flex;justify-content:space-between;align-items:center;
+transform:translateY(-100%);transition:transform 0.4s;
+}
+#nav.visible{transform:translateY(0)}
+#nav .logo{
+font-family:var(--font-title);font-size:16px;color:var(--red-bright);
+letter-spacing:0.2em;text-shadow:0 0 10px var(--red);
+}
+#nav .nav-links{display:flex;gap:20px;list-style:none}
+#nav .nav-links a{
+color:var(--bone);text-decoration:none;font-size:12px;
+letter-spacing:0.1em;opacity:0.7;transition:all 0.3s;
+position:relative;
+}
+#nav .nav-links a:hover{opacity:1;color:var(--neon);text-shadow:0 0 8px var(--neon)}
+#nav .nav-links a::after{
+content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;
+background:var(--neon);transition:width 0.3s;
+}
+#nav .nav-links a:hover::after{width:100%}
+#hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:5px}
+#hamburger span{display:block;width:24px;height:2px;background:var(--bone);transition:all 0.3s}
+#mobile-menu{
+display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(10,10,10,0.97);z-index:6999;
+flex-direction:column;align-items:center;justify-content:center;gap:30px;
+}
+#mobile-menu.open{display:flex}
+#mobile-menu a{
+color:var(--bone);text-decoration:none;font-size:18px;
+letter-spacing:0.2em;opacity:0.7;transition:all 0.3s;
+}
+#mobile-menu a:hover{opacity:1;color:var(--neon)}
+
+/* ===== HERO ===== */
+#hero{
+position:relative;min-height:100vh;
+display:flex;align-items:center;justify-content:center;
+flex-direction:column;text-align:center;
+padding:20px;overflow:hidden;
+background:
+  radial-gradient(ellipse at 30% 80%,rgba(45,74,30,0.2) 0%,transparent 50%),
+  radial-gradient(ellipse at 70% 20%,rgba(139,0,0,0.15) 0%,transparent 50%),
+  var(--black);
+}
+#hero .hero-bg{
+position:absolute;top:0;left:0;width:100%;height:100%;
+background:
+  repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(139,0,0,0.03) 3px,rgba(139,0,0,0.03) 4px),
+  repeating-linear-gradient(0deg,transparent,transparent 50px,rgba(58,58,58,0.1) 50px,rgba(58,58,58,0.1) 51px);
+opacity:0.5;
+}
+.hero-warning{
+font-size:clamp(11px,1.5vw,14px);
+color:var(--red-bright);letter-spacing:0.5em;
+margin-bottom:30px;opacity:0.8;
+text-transform:uppercase;
+border:1px solid var(--red);padding:8px 24px;
+animation:warningPulse 2s infinite;
+}
+@keyframes warningPulse{0%,100%{opacity:0.6;border-color:var(--red)}50%{opacity:1;border-color:var(--red-bright)}}
+.hero-title{
+font-size:clamp(36px,10vw,100px);
+font-family:var(--font-title);
+color:var(--bone);
+line-height:1.1;margin-bottom:10px;
+text-shadow:0 0 40px rgba(139,0,0,0.6);
+}
+.hero-subtitle{
+font-size:clamp(18px,4vw,42px);
+font-family:var(--font-title);
+color:var(--red-bright);
+letter-spacing:0.3em;margin-bottom:20px;
+text-shadow:0 0 20px var(--red);
+}
+.hero-catchcopy{
+font-size:clamp(14px,2.5vw,24px);
+color:var(--bone);opacity:0.8;
+margin-bottom:40px;letter-spacing:0.2em;
+}
+.hero-date{
+font-size:clamp(12px,1.5vw,16px);
+color:var(--neon);letter-spacing:0.15em;
+margin-bottom:40px;
+text-shadow:0 0 10px var(--neon);
+}
+
+/* ===== SHAKING BUTTON ===== */
+.btn-enter{
+display:inline-block;padding:18px 50px;
+background:transparent;border:2px solid var(--red-bright);
+color:var(--red-bright);font-family:var(--font-title);
+font-size:clamp(14px,2vw,20px);letter-spacing:0.3em;
+text-decoration:none;cursor:none;
+position:relative;overflow:hidden;
+animation:btnShake 0.15s infinite;
+transition:all 0.3s;
+}
+.btn-enter:hover{
+background:var(--red-bright);color:var(--black);
+box-shadow:0 0 30px var(--red-bright),0 0 60px rgba(139,0,0,0.5);
+}
+@keyframes btnShake{
+0%{transform:translate(0,0) rotate(0deg)}
+25%{transform:translate(1px,-1px) rotate(0.5deg)}
+50%{transform:translate(-1px,1px) rotate(-0.5deg)}
+75%{transform:translate(1px,0px) rotate(0.3deg)}
+100%{transform:translate(-1px,-1px) rotate(-0.3deg)}
+}
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-indicator{
+position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.scroll-indicator span{
+font-size:10px;letter-spacing:0.3em;color:var(--bone);opacity:0.5;
+}
+.scroll-arrow{
+width:20px;height:20px;border-right:2px solid var(--bone);
+border-bottom:2px solid var(--bone);transform:rotate(45deg);
+opacity:0.5;animation:scrollBounce 2s infinite;
+}
+@keyframes scrollBounce{
+0%,100%{transform:rotate(45deg) translate(0,0);opacity:0.3}
+50%{transform:rotate(45deg) translate(5px,5px);opacity:0.8}
+}
+
+/* ===== BLOOD DRIP BORDER ===== */
+.blood-border{
+width:100%;height:40px;position:relative;overflow:hidden;
+}
+.blood-border svg{width:100%;height:100%;display:block}
+
+/* ===== SECTIONS COMMON ===== */
+section{position:relative;padding:clamp(60px,10vw,120px) clamp(20px,5vw,80px)}
+.section-label{
+font-size:clamp(10px,1.2vw,12px);color:var(--neon);
+letter-spacing:0.5em;text-transform:uppercase;
+margin-bottom:10px;opacity:0.6;
+}
+.section-title{
+font-size:clamp(24px,5vw,48px);font-family:var(--font-title);
+color:var(--bone);margin-bottom:40px;
+text-shadow:2px 2px 0 var(--red),-1px -1px 0 rgba(57,255,20,0.3);
+}
+
+/* ===== FADE IN ANIMATION ===== */
+.fade-in{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-left{opacity:0;transform:translateX(-60px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.fade-in-left.visible{opacity:1;transform:translateX(0)}
+.fade-in-right{opacity:0;transform:translateX(60px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94)}
+.fade-in-right.visible{opacity:1;transform:translateX(0)}
+
+/* ===== STORY SECTION ===== */
+#story{
+background:
+  linear-gradient(180deg,var(--black) 0%,rgba(45,74,30,0.08) 50%,var(--black) 100%);
+}
+.story-content{
+max-width:800px;margin:0 auto;
+}
+.story-text{
+font-size:clamp(13px,1.4vw,16px);line-height:2;
+color:var(--bone);opacity:0.85;
+margin-bottom:20px;
+}
+.story-text .redacted{
+background:var(--bone);color:var(--bone);
+padding:0 4px;cursor:none;
+transition:all 0.3s;position:relative;
+}
+.story-text .redacted:hover{
+background:transparent;color:var(--red-bright);
+text-shadow:0 0 5px var(--red);
+}
+.story-year{
+display:inline-block;color:var(--neon);font-weight:bold;
+margin-right:10px;text-shadow:0 0 5px var(--neon);
+opacity:0.8;
+}
+
+/* ===== FLOORS SECTION ===== */
+#floors{
+background:var(--black);
+}
+.floors-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));
+gap:30px;max-width:1200px;margin:0 auto;
+}
+.floor-card{
+border:1px solid var(--rust);
+padding:clamp(25px,3vw,40px);
+position:relative;overflow:hidden;
+background:linear-gradient(135deg,rgba(58,58,58,0.1) 0%,rgba(10,10,10,0.9) 100%);
+transition:all 0.5s;
+}
+.floor-card::before{
+content:'';position:absolute;top:0;left:0;width:100%;height:3px;
+background:var(--red-bright);transform:scaleX(0);
+transition:transform 0.5s;transform-origin:left;
+}
+.floor-card:hover::before{transform:scaleX(1)}
+.floor-card:hover{
+border-color:var(--red);
+box-shadow:0 0 30px rgba(139,0,0,0.2);
+}
+.floor-number{
+font-size:clamp(48px,6vw,72px);font-family:var(--font-title);
+color:var(--red);opacity:0.15;
+position:absolute;top:-10px;right:10px;
+}
+.floor-name{
+font-size:clamp(18px,2.5vw,24px);font-family:var(--font-title);
+color:var(--red-bright);margin-bottom:15px;
+letter-spacing:0.1em;
+}
+.floor-desc{
+font-size:clamp(12px,1.3vw,14px);color:var(--bone);
+opacity:0.7;line-height:1.9;
+}
+.floor-icon{
+width:60px;height:60px;margin-bottom:20px;opacity:0.6;
+}
+
+/* ===== TESTIMONIALS ===== */
+#testimonials{
+background:
+  linear-gradient(180deg,var(--black) 0%,rgba(139,0,0,0.05) 50%,var(--black) 100%);
+}
+.testimonial-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));
+gap:30px;max-width:1100px;margin:0 auto;
+}
+.testimonial-card{
+background:rgba(58,58,58,0.1);
+border-left:3px solid var(--red);
+padding:clamp(20px,3vw,30px);
+position:relative;
+}
+.testimonial-card::before{
+content:'証言 #';position:absolute;top:10px;right:15px;
+font-size:10px;color:var(--neon);opacity:0.4;
+}
+.testimonial-card:nth-child(1)::before{content:'証言 #001'}
+.testimonial-card:nth-child(2)::before{content:'証言 #002'}
+.testimonial-card:nth-child(3)::before{content:'証言 #003'}
+.testimonial-card:nth-child(4)::before{content:'証言 #004'}
+.testimonial-text{
+font-size:clamp(12px,1.3vw,15px);
+color:var(--bone);opacity:0.8;
+min-height:80px;line-height:1.9;
+}
+.testimonial-text .typewriter-cursor{
+display:inline-block;width:8px;height:16px;
+background:var(--neon);animation:cursorBlink 0.5s infinite;
+vertical-align:middle;margin-left:2px;
+}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+.testimonial-author{
+margin-top:15px;font-size:11px;
+color:var(--rust);letter-spacing:0.1em;
+}
+
+/* ===== CAUTION ===== */
+#caution{background:var(--black)}
+.caution-box{
+max-width:800px;margin:0 auto;
+border:2px solid var(--red);padding:clamp(30px,4vw,50px);
+background:rgba(139,0,0,0.05);
+}
+.caution-list{
+list-style:none;
+}
+.caution-list li{
+padding:12px 0;border-bottom:1px solid rgba(58,58,58,0.3);
+font-size:clamp(12px,1.3vw,15px);
+color:var(--bone);opacity:0.85;
+padding-left:25px;position:relative;
+}
+.caution-list li::before{
+content:'⚠';position:absolute;left:0;color:var(--red-bright);
+}
+
+/* ===== TICKETS ===== */
+#tickets{
+background:
+  linear-gradient(180deg,var(--black) 0%,rgba(45,74,30,0.05) 50%,var(--black) 100%);
+}
+.ticket-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));
+gap:30px;max-width:1000px;margin:0 auto;
+}
+.ticket-card{
+border:1px solid var(--rust);padding:clamp(30px,3vw,40px);
+text-align:center;position:relative;
+transition:all 0.5s;
+background:linear-gradient(180deg,rgba(58,58,58,0.05) 0%,rgba(10,10,10,0.95) 100%);
+}
+.ticket-card:hover{border-color:var(--red);box-shadow:0 0 20px rgba(139,0,0,0.2)}
+.ticket-card.recommended{border-color:var(--red-bright)}
+.ticket-card.recommended::after{
+content:'MOST FEAR';position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+background:var(--red-bright);color:var(--black);
+font-size:10px;padding:4px 16px;letter-spacing:0.2em;
+font-weight:bold;
+}
+.ticket-type{
+font-size:clamp(14px,1.8vw,18px);font-family:var(--font-title);
+color:var(--bone);letter-spacing:0.15em;margin-bottom:10px;
+}
+.ticket-price{
+font-size:clamp(28px,4vw,42px);font-family:var(--font-title);
+color:var(--red-bright);margin-bottom:5px;
+}
+.ticket-price small{font-size:0.4em;color:var(--bone);opacity:0.5}
+.ticket-desc{
+font-size:clamp(11px,1.2vw,13px);color:var(--bone);opacity:0.6;
+margin-bottom:25px;line-height:1.8;
+}
+.btn-ticket{
+display:inline-block;padding:12px 30px;
+border:1px solid var(--red);color:var(--red-bright);
+background:transparent;font-family:var(--font-mono);
+font-size:13px;letter-spacing:0.2em;cursor:none;
+transition:all 0.3s;text-decoration:none;
+}
+.btn-ticket:hover{background:var(--red-bright);color:var(--black)}
+
+/* ===== ACCESS ===== */
+#access{background:var(--black)}
+.access-content{
+max-width:800px;margin:0 auto;
+display:grid;grid-template-columns:1fr 1fr;gap:40px;
+}
+.access-info{font-size:clamp(12px,1.3vw,14px);color:var(--bone);opacity:0.8}
+.access-info dt{
+color:var(--neon);font-size:11px;letter-spacing:0.2em;
+margin-bottom:5px;margin-top:20px;opacity:0.6;
+}
+.access-info dt:first-child{margin-top:0}
+.access-info dd{margin-bottom:10px;line-height:1.8}
+.access-map{
+background:rgba(58,58,58,0.1);border:1px solid var(--rust);
+display:flex;align-items:center;justify-content:center;
+min-height:250px;position:relative;overflow:hidden;
+}
+.access-map-placeholder{
+color:var(--rust);font-size:12px;letter-spacing:0.1em;
+text-align:center;
+}
+.access-map-placeholder svg{display:block;margin:0 auto 15px;opacity:0.3}
+
+/* ===== FOOTER ===== */
+#footer{
+background:var(--black);
+border-top:1px solid rgba(58,58,58,0.3);
+padding:clamp(40px,5vw,60px) clamp(20px,5vw,80px);
+text-align:center;
+}
+.footer-logo{
+font-family:var(--font-title);font-size:clamp(18px,3vw,28px);
+color:var(--red-bright);letter-spacing:0.3em;
+text-shadow:0 0 20px var(--red);
+margin-bottom:20px;
+}
+.footer-links{
+display:flex;justify-content:center;gap:30px;
+flex-wrap:wrap;margin-bottom:20px;
+}
+.footer-links a{
+color:var(--bone);text-decoration:none;font-size:12px;
+opacity:0.5;transition:all 0.3s;letter-spacing:0.1em;
+}
+.footer-links a:hover{opacity:1;color:var(--neon)}
+.footer-copy{font-size:10px;color:var(--rust);letter-spacing:0.1em}
+.footer-disclaimer{
+font-size:10px;color:var(--rust);margin-top:15px;
+opacity:0.4;max-width:600px;margin-left:auto;margin-right:auto;
+line-height:1.8;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  #nav .nav-links{display:none}
+  #hamburger{display:flex}
+  .access-content{grid-template-columns:1fr}
+  .floor-card{padding:20px}
+  .hero-title{letter-spacing:0.05em}
+  #flashlight{display:none}
+  #custom-cursor{display:none}
+  body{cursor:auto}
+  .btn-enter,.btn-ticket{cursor:pointer}
+}
+@media(max-width:480px){
+  section{padding:50px 15px}
+  .hero-warning{font-size:9px;padding:6px 12px;letter-spacing:0.3em}
+}
+
+/* ===== NOISE OVERLAY ===== */
+.noise-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:8800;opacity:0.04;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+background-size:256px 256px;
+animation:noiseShift 0.2s steps(10) infinite;
+}
+@keyframes noiseShift{
+0%{transform:translate(0,0)}
+10%{transform:translate(-5%,-5%)}
+20%{transform:translate(5%,2%)}
+30%{transform:translate(-2%,5%)}
+40%{transform:translate(5%,-5%)}
+50%{transform:translate(-5%,2%)}
+60%{transform:translate(5%,5%)}
+70%{transform:translate(-2%,-5%)}
+80%{transform:translate(2%,5%)}
+90%{transform:translate(-5%,-2%)}
+100%{transform:translate(5%,2%)}
+}
+
+/* ===== RANDOM TEXT JITTER (for horror titles) ===== */
+.jitter span{
+  display:inline-block;
+  animation:jitter 0.3s infinite alternate;
+}
+@keyframes jitter{
+  0%{transform:translate(0,0) rotate(0deg)}
+  100%{transform:translate(var(--jx,0),var(--jy,0)) rotate(var(--jr,0))}
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO OVERLAY -->
+<div id="intro-overlay">
+  <div class="scare-text glitch" data-text="逃げられない">逃げられない</div>
+  <div class="scare-sub">DEAD SILENCE — 2026</div>
+</div>
+
+<!-- NOISE OVERLAY -->
+<div class="noise-overlay"></div>
+
+<!-- SCREEN GLITCH -->
+<div id="screen-glitch"></div>
+
+<!-- FLASHLIGHT CURSOR -->
+<div id="flashlight"></div>
+<div id="custom-cursor"></div>
+
+<!-- REC INDICATOR -->
+<div id="rec-indicator">
+  <span class="dot"></span>
+  <span>REC</span>
+  <span class="timestamp" id="rec-time"></span>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">DEAD SILENCE</div>
+  <ul class="nav-links">
+    <li><a href="#story">STORY</a></li>
+    <li><a href="#floors">FLOORS</a></li>
+    <li><a href="#testimonials">TESTIMONY</a></li>
+    <li><a href="#caution">CAUTION</a></li>
+    <li><a href="#tickets">TICKETS</a></li>
+    <li><a href="#access">ACCESS</a></li>
+  </ul>
+  <button id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <a href="#story">STORY</a>
+  <a href="#floors">FLOORS</a>
+  <a href="#testimonials">TESTIMONY</a>
+  <a href="#caution">CAUTION</a>
+  <a href="#tickets">TICKETS</a>
+  <a href="#access">ACCESS</a>
+</div>
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="vhs-overlay"></div>
+
+  <div style="position:relative;z-index:3">
+    <div class="hero-warning fade-in">⚠ WARNING — 心臓の弱い方の入場はお断りいたします ⚠</div>
+
+    <h1 class="hero-title glitch jitter" data-text="絶叫廃病院" id="hero-title">
+      <span style="--jx:1px;--jy:-0.5px;--jr:-0.8deg">絶</span><span style="--jx:-0.5px;--jy:1px;--jr:0.5deg">叫</span><span style="--jx:0.8px;--jy:-1px;--jr:-0.3deg">廃</span><span style="--jx:-1px;--jy:0.5px;--jr:0.7deg">病</span><span style="--jx:0.5px;--jy:-0.8px;--jr:-0.6deg">院</span>
+    </h1>
+
+    <div class="hero-subtitle">— DEAD SILENCE —</div>
+    <p class="hero-catchcopy">「ここから先、音を立てるな。」</p>
+    <p class="hero-date">2026.07.18 SAT — 09.23 WED ｜ 会場：旧▮▮▮総合病院跡地</p>
+
+    <a href="#story" class="btn-enter">入 場 す る</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- BLOOD DRIP -->
+<div class="blood-border">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,0 L1440,0 L1440,5 
+      Q1400,5 1400,15 Q1400,30 1390,30 Q1380,30 1380,5 
+      Q1300,5 1300,5 
+      Q1250,5 1250,20 Q1250,38 1240,38 Q1230,38 1230,5 
+      Q1100,5 1100,10 Q1100,22 1090,22 Q1080,22 1080,5 
+      Q950,5 950,5 
+      Q900,5 900,25 Q900,40 890,40 Q880,40 880,5 
+      Q750,5 750,5 
+      Q700,5 700,12 Q700,20 692,20 Q684,20 684,5 
+      Q550,5 550,5 
+      Q500,5 500,30 Q500,40 490,40 Q480,40 480,5 
+      Q350,5 350,18 Q350,28 342,28 Q334,28 334,5 
+      Q200,5 200,5 
+      Q150,5 150,22 Q150,35 142,35 Q134,35 134,5 
+      Q50,5 50,5 
+      L0,5 Z" fill="#8b0000" opacity="0.7"/>
+  </svg>
+</div>
+
+<!-- ==================== STORY ==================== -->
+<section id="story">
+  <div class="story-content">
+    <div class="section-label fade-in">FILE_001 — CLASSIFIED</div>
+    <h2 class="section-title fade-in">この病院で、<br>何が起きたのか。</h2>
+
+    <p class="story-text fade-in">
+      <span class="story-year">1967年</span>
+      東京郊外に建設された「<span class="redacted">桐生</span>総合病院」。
+      地域医療の要として600床を擁するこの病院は、表向きには模範的な施設だった。
+    </p>
+    <p class="story-text fade-in">
+      <span class="story-year">1983年</span>
+      地下2階に増設された<span class="redacted">特殊病棟</span>。
+      公式記録では「高度先端医療研究施設」とされていたが、
+      この区画に配属された看護師は、3ヶ月以内に全員が<span class="redacted">退職届</span>を提出している。
+      理由は一様に「一身上の都合」。
+    </p>
+    <p class="story-text fade-in">
+      <span class="story-year">1994年</span>
+      院長・<span class="redacted">桐生芳郎</span>が院長室で発見される。
+      死因は<span class="redacted">不明</span>。検死報告書には、
+      「全身に無数の爪痕に似た裂傷。ただし、自傷の可能性が高い」との記載。
+      病院は即日閉鎖。全職員は守秘義務契約を結ばされた。
+    </p>
+    <p class="story-text fade-in">
+      <span class="story-year">2026年</span>
+      老朽化による取り壊しが決定。最後の調査として内部が公開される——
+      ただし、調査チームの報告書には<span class="redacted">こう記されていた</span>。
+    </p>
+    <p class="story-text fade-in" style="color:var(--red-bright);font-size:clamp(16px,2vw,22px);text-align:center;margin-top:30px;letter-spacing:0.2em;">
+      「地下2階からの音声記録は、すべて<span class="redacted">消去</span>を推奨する」
+    </p>
+  </div>
+</section>
+
+<!-- BLOOD DRIP 2 -->
+<div class="blood-border" style="transform:scaleX(-1)">
+  <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+    <path d="M0,0 L1440,0 L1440,5 Q1380,5 1380,15 Q1380,25 1372,25 Q1364,25 1364,5 Q1200,5 1200,20 Q1200,35 1190,35 Q1180,35 1180,5 Q1000,5 1000,10 Q1000,18 993,18 Q986,18 986,5 Q800,5 800,28 Q800,40 790,40 Q780,40 780,5 Q600,5 600,5 Q560,5 560,15 Q560,22 553,22 Q546,22 546,5 Q350,5 350,25 Q350,38 342,38 Q334,38 334,5 Q150,5 150,12 Q150,20 143,20 Q136,20 136,5 L0,5 Z" fill="#8b0000" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- ==================== FLOORS ==================== -->
+<section id="floors">
+  <div style="text-align:center">
+    <div class="section-label fade-in">FLOOR_MAP — DO NOT ENTER</div>
+    <h2 class="section-title fade-in">恐怖の3フロア</h2>
+  </div>
+  <div class="floors-grid">
+    <div class="floor-card fade-in">
+      <div class="floor-number">1F</div>
+      <svg class="floor-icon" viewBox="0 0 60 60" fill="none">
+        <rect x="10" y="15" width="40" height="35" stroke="#8b0000" stroke-width="1.5" rx="2"/>
+        <line x1="30" y1="15" x2="30" y2="50" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+        <line x1="10" y1="32" x2="50" y2="32" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+        <circle cx="30" cy="10" r="5" stroke="#8b0000" stroke-width="1.5" fill="none"/>
+      </svg>
+      <h3 class="floor-name">外来棟 —「沈黙の待合室」</h3>
+      <p class="floor-desc">
+        30年間放置された外来ロビー。埃をかぶった受付カウンター、
+        めくれかけたリノリウムの床。待合室の椅子に座る「誰か」の気配。
+        ——番号札が、まだ動いている。あなたの番号は、もう呼ばれている。
+      </p>
+    </div>
+    <div class="floor-card fade-in" style="transition-delay:0.15s">
+      <div class="floor-number">2F</div>
+      <svg class="floor-icon" viewBox="0 0 60 60" fill="none">
+        <rect x="12" y="20" width="36" height="25" stroke="#8b0000" stroke-width="1.5" rx="1"/>
+        <path d="M20 20 L20 10 Q30 5 40 10 L40 20" stroke="#8b0000" stroke-width="1.5" fill="none"/>
+        <line x1="22" y1="28" x2="38" y2="28" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+        <line x1="22" y1="33" x2="38" y2="33" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+        <line x1="22" y1="38" x2="32" y2="38" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <h3 class="floor-name">病棟 —「終わらない巡回」</h3>
+      <p class="floor-desc">
+        ナースステーションのモニターが、いまも点滅を繰り返す。
+        病室のベッドには、つい先ほどまで「誰か」が横たわっていた痕跡。
+        廊下の突き当たりから聞こえる車椅子の音。しかし、この棟に生存者はいない。
+      </p>
+    </div>
+    <div class="floor-card fade-in" style="transition-delay:0.3s">
+      <div class="floor-number">B2</div>
+      <svg class="floor-icon" viewBox="0 0 60 60" fill="none">
+        <rect x="15" y="15" width="30" height="35" stroke="#8b0000" stroke-width="1.5" rx="1"/>
+        <line x1="15" y1="30" x2="45" y2="30" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+        <circle cx="30" cy="22" r="4" stroke="#8b0000" stroke-width="1.5" fill="none"/>
+        <path d="M22 38 L38 38" stroke="#8b0000" stroke-width="1.5"/>
+        <path d="M22 42 L38 42" stroke="#8b0000" stroke-width="1.5"/>
+        <path d="M25 38 L25 42" stroke="#8b0000" stroke-width="1"/>
+        <path d="M30 38 L30 42" stroke="#8b0000" stroke-width="1"/>
+        <path d="M35 38 L35 42" stroke="#8b0000" stroke-width="1"/>
+      </svg>
+      <h3 class="floor-name">地下特殊病棟 —「██████」</h3>
+      <p class="floor-desc">
+        記録が抹消された区画。コンクリート壁に残された無数の引っ掻き傷。
+        拘束具が取り付けられたままの手術台。ホルマリンの臭気が充満する暗闇。
+        ここで何が行われていたのか、知ってはならない。
+        <span style="color:var(--red-bright)">——それでも、進みますか？</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TESTIMONIALS ==================== -->
+<section id="testimonials">
+  <div style="text-align:center">
+    <div class="section-label fade-in">AUDIO_LOG — RECOVERED</div>
+    <h2 class="section-title fade-in">体験者の証言</h2>
+    <p class="fade-in" style="color:var(--rust);font-size:12px;margin-bottom:40px;letter-spacing:0.1em">
+      ※ 以下は実際の体験者から回収された音声記録を文字起こししたものです
+    </p>
+  </div>
+  <div class="testimonial-grid">
+    <div class="testimonial-card fade-in">
+      <div class="testimonial-text" data-typewriter="2階の廊下で、確かに後ろから足音がした。振り返ったら誰もいない。でも、足音は止まらなかった。むしろ、近づいてきた。あの時の恐怖は、一生忘れられない。"></div>
+      <div class="testimonial-author">—— 24歳 男性 / 体験日：2026.07.21</div>
+    </div>
+    <div class="testimonial-card fade-in" style="transition-delay:0.1s">
+      <div class="testimonial-text" data-typewriter="友人と4人で入ったはずなのに、地下に着いた時には5人いた。誰も、その「5人目」の顔を思い出せない。写真にも映っていなかった。"></div>
+      <div class="testimonial-author">—— 28歳 女性 / 体験日：2026.07.25</div>
+    </div>
+    <div class="testimonial-card fade-in" style="transition-delay:0.2s">
+      <div class="testimonial-text" data-typewriter="「帰りたい」と言った瞬間、全ての非常灯が消えた。暗闇の中で何かが笑っていた。あれは演出じゃない。スタッフに聞いても「そんな仕掛けはない」と言われた。"></div>
+      <div class="testimonial-author">—— 31歳 男性 / 体験日：2026.08.02</div>
+    </div>
+    <div class="testimonial-card fade-in" style="transition-delay:0.3s">
+      <div class="testimonial-text" data-typewriter="出口が見えた時、安堵で振り返った。暗闇の奥に、白い顔がこちらを見ていた。目が合った。微笑んでいた。もう二度と行かない。絶対に。"></div>
+      <div class="testimonial-author">—— 22歳 女性 / 体験日：2026.08.10</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CAUTION ==================== -->
+<section id="caution">
+  <div style="text-align:center">
+    <div class="section-label fade-in">NOTICE — MANDATORY</div>
+    <h2 class="section-title fade-in">入場に関する注意事項</h2>
+  </div>
+  <div class="caution-box fade-in">
+    <ul class="caution-list">
+      <li>本イベントは、強い恐怖演出を含みます。心臓疾患、呼吸器疾患、てんかん等をお持ちの方は入場できません。</li>
+      <li>妊娠中の方、小学生以下のお子様は入場をお断りしております。中学生は保護者同伴が必須です。</li>
+      <li>飲酒されている方の入場はお断りいたします。</li>
+      <li>館内は暗所・狭所を含みます。閉所恐怖症の方はご注意ください。</li>
+      <li>スタッフおよび演者への暴力行為・接触は固く禁じます。発覚した場合、即時退場・法的措置を取ります。</li>
+      <li>館内での撮影・録音は一切禁止です。スマートフォンは入口でお預かりいたします。</li>
+      <li>途中退場は可能です。各所に設置された非常ボタンを押してください。スタッフが案内いたします。</li>
+      <li>所要時間は約40〜60分です。歩きやすい靴でお越しください。</li>
+      <li>体験中に気分が悪くなった場合は、その場にしゃがみ、大きな声でスタッフをお呼びください。</li>
+      <li>当イベントで発生したいかなる精神的ショックについても、主催者は責任を負いかねます。<span style="color:var(--red-bright)">自己責任でお願いいたします。</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== TICKETS ==================== -->
+<section id="tickets">
+  <div style="text-align:center">
+    <div class="section-label fade-in">ADMISSION — IF YOU DARE</div>
+    <h2 class="section-title fade-in">チケット</h2>
+  </div>
+  <div class="ticket-grid">
+    <div class="ticket-card fade-in">
+      <div class="ticket-type">一般入場</div>
+      <div class="ticket-price">¥4,800<small>（税込）</small></div>
+      <p class="ticket-desc">
+        1F 外来棟 + 2F 病棟<br>
+        所要時間：約30分<br>
+        ※地下特殊病棟は含まれません
+      </p>
+      <a href="#" class="btn-ticket">購入する</a>
+    </div>
+    <div class="ticket-card recommended fade-in" style="transition-delay:0.15s">
+      <div class="ticket-type">全フロア制覇</div>
+      <div class="ticket-price">¥7,800<small>（税込）</small></div>
+      <p class="ticket-desc">
+        全3フロア（地下特殊病棟含む）<br>
+        所要時間：約60分<br>
+        <span style="color:var(--red-bright)">※ 免責同意書への署名必須</span>
+      </p>
+      <a href="#" class="btn-ticket" style="border-color:var(--red-bright)">覚悟して購入する</a>
+    </div>
+    <div class="ticket-card fade-in" style="transition-delay:0.3s">
+      <div class="ticket-type">VIP — 深夜の部</div>
+      <div class="ticket-price">¥12,800<small>（税込）</small></div>
+      <p class="ticket-desc">
+        深夜0:00〜 完全貸切<br>
+        最大4名 / 全フロア<br>
+        演出強化版 / 記念品付<br>
+        <span style="color:var(--red-bright)">※ 1日1組限定</span>
+      </p>
+      <a href="#" class="btn-ticket">申し込む</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== ACCESS ==================== -->
+<section id="access">
+  <div style="text-align:center">
+    <div class="section-label fade-in">LOCATION — FIND US IF YOU CAN</div>
+    <h2 class="section-title fade-in">アクセス</h2>
+  </div>
+  <div class="access-content fade-in">
+    <dl class="access-info">
+      <dt>会場</dt>
+      <dd>旧▮▮▮総合病院跡地<br>〒1XX-00XX 東京都▮▮▮区▮▮▮ X-XX-X</dd>
+      <dt>開催期間</dt>
+      <dd>2026年7月18日(土) 〜 9月23日(水)</dd>
+      <dt>営業時間</dt>
+      <dd>
+        通常の部：18:00 〜 23:00（最終入場 22:00）<br>
+        深夜の部：0:00 〜 2:00（完全予約制）
+      </dd>
+      <dt>定休日</dt>
+      <dd>火曜日（ただし8月は無休）</dd>
+      <dt>最寄り駅</dt>
+      <dd>JR▮▮▮線「▮▮▮」駅 東口より徒歩12分<br>
+      ※ 夜間は駅からの送迎バスあり（無料）</dd>
+      <dt>駐車場</dt>
+      <dd>50台（無料）※ 満車の場合は近隣コインパーキングをご利用ください</dd>
+    </dl>
+    <div class="access-map">
+      <div class="access-map-placeholder">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <path d="M30 5 L30 55" stroke="#e8e0d0" stroke-width="1"/>
+          <path d="M5 30 L55 30" stroke="#e8e0d0" stroke-width="1"/>
+          <circle cx="30" cy="30" r="20" stroke="#8b0000" stroke-width="1.5" fill="none"/>
+          <circle cx="30" cy="30" r="8" stroke="#8b0000" stroke-width="1" fill="none"/>
+          <circle cx="30" cy="30" r="3" fill="#8b0000"/>
+        </svg>
+        LOCATION DATA<br>
+        <span style="font-size:10px;opacity:0.5">COORDINATES: 35.6XXX°N 139.7XXX°E</span><br>
+        <span style="font-size:10px;opacity:0.5">※ 正確な所在地はチケット購入後にメールでご案内します</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer id="footer">
+  <div class="footer-logo glitch" data-text="DEAD SILENCE">DEAD SILENCE</div>
+  <div class="footer-links">
+    <a href="#">公式Twitter</a>
+    <a href="#">Instagram</a>
+    <a href="#">プレスキット</a>
+    <a href="#">お問い合わせ</a>
+    <a href="#">プライバシーポリシー</a>
+    <a href="#">特定商取引法に基づく表記</a>
+  </div>
+  <p class="footer-copy">© 2026 DEAD SILENCE Production Committee. All rights reserved.</p>
+  <p class="footer-disclaimer">
+    ※ 本サイトはデモサイトです。実在するイベント・施設・団体とは一切関係ありません。<br>
+    ※ サイト内の恐怖演出（画面の点滅等）にご注意ください。光過敏性の方はご利用をお控えください。
+  </p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ===== INTRO SEQUENCE ===== */
+  const intro = document.getElementById('intro-overlay');
+  intro.classList.add('fade-out');
+  setTimeout(() => {
+    intro.style.display = 'none';
+    document.getElementById('flashlight').classList.remove('off');
+  }, 5500);
+
+  /* ===== REC TIMESTAMP ===== */
+  const recTime = document.getElementById('rec-time');
+  function updateRec(){
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    recTime.textContent = h + ':' + m + ':' + s;
+    requestAnimationFrame(updateRec);
+  }
+  updateRec();
+
+  /* ===== CUSTOM CURSOR + FLASHLIGHT ===== */
+  const cursor = document.getElementById('custom-cursor');
+  const flashlight = document.getElementById('flashlight');
+  let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+    flashlight.style.setProperty('--mx', mouseX + 'px');
+    flashlight.style.setProperty('--my', mouseY + 'px');
+  });
+
+  /* ===== NAV SHOW ON SCROLL ===== */
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset;
+    if (st > 300) {
+      nav.classList.add('visible');
+    } else {
+      nav.classList.remove('visible');
+    }
+    lastScroll = st;
+  });
+
+  /* ===== MOBILE MENU ===== */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  /* ===== INTERSECTION OBSERVER — FADE IN ===== */
+  const fadeEls = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right');
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  fadeEls.forEach(el => fadeObs.observe(el));
+
+  /* ===== SECTION FLICKER ON ENTER ===== */
+  const sections = document.querySelectorAll('section:not(#hero)');
+  const flickerObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.flickered) {
+        entry.target.dataset.flickered = 'true';
+        entry.target.classList.add('section-flicker');
+        setTimeout(() => entry.target.classList.remove('section-flicker'), 300);
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(s => flickerObs.observe(s));
+
+  /* ===== SCREEN GLITCH ON SCROLL ===== */
+  const screenGlitch = document.getElementById('screen-glitch');
+  let glitchCooldown = false;
+  let scrollAccumulator = 0;
+  window.addEventListener('scroll', () => {
+    scrollAccumulator++;
+    if (scrollAccumulator > 120 && !glitchCooldown) {
+      scrollAccumulator = 0;
+      glitchCooldown = true;
+      screenGlitch.classList.add('active');
+      setTimeout(() => {
+        screenGlitch.classList.remove('active');
+        glitchCooldown = false;
+      }, 150);
+    }
+  });
+
+  /* ===== TYPEWRITER EFFECT ===== */
+  const typewriterEls = document.querySelectorAll('[data-typewriter]');
+  const typeObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.typed) {
+        entry.target.dataset.typed = 'true';
+        typeEffect(entry.target, entry.target.dataset.typewriter);
+      }
+    });
+  }, { threshold: 0.3 });
+  typewriterEls.forEach(el => typeObs.observe(el));
+
+  function typeEffect(el, text) {
+    el.innerHTML = '<span class="typewriter-cursor"></span>';
+    let i = 0;
+    const cursorSpan = el.querySelector('.typewriter-cursor');
+    function type() {
+      if (i < text.length) {
+        const ch = document.createTextNode(text[i]);
+        el.insertBefore(ch, cursorSpan);
+        i++;
+        const delay = Math.random() * 60 + 30;
+        const glitchChance = Math.random();
+        if (glitchChance < 0.05) {
+          setTimeout(type, delay + 200);
+        } else {
+          setTimeout(type, delay);
+        }
+      } else {
+        cursorSpan.remove();
+      }
+    }
+    type();
+  }
+
+  /* ===== HORROR TITLE RANDOM JITTER ===== */
+  const jitterSpans = document.querySelectorAll('.jitter span');
+  function randomizeJitter() {
+    jitterSpans.forEach(span => {
+      span.style.setProperty('--jx', (Math.random() * 2 - 1).toFixed(1) + 'px');
+      span.style.setProperty('--jy', (Math.random() * 2 - 1).toFixed(1) + 'px');
+      span.style.setProperty('--jr', (Math.random() * 2 - 1).toFixed(1) + 'deg');
+    });
+    setTimeout(randomizeJitter, 2000 + Math.random() * 3000);
+  }
+  randomizeJitter();
+
+})();
+</script>
+</body>
+</html>

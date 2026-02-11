@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="岳人（GAKUTO）は創業1927年、山を知る職人が手がける登山・アウトドア用品メーカーです。一生モノの道具を日本の工房からお届けします。">
+<title>岳人 GAKUTO | 山を知る者が、山の道具をつくる。— Since 1927</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--deep-indigo:#0c1a2e;
+--snow-white:#f5f2ec;
+--yamabuki:#f0a030;
+--rock-gray:#6b6b6b;
+--moss:#4a6741;
+--sumi:#2a2a2a;
+--font-jp:'Noto Serif JP',serif;
+--font-en:'Georgia','Times New Roman',serif;
+--lh:1.95;
+--section-pad:clamp(4rem,10vw,8rem);
+}
+html{scroll-behavior:smooth;font-size:clamp(14px,1.2vw,17px)}
+body{font-family:var(--font-jp);color:var(--sumi);background:var(--snow-white);line-height:var(--lh);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.container{width:min(90%,1200px);margin:0 auto}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:background .4s,box-shadow .4s}
+nav.scrolled{background:rgba(12,26,46,.95);box-shadow:0 2px 20px rgba(0,0,0,.3)}
+nav .nav-inner{display:flex;justify-content:space-between;align-items:center;width:min(92%,1200px);margin:0 auto}
+nav .logo{font-size:1.3rem;font-weight:700;color:var(--snow-white);letter-spacing:.15em}
+nav .logo span{font-family:var(--font-en);font-weight:400;font-size:.75rem;letter-spacing:.3em;display:block;opacity:.7}
+nav ul{display:flex;gap:clamp(1rem,2.5vw,2rem);list-style:none}
+nav ul li a{color:var(--snow-white);font-size:.75rem;letter-spacing:.12em;opacity:.8;transition:opacity .3s}
+nav ul li a:hover{opacity:1;color:var(--yamabuki)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:24px;height:2px;background:var(--snow-white);transition:transform .3s,opacity .3s}
+@media(max-width:768px){
+nav ul{position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(12,26,46,.98);flex-direction:column;justify-content:center;align-items:center;gap:2rem;transform:translateX(100%);transition:transform .4s}
+nav ul.open{transform:translateX(0)}
+nav ul li a{font-size:1.1rem}
+.hamburger{display:flex}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+}
+
+/* ===== HERO ===== */
+#hero{position:relative;height:100vh;min-height:600px;background:linear-gradient(180deg,#0c1a2e 0%,#1a2d4a 30%,#2a4060 50%,#4a6078 70%,#8a9aaa 85%,var(--snow-white) 100%);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-year{position:absolute;bottom:15%;left:50%;transform:translateX(-50%);font-family:var(--font-en);font-size:clamp(8rem,22vw,20rem);font-weight:300;color:rgba(245,242,236,.06);letter-spacing:.05em;white-space:nowrap;pointer-events:none;z-index:1}
+.mountain-layer{position:absolute;bottom:0;left:0;width:100%;pointer-events:none}
+.mountain-far{z-index:2}
+.mountain-mid{z-index:3}
+.mountain-near{z-index:4}
+.hero-content{position:relative;z-index:10;text-align:center;color:var(--snow-white);padding:0 1rem}
+.hero-content h1{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:700;letter-spacing:.2em;margin-bottom:.5rem;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+.hero-content .hero-en{font-family:var(--font-en);font-size:clamp(.85rem,1.5vw,1.15rem);letter-spacing:.35em;opacity:.8;margin-bottom:1.5rem;font-weight:400}
+.hero-content .hero-tagline{font-size:clamp(.85rem,1.4vw,1.1rem);font-weight:300;letter-spacing:.18em;line-height:2;opacity:.9}
+.hero-content .hero-tagline em{font-style:normal;color:var(--yamabuki)}
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.scroll-indicator span{font-size:.65rem;letter-spacing:.25em;color:var(--snow-white);opacity:.6}
+.scroll-arrow{width:1px;height:40px;background:linear-gradient(to bottom,rgba(245,242,236,.6),transparent);position:relative;animation:scrollArrow 2s infinite}
+.scroll-arrow::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--snow-white);opacity:.8}
+@keyframes scrollArrow{0%{transform:translateY(0);opacity:1}100%{transform:translateY(15px);opacity:0}}
+
+/* ===== SUMINAGASHI DIVIDER ===== */
+.suminagashi{width:100%;height:80px;overflow:hidden;position:relative}
+.suminagashi svg{width:100%;height:100%}
+
+/* ===== SECTION COMMON ===== */
+.section-label{font-family:var(--font-en);font-size:clamp(.65rem,1vw,.8rem);letter-spacing:.4em;text-transform:uppercase;color:var(--rock-gray);margin-bottom:.5rem}
+.section-title{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;letter-spacing:.12em;line-height:1.5;margin-bottom:1rem}
+.section-title-en{font-family:var(--font-en);font-size:clamp(.7rem,1vw,.85rem);letter-spacing:.35em;color:var(--rock-gray);margin-bottom:2rem}
+section{padding:var(--section-pad) 0}
+
+/* ===== BRUSH REVEAL (left-to-right) ===== */
+.brush-reveal{opacity:0;transform:translateX(-20px);transition:opacity .8s ease,transform .8s ease}
+.brush-reveal.visible{opacity:1;transform:translateX(0)}
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ===== PHILOSOPHY ===== */
+#philosophy{background:var(--deep-indigo);color:var(--snow-white);position:relative;overflow:hidden}
+#philosophy .kanji-bg{position:absolute;right:-5%;top:50%;transform:translateY(-50%);font-size:clamp(15rem,35vw,30rem);font-weight:900;color:rgba(245,242,236,.03);pointer-events:none;line-height:1}
+.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+.philosophy-text p{font-size:clamp(.9rem,1.1vw,1.05rem);line-height:2.1;margin-bottom:1.5rem;font-weight:300}
+.philosophy-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.kanji-stamp{font-size:clamp(6rem,14vw,10rem);font-weight:900;color:var(--yamabuki);opacity:.2;position:relative}
+.kanji-stamp::after{content:'';position:absolute;inset:-15%;border:2px solid var(--yamabuki);opacity:.3}
+@media(max-width:768px){.philosophy-grid{grid-template-columns:1fr}.philosophy-visual{order:-1;margin-bottom:2rem}}
+
+/* ===== NUMBERS ===== */
+#numbers{background:var(--snow-white);position:relative}
+.numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,2rem);margin-top:3rem}
+.number-card{background:linear-gradient(135deg,#f5f2ec,#ede8df);border:1px solid rgba(107,107,107,.15);padding:clamp(1.5rem,3vw,2.5rem);text-align:center;position:relative;overflow:hidden;transition:transform .3s}
+.number-card::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none}
+.number-card:hover{transform:translateY(-5px)}
+.number-value{font-family:var(--font-en);font-size:clamp(2.2rem,4.5vw,3.2rem);font-weight:700;color:var(--deep-indigo);letter-spacing:.02em;line-height:1.2}
+.number-value .unit{font-size:.5em;font-family:var(--font-jp);font-weight:400;margin-left:.2em}
+.number-label{font-size:clamp(.75rem,1vw,.9rem);color:var(--rock-gray);margin-top:.5rem;letter-spacing:.1em}
+@media(max-width:768px){.numbers-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.numbers-grid{grid-template-columns:1fr}}
+
+/* ===== PRODUCTS ===== */
+#products{background:var(--sumi);color:var(--snow-white)}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2vw,1.5rem);margin-top:3rem}
+.product-card{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:3/4}
+.product-img{width:100%;height:100%;background:var(--rock-gray);position:relative;filter:grayscale(100%);transition:filter .6s ease}
+.product-card:hover .product-img{filter:grayscale(0%) sepia(30%)}
+.product-img .placeholder-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.product-img .placeholder-icon svg{width:40%;height:40%;opacity:.2}
+.product-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(12,26,46,.85));transform:translateY(20%);transition:transform .4s}
+.product-card:hover .product-info{transform:translateY(0)}
+.product-name{font-size:clamp(1rem,1.5vw,1.2rem);font-weight:600;letter-spacing:.1em;margin-bottom:.3rem}
+.product-name-en{font-family:var(--font-en);font-size:.7rem;letter-spacing:.3em;opacity:.6}
+.made-in-japan{position:absolute;bottom:.8rem;right:.8rem;font-family:var(--font-en);font-size:.55rem;letter-spacing:.2em;color:var(--yamabuki);opacity:.5;border:1px solid var(--yamabuki);padding:.2rem .5rem;transform:rotate(-3deg)}
+@media(max-width:768px){.products-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== PROCESS (Horizontal Scroll Emaki) ===== */
+#process{background:var(--snow-white);overflow:hidden}
+.emaki-wrapper{position:relative;margin-top:3rem}
+.emaki-track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1rem}
+.emaki-track::-webkit-scrollbar{display:none}
+.emaki-step{flex:0 0 clamp(280px,35vw,380px);scroll-snap-align:start;position:relative;padding:2rem;border-right:1px solid rgba(107,107,107,.2)}
+.emaki-step::before{content:attr(data-step);font-family:var(--font-en);font-size:clamp(5rem,8vw,7rem);font-weight:700;color:rgba(12,26,46,.04);position:absolute;top:0;left:1rem;line-height:1;pointer-events:none}
+.emaki-photo{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#3a3a3a,#5a5a5a);margin-bottom:1.5rem;position:relative;overflow:hidden;filter:grayscale(100%) contrast(1.1)}
+.emaki-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,26,46,.2),transparent)}
+.emaki-photo .photo-label{position:absolute;bottom:.5rem;right:.5rem;font-family:var(--font-en);font-size:.55rem;letter-spacing:.2em;color:rgba(255,255,255,.4)}
+.emaki-step h3{font-size:clamp(1.1rem,1.5vw,1.3rem);font-weight:600;letter-spacing:.15em;margin-bottom:.5rem}
+.emaki-step p{font-size:.85rem;color:var(--rock-gray);line-height:1.9}
+.emaki-connector{display:flex;align-items:center;gap:.5rem;margin:1rem 0;color:var(--yamabuki);font-size:.7rem;letter-spacing:.2em}
+.emaki-connector::before{content:'';flex:1;height:1px;background:var(--yamabuki);opacity:.4}
+.emaki-hint{text-align:center;margin-top:1.5rem;font-size:.75rem;color:var(--rock-gray);letter-spacing:.15em}
+.emaki-hint svg{display:inline-block;vertical-align:middle;margin-left:.3rem;animation:hintSlide 1.5s infinite}
+@keyframes hintSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+
+/* ===== CRAFTSMEN ===== */
+#craftsmen{background:var(--deep-indigo);color:var(--snow-white)}
+.craftsmen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,3vw,3rem);margin-top:3rem}
+.craftsman-card{text-align:center}
+.craftsman-portrait{width:clamp(140px,15vw,180px);height:clamp(140px,15vw,180px);border-radius:50%;margin:0 auto 1.5rem;position:relative;overflow:hidden;border:3px solid rgba(240,160,48,.3)}
+.craftsman-portrait .portrait-inner{width:100%;height:100%;background:linear-gradient(135deg,#3a3a3a,#5a5a5a);display:flex;align-items:center;justify-content:center}
+.craftsman-portrait .portrait-inner svg{width:50%;opacity:.3}
+.craftsman-name{font-size:clamp(1rem,1.3vw,1.15rem);font-weight:600;letter-spacing:.12em;margin-bottom:.2rem}
+.craftsman-role{font-size:.75rem;color:var(--yamabuki);letter-spacing:.15em;margin-bottom:1rem}
+.craftsman-quote{font-size:.85rem;line-height:1.9;font-weight:300;opacity:.85;font-style:italic;position:relative;padding:1rem}
+.craftsman-quote::before,.craftsman-quote::after{font-family:var(--font-en);font-size:2rem;color:var(--yamabuki);opacity:.4;position:absolute}
+.craftsman-quote::before{content:'"';top:0;left:0}
+.craftsman-quote::after{content:'"';bottom:0;right:0}
+@media(max-width:768px){.craftsmen-grid{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto}}
+
+/* ===== REPAIR ===== */
+#repair{background:var(--snow-white);position:relative;overflow:hidden}
+#repair .kanji-bg2{position:absolute;left:-5%;top:50%;transform:translateY(-50%);font-size:clamp(12rem,30vw,25rem);font-weight:900;color:rgba(12,26,46,.03);pointer-events:none;line-height:1}
+.repair-timeline{display:flex;align-items:flex-start;gap:0;margin-top:3rem;position:relative;justify-content:center;flex-wrap:wrap}
+.repair-timeline::before{content:'';position:absolute;top:40px;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--yamabuki),transparent)}
+.repair-step{flex:0 0 18%;text-align:center;position:relative;padding-top:60px}
+.repair-step .dot{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:var(--yamabuki);border:3px solid var(--snow-white);box-shadow:0 0 0 2px var(--yamabuki);z-index:2}
+.repair-step .year-label{font-family:var(--font-en);font-size:.7rem;letter-spacing:.15em;color:var(--yamabuki);margin-bottom:.3rem}
+.repair-step h4{font-size:clamp(.85rem,1.1vw,1rem);font-weight:600;letter-spacing:.1em;margin-bottom:.3rem}
+.repair-step p{font-size:.75rem;color:var(--rock-gray);line-height:1.8}
+@media(max-width:768px){.repair-step{flex:0 0 45%}.repair-timeline::before{display:none}}
+@media(max-width:480px){.repair-step{flex:0 0 90%}}
+
+.repair-promise{margin-top:3rem;text-align:center;padding:2rem;border:1px solid rgba(12,26,46,.1)}
+.repair-promise p{font-size:clamp(1rem,1.5vw,1.2rem);font-weight:400;letter-spacing:.12em;line-height:2}
+.repair-promise p em{font-style:normal;color:var(--yamabuki);font-weight:600}
+
+/* ===== STORES ===== */
+#stores{background:var(--sumi);color:var(--snow-white)}
+.stores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2vw,2rem);margin-top:3rem}
+.store-card{padding:clamp(1.2rem,2vw,2rem);border:1px solid rgba(245,242,236,.1);transition:border-color .3s}
+.store-card:hover{border-color:var(--yamabuki)}
+.store-card h4{font-size:clamp(.95rem,1.2vw,1.1rem);font-weight:600;letter-spacing:.1em;margin-bottom:.5rem}
+.store-card .store-loc{font-size:.75rem;color:var(--yamabuki);letter-spacing:.15em;margin-bottom:.5rem}
+.store-card p{font-size:.8rem;opacity:.7;line-height:1.8}
+@media(max-width:768px){.stores-grid{grid-template-columns:1fr}}
+
+/* ===== CTA ===== */
+#cta{background:linear-gradient(135deg,var(--deep-indigo),#1a2d4a);color:var(--snow-white);text-align:center;position:relative;overflow:hidden}
+#cta .cta-kanji{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(10rem,25vw,20rem);font-weight:900;color:rgba(245,242,236,.02);pointer-events:none}
+.cta-content{position:relative;z-index:2}
+.cta-content h2{font-size:clamp(1.4rem,3vw,2.2rem);font-weight:700;letter-spacing:.15em;margin-bottom:1rem;line-height:1.6}
+.cta-content p{font-size:clamp(.85rem,1.1vw,1rem);opacity:.8;margin-bottom:2.5rem;line-height:2}
+.cta-btn{display:inline-block;padding:clamp(.9rem,1.5vw,1.2rem) clamp(2.5rem,5vw,4rem);background:var(--yamabuki);color:var(--deep-indigo);font-family:var(--font-jp);font-size:clamp(.85rem,1.1vw,1rem);font-weight:600;letter-spacing:.2em;border:none;cursor:pointer;transition:all .4s;position:relative;overflow:hidden}
+.cta-btn:hover{background:var(--snow-white);transform:translateY(-2px);box-shadow:0 10px 30px rgba(240,160,48,.3)}
+.cta-btn::after{content:'→';margin-left:.8em;transition:transform .3s}
+.cta-btn:hover::after{transform:translateX(5px)}
+.cta-sub{margin-top:1.5rem;font-size:.75rem;opacity:.5;letter-spacing:.15em}
+
+/* ===== MOTTO ===== */
+#motto{background:var(--snow-white);text-align:center;padding:var(--section-pad) 0}
+.motto-kanji{font-size:clamp(5rem,12vw,9rem);font-weight:900;color:var(--deep-indigo);line-height:1;margin-bottom:1rem;opacity:.15}
+.motto-text{font-size:clamp(1rem,1.5vw,1.3rem);letter-spacing:.2em;line-height:2;font-weight:400}
+
+/* ===== FOOTER ===== */
+footer{background:var(--deep-indigo);color:var(--snow-white);padding:clamp(2rem,5vw,4rem) 0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(2rem,4vw,4rem);margin-bottom:3rem}
+.footer-brand .f-logo{font-size:1.5rem;font-weight:700;letter-spacing:.15em;margin-bottom:.5rem}
+.footer-brand .f-logo span{font-family:var(--font-en);font-size:.7rem;letter-spacing:.3em;display:block;opacity:.5;font-weight:400}
+.footer-brand p{font-size:.8rem;opacity:.6;line-height:2;margin-top:1rem}
+.footer-col h4{font-size:.8rem;font-weight:600;letter-spacing:.15em;margin-bottom:1rem;color:var(--yamabuki)}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.5rem}
+.footer-col ul li a{font-size:.78rem;opacity:.6;transition:opacity .3s;letter-spacing:.08em}
+.footer-col ul li a:hover{opacity:1;color:var(--yamabuki)}
+.footer-bottom{border-top:1px solid rgba(245,242,236,.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom small{font-family:var(--font-en);font-size:.7rem;opacity:.4;letter-spacing:.15em}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr}}
+
+/* ===== DELAY CHILDREN ===== */
+.delay-1{transition-delay:.1s}
+.delay-2{transition-delay:.2s}
+.delay-3{transition-delay:.3s}
+.delay-4{transition-delay:.4s}
+.delay-5{transition-delay:.5s}
+
+/* Product card BG patterns */
+.prod-bg-1{background:linear-gradient(145deg,#4a4035,#6a5a4a)}
+.prod-bg-2{background:linear-gradient(145deg,#3a4a3a,#5a6a5a)}
+.prod-bg-3{background:linear-gradient(145deg,#3a3a4a,#5a5a6a)}
+.prod-bg-4{background:linear-gradient(145deg,#4a4a3a,#6a6a5a)}
+.emaki-bg-1{background:linear-gradient(145deg,#2a2a2a,#4a4a4a)}
+.emaki-bg-2{background:linear-gradient(145deg,#3a3530,#5a4f45)}
+.emaki-bg-3{background:linear-gradient(145deg,#2a3030,#4a5050)}
+.emaki-bg-4{background:linear-gradient(145deg,#353025,#554a3a)}
+.emaki-bg-5{background:linear-gradient(145deg,#302a2a,#504545)}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="logo">岳人<span>GAKUTO — SINCE 1927</span></div>
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <ul id="navMenu">
+      <li><a href="#philosophy" onclick="closeMenu()">哲学</a></li>
+      <li><a href="#numbers" onclick="closeMenu()">実績</a></li>
+      <li><a href="#products" onclick="closeMenu()">製品</a></li>
+      <li><a href="#process" onclick="closeMenu()">製造工程</a></li>
+      <li><a href="#craftsmen" onclick="closeMenu()">職人</a></li>
+      <li><a href="#repair" onclick="closeMenu()">修理</a></li>
+      <li><a href="#cta" onclick="closeMenu()">お問い合わせ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <div class="hero-year" id="heroYear">1927</div>
+
+  <!-- Mountain layers (SVG) -->
+  <svg class="mountain-layer mountain-far" viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:55%">
+    <path d="M0,320 L0,220 Q120,100 240,180 Q360,80 480,160 Q600,60 720,140 Q840,50 960,130 Q1080,40 1200,120 Q1320,70 1440,160 L1440,320 Z" fill="rgba(100,120,150,.25)"/>
+  </svg>
+  <svg class="mountain-layer mountain-mid" viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:45%">
+    <path d="M0,320 L0,240 Q100,140 200,200 Q320,100 440,180 Q520,80 640,160 Q760,60 900,150 Q1020,80 1140,140 Q1280,90 1440,180 L1440,320 Z" fill="rgba(60,80,110,.4)"/>
+  </svg>
+  <svg class="mountain-layer mountain-near" viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:35%">
+    <path d="M0,320 L0,260 Q80,200 180,240 Q280,160 400,220 Q500,150 620,210 Q740,130 880,200 Q1000,140 1140,190 Q1280,150 1440,220 L1440,320 Z" fill="rgba(30,50,70,.6)"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-en" style="margin-bottom:1rem">GAKUTO — Mountain Equipment Maker</p>
+    <h1>岳人</h1>
+    <p class="hero-tagline">山を知る者が、山の道具をつくる。<br><em>— Since 1927</em></p>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ===== SUMINAGASHI DIVIDER ===== -->
+<div class="suminagashi">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <defs>
+      <filter id="sumi1">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="1">
+          <animate attributeName="baseFrequency" values="0.015;0.025;0.015" dur="15s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="30"/>
+      </filter>
+    </defs>
+    <rect width="1440" height="80" fill="var(--deep-indigo)" filter="url(#sumi1)" opacity=".15"/>
+    <path d="M0,40 Q360,10 720,40 Q1080,70 1440,40 L1440,80 L0,80 Z" fill="var(--deep-indigo)" opacity=".06"/>
+  </svg>
+</div>
+
+<!-- ===== PHILOSOPHY ===== -->
+<section id="philosophy">
+  <div class="kanji-bg">信</div>
+  <div class="container">
+    <div class="philosophy-grid">
+      <div class="philosophy-text">
+        <p class="section-label brush-reveal" style="color:var(--yamabuki)">Philosophy</p>
+        <h2 class="section-title brush-reveal" style="color:var(--snow-white)">一針一針に、<br>山への敬意を込めて。</h2>
+        <p class="brush-reveal delay-1">岳人の歴史は、一人の登山家の問いから始まりました。「なぜ、日本の山に合う道具が日本にないのか」——創業者・高峰源三郎がそう問うたのは、1927年のことです。</p>
+        <p class="brush-reveal delay-2">以来、私たちは日本の山岳環境を知り尽くした職人の手で、一つひとつの製品を生み出してきました。急峻な稜線、変わりやすい天候、湿度の高い樹林帯。日本の山には、日本の山の道具が必要です。</p>
+        <p class="brush-reveal delay-3">素材の選定から最終検品まで、すべての工程に妥協はありません。大量生産では決して実現できない品質。それが、岳人のものづくりです。</p>
+      </div>
+      <div class="philosophy-visual fade-up">
+        <div class="kanji-stamp">
+          <svg viewBox="0 0 200 200" width="100%" style="position:absolute;inset:-15%">
+            <rect x="5" y="5" width="190" height="190" fill="none" stroke="var(--yamabuki)" stroke-width="1.5" opacity=".3"/>
+          </svg>
+          挑
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUMINAGASHI DIVIDER ===== -->
+<div class="suminagashi">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <defs>
+      <filter id="sumi2">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="4" seed="5">
+          <animate attributeName="baseFrequency" values="0.02;0.03;0.02" dur="12s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="25"/>
+      </filter>
+    </defs>
+    <rect width="1440" height="80" fill="var(--sumi)" filter="url(#sumi2)" opacity=".1"/>
+  </svg>
+</div>
+
+<!-- ===== NUMBERS ===== -->
+<section id="numbers">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal">Numbers</p>
+      <h2 class="section-title brush-reveal">数字で見る岳人</h2>
+      <p class="section-title-en brush-reveal">The Facts Behind Our Craft</p>
+    </div>
+    <div class="numbers-grid">
+      <div class="number-card fade-up">
+        <div class="number-value"><span class="counter" data-target="98">0</span><span class="unit">年</span></div>
+        <div class="number-label">創業からの歩み</div>
+      </div>
+      <div class="number-card fade-up delay-1">
+        <div class="number-value"><span class="counter" data-target="200">0</span><span class="unit">万点+</span></div>
+        <div class="number-label">累計販売数</div>
+      </div>
+      <div class="number-card fade-up delay-2">
+        <div class="number-value"><span class="counter" data-target="127">0</span><span class="unit">項目</span></div>
+        <div class="number-label">品質検査項目数</div>
+      </div>
+      <div class="number-card fade-up delay-3">
+        <div class="number-value"><span class="counter" data-target="98" data-decimal=".5">0</span><span class="unit">%</span></div>
+        <div class="number-label">修理対応率</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCTS ===== -->
+<section id="products">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal" style="color:var(--yamabuki)">Products</p>
+      <h2 class="section-title brush-reveal" style="color:var(--snow-white)">岳人の製品</h2>
+      <p class="section-title-en brush-reveal">Crafted for the Mountains</p>
+    </div>
+    <div class="products-grid">
+      <!-- Boot -->
+      <div class="product-card fade-up">
+        <div class="product-img prod-bg-1">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 100 100" fill="none" stroke="rgba(245,242,236,.5)" stroke-width="1.5">
+              <path d="M25,75 L25,45 Q25,35 35,30 L50,25 Q60,22 65,30 L70,40 L80,45 L80,75 Z"/>
+              <line x1="25" y1="55" x2="45" y2="50"/>
+              <line x1="30" y1="65" x2="40" y2="62"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">登山靴</div>
+          <div class="product-name-en">MOUNTAINEERING BOOTS</div>
+        </div>
+        <div class="made-in-japan">MADE IN JAPAN</div>
+      </div>
+      <!-- Backpack -->
+      <div class="product-card fade-up delay-1">
+        <div class="product-img prod-bg-2">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 100 100" fill="none" stroke="rgba(245,242,236,.5)" stroke-width="1.5">
+              <rect x="30" y="25" width="40" height="55" rx="5"/>
+              <path d="M35,25 L35,18 Q35,12 50,12 Q65,12 65,18 L65,25"/>
+              <line x1="30" y1="45" x2="70" y2="45"/>
+              <rect x="40" y="48" width="20" height="12" rx="2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">バックパック</div>
+          <div class="product-name-en">BACKPACKS</div>
+        </div>
+        <div class="made-in-japan">MADE IN JAPAN</div>
+      </div>
+      <!-- Wear -->
+      <div class="product-card fade-up delay-2">
+        <div class="product-img prod-bg-3">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 100 100" fill="none" stroke="rgba(245,242,236,.5)" stroke-width="1.5">
+              <path d="M35,30 L30,35 L20,55 L28,58 L32,45 L32,80 L68,80 L68,45 L72,58 L80,55 L70,35 L65,30"/>
+              <path d="M35,30 Q50,22 65,30"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">ウェア</div>
+          <div class="product-name-en">MOUNTAIN WEAR</div>
+        </div>
+        <div class="made-in-japan">MADE IN JAPAN</div>
+      </div>
+      <!-- Tent -->
+      <div class="product-card fade-up delay-3">
+        <div class="product-img prod-bg-4">
+          <div class="placeholder-icon">
+            <svg viewBox="0 0 100 100" fill="none" stroke="rgba(245,242,236,.5)" stroke-width="1.5">
+              <path d="M15,75 L50,25 L85,75 Z"/>
+              <path d="M42,75 L50,55 L58,75"/>
+              <line x1="50" y1="25" x2="50" y2="18" stroke-dasharray="2,2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">テント</div>
+          <div class="product-name-en">TENTS</div>
+        </div>
+        <div class="made-in-japan">MADE IN JAPAN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUMINAGASHI DIVIDER ===== -->
+<div class="suminagashi">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <defs>
+      <filter id="sumi3">
+        <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="12">
+          <animate attributeName="baseFrequency" values="0.018;0.028;0.018" dur="18s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="20"/>
+      </filter>
+    </defs>
+    <rect width="1440" height="80" fill="var(--sumi)" filter="url(#sumi3)" opacity=".08"/>
+  </svg>
+</div>
+
+<!-- ===== PROCESS (Emaki Horizontal Scroll) ===== -->
+<section id="process">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal">Process</p>
+      <h2 class="section-title brush-reveal">製造工程</h2>
+      <p class="section-title-en brush-reveal">The Art of Making — Five Steps to Perfection</p>
+    </div>
+  </div>
+  <div class="emaki-wrapper">
+    <div class="emaki-track" id="emakiTrack">
+      <div style="flex:0 0 clamp(20px,3vw,60px)"></div>
+      <div class="emaki-step fade-up" data-step="01">
+        <div class="emaki-photo emaki-bg-1"><span class="photo-label">MATERIAL</span></div>
+        <div class="emaki-connector">素材選定<span></span></div>
+        <h3>一、素材選定</h3>
+        <p>日本各地の産地を訪ね、最上の素材を吟味します。革は姫路の老舗タンナーから、生地は富山の機屋から。素材との対話が、すべての始まりです。</p>
+      </div>
+      <div class="emaki-step fade-up delay-1" data-step="02">
+        <div class="emaki-photo emaki-bg-2"><span class="photo-label">CUTTING</span></div>
+        <div class="emaki-connector">裁断<span></span></div>
+        <h3>二、裁断</h3>
+        <p>熟練の職人が一枚ずつ素材の目を読み、最適な向きと位置で裁断。革の場合、一頭ごとに異なる特性を見極める目が求められます。</p>
+      </div>
+      <div class="emaki-step fade-up delay-2" data-step="03">
+        <div class="emaki-photo emaki-bg-3"><span class="photo-label">SEWING</span></div>
+        <div class="emaki-connector">縫製<span></span></div>
+        <h3>三、縫製</h3>
+        <p>一針一針、手と機械の調和によって形を成していきます。特に荷重のかかる箇所は、三重縫いと手縫いの併用で万全の強度を確保します。</p>
+      </div>
+      <div class="emaki-step fade-up delay-3" data-step="04">
+        <div class="emaki-photo emaki-bg-4"><span class="photo-label">INSPECTION</span></div>
+        <div class="emaki-connector">検品<span></span></div>
+        <h3>四、検品</h3>
+        <p>127項目に及ぶ厳格な品質検査。糸のほつれ、縫い目の均一性、金具の動作確認——すべてを職人の目と手で確かめます。</p>
+      </div>
+      <div class="emaki-step fade-up delay-4" data-step="05">
+        <div class="emaki-photo emaki-bg-5"><span class="photo-label">COMPLETE</span></div>
+        <div class="emaki-connector">完成<span></span></div>
+        <h3>五、完成</h3>
+        <p>最終仕上げを経て、ようやく「岳人」の刻印が押されます。この刻印は、私たちの誇りと責任の証。お客様の山旅に寄り添う道具の誕生です。</p>
+      </div>
+      <div style="flex:0 0 clamp(20px,3vw,60px)"></div>
+    </div>
+    <p class="emaki-hint">横にスクロールして工程をご覧ください
+      <svg width="20" height="12" viewBox="0 0 20 12" fill="none" stroke="var(--rock-gray)" stroke-width="1.5"><path d="M1,6 L17,6 M13,1 L18,6 L13,11"/></svg>
+    </p>
+  </div>
+</section>
+
+<!-- ===== CRAFTSMEN ===== -->
+<section id="craftsmen">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal" style="color:var(--yamabuki)">Craftsmen</p>
+      <h2 class="section-title brush-reveal" style="color:var(--snow-white)">岳人の職人たち</h2>
+      <p class="section-title-en brush-reveal">The Hands Behind Our Craft</p>
+    </div>
+    <div class="craftsmen-grid">
+      <div class="craftsman-card fade-up">
+        <div class="craftsman-portrait">
+          <div class="portrait-inner">
+            <svg viewBox="0 0 60 60" fill="none" stroke="var(--snow-white)" stroke-width="1"><circle cx="30" cy="22" r="10"/><path d="M12,55 Q12,38 30,38 Q48,38 48,55"/></svg>
+          </div>
+        </div>
+        <div class="craftsman-name">中村 修一</div>
+        <div class="craftsman-role">革靴職人 — 在籍42年</div>
+        <div class="craftsman-quote">靴は足と対話する道具。だから、履く人の山行をいつも想像しながら縫います。</div>
+      </div>
+      <div class="craftsman-card fade-up delay-1">
+        <div class="craftsman-portrait">
+          <div class="portrait-inner">
+            <svg viewBox="0 0 60 60" fill="none" stroke="var(--snow-white)" stroke-width="1"><circle cx="30" cy="22" r="10"/><path d="M12,55 Q12,38 30,38 Q48,38 48,55"/></svg>
+          </div>
+        </div>
+        <div class="craftsman-name">佐藤 美和子</div>
+        <div class="craftsman-role">縫製技師 — 在籍28年</div>
+        <div class="craftsman-quote">一本の糸に込める力加減は、何年経っても毎日が真剣勝負です。</div>
+      </div>
+      <div class="craftsman-card fade-up delay-2">
+        <div class="craftsman-portrait">
+          <div class="portrait-inner">
+            <svg viewBox="0 0 60 60" fill="none" stroke="var(--snow-white)" stroke-width="1"><circle cx="30" cy="22" r="10"/><path d="M12,55 Q12,38 30,38 Q48,38 48,55"/></svg>
+          </div>
+        </div>
+        <div class="craftsman-name">高橋 誠</div>
+        <div class="craftsman-role">品質管理 — 在籍35年</div>
+        <div class="craftsman-quote">検品に「これくらいでいい」はありません。山では、その妥協が命に関わる。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUMINAGASHI DIVIDER ===== -->
+<div class="suminagashi">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+    <defs>
+      <filter id="sumi4">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="20">
+          <animate attributeName="baseFrequency" values="0.012;0.022;0.012" dur="20s" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="22"/>
+      </filter>
+    </defs>
+    <rect width="1440" height="80" fill="var(--sumi)" filter="url(#sumi4)" opacity=".1"/>
+  </svg>
+</div>
+
+<!-- ===== REPAIR ===== -->
+<section id="repair">
+  <div class="kanji-bg2">継</div>
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal">Lifetime Promise</p>
+      <h2 class="section-title brush-reveal">修理・メンテナンス</h2>
+      <p class="section-title-en brush-reveal">A Lifetime Companion — Our Repair Philosophy</p>
+    </div>
+    <div class="repair-timeline">
+      <div class="repair-step fade-up">
+        <div class="dot"></div>
+        <span class="year-label">DAY 1</span>
+        <h4>ご購入</h4>
+        <p>岳人の道具があなたの山旅の相棒になる日。</p>
+      </div>
+      <div class="repair-step fade-up delay-1">
+        <div class="dot"></div>
+        <span class="year-label">5 YEARS</span>
+        <h4>無料点検</h4>
+        <p>使い込まれた道具を職人が丁寧に点検・調整。</p>
+      </div>
+      <div class="repair-step fade-up delay-2">
+        <div class="dot"></div>
+        <span class="year-label">10 YEARS</span>
+        <h4>経年の味わい</h4>
+        <p>使うほどに馴染む革、風格を増す佇まい。</p>
+      </div>
+      <div class="repair-step fade-up delay-3">
+        <div class="dot"></div>
+        <span class="year-label">REPAIR</span>
+        <h4>修理・再生</h4>
+        <p>ソール交換、縫い直し、金具交換。熟練の手で蘇ります。</p>
+      </div>
+      <div class="repair-step fade-up delay-4">
+        <div class="dot"></div>
+        <span class="year-label">RESTART</span>
+        <h4>再出発</h4>
+        <p>修理を終えた道具は、再びあなたと山へ。何度でも。</p>
+      </div>
+    </div>
+    <div class="repair-promise fade-up">
+      <p>岳人は、売って終わりではありません。<br><em>「一生モノ」</em>——それは、お客様との約束です。<br>どんなに古い製品でも、修理のご相談を承ります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STORES ===== -->
+<section id="stores">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label brush-reveal" style="color:var(--yamabuki)">Stores</p>
+      <h2 class="section-title brush-reveal" style="color:var(--snow-white)">取扱店舗</h2>
+      <p class="section-title-en brush-reveal">Where to Find GAKUTO</p>
+    </div>
+    <div class="stores-grid">
+      <div class="store-card fade-up">
+        <h4>岳人 本店</h4>
+        <div class="store-loc">TOKYO — KANDA</div>
+        <p>東京都千代田区神田神保町2-XX-X<br>営業時間：10:00 — 19:00<br>定休日：水曜日</p>
+      </div>
+      <div class="store-card fade-up delay-1">
+        <h4>岳人 大阪店</h4>
+        <div class="store-loc">OSAKA — UMEDA</div>
+        <p>大阪府大阪市北区梅田1-XX-X<br>営業時間：10:00 — 19:00<br>定休日：火曜日</p>
+      </div>
+      <div class="store-card fade-up delay-2">
+        <h4>岳人 松本工房</h4>
+        <div class="store-loc">NAGANO — MATSUMOTO</div>
+        <p>長野県松本市深志3-XX-X<br>営業時間：10:00 — 17:00（工房見学要予約）<br>定休日：日・月曜日</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOTTO ===== -->
+<section id="motto">
+  <div class="container fade-up">
+    <div class="motto-kanji">魂</div>
+    <p class="motto-text">山に学び、山に鍛えられ、山に報いる。<br>それが岳人の魂である。</p>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section id="cta">
+  <div class="cta-kanji">結</div>
+  <div class="container cta-content fade-up">
+    <p class="section-label" style="color:var(--yamabuki)">Contact</p>
+    <h2>あなたの山旅に、<br>岳人の道具を。</h2>
+    <p>製品に関するご質問、修理のご相談、法人様のお取引について、<br>お気軽にお問い合わせください。</p>
+    <a href="#" class="cta-btn">お問い合わせはこちら</a>
+    <p class="cta-sub">通常2営業日以内にご返信いたします</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="f-logo">岳人<span>GAKUTO — SINCE 1927</span></div>
+        <p>株式会社岳人<br>〒101-0051 東京都千代田区神田神保町2-XX-X<br>TEL: 03-XXXX-XXXX</p>
+      </div>
+      <div class="footer-col">
+        <h4>製品情報</h4>
+        <ul>
+          <li><a href="#">登山靴</a></li>
+          <li><a href="#">バックパック</a></li>
+          <li><a href="#">ウェア</a></li>
+          <li><a href="#">テント</a></li>
+          <li><a href="#">アクセサリー</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>サポート</h4>
+        <ul>
+          <li><a href="#">修理・メンテナンス</a></li>
+          <li><a href="#">サイズガイド</a></li>
+          <li><a href="#">取扱店舗</a></li>
+          <li><a href="#">よくあるご質問</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2026 GAKUTO Co., Ltd. All rights reserved.</small>
+      <small style="font-family:var(--font-jp);letter-spacing:.1em">山を知る者が、山の道具をつくる。</small>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== HAMBURGER MENU =====
+function toggleMenu(){
+  document.getElementById('navMenu').classList.toggle('open');
+  document.querySelector('.hamburger').classList.toggle('active');
+}
+function closeMenu(){
+  document.getElementById('navMenu').classList.remove('open');
+  document.querySelector('.hamburger').classList.remove('active');
+}
+
+// ===== NAV SCROLL EFFECT =====
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',window.scrollY>80);
+});
+
+// ===== PARALLAX MOUNTAINS =====
+const mountainFar=document.querySelector('.mountain-far');
+const mountainMid=document.querySelector('.mountain-mid');
+const mountainNear=document.querySelector('.mountain-near');
+const heroYear=document.getElementById('heroYear');
+
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  const heroH=document.getElementById('hero').offsetHeight;
+  if(sy<heroH){
+    const r=sy/heroH;
+    mountainFar.style.transform=`translateY(${sy*0.15}px)`;
+    mountainMid.style.transform=`translateY(${sy*0.08}px)`;
+    mountainNear.style.transform=`translateY(${sy*0.03}px)`;
+    // Year countup from 1927 to 2026 based on scroll ratio
+    const yearVal=Math.round(1927+(2026-1927)*Math.min(r*2,1));
+    heroYear.textContent=yearVal;
+  }
+},{passive:true});
+
+// ===== INTERSECTION OBSERVER =====
+const observerOptions={threshold:0.15,rootMargin:'0px 0px -50px 0px'};
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // Counter animation
+      if(e.target.querySelector('.counter')){
+        e.target.querySelectorAll('.counter').forEach(startCounter);
+      }
+    }
+  });
+},observerOptions);
+
+document.querySelectorAll('.brush-reveal, .fade-up').forEach(el=>{
+  observer.observe(el);
+});
+
+// ===== COUNTER ANIMATION =====
+function startCounter(el){
+  if(el.dataset.counted) return;
+  el.dataset.counted='true';
+  const target=parseInt(el.dataset.target);
+  const decimal=el.dataset.decimal||'';
+  const duration=2000;
+  const start=performance.now();
+  function update(now){
+    const elapsed=now-start;
+    const progress=Math.min(elapsed/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    let current=Math.round(target*eased);
+    if(decimal&&progress>=1){
+      el.textContent=target+decimal;
+    }else{
+      el.textContent=current;
+    }
+    if(progress<1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// ===== STAGGER OBSERVER FOR NUMBER CARDS =====
+const numberCards=document.querySelectorAll('.number-card');
+const numObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.counter').forEach(startCounter);
+    }
+  });
+},{threshold:0.3});
+numberCards.forEach(c=>numObserver.observe(c));
+</script>
+</body>
+</html>

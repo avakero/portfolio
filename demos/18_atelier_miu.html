@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="atelier miu（アトリエ ミウ）- 完全予約制プライベート美容サロン。あなただけの時間を、あなただけの場所で。オーナー1人で運営する小さな隠れ家サロンです。">
+<title>atelier miu｜完全予約制プライベート美容サロン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--white:#fdfbf9;--beige:#e8d8c8;--pink:#e8c4b8;--mauve:#c0a0b0;
+--grey:#9a9a9a;--brown:#3a2e28;--light-beige:#f5efe8;
+--font-serif:'Noto Serif JP',serif;--font-sans:'Noto Sans JP',sans-serif;
+--font-cursive:'Segoe Script','Dancing Script',cursive;
+--transition-slow:1.2s cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+font-family:var(--font-sans);font-weight:300;color:var(--brown);
+background:var(--white);line-height:2.0;letter-spacing:.04em;
+overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+/* Noise overlay */
+body::before{
+content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:9999;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+background-repeat:repeat;background-size:200px 200px;
+}
+/* Typography */
+h1,h2,h3{font-family:var(--font-serif);font-weight:200}
+.en{font-family:var(--font-serif);letter-spacing:.15em;font-weight:200}
+.section-label{
+font-family:var(--font-serif);font-weight:200;font-size:clamp(.65rem,1.2vw,.75rem);
+letter-spacing:.2em;color:var(--mauve);text-transform:uppercase;
+margin-bottom:.5rem;
+}
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity var(--transition-slow),transform var(--transition-slow)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+
+/* ===== NAV ===== */
+nav{
+position:fixed;top:0;left:0;width:100%;z-index:100;
+padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;
+transition:background .6s,box-shadow .6s,padding .4s;
+}
+nav.scrolled{
+background:rgba(253,251,249,.92);backdrop-filter:blur(12px);
+box-shadow:0 1px 0 rgba(58,46,40,.06);padding:.8rem 2rem;
+}
+.nav-logo{font-family:var(--font-serif);font-weight:200;font-size:.85rem;letter-spacing:.2em;color:var(--brown);text-decoration:none}
+.nav-links{display:flex;gap:1.8rem;list-style:none}
+.nav-links a{
+font-family:var(--font-serif);font-size:.7rem;letter-spacing:.15em;
+color:var(--grey);text-decoration:none;transition:color .4s;position:relative;
+}
+.nav-links a::after{
+content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+background:var(--pink);transition:width .4s;
+}
+.nav-links a:hover{color:var(--brown)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:20px;height:1px;background:var(--brown);transition:all .3s}
+
+/* ===== HERO ===== */
+#hero{
+min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+position:relative;background:var(--white);overflow:hidden;
+}
+.hero-content{text-align:center;z-index:2}
+.hero-title{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(1.1rem,3vw,1.6rem);letter-spacing:.25em;
+color:var(--brown);margin-bottom:1.2rem;
+opacity:0;animation:heroFadeIn 2s .5s forwards;
+}
+.hero-sub{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.7rem,1.5vw,.85rem);letter-spacing:.12em;
+color:var(--mauve);
+opacity:0;animation:heroFadeIn 2s 1.2s forwards;
+}
+@keyframes heroFadeIn{to{opacity:1}}
+.scroll-indicator{
+position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+display:flex;flex-direction:column;align-items:center;gap:.6rem;
+opacity:0;animation:heroFadeIn 2s 2s forwards;
+}
+.scroll-indicator span{
+font-size:.6rem;letter-spacing:.15em;color:var(--grey);
+font-family:var(--font-serif);writing-mode:vertical-rl;
+}
+.scroll-arrow{
+width:1px;height:40px;position:relative;overflow:hidden;
+}
+.scroll-arrow::after{
+content:'';position:absolute;top:-40px;left:0;width:1px;height:40px;
+background:linear-gradient(to bottom,transparent,var(--mauve));
+animation:scrollArrow 2s infinite;
+}
+@keyframes scrollArrow{0%{top:-40px}100%{top:40px}}
+
+/* Petals */
+.petal-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
+
+/* ===== OWNER LETTER ===== */
+#letter{
+padding:clamp(4rem,10vw,8rem) 1.5rem;
+display:flex;justify-content:center;
+}
+.letter-card{
+max-width:600px;width:100%;padding:clamp(2.5rem,6vw,4rem) clamp(2rem,5vw,3.5rem);
+background:linear-gradient(135deg,#faf6f0,#f7f1ea);
+border:1px solid rgba(232,216,200,.4);
+border-radius:2px;position:relative;
+box-shadow:0 4px 30px rgba(58,46,40,.04),0 1px 3px rgba(58,46,40,.03);
+}
+.letter-card::before{
+content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(200,185,170,.12) 31px,rgba(200,185,170,.12) 32px);
+background-position:0 70px;pointer-events:none;border-radius:2px;
+}
+.letter-greeting{
+font-family:var(--font-cursive);font-size:clamp(.9rem,2vw,1.05rem);
+color:var(--brown);margin-bottom:2rem;opacity:.85;
+}
+.letter-body{
+font-family:var(--font-sans);font-weight:300;
+font-size:clamp(.78rem,1.4vw,.88rem);line-height:2.2;
+color:var(--brown);position:relative;z-index:1;
+}
+.letter-body p{margin-bottom:1.4rem}
+.letter-sign{
+font-family:var(--font-cursive);font-size:clamp(.85rem,1.8vw,1rem);
+text-align:right;color:var(--brown);margin-top:2rem;opacity:.8;
+}
+.letter-flower{
+position:absolute;top:1.2rem;right:1.5rem;opacity:.12;font-size:2.5rem;
+}
+
+/* ===== KODAWARI ===== */
+#kodawari{
+padding:clamp(5rem,12vw,9rem) 1.5rem;
+background:var(--white);text-align:center;
+}
+.kodawari-heading{
+font-size:clamp(.75rem,1.5vw,.9rem);letter-spacing:.2em;
+color:var(--brown);margin-bottom:clamp(3rem,6vw,5rem);
+}
+.kodawari-grid{
+display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(2rem,4vw,3.5rem);
+max-width:900px;margin:0 auto;
+}
+.kodawari-item .kodawari-num{
+font-family:var(--font-serif);font-weight:200;font-size:clamp(2rem,4vw,3rem);
+color:var(--pink);opacity:.5;margin-bottom:.8rem;line-height:1;
+}
+.kodawari-item h3{
+font-size:clamp(.78rem,1.3vw,.88rem);letter-spacing:.1em;
+margin-bottom:1rem;font-weight:300;
+}
+.kodawari-item p{
+font-size:clamp(.72rem,1.1vw,.8rem);color:var(--grey);line-height:2;
+}
+
+/* ===== MENU ===== */
+#menu{
+padding:clamp(5rem,12vw,9rem) 1.5rem;
+background:linear-gradient(180deg,var(--white),var(--light-beige));
+}
+.menu-inner{max-width:560px;margin:0 auto;text-align:center}
+.menu-heading{
+font-size:clamp(.75rem,1.5vw,.9rem);letter-spacing:.2em;
+color:var(--brown);margin-bottom:clamp(2.5rem,5vw,4rem);
+}
+.menu-list{list-style:none;text-align:left}
+.menu-item{
+padding:1.2rem 0;border-bottom:1px solid rgba(232,216,200,.35);
+display:flex;justify-content:space-between;align-items:baseline;
+flex-wrap:wrap;gap:.3rem;
+}
+.menu-item:first-child{border-top:1px solid rgba(232,216,200,.35)}
+.menu-name{
+font-family:var(--font-serif);font-weight:300;
+font-size:clamp(.8rem,1.3vw,.9rem);letter-spacing:.08em;
+}
+.menu-detail{
+font-size:clamp(.65rem,1vw,.72rem);color:var(--grey);
+width:100%;margin-top:.2rem;
+}
+.menu-price{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.75rem,1.2vw,.85rem);letter-spacing:.08em;color:var(--mauve);
+white-space:nowrap;
+}
+.menu-note{
+text-align:center;margin-top:2.5rem;
+font-size:clamp(.65rem,1vw,.72rem);color:var(--grey);
+}
+
+/* ===== GALLERY ===== */
+#gallery{
+padding:clamp(5rem,12vw,9rem) 1.5rem;background:var(--white);text-align:center;
+}
+.gallery-heading{
+font-size:clamp(.75rem,1.5vw,.9rem);letter-spacing:.2em;
+color:var(--brown);margin-bottom:clamp(2.5rem,5vw,4rem);
+}
+.gallery-grid{
+display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.8rem,2vw,1.5rem);
+max-width:900px;margin:0 auto;
+}
+.gallery-item{
+aspect-ratio:4/5;border-radius:3px;overflow:hidden;position:relative;
+cursor:pointer;
+}
+.gallery-placeholder{
+width:100%;height:100%;position:relative;
+filter:blur(.5px);transition:filter .6s,transform .8s;
+}
+.gallery-item:hover .gallery-placeholder{filter:blur(0);transform:scale(1.03)}
+.gallery-placeholder::after{
+content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(232,196,184,.15),rgba(232,216,200,.1));
+}
+.gp1{background:linear-gradient(160deg,#f0e6de,#e8d8c8,#dfd0c4)}
+.gp2{background:linear-gradient(160deg,#ede4db,#e5d5c5,#dccbbd)}
+.gp3{background:linear-gradient(160deg,#f2ebe4,#eaddd2,#e0d3c7)}
+.gallery-placeholder svg{
+position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.12;
+}
+
+/* ===== TESTIMONIALS ===== */
+#testimonials{
+padding:clamp(5rem,12vw,9rem) 1.5rem;
+background:linear-gradient(180deg,var(--white),var(--light-beige),var(--white));
+text-align:center;
+}
+.testimonials-heading{
+font-size:clamp(.75rem,1.5vw,.9rem);letter-spacing:.2em;
+color:var(--brown);margin-bottom:clamp(2.5rem,5vw,4rem);
+}
+.testimonials-grid{
+display:grid;grid-template-columns:repeat(3,1fr);
+gap:clamp(1.2rem,3vw,2rem);max-width:900px;margin:0 auto;
+}
+.testi-card{
+background:linear-gradient(145deg,#fdfbf8,#f8f3ed);
+border-radius:8px;padding:clamp(1.8rem,3vw,2.5rem) clamp(1.5rem,2.5vw,2rem);
+text-align:left;position:relative;
+box-shadow:0 2px 15px rgba(58,46,40,.04),0 8px 30px rgba(58,46,40,.02);
+transition:transform .6s,box-shadow .6s;
+}
+.testi-card:hover{
+transform:translateY(-4px);
+box-shadow:0 4px 20px rgba(58,46,40,.06),0 12px 40px rgba(58,46,40,.03);
+}
+.testi-quote{
+font-family:var(--font-serif);font-weight:200;font-size:2rem;
+color:var(--pink);opacity:.35;line-height:1;margin-bottom:.5rem;
+}
+.testi-text{
+font-size:clamp(.72rem,1.1vw,.8rem);line-height:2;color:var(--brown);
+margin-bottom:1.2rem;
+}
+.testi-name{
+font-family:var(--font-cursive);font-size:clamp(.7rem,1vw,.78rem);
+color:var(--mauve);text-align:right;
+}
+
+/* ===== RESERVATION ===== */
+#reservation{
+padding:clamp(5rem,12vw,9rem) 1.5rem;background:var(--white);text-align:center;
+}
+.reservation-heading{
+font-size:clamp(.75rem,1.5vw,.9rem);letter-spacing:.2em;
+color:var(--brown);margin-bottom:clamp(2rem,4vw,3rem);
+}
+.reservation-sub{
+font-size:clamp(.72rem,1.1vw,.82rem);color:var(--grey);
+margin-bottom:clamp(2rem,4vw,3rem);max-width:480px;margin-left:auto;margin-right:auto;
+}
+.line-btn{
+display:inline-flex;align-items:center;gap:.7rem;
+padding:1rem 2.5rem;background:var(--brown);color:var(--white);
+border:none;border-radius:50px;cursor:pointer;
+font-family:var(--font-serif);font-size:clamp(.75rem,1.2vw,.85rem);
+letter-spacing:.12em;text-decoration:none;
+transition:background .4s,transform .3s,box-shadow .4s;
+}
+.line-btn:hover{
+background:#2a1e18;transform:translateY(-2px);
+box-shadow:0 8px 25px rgba(58,46,40,.15);
+}
+.line-btn svg{width:20px;height:20px}
+.reservation-info{
+display:flex;justify-content:center;gap:clamp(2rem,5vw,4rem);
+margin-top:clamp(3rem,6vw,4.5rem);flex-wrap:wrap;
+}
+.res-block h4{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.68rem,1vw,.75rem);letter-spacing:.15em;
+color:var(--mauve);margin-bottom:.8rem;
+}
+.res-block p{font-size:clamp(.72rem,1.1vw,.8rem);color:var(--grey);line-height:2}
+
+/* ===== FINAL MESSAGE ===== */
+#message{
+padding:clamp(5rem,12vw,8rem) 1.5rem;
+background:linear-gradient(180deg,var(--white),var(--light-beige));
+text-align:center;
+}
+.message-label{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.7rem,1.2vw,.8rem);letter-spacing:.15em;
+color:var(--mauve);margin-bottom:clamp(2rem,4vw,3rem);
+}
+.message-text{
+max-width:480px;margin:0 auto;
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.8rem,1.3vw,.92rem);
+line-height:2.4;color:var(--brown);
+}
+
+/* ===== FOOTER ===== */
+footer{
+padding:3rem 1.5rem;text-align:center;background:var(--brown);
+}
+footer .footer-logo{
+font-family:var(--font-serif);font-weight:200;
+font-size:clamp(.75rem,1.3vw,.85rem);letter-spacing:.25em;
+color:rgba(253,251,249,.6);margin-bottom:.8rem;
+}
+footer .footer-copy{
+font-size:.6rem;letter-spacing:.1em;color:rgba(253,251,249,.3);
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divider{
+width:40px;height:1px;background:var(--pink);margin:0 auto;opacity:.4;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+.nav-links{
+display:none;position:fixed;top:0;left:0;width:100%;height:100vh;
+background:rgba(253,251,249,.97);backdrop-filter:blur(20px);
+flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;
+}
+.nav-links.open{display:flex}
+.nav-links a{font-size:.85rem}
+.hamburger{display:flex}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.kodawari-grid{grid-template-columns:1fr;gap:2.5rem;max-width:320px;margin:0 auto}
+.gallery-grid{grid-template-columns:1fr 1fr;gap:.8rem}
+.gallery-grid .gallery-item:nth-child(3){grid-column:span 2;aspect-ratio:5/3}
+.testimonials-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}
+.reservation-info{flex-direction:column;align-items:center;gap:2rem}
+}
+@media(min-width:769px) and (max-width:1024px){
+.kodawari-grid{gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+<a href="#hero" class="nav-logo en">atelier miu</a>
+<ul class="nav-links" id="navLinks">
+<li><a href="#letter" onclick="closeNav()">ごあいさつ</a></li>
+<li><a href="#kodawari" onclick="closeNav()">こだわり</a></li>
+<li><a href="#menu" onclick="closeNav()">メニュー</a></li>
+<li><a href="#gallery" onclick="closeNav()">サロン</a></li>
+<li><a href="#reservation" onclick="closeNav()">ご予約</a></li>
+</ul>
+<button class="hamburger" id="hamburger" aria-label="メニュー">
+<span></span><span></span><span></span>
+</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+<div class="hero-content">
+<h1 class="hero-title en">atelier miu</h1>
+<p class="hero-sub">あなただけの時間を、あなただけの場所で。</p>
+</div>
+<div class="scroll-indicator">
+<span class="en">scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+<canvas class="petal-canvas" id="petalCanvas"></canvas>
+</section>
+
+<!-- OWNER LETTER -->
+<section id="letter">
+<div class="letter-card reveal">
+<div class="letter-flower">✿</div>
+<p class="letter-greeting">はじめまして、miuです。</p>
+<div class="letter-body">
+<p>
+このページをご覧いただき、ありがとうございます。
+</p>
+<p>
+atelier miu は、私ひとりで営む<br>
+小さな完全予約制の美容サロンです。
+</p>
+<p>
+サロンに来てくださるお一人おひとりと<br>
+丁寧に向き合いたい——<br>
+そんな想いから、一日にお迎えするのは<br>
+ほんの数名だけにしています。
+</p>
+<p>
+慌ただしい毎日のなかで、<br>
+ほっと息をつける場所でありたい。<br>
+鏡の中の自分を、少し好きになれる<br>
+そんな時間をお届けできたら幸いです。
+</p>
+</div>
+<p class="letter-sign">miu</p>
+</div>
+</section>
+
+<!-- KODAWARI -->
+<section id="kodawari">
+<div class="section-divider reveal"></div>
+<br><br>
+<h2 class="kodawari-heading reveal en">— commitment —</h2>
+<div class="kodawari-grid">
+<div class="kodawari-item reveal reveal-delay-1">
+<div class="kodawari-num en">01</div>
+<h3>あなただけの空間</h3>
+<p>完全予約制・完全プライベート。<br>施術中に他のお客様と顔を合わせることはありません。<br>この空間はすべて、あなたのための時間です。</p>
+</div>
+<div class="kodawari-item reveal reveal-delay-2">
+<div class="kodawari-num en">02</div>
+<h3>対話から始まる施術</h3>
+<p>カウンセリングを何より大切にしています。<br>今日の気分、なりたいイメージ、日々のお悩み。<br>ゆっくりお話を聞かせてください。</p>
+</div>
+<div class="kodawari-item reveal reveal-delay-3">
+<div class="kodawari-num en">03</div>
+<h3>心地よさを最優先に</h3>
+<p>髪も、気持ちも、軽くなって帰っていただきたい。<br>お飲み物をご用意して、<br>リラックスできる空間でお待ちしています。</p>
+</div>
+</div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+<div class="menu-inner">
+<div class="section-divider reveal"></div>
+<br><br>
+<h2 class="menu-heading reveal en">— menu —</h2>
+<ul class="menu-list">
+<li class="menu-item reveal">
+<span class="menu-name">カット</span>
+<span class="menu-price en">¥7,700</span>
+<span class="menu-detail">カウンセリング・シャンプー・ブロー込み</span>
+</li>
+<li class="menu-item reveal">
+<span class="menu-name">カラー</span>
+<span class="menu-price en">¥9,900〜</span>
+<span class="menu-detail">リタッチ ¥7,700〜 ／ ハイライト +¥5,500〜</span>
+</li>
+<li class="menu-item reveal">
+<span class="menu-name">カット + カラー</span>
+<span class="menu-price en">¥15,400〜</span>
+<span class="menu-detail">一番ご予約の多いメニューです</span>
+</li>
+<li class="menu-item reveal">
+<span class="menu-name">トリートメント</span>
+<span class="menu-price en">¥5,500〜</span>
+<span class="menu-detail">髪質に合わせてご提案いたします</span>
+</li>
+<li class="menu-item reveal">
+<span class="menu-name">ヘッドスパ</span>
+<span class="menu-price en">¥4,400〜</span>
+<span class="menu-detail">施術のオプションとしても人気です</span>
+</li>
+<li class="menu-item reveal">
+<span class="menu-name">ヘアセット</span>
+<span class="menu-price en">¥5,500〜</span>
+<span class="menu-detail">特別な日のお支度に</span>
+</li>
+</ul>
+<p class="menu-note reveal">※ 税込価格です。メニューの組み合わせはお気軽にご相談ください。</p>
+</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+<div class="section-divider reveal"></div>
+<br><br>
+<h2 class="gallery-heading reveal en">— salon —</h2>
+<div class="gallery-grid">
+<div class="gallery-item reveal reveal-delay-1">
+<div class="gallery-placeholder gp1">
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+<circle cx="24" cy="20" r="8" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+<path d="M8 42c0-8.8 7.2-16 16-16s16 7.2 16 16" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+</svg>
+</div>
+</div>
+<div class="gallery-item reveal reveal-delay-2">
+<div class="gallery-placeholder gp2">
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+<rect x="8" y="12" width="32" height="24" rx="2" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+<circle cx="20" cy="24" r="4" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+<path d="M8 32l10-6 8 4 14-8" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+</svg>
+</div>
+</div>
+<div class="gallery-item reveal reveal-delay-3">
+<div class="gallery-placeholder gp3">
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+<path d="M24 8c-6 0-12 6-12 14s12 20 12 20 12-12 12-20-6-14-12-14z" stroke="#3a2e28" stroke-width=".5" fill="none"/>
+</svg>
+</div>
+</div>
+</div>
+<p class="reveal" style="margin-top:2rem;font-size:clamp(.65rem,1vw,.72rem);color:var(--grey);letter-spacing:.08em">
+陽の光が差し込む、静かな空間でお待ちしています
+</p>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+<div class="section-divider reveal"></div>
+<br><br>
+<h2 class="testimonials-heading reveal en">— voice —</h2>
+<div class="testimonials-grid">
+<div class="testi-card reveal reveal-delay-1">
+<div class="testi-quote">"</div>
+<p class="testi-text">
+初めて「ここに通い続けたい」と思えるサロンに出会えました。miuさんの手にかかると、いつも自分が思っていた以上の仕上がりに。何より、あの静かな空間が好きです。
+</p>
+<p class="testi-name">M.K さま（30代）</p>
+</div>
+<div class="testi-card reveal reveal-delay-2">
+<div class="testi-quote">"</div>
+<p class="testi-text">
+人見知りで美容室が苦手だった私でも、ここではリラックスできます。他のお客様がいないので、気を遣わなくていいのが本当にありがたい。仕上がりも毎回大満足です。
+</p>
+<p class="testi-name">A.S さま（40代）</p>
+</div>
+<div class="testi-card reveal reveal-delay-3">
+<div class="testi-quote">"</div>
+<p class="testi-text">
+カウンセリングが丁寧で、言葉にしにくいニュアンスまで汲み取ってくださいます。帰り道、ガラスに映る自分を見てつい微笑んでしまう——そんな帰り道が好きです。
+</p>
+<p class="testi-name">Y.T さま（30代）</p>
+</div>
+</div>
+</section>
+
+<!-- RESERVATION -->
+<section id="reservation">
+<div class="section-divider reveal"></div>
+<br><br>
+<h2 class="reservation-heading reveal en">— reservation —</h2>
+<p class="reservation-sub reveal">
+ご予約はLINE公式アカウントより承っております。<br>
+お気軽にメッセージをお送りください。
+</p>
+<div class="reveal">
+<a href="#" class="line-btn" onclick="return false;">
+<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+LINE でご予約
+</a>
+</div>
+<div class="reservation-info reveal">
+<div class="res-block">
+<h4 class="en">open</h4>
+<p>
+10:00 – 19:00（最終受付 17:00）<br>
+定休日：毎週月曜・第3火曜
+</p>
+</div>
+<div class="res-block">
+<h4 class="en">access</h4>
+<p>
+東京都渋谷区神宮前 ◯-◯-◯<br>
+表参道駅 A2出口より徒歩5分<br>
+<span style="font-size:.68rem;color:var(--mauve)">※ 詳しい場所はご予約時にお伝えします</span>
+</p>
+</div>
+</div>
+</section>
+
+<!-- FINAL MESSAGE -->
+<section id="message">
+<div class="message-label reveal en">— lastly —</div>
+<div class="message-text reveal">
+<p>
+美しさは、誰かと比べるものではなく<br>
+あなたのなかに、すでにあるもの。<br><br>
+その美しさを、ほんの少しだけ<br>
+引き出すお手伝いができたなら。<br><br>
+いつでも、お待ちしています。
+</p>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-logo en">atelier miu</div>
+<p class="footer-copy en">© 2026 atelier miu. All rights reserved.</p>
+</footer>
+
+<script>
+// Navbar scroll
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+nav.classList.toggle('scrolled',window.scrollY>60);
+},{passive:true});
+
+// Hamburger
+const hamburger=document.getElementById('hamburger');
+const navLinks=document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{
+hamburger.classList.toggle('active');
+navLinks.classList.toggle('open');
+});
+function closeNav(){
+hamburger.classList.remove('active');
+navLinks.classList.remove('open');
+}
+
+// Intersection Observer for reveal
+const reveals=document.querySelectorAll('.reveal');
+const revealObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+e.target.classList.add('visible');
+revealObs.unobserve(e.target);
+}
+});
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(el=>revealObs.observe(el));
+
+// Petal particles
+const canvas=document.getElementById('petalCanvas');
+const ctx=canvas.getContext('2d');
+let petals=[];
+let scrollStarted=false;
+let animFrame;
+
+function resizeCanvas(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+class Petal{
+constructor(){
+this.x=Math.random()*canvas.width;
+this.y=-20-Math.random()*40;
+this.size=Math.random()*8+5;
+this.speedY=Math.random()*.3+.15;
+this.speedX=Math.random()*.4-.2;
+this.rotation=Math.random()*Math.PI*2;
+this.rotSpeed=(Math.random()-.5)*.01;
+this.opacity=Math.random()*.3+.15;
+this.sway=Math.random()*2+1;
+this.swaySpeed=Math.random()*.005+.002;
+this.time=Math.random()*100;
+this.color=Math.random()>.5?'rgba(232,196,184,':'rgba(192,160,176,';
+}
+update(){
+this.time+=1;
+this.y+=this.speedY;
+this.x+=Math.sin(this.time*this.swaySpeed)*this.sway*.15+this.speedX;
+this.rotation+=this.rotSpeed;
+return this.y<canvas.height+20;
+}
+draw(){
+ctx.save();
+ctx.translate(this.x,this.y);
+ctx.rotate(this.rotation);
+ctx.globalAlpha=this.opacity;
+ctx.beginPath();
+ctx.moveTo(0,-this.size/2);
+ctx.bezierCurveTo(this.size/2,-this.size/3,this.size/2,this.size/3,0,this.size/2);
+ctx.bezierCurveTo(-this.size/2,this.size/3,-this.size/2,-this.size/3,0,-this.size/2);
+ctx.fillStyle=this.color+this.opacity+')';
+ctx.fill();
+ctx.restore();
+}
+}
+
+function spawnPetal(){
+if(petals.length<6){
+petals.push(new Petal());
+}
+}
+
+function animatePetals(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+petals=petals.filter(p=>{
+p.draw();
+return p.update();
+});
+animFrame=requestAnimationFrame(animatePetals);
+}
+
+let petalInterval;
+window.addEventListener('scroll',()=>{
+if(!scrollStarted&&window.scrollY>30){
+scrollStarted=true;
+animatePetals();
+spawnPetal();
+spawnPetal();
+petalInterval=setInterval(()=>{
+if(Math.random()>.4)spawnPetal();
+},3000);
+}
+},{passive:true,once:false});
+
+// Smooth anchor
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+a.addEventListener('click',function(e){
+const id=this.getAttribute('href');
+if(id==='#')return;
+e.preventDefault();
+const el=document.querySelector(id);
+if(el){
+const y=el.getBoundingClientRect().top+window.scrollY-60;
+window.scrollTo({top:y,behavior:'smooth'});
+}
+});
+});
+</script>
+</body>
+</html>

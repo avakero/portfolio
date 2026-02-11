@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ASHEN THRONE（アッシュンスローン）— 灰の王座に、火を灯せ。壮大なダークファンタジーRPGの世界へ。">
+<title>ASHEN THRONE | 灰の王座に、火を灯せ。</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--abyss:#0c0c14;--flame:#ff6b2b;--lava:#c0392b;--gold:#b8860b;
+--ash-blue:#4a6670;--parchment:#d4c5a0;--dark-surface:#12121e;
+--card-bg:#16162a;--text-dim:rgba(212,197,160,.7);
+}
+@font-face{font-family:'Gothic';src:local('Georgia')}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+font-family:'Georgia','Times New Roman',serif;
+background:var(--abyss);color:var(--parchment);
+overflow-x:hidden;line-height:1.8;
+}
+h1,h2,h3,h4{font-family:'Georgia',serif;font-weight:900;letter-spacing:.05em}
+::selection{background:var(--flame);color:var(--abyss)}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+
+/* NAV */
+.nav{
+position:fixed;top:0;left:0;right:0;z-index:1000;
+padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;
+background:linear-gradient(180deg,rgba(12,12,20,.95) 0%,transparent 100%);
+transition:background .4s;
+}
+.nav.scrolled{background:rgba(12,12,20,.97);backdrop-filter:blur(10px)}
+.nav-logo{
+font-size:1.2rem;font-weight:900;color:var(--gold);
+text-shadow:0 0 20px rgba(255,107,43,.4);letter-spacing:.15em;
+}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{
+color:var(--parchment);text-decoration:none;font-size:.85rem;
+letter-spacing:.1em;transition:color .3s;position:relative;
+}
+.nav-links a::after{
+content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+background:var(--flame);transition:width .3s;
+}
+.nav-links a:hover{color:var(--flame)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:25px;height:2px;background:var(--gold);transition:.3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{
+display:none;position:fixed;top:0;left:0;width:100%;height:100vh;
+background:rgba(12,12,20,.98);z-index:999;
+flex-direction:column;justify-content:center;align-items:center;gap:2rem;
+}
+.mobile-menu.active{display:flex}
+.mobile-menu a{color:var(--parchment);text-decoration:none;font-size:1.3rem;letter-spacing:.15em}
+
+/* BGM BUTTON */
+.bgm-btn{
+position:fixed;bottom:2rem;right:2rem;z-index:999;
+width:50px;height:50px;border-radius:50%;border:2px solid var(--gold);
+background:rgba(12,12,20,.9);cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+transition:all .3s;
+}
+.bgm-btn:hover{background:var(--gold);transform:scale(1.1)}
+.bgm-btn svg{width:20px;height:20px;fill:var(--parchment)}
+.bgm-btn:hover svg{fill:var(--abyss)}
+
+/* HERO */
+.hero{
+position:relative;min-height:100vh;display:flex;flex-direction:column;
+justify-content:center;align-items:center;text-align:center;
+overflow:hidden;padding:2rem;
+}
+.hero-bg{
+position:absolute;inset:0;
+background:radial-gradient(ellipse at 50% 30%,rgba(192,57,43,.15) 0%,var(--abyss) 70%);
+}
+.hero-vignette{
+position:absolute;inset:0;
+background:radial-gradient(ellipse at center,transparent 40%,var(--abyss) 100%);
+}
+.hero-content{position:relative;z-index:10}
+.hero-subtitle{
+font-size:clamp(.8rem,1.5vw,.95rem);letter-spacing:.6em;
+color:var(--gold);margin-bottom:1.5rem;
+text-transform:uppercase;
+animation:fadeInDown 1.2s ease-out;
+}
+.hero-title{
+font-size:clamp(2.5rem,8vw,6rem);font-weight:900;
+letter-spacing:.08em;line-height:1.1;
+color:var(--parchment);
+text-shadow:
+0 0 40px rgba(255,107,43,.6),
+0 0 80px rgba(192,57,43,.4),
+0 2px 0 rgba(184,134,11,.5),
+0 4px 0 rgba(184,134,11,.3);
+animation:titleGlow 3s ease-in-out infinite alternate, fadeInUp 1.5s ease-out;
+}
+.hero-catchcopy{
+font-size:clamp(1rem,2.5vw,1.5rem);color:var(--text-dim);
+margin-top:1.5rem;letter-spacing:.2em;
+animation:fadeInUp 1.8s ease-out;
+}
+.hero-cta{
+display:inline-block;margin-top:2.5rem;padding:1rem 3rem;
+border:2px solid var(--gold);color:var(--gold);
+background:transparent;font-size:1.1rem;letter-spacing:.2em;
+cursor:pointer;position:relative;overflow:hidden;
+text-decoration:none;transition:all .4s;
+animation:fadeInUp 2.2s ease-out;
+font-family:'Georgia',serif;
+}
+.hero-cta::before{
+content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,107,43,.3),transparent);
+transition:left .6s;
+}
+.hero-cta:hover{
+border-color:var(--flame);color:var(--flame);
+box-shadow:0 0 30px rgba(255,107,43,.4),inset 0 0 30px rgba(255,107,43,.1);
+transform:translateY(-2px);
+}
+.hero-cta:hover::before{left:100%}
+.scroll-indicator{
+position:absolute;bottom:120px;left:50%;transform:translateX(-50%);
+z-index:10;display:flex;flex-direction:column;align-items:center;gap:.5rem;
+animation:fadeInUp 2.5s ease-out;
+}
+.scroll-indicator span{font-size:.7rem;letter-spacing:.3em;color:var(--ash-blue)}
+.scroll-arrow{
+width:20px;height:20px;border-right:2px solid var(--gold);
+border-bottom:2px solid var(--gold);transform:rotate(45deg);
+animation:scrollBounce 2s infinite;
+}
+
+/* FIRE SVG */
+.fire-container{
+position:absolute;bottom:0;left:0;width:100%;height:150px;z-index:5;
+overflow:hidden;
+}
+.fire-container svg{width:100%;height:100%;position:absolute;bottom:-5px}
+
+/* PARTICLES */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.particle{
+position:absolute;width:2px;height:2px;background:var(--parchment);
+border-radius:50%;opacity:0;
+animation:fall linear infinite;
+}
+
+/* ORNAMENT DIVIDER */
+.ornament{
+text-align:center;padding:2rem 0;position:relative;overflow:visible;
+}
+.ornament svg{width:clamp(200px,50vw,400px);height:auto;opacity:.7}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* SECTIONS */
+section{position:relative;z-index:10}
+.section-padding{padding:clamp(3rem,8vw,7rem) clamp(1rem,5vw,4rem)}
+
+/* STORY / SCROLL SECTION */
+.story-section{
+background:linear-gradient(180deg,var(--abyss) 0%,#0f0f1a 50%,var(--abyss) 100%);
+overflow:hidden;
+}
+.scroll-parchment{
+max-width:900px;margin:0 auto;
+background:linear-gradient(180deg,
+rgba(212,197,160,.08) 0%,rgba(212,197,160,.03) 100%);
+border:1px solid rgba(184,134,11,.2);
+padding:clamp(2rem,5vw,4rem);position:relative;
+clip-path:inset(40% 10% 40% 10%);
+transition:clip-path 1.2s cubic-bezier(.25,.46,.45,.94);
+}
+.scroll-parchment.open{clip-path:inset(0% 0% 0% 0%)}
+.scroll-parchment::before,.scroll-parchment::after{
+content:'';position:absolute;left:0;width:100%;height:30px;
+background:linear-gradient(90deg,var(--gold),rgba(184,134,11,.3),var(--gold));
+opacity:.3;
+}
+.scroll-parchment::before{top:0}
+.scroll-parchment::after{bottom:0}
+.section-label{
+font-size:.75rem;letter-spacing:.5em;color:var(--flame);
+text-transform:uppercase;margin-bottom:1rem;text-align:center;
+}
+.section-title{
+font-size:clamp(1.5rem,4vw,2.5rem);text-align:center;
+color:var(--parchment);margin-bottom:2rem;
+text-shadow:0 0 20px rgba(255,107,43,.3);
+}
+.story-text{
+font-size:clamp(.9rem,1.5vw,1.05rem);line-height:2;
+color:var(--text-dim);text-align:justify;
+}
+.story-text p{margin-bottom:1.5rem}
+.rune-text{
+font-size:1.2rem;text-align:center;color:var(--gold);
+letter-spacing:.3em;margin:2rem 0;opacity:.5;
+text-shadow:0 0 15px rgba(184,134,11,.5);
+transition:all 1s;
+}
+.rune-text.translated{
+font-size:1rem;letter-spacing:.15em;
+color:var(--parchment);opacity:1;
+text-shadow:0 0 10px rgba(255,107,43,.3);
+}
+
+/* CHARACTERS */
+.characters-section{
+background:linear-gradient(180deg,var(--abyss) 0%,#0e0e1a 50%,var(--abyss) 100%);
+}
+.cards-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:2rem;max-width:1100px;margin:0 auto;
+}
+.tarot-card{
+background:var(--card-bg);border:2px solid rgba(184,134,11,.4);
+border-radius:12px;overflow:hidden;position:relative;
+transition:all .5s cubic-bezier(.25,.46,.45,.94);
+cursor:pointer;
+}
+.tarot-card::before{
+content:'';position:absolute;inset:6px;
+border:1px solid rgba(184,134,11,.25);border-radius:8px;
+pointer-events:none;z-index:2;
+}
+.tarot-card::after{
+content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(184,134,11,.1) 0%,transparent 50%,rgba(184,134,11,.05) 100%);
+pointer-events:none;z-index:1;
+}
+.tarot-card:hover{
+transform:translateY(-10px) rotateY(-3deg);
+box-shadow:0 20px 60px rgba(255,107,43,.2),0 0 40px rgba(184,134,11,.15);
+border-color:var(--gold);
+}
+.card-image{
+height:280px;
+display:flex;align-items:center;justify-content:center;
+position:relative;overflow:hidden;
+}
+.card-image svg{width:120px;height:120px;opacity:.8;transition:all .5s}
+.tarot-card:hover .card-image svg{opacity:1;transform:scale(1.1)}
+.card-class{
+position:absolute;top:12px;right:12px;z-index:3;
+font-size:.65rem;letter-spacing:.2em;color:var(--flame);
+background:rgba(12,12,20,.7);padding:.3rem .6rem;border:1px solid rgba(255,107,43,.3);
+}
+.card-body{padding:1.5rem;position:relative;z-index:2}
+.card-name{
+font-size:1.3rem;color:var(--gold);margin-bottom:.3rem;
+text-shadow:0 0 10px rgba(184,134,11,.3);
+}
+.card-title-sub{font-size:.75rem;color:var(--flame);letter-spacing:.15em;margin-bottom:.8rem}
+.card-desc{font-size:.85rem;color:var(--text-dim);line-height:1.7}
+
+/* GAME SYSTEMS */
+.systems-section{
+background:linear-gradient(180deg,var(--abyss) 0%,#111122 50%,var(--abyss) 100%);
+}
+.systems-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:2rem;max-width:1100px;margin:0 auto;
+}
+.system-card{
+padding:2rem;background:rgba(22,22,42,.6);
+border:1px solid rgba(184,134,11,.15);
+position:relative;overflow:hidden;transition:all .4s;
+}
+.system-card::before{
+content:'';position:absolute;top:0;left:0;width:3px;height:0;
+background:linear-gradient(180deg,var(--flame),var(--lava));
+transition:height .6s;
+}
+.system-card:hover::before{height:100%}
+.system-card:hover{
+border-color:rgba(184,134,11,.4);
+box-shadow:0 10px 40px rgba(0,0,0,.4);
+transform:translateY(-4px);
+}
+.system-icon{
+width:50px;height:50px;margin-bottom:1rem;
+display:flex;align-items:center;justify-content:center;
+border:1px solid var(--gold);border-radius:50%;
+}
+.system-icon svg{width:24px;height:24px}
+.system-name{
+font-size:1.1rem;color:var(--gold);margin-bottom:.8rem;
+letter-spacing:.1em;
+}
+.system-desc{font-size:.88rem;color:var(--text-dim);line-height:1.8}
+
+/* WORLD MAP */
+.map-section{
+background:linear-gradient(180deg,var(--abyss) 0%,#0d0d18 50%,var(--abyss) 100%);
+}
+.map-container{
+max-width:900px;margin:0 auto;position:relative;
+border:2px solid rgba(184,134,11,.2);
+background:rgba(12,12,20,.5);padding:1rem;
+}
+.map-container svg{width:100%;height:auto}
+.map-region{cursor:pointer;transition:all .3s}
+.map-region:hover{filter:brightness(1.5) drop-shadow(0 0 10px rgba(255,107,43,.5))}
+.map-tooltip{
+position:absolute;background:rgba(12,12,20,.95);border:1px solid var(--gold);
+padding:.5rem 1rem;color:var(--parchment);font-size:.8rem;
+pointer-events:none;opacity:0;transition:opacity .3s;z-index:100;
+white-space:nowrap;
+}
+
+/* TRAILER */
+.trailer-section{
+background:#000;padding:0;overflow:hidden;
+}
+.letterbox{
+max-width:1200px;margin:0 auto;position:relative;
+aspect-ratio:21/9;
+}
+.letterbox-bar{
+width:100%;height:clamp(20px,4vw,50px);background:#000;
+position:relative;z-index:2;
+}
+.trailer-content{
+width:100%;height:100%;display:flex;
+flex-direction:column;justify-content:center;align-items:center;
+background:linear-gradient(135deg,#0a0a15 0%,#1a1025 50%,#0a0a15 100%);
+position:relative;
+}
+.play-btn{
+width:clamp(60px,10vw,100px);height:clamp(60px,10vw,100px);
+border-radius:50%;border:3px solid var(--gold);
+background:rgba(12,12,20,.8);cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+transition:all .4s;position:relative;z-index:5;
+}
+.play-btn:hover{
+background:var(--flame);border-color:var(--flame);
+box-shadow:0 0 50px rgba(255,107,43,.5);
+transform:scale(1.1);
+}
+.play-btn svg{width:30px;height:30px;fill:var(--parchment);margin-left:4px}
+.trailer-title{
+font-size:clamp(.8rem,1.5vw,1rem);letter-spacing:.4em;
+color:var(--ash-blue);margin-top:1.5rem;z-index:5;
+}
+
+/* CTA */
+.cta-section{
+background:linear-gradient(180deg,var(--abyss) 0%,
+rgba(192,57,43,.08) 50%,var(--abyss) 100%);
+text-align:center;
+}
+.cta-title{
+font-size:clamp(1.8rem,5vw,3rem);color:var(--parchment);
+margin-bottom:1rem;
+text-shadow:0 0 30px rgba(255,107,43,.4);
+}
+.cta-sub{
+font-size:clamp(.9rem,1.5vw,1.1rem);color:var(--text-dim);
+margin-bottom:2.5rem;max-width:600px;margin-left:auto;margin-right:auto;
+}
+.cta-big{
+display:inline-block;padding:1.2rem 4rem;
+background:linear-gradient(135deg,var(--flame) 0%,var(--lava) 100%);
+color:#fff;font-size:1.2rem;font-weight:700;letter-spacing:.2em;
+border:none;cursor:pointer;position:relative;overflow:hidden;
+text-decoration:none;transition:all .4s;
+font-family:'Georgia',serif;
+box-shadow:0 5px 30px rgba(255,107,43,.3);
+}
+.cta-big:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 50px rgba(255,107,43,.5);
+}
+.cta-big::after{
+content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+background:linear-gradient(45deg,transparent,rgba(255,255,255,.1),transparent);
+transform:rotate(45deg);transition:all .6s;
+}
+.cta-big:hover::after{left:100%}
+.cta-note{font-size:.75rem;color:var(--ash-blue);margin-top:1rem;letter-spacing:.1em}
+.platform-icons{display:flex;justify-content:center;gap:1.5rem;margin-top:2rem;flex-wrap:wrap}
+.platform{
+display:flex;align-items:center;gap:.5rem;
+padding:.6rem 1.2rem;border:1px solid rgba(184,134,11,.3);
+font-size:.8rem;color:var(--parchment);letter-spacing:.1em;
+transition:all .3s;
+}
+.platform:hover{border-color:var(--gold);background:rgba(184,134,11,.1)}
+.platform svg{width:18px;height:18px}
+
+/* FOOTER */
+footer{
+background:var(--dark-surface);border-top:1px solid rgba(184,134,11,.15);
+padding:3rem clamp(1rem,5vw,4rem) 1.5rem;
+}
+.footer-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:2rem;max-width:1100px;margin:0 auto 2rem;
+}
+.footer-col h4{
+font-size:.85rem;color:var(--gold);letter-spacing:.2em;margin-bottom:1rem;
+}
+.footer-col a{
+display:block;color:var(--text-dim);text-decoration:none;
+font-size:.8rem;margin-bottom:.5rem;transition:color .3s;
+}
+.footer-col a:hover{color:var(--flame)}
+.footer-bottom{
+text-align:center;padding-top:2rem;
+border-top:1px solid rgba(184,134,11,.1);
+}
+.footer-bottom p{font-size:.75rem;color:var(--ash-blue);letter-spacing:.1em}
+
+/* SLASH EFFECT */
+.slash-effect{
+position:fixed;top:0;left:0;width:100%;height:100%;
+z-index:9999;pointer-events:none;opacity:0;
+}
+.slash-effect.active{animation:slashFlash .6s ease-out}
+.slash-line{
+position:absolute;top:50%;left:-10%;
+width:120%;height:3px;
+background:linear-gradient(90deg,transparent,var(--flame),#fff,var(--flame),transparent);
+transform:rotate(-25deg);opacity:0;
+}
+.slash-effect.active .slash-line{animation:slashCut .4s ease-out .1s}
+
+/* ANIMATIONS */
+@keyframes titleGlow{
+0%{text-shadow:0 0 40px rgba(255,107,43,.6),0 0 80px rgba(192,57,43,.4),0 2px 0 rgba(184,134,11,.5),0 4px 0 rgba(184,134,11,.3)}
+100%{text-shadow:0 0 60px rgba(255,107,43,.8),0 0 120px rgba(192,57,43,.6),0 2px 0 rgba(184,134,11,.5),0 4px 0 rgba(184,134,11,.3)}
+}
+@keyframes fadeInUp{
+from{opacity:0;transform:translateY(30px)}
+to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeInDown{
+from{opacity:0;transform:translateY(-20px)}
+to{opacity:1;transform:translateY(0)}
+}
+@keyframes scrollBounce{
+0%,100%{transform:rotate(45deg) translate(0,0);opacity:.3}
+50%{transform:rotate(45deg) translate(5px,5px);opacity:1}
+}
+@keyframes fall{
+0%{transform:translateY(-10vh) rotate(0deg);opacity:0}
+10%{opacity:.6}
+90%{opacity:.3}
+100%{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+@keyframes slashFlash{
+0%{opacity:1}
+100%{opacity:0}
+}
+@keyframes slashCut{
+0%{opacity:0;transform:rotate(-25deg) scaleX(0)}
+30%{opacity:1}
+100%{opacity:0;transform:rotate(-25deg) scaleX(1)}
+}
+@keyframes fireFlicker{
+0%,100%{transform:scaleY(1) translateY(0)}
+50%{transform:scaleY(1.15) translateY(-5px)}
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.nav-links{display:none}
+.hamburger{display:flex}
+.cards-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card-image{height:200px}
+.letterbox{aspect-ratio:16/9}
+}
+@media(max-width:480px){
+.cards-grid{grid-template-columns:1fr}
+.hero-cta{padding:.8rem 2rem;font-size:.95rem}
+.cta-big{padding:1rem 2.5rem;font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+<div class="nav-logo">ASHEN THRONE</div>
+<ul class="nav-links">
+<li><a href="#story">STORY</a></li>
+<li><a href="#characters">CHARACTERS</a></li>
+<li><a href="#systems">SYSTEMS</a></li>
+<li><a href="#worldmap">WORLD</a></li>
+<li><a href="#trailer">TRAILER</a></li>
+<li><a href="#register">REGISTER</a></li>
+</ul>
+<div class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span><span></span><span></span>
+</div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="#story" onclick="toggleMenu()">STORY</a>
+<a href="#characters" onclick="toggleMenu()">CHARACTERS</a>
+<a href="#systems" onclick="toggleMenu()">SYSTEMS</a>
+<a href="#worldmap" onclick="toggleMenu()">WORLD</a>
+<a href="#trailer" onclick="toggleMenu()">TRAILER</a>
+<a href="#register" onclick="toggleMenu()">REGISTER</a>
+</div>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<!-- BGM BTN -->
+<button class="bgm-btn" id="bgmBtn" title="BGM ON/OFF" onclick="toggleBGM()">
+<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+</button>
+
+<!-- SLASH EFFECT -->
+<div class="slash-effect" id="slashEffect"><div class="slash-line"></div></div>
+
+<!-- ============== HERO ============== -->
+<section class="hero" id="hero">
+<div class="hero-bg"></div>
+<div class="hero-vignette"></div>
+<div class="hero-content">
+<p class="hero-subtitle">A Dark Fantasy RPG</p>
+<h1 class="hero-title">ASHEN<br>THRONE</h1>
+<p class="hero-catchcopy">灰の王座に、火を灯せ。</p>
+<a href="#register" class="hero-cta" onclick="triggerSlash()">⚔ 冒険を始める</a>
+</div>
+<div class="scroll-indicator">
+<span>SCROLL</span>
+<div class="scroll-arrow"></div>
+</div>
+<!-- FIRE -->
+<div class="fire-container">
+<svg viewBox="0 0 1440 150" preserveAspectRatio="none">
+<defs>
+<linearGradient id="fireGrad1" x1="0" y1="1" x2="0" y2="0">
+<stop offset="0%" stop-color="#0c0c14"/>
+<stop offset="40%" stop-color="#c0392b" stop-opacity=".6"/>
+<stop offset="100%" stop-color="#ff6b2b" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="fireGrad2" x1="0" y1="1" x2="0" y2="0">
+<stop offset="0%" stop-color="#0c0c14"/>
+<stop offset="30%" stop-color="#ff6b2b" stop-opacity=".4"/>
+<stop offset="100%" stop-color="#b8860b" stop-opacity="0"/>
+</linearGradient>
+<filter id="fireBlur"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<path fill="url(#fireGrad1)" filter="url(#fireBlur)" opacity=".8">
+<animate attributeName="d" dur="3s" repeatCount="indefinite" values="
+M0,150 C200,80 400,120 600,70 C800,30 1000,90 1200,60 C1350,40 1400,80 1440,100 L1440,150 Z;
+M0,150 C200,100 350,60 600,90 C850,120 1000,50 1200,80 C1350,100 1420,60 1440,90 L1440,150 Z;
+M0,150 C200,80 400,120 600,70 C800,30 1000,90 1200,60 C1350,40 1400,80 1440,100 L1440,150 Z
+"/>
+</path>
+<path fill="url(#fireGrad2)" filter="url(#fireBlur)" opacity=".6">
+<animate attributeName="d" dur="4s" repeatCount="indefinite" values="
+M0,150 C150,100 350,130 550,80 C750,40 950,110 1150,70 C1300,50 1400,90 1440,110 L1440,150 Z;
+M0,150 C150,70 300,110 550,100 C750,80 950,50 1150,90 C1300,110 1420,70 1440,85 L1440,150 Z;
+M0,150 C150,100 350,130 550,80 C750,40 950,110 1150,70 C1300,50 1400,90 1440,110 L1440,150 Z
+"/>
+</path>
+</svg>
+</div>
+</section>
+
+<!-- ORNAMENT: Sword -->
+<div class="ornament">
+<svg viewBox="0 0 400 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="0" y1="30" x2="160" y2="30" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<line x1="240" y1="30" x2="400" y2="30" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<path d="M200 5 L203 25 L210 28 L203 31 L206 55 L200 50 L194 55 L197 31 L190 28 L197 25 Z" fill="#b8860b" opacity=".6"/>
+<circle cx="170" cy="30" r="3" fill="none" stroke="#b8860b" stroke-width="1" opacity=".3"/>
+<circle cx="230" cy="30" r="3" fill="none" stroke="#b8860b" stroke-width="1" opacity=".3"/>
+</svg>
+</div>
+
+<!-- ============== STORY ============== -->
+<section class="story-section section-padding" id="story">
+<p class="section-label reveal">Lore</p>
+<h2 class="section-title reveal">灰燼の年代記</h2>
+<div class="scroll-parchment" id="parchment">
+<div class="rune-text" id="runeText">ᚦᛖ ᚹᛟᚱᛚᛞ ᛁᛊ ᛞᛖᚨᛞ᛬ ᚦᛖ ᚠᛁᚱᛖ ᛁᛊ ᚠᚨᛞᛁᛜ᛬</div>
+<div class="story-text reveal">
+<p>かつて、世界は五つの始原の火によって照らされていた。その炎は大地に生命を与え、海に潮流を生み、空に星を散りばめた。人々はこの恩恵を「王座の灯火」と呼び、永遠に続く繁栄を信じて疑わなかった。</p>
+<p>しかし、千年に一度訪れる「灰の刻」——世界を覆う終焉の闇が、すべてを変えた。五つの火は一つ、また一つと消え落ち、栄華を誇った王国は灰燼に帰した。残されたのは、かつて玉座に座していた者たちの亡骸と、消えかけた最後の残り火のみ。</p>
+<p>今、灰の中から一人の名もなき旅人が立ち上がる。<br>失われた火を取り戻し、滅びゆく世界に再び光を——<br>それとも、すべてを灰に還し、新たな秩序を築くのか。</p>
+<p style="text-align:center;color:var(--gold);font-style:italic;">選択は、あなたの手に委ねられている。</p>
+</div>
+</div>
+</section>
+
+<!-- ORNAMENT: Shield -->
+<div class="ornament">
+<svg viewBox="0 0 400 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="0" y1="35" x2="155" y2="35" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<line x1="245" y1="35" x2="400" y2="35" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<path d="M200 8 L225 20 L225 42 C225 55 200 65 200 65 C200 65 175 55 175 42 L175 20 Z" fill="none" stroke="#b8860b" stroke-width="1.5" opacity=".6"/>
+<path d="M200 15 L218 24 L218 40 C218 50 200 58 200 58 C200 58 182 50 182 40 L182 24 Z" fill="rgba(184,134,11,.08)" stroke="#b8860b" stroke-width=".5" opacity=".4"/>
+<line x1="200" y1="18" x2="200" y2="56" stroke="#b8860b" stroke-width=".5" opacity=".3"/>
+<line x1="184" y1="32" x2="216" y2="32" stroke="#b8860b" stroke-width=".5" opacity=".3"/>
+</svg>
+</div>
+
+<!-- ============== CHARACTERS ============== -->
+<section class="characters-section section-padding" id="characters">
+<p class="section-label reveal">Characters</p>
+<h2 class="section-title reveal">灰の継承者たち</h2>
+<div class="cards-grid">
+
+<!-- CHAR 1 -->
+<div class="tarot-card reveal" style="transition-delay:.1s">
+<div class="card-image" style="background:linear-gradient(180deg,#1a0a0a 0%,var(--card-bg) 100%)">
+<span class="card-class">I — THE KNIGHT</span>
+<svg viewBox="0 0 100 100"><path d="M50 15 L55 35 L70 25 L60 40 L80 45 L60 50 L70 65 L55 55 L50 75 L45 55 L30 65 L40 50 L20 45 L40 40 L30 25 L45 35 Z" fill="none" stroke="#c0392b" stroke-width="1.5"/><circle cx="50" cy="45" r="15" fill="none" stroke="#b8860b" stroke-width="1" opacity=".5"/></svg>
+</div>
+<div class="card-body">
+<h3 class="card-name">セドリック・アッシュフォード</h3>
+<p class="card-title-sub">灰燼騎士 / Ashen Knight</p>
+<p class="card-desc">かつて王国最強の騎士団を率いた男。灰の刻で全てを失い、復讐と贖罪の狭間で剣を振るう。その一太刀は、城壁すら断つ。</p>
+</div>
+</div>
+
+<!-- CHAR 2 -->
+<div class="tarot-card reveal" style="transition-delay:.25s">
+<div class="card-image" style="background:linear-gradient(180deg,#0a0a1a 0%,var(--card-bg) 100%)">
+<span class="card-class">II — THE WITCH</span>
+<svg viewBox="0 0 100 100"><circle cx="50" cy="40" r="20" fill="none" stroke="#4a6670" stroke-width="1"/><path d="M35 60 Q50 80 65 60" fill="none" stroke="#b8860b" stroke-width="1.5"/><circle cx="50" cy="40" r="8" fill="none" stroke="#ff6b2b" stroke-width="1" opacity=".6"/><line x1="50" y1="20" x2="50" y2="10" stroke="#b8860b" stroke-width="1" opacity=".4"/><line x1="30" y1="35" x2="22" y2="30" stroke="#b8860b" stroke-width="1" opacity=".4"/><line x1="70" y1="35" x2="78" y2="30" stroke="#b8860b" stroke-width="1" opacity=".4"/></svg>
+</div>
+<div class="card-body">
+<h3 class="card-name">イレーナ・ヴォイドウィスパー</h3>
+<p class="card-title-sub">虚無の魔女 / Void Witch</p>
+<p class="card-desc">禁忌の魔術を操る謎多き女性。消えた火の真実を知る唯一の存在とされるが、その真意は誰にも読めない。</p>
+</div>
+</div>
+
+<!-- CHAR 3 -->
+<div class="tarot-card reveal" style="transition-delay:.4s">
+<div class="card-image" style="background:linear-gradient(180deg,#0f0a00 0%,var(--card-bg) 100%)">
+<span class="card-class">III — THE BEAST</span>
+<svg viewBox="0 0 100 100"><path d="M30 70 L40 40 L35 30 L45 35 L50 20 L55 35 L65 30 L60 40 L70 70 Z" fill="none" stroke="#b8860b" stroke-width="1.5"/><circle cx="43" cy="50" r="3" fill="#ff6b2b" opacity=".7"/><circle cx="57" cy="50" r="3" fill="#ff6b2b" opacity=".7"/><path d="M40 60 Q50 65 60 60" fill="none" stroke="#c0392b" stroke-width="1"/></svg>
+</div>
+<div class="card-body">
+<h3 class="card-name">ガルム・ブレイズファング</h3>
+<p class="card-title-sub">炎獣の末裔 / Blazefang</p>
+<p class="card-desc">人と魔獣の血を引く戦士。理性を失えば制御不能の炎と化す。失われた故郷を探し、大陸を彷徨い続ける。</p>
+</div>
+</div>
+
+<!-- CHAR 4 -->
+<div class="tarot-card reveal" style="transition-delay:.55s">
+<div class="card-image" style="background:linear-gradient(180deg,#0a0f0a 0%,var(--card-bg) 100%)">
+<span class="card-class">IV — THE SAINT</span>
+<svg viewBox="0 0 100 100"><path d="M50 15 L50 75" stroke="#b8860b" stroke-width="1.5"/><path d="M35 30 L65 30" stroke="#b8860b" stroke-width="1.5"/><circle cx="50" cy="45" r="18" fill="none" stroke="#d4c5a0" stroke-width="1" opacity=".4"/><circle cx="50" cy="45" r="12" fill="none" stroke="#d4c5a0" stroke-width=".5" opacity=".3"/><path d="M42 70 Q50 80 58 70" fill="none" stroke="#4a6670" stroke-width="1"/></svg>
+</div>
+<div class="card-body">
+<h3 class="card-name">リーゼロッテ・グレイル</h3>
+<p class="card-title-sub">灰聖女 / Ashen Saint</p>
+<p class="card-desc">最後の灯火を守護する聖女。癒しの奇跡を操るが、その代償として自身の命を削り続けている。世界の命運を握る存在。</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- ORNAMENT: Dragon -->
+<div class="ornament">
+<svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="0" y1="40" x2="140" y2="40" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<line x1="260" y1="40" x2="400" y2="40" stroke="#b8860b" stroke-width="1" opacity=".4"/>
+<path d="M200 10 Q220 20 225 35 Q230 25 240 20 L235 30 Q245 28 250 25 L240 35 Q235 45 225 48 L230 55 L225 52 L220 60 L215 52 L210 55 L215 48 Q205 45 200 35 L190 25 Q195 28 205 30 L200 20 Q210 25 215 35 Q220 20 200 10 Z" fill="#b8860b" opacity=".5"/>
+<circle cx="207" cy="32" r="2" fill="#ff6b2b" opacity=".7"/>
+<circle cx="193" cy="32" r="2" fill="#ff6b2b" opacity=".7"/>
+<circle cx="150" cy="40" r="2" fill="none" stroke="#b8860b" stroke-width="1" opacity=".3"/>
+<circle cx="250" cy="40" r="2" fill="none" stroke="#b8860b" stroke-width="1" opacity=".3"/>
+</svg>
+</div>
+
+<!-- ============== GAME SYSTEMS ============== -->
+<section class="systems-section section-padding" id="systems">
+<p class="section-label reveal">Game Systems</p>
+<h2 class="section-title reveal">鍛え抜かれし戦の理</h2>
+<div class="systems-grid">
+
+<div class="system-card reveal-left" style="transition-delay:.1s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6b2b" stroke-width="2"><path d="M14.5 2 L17 7 L22 9.5 L17 12 L14.5 17 L12 12 L7 9.5 L12 7 Z"/></svg></div>
+<h3 class="system-name">灰燼スタイル戦闘</h3>
+<p class="system-desc">アクションとコマンドを融合させた独自の戦闘システム。残り火ゲージを燃やし、壊滅的な一撃「灰燼解放（シンダーブレイク）」を放て。タイミングと戦略が勝敗を分ける。</p>
+</div>
+
+<div class="system-card reveal" style="transition-delay:.2s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#b8860b" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3 L12 12 L18 16"/></svg></div>
+<h3 class="system-name">運命分岐システム</h3>
+<p class="system-desc">プレイヤーの選択がすべてを変える。同盟を結ぶか、裏切るか——5つのマルチエンディングが、あなただけの物語を紡ぎ出す。一度の選択が世界の命運を左右する。</p>
+</div>
+
+<div class="system-card reveal-right" style="transition-delay:.3s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2"><path d="M12 2 L15 9 L22 9 L16 14 L18 21 L12 17 L6 21 L8 14 L2 9 L9 9 Z"/></svg></div>
+<h3 class="system-name">魂装鍛冶</h3>
+<p class="system-desc">倒した敵の魂を武器に宿す「魂装」システム。200種を超える武器と防具に、敵の力を融合させて唯一無二の装備を鍛え上げろ。組み合わせは無限大。</p>
+</div>
+
+<div class="system-card reveal-left" style="transition-delay:.4s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#4a6670" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+<h3 class="system-name">廃都探索</h3>
+<p class="system-desc">広大なオープンワールドに点在する滅びた王国を探索。隠された地下遺跡や封印された塔には、失われた火にまつわる秘密と、恐るべきボスが待ち受ける。</p>
+</div>
+
+<div class="system-card reveal" style="transition-delay:.5s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#d4c5a0" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+<h3 class="system-name">灰盟オンライン</h3>
+<p class="system-desc">最大4人のマルチプレイで、強大なレイドボスに挑め。協力だけでなく、PvP「灰の試練場」で他のプレイヤーと腕を競い合うことも可能だ。</p>
+</div>
+
+<div class="system-card reveal-right" style="transition-delay:.6s">
+<div class="system-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#ff6b2b" stroke-width="2"><path d="M12 20h9M12 4h9M4 8l4-4 4 4M4 16l4 4 4-4"/></svg></div>
+<h3 class="system-name">因果の樹</h3>
+<p class="system-desc">スキルツリーならぬ「因果の樹」。選んだ道によってキャラクターの運命が分岐し、習得できるスキルだけでなくストーリーまでもが変化する。</p>
+</div>
+
+</div>
+</section>
+
+<!-- ORNAMENT -->
+<div class="ornament">
+<svg viewBox="0 0 400 40" fill="none"><line x1="0" y1="20" x2="180" y2="20" stroke="#b8860b" stroke-width="1" opacity=".4"/><line x1="220" y1="20" x2="400" y2="20" stroke="#b8860b" stroke-width="1" opacity=".4"/><path d="M195 10 L205 10 L210 20 L205 30 L195 30 L190 20 Z" fill="none" stroke="#b8860b" stroke-width="1" opacity=".5"/><circle cx="200" cy="20" r="4" fill="#ff6b2b" opacity=".4"/></svg>
+</div>
+
+<!-- ============== WORLD MAP ============== -->
+<section class="map-section section-padding" id="worldmap">
+<p class="section-label reveal">World Map</p>
+<h2 class="section-title reveal">灰燼大陸 — エルダグリム</h2>
+<div class="map-container reveal" id="mapContainer">
+<div class="map-tooltip" id="mapTooltip"></div>
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="mg"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#0c0c14"/></radialGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="800" height="500" fill="url(#mg)"/>
+<!-- Grid lines -->
+<g stroke="#b8860b" stroke-width=".3" opacity=".1">
+<line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+<line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+<line x1="200" y1="0" x2="200" y2="500"/><line x1="400" y1="0" x2="400" y2="500"/>
+<line x1="600" y1="0" x2="600" y2="500"/>
+</g>
+<!-- Continent shape -->
+<path d="M150 120 Q200 80 300 90 Q400 60 480 100 Q550 80 620 120 Q680 100 700 150 Q720 200 690 250 Q710 300 680 340 Q700 380 650 400 Q600 430 520 410 Q460 440 380 420 Q300 450 240 400 Q180 430 140 380 Q100 340 120 280 Q90 230 110 180 Q100 140 150 120 Z"
+fill="rgba(74,102,112,.15)" stroke="#4a6670" stroke-width="1.5" opacity=".6"/>
+<!-- Island -->
+<ellipse cx="160" cy="350" rx="50" ry="30" fill="rgba(74,102,112,.1)" stroke="#4a6670" stroke-width="1" opacity=".4"/>
+<ellipse cx="680" cy="200" rx="40" ry="25" fill="rgba(74,102,112,.1)" stroke="#4a6670" stroke-width="1" opacity=".4"/>
+<!-- Rivers -->
+<path d="M400 100 Q380 200 420 300 Q440 360 400 420" fill="none" stroke="#4a6670" stroke-width="1.5" opacity=".3"/>
+<path d="M300 150 Q350 200 380 200" fill="none" stroke="#4a6670" stroke-width="1" opacity=".25"/>
+<!-- Regions -->
+<g class="map-region" data-name="灰燼王都シンダーヘイム — かつての王国の中心。今は廃墟が広がる" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="400" cy="180" r="18" fill="rgba(255,107,43,.1)" stroke="#ff6b2b" stroke-width="1.5"/>
+<circle cx="400" cy="180" r="6" fill="#ff6b2b" opacity=".6"/>
+<text x="400" y="210" fill="#d4c5a0" font-size="11" text-anchor="middle" opacity=".7">シンダーヘイム</text>
+</g>
+<g class="map-region" data-name="凍哭峡谷フロストヴェイル — 永久凍土に覆われた北の果て" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="300" cy="110" r="12" fill="rgba(74,102,112,.15)" stroke="#4a6670" stroke-width="1.5"/>
+<circle cx="300" cy="110" r="4" fill="#4a6670" opacity=".6"/>
+<text x="300" y="135" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".6">フロストヴェイル</text>
+</g>
+<g class="map-region" data-name="溶鉄山脈カルデラフォージ — 地底に眠る古代の鍛冶場" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="560" cy="140" r="12" fill="rgba(192,57,43,.15)" stroke="#c0392b" stroke-width="1.5"/>
+<circle cx="560" cy="140" r="4" fill="#c0392b" opacity=".6"/>
+<text x="560" y="165" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".6">カルデラフォージ</text>
+</g>
+<g class="map-region" data-name="幽暗森エルダーウッド — 精霊と亡霊が棲まう原始の森" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="250" cy="260" r="12" fill="rgba(184,134,11,.15)" stroke="#b8860b" stroke-width="1.5"/>
+<circle cx="250" cy="260" r="4" fill="#b8860b" opacity=".6"/>
+<text x="250" y="285" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".6">エルダーウッド</text>
+</g>
+<g class="map-region" data-name="虚無海峡ヴォイドストレイト — 世界の果てに広がる終焉の海" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="160" cy="350" r="12" fill="rgba(22,22,42,.4)" stroke="#d4c5a0" stroke-width="1"/>
+<circle cx="160" cy="350" r="4" fill="#d4c5a0" opacity=".4"/>
+<text x="160" y="375" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".5">ヴォイドストレイト</text>
+</g>
+<g class="map-region" data-name="灰聖堂グレイルサンクタム — 最後の灯火が守られし聖地" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="500" cy="320" r="14" fill="rgba(212,197,160,.1)" stroke="#d4c5a0" stroke-width="1.5"/>
+<circle cx="500" cy="320" r="5" fill="#d4c5a0" opacity=".5"/>
+<text x="500" y="345" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".6">グレイルサンクタム</text>
+</g>
+<g class="map-region" data-name="竜骸砂漠ドレイクボーン — 古代竜の骨が砂漠に眠る荒野" onmouseenter="showTooltip(evt)" onmouseleave="hideTooltip()">
+<circle cx="620" cy="280" r="12" fill="rgba(184,134,11,.1)" stroke="#b8860b" stroke-width="1"/>
+<circle cx="620" cy="280" r="4" fill="#b8860b" opacity=".5"/>
+<text x="620" y="305" fill="#d4c5a0" font-size="10" text-anchor="middle" opacity=".5">ドレイクボーン</text>
+</g>
+<!-- Compass -->
+<g transform="translate(720,440)" opacity=".4">
+<circle cx="0" cy="0" r="20" fill="none" stroke="#b8860b" stroke-width="1"/>
+<path d="M0 -18 L3 -5 L0 -8 L-3 -5 Z" fill="#ff6b2b"/>
+<path d="M0 18 L3 5 L0 8 L-3 5 Z" fill="#4a6670"/>
+<text x="0" y="-22" fill="#b8860b" font-size="8" text-anchor="middle">N</text>
+</g>
+</svg>
+</div>
+</section>
+
+<!-- ============== TRAILER ============== -->
+<section class="trailer-section" id="trailer">
+<div class="letterbox-bar"></div>
+<div class="letterbox reveal">
+<div class="trailer-content">
+<div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,107,43,.05) 0%,transparent 70%)"></div>
+<button class="play-btn" onclick="triggerSlash()">
+<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+</button>
+<p class="trailer-title">OFFICIAL TRAILER — 2026.SUMMER</p>
+</div>
+</div>
+<div class="letterbox-bar"></div>
+</section>
+
+<!-- ORNAMENT -->
+<div class="ornament">
+<svg viewBox="0 0 400 40" fill="none"><line x1="0" y1="20" x2="170" y2="20" stroke="#b8860b" stroke-width="1" opacity=".4"/><line x1="230" y1="20" x2="400" y2="20" stroke="#b8860b" stroke-width="1" opacity=".4"/><path d="M190 10 L210 10 L215 20 L210 30 L190 30 L185 20 Z" fill="none" stroke="#ff6b2b" stroke-width="1" opacity=".4"/><circle cx="200" cy="20" r="6" fill="none" stroke="#b8860b" stroke-width="1" opacity=".4"/></svg>
+</div>
+
+<!-- ============== CTA ============== -->
+<section class="cta-section section-padding" id="register">
+<p class="section-label reveal">Pre-Registration</p>
+<h2 class="cta-title reveal">灰の王座に、火を灯せ。</h2>
+<p class="cta-sub reveal">事前登録受付中——いち早くエルダグリムの大地に降り立ち、<br>滅びの運命に抗う旅を始めよう。豪華特典を手に入れるチャンスをお見逃しなく。</p>
+<div class="reveal" style="transition-delay:.2s">
+<button class="cta-big" onclick="triggerSlash()">⚔ 事前登録する</button>
+<p class="cta-note">※登録無料・特典：限定武器「黎明の灰剣」＋灰晶石×1000</p>
+</div>
+<div class="platform-icons reveal" style="transition-delay:.4s">
+<div class="platform">
+<svg viewBox="0 0 24 24" fill="none" stroke="#d4c5a0" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+iOS / Android
+</div>
+<div class="platform">
+<svg viewBox="0 0 24 24" fill="none" stroke="#d4c5a0" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+PC (Steam)
+</div>
+<div class="platform">
+<svg viewBox="0 0 24 24" fill="none" stroke="#d4c5a0" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h2m4 0h2m4 0h2"/></svg>
+PlayStation / Xbox
+</div>
+</div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+<div class="footer-grid">
+<div class="footer-col">
+<h4>ASHEN THRONE</h4>
+<p style="font-size:.8rem;color:var(--text-dim);line-height:1.7">壮大なダークファンタジーRPG。<br>滅びゆく世界で、あなたの選択が<br>すべてを決める。</p>
+</div>
+<div class="footer-col">
+<h4>LINKS</h4>
+<a href="#">公式ニュース</a>
+<a href="#">アップデート情報</a>
+<a href="#">FAQ / よくある質問</a>
+<a href="#">お問い合わせ</a>
+</div>
+<div class="footer-col">
+<h4>COMMUNITY</h4>
+<a href="#">X (Twitter)</a>
+<a href="#">YouTube</a>
+<a href="#">Discord</a>
+<a href="#">Reddit</a>
+</div>
+<div class="footer-col">
+<h4>LEGAL</h4>
+<a href="#">利用規約</a>
+<a href="#">プライバシーポリシー</a>
+<a href="#">特定商取引法に基づく表記</a>
+<a href="#">ライセンス情報</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2026 ASHEN THRONE Project. All Rights Reserved. | Developed with Next.js + WordPress Headless CMS</p>
+</div>
+</footer>
+
+<script>
+/* NAV scroll effect */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+/* Hamburger */
+function toggleMenu(){
+document.getElementById('hamburger').classList.toggle('active');
+document.getElementById('mobileMenu').classList.toggle('active');
+}
+
+/* Particles */
+(function createParticles(){
+const c=document.getElementById('particles');
+for(let i=0;i<40;i++){
+const p=document.createElement('div');
+p.className='particle';
+p.style.left=Math.random()*100+'%';
+p.style.width=p.style.height=Math.random()*3+1+'px';
+p.style.animationDuration=Math.random()*8+6+'s';
+p.style.animationDelay=Math.random()*10+'s';
+p.style.opacity=0;
+c.appendChild(p);
+}
+})();
+
+/* Intersection Observer for reveals */
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})
+},{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+/* Scroll Parchment */
+const parchObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('open');parchObs.unobserve(e.target)}})
+},{threshold:0.3});
+const parchment=document.getElementById('parchment');
+if(parchment)parchObs.observe(parchment);
+
+/* Rune Text Translation */
+const runeObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+setTimeout(()=>{
+e.target.textContent='世界は死んだ。火は消えゆく——';
+e.target.classList.add('translated');
+},1200);
+runeObs.unobserve(e.target);
+}
+})
+},{threshold:0.5});
+const runeText=document.getElementById('runeText');
+if(runeText)runeObs.observe(runeText);
+
+/* Map Tooltip */
+const tooltip=document.getElementById('mapTooltip');
+function showTooltip(evt){
+const r=evt.currentTarget;
+const name=r.getAttribute('data-name');
+tooltip.textContent=name;
+tooltip.style.opacity='1';
+const mc=document.getElementById('mapContainer').getBoundingClientRect();
+const cr=r.querySelector('circle').getBoundingClientRect();
+tooltip.style.left=(cr.left-mc.left+cr.width/2)+'px';
+tooltip.style.top=(cr.top-mc.top-35)+'px';
+tooltip.style.transform='translateX(-50%)';
+}
+function hideTooltip(){tooltip.style.opacity='0'}
+
+/* Slash Effect */
+function triggerSlash(){
+const s=document.getElementById('slashEffect');
+s.classList.remove('active');
+void s.offsetWidth;
+s.classList.add('active');
+}
+
+/* BGM Toggle */
+let bgmOn=false;
+function toggleBGM(){
+bgmOn=!bgmOn;
+const btn=document.getElementById('bgmBtn');
+btn.style.borderColor=bgmOn?'var(--flame)':'var(--gold)';
+btn.title=bgmOn?'BGM ON (再生中)':'BGM OFF';
+}
+</script>
+</body>
+</html>

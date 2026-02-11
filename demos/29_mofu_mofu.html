@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ふわもこサロン mofu mofu｜犬猫トリミングサロン。まいにち、もふもふ。大切な家族をやさしく、かわいく仕上げます。">
+<title>ふわもこサロン mofu mofu｜犬猫トリミングサロン</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--pink:#fce4ec;--pink-mid:#f8bbd0;--pink-deep:#f48fb1;
+--blue:#e1f5fe;--blue-mid:#b3e5fc;
+--yellow:#fff9c4;--yellow-mid:#fff176;
+--lavender:#e8d5f5;--lavender-mid:#ce93d8;
+--milk:#fefefe;--brown:#8d6e63;--brown-light:#a1887f;--brown-dark:#6d4c41;
+--text:#5d4037;--text-light:#795548;
+--radius-soft:24px;--radius-card:32px;--radius-blob:50% 45% 55% 50% / 50% 55% 45% 50%;
+--shadow-card:0 8px 32px rgba(141,110,99,.12);
+--shadow-float:0 12px 40px rgba(141,110,99,.18);
+--font-main:'Hiragino Maru Gothic Pro','Rounded Mplus 1c',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font-main);color:var(--text);background:var(--milk);line-height:1.8;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+h1,h2,h3{font-weight:700}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;background:rgba(254,254,254,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(141,110,99,.06);transition:box-shadow .3s}
+.nav.scrolled{box-shadow:0 2px 20px rgba(141,110,99,.1)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:10px 20px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:clamp(1rem,2.5vw,1.2rem);font-weight:700;color:var(--brown)}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:clamp(12px,2vw,28px);font-size:.88rem;color:var(--text-light)}
+.nav-links a{position:relative;padding:4px 0;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--pink-deep);border-radius:2px;transition:width .3s}
+.nav-links a:hover{color:var(--brown)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2.5px;background:var(--brown);border-radius:2px;transition:.3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+@media(max-width:768px){
+.nav-links{position:fixed;top:0;right:-100%;width:70%;height:100vh;background:var(--milk);flex-direction:column;padding:80px 32px 32px;gap:24px;font-size:1.1rem;transition:right .4s;box-shadow:-4px 0 30px rgba(0,0,0,.08)}
+.nav-links.open{right:0}
+.hamburger{display:flex}
+}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(170deg,var(--pink) 0%,var(--blue) 40%,var(--lavender) 70%,var(--yellow) 100%);padding-top:60px}
+.hero-clouds{position:absolute;inset:0;pointer-events:none}
+.cloud{position:absolute;opacity:.55;animation:floatCloud 8s ease-in-out infinite}
+.cloud:nth-child(2){animation-delay:-2s;animation-duration:10s}
+.cloud:nth-child(3){animation-delay:-4s;animation-duration:12s}
+.cloud:nth-child(4){animation-delay:-6s;animation-duration:9s}
+@keyframes floatCloud{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.03)}}
+.hero-animals{position:absolute;inset:0;pointer-events:none}
+.hero-animal{position:absolute;animation:floatAnimal 6s ease-in-out infinite}
+.hero-animal:nth-child(2){animation-delay:-3s}
+@keyframes floatAnimal{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-24px) rotate(2deg)}}
+.hero-content{position:relative;z-index:10;text-align:center;padding:20px}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.7);backdrop-filter:blur(8px);padding:8px 24px;border-radius:100px;font-size:clamp(.8rem,1.5vw,.95rem);color:var(--brown);margin-bottom:20px;letter-spacing:.08em}
+.hero h1{font-size:clamp(2.2rem,6vw,4rem);color:var(--brown-dark);line-height:1.3;margin-bottom:12px}
+.hero h1 .sub{display:block;font-size:clamp(1rem,2.5vw,1.5rem);color:var(--brown-light);font-weight:500;margin-top:4px;letter-spacing:.15em}
+.hero-copy{font-size:clamp(1rem,2vw,1.3rem);color:var(--text-light);margin-bottom:36px}
+.paw-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--pink-deep),var(--lavender-mid));color:#fff;font-size:clamp(1rem,2vw,1.15rem);font-weight:700;padding:16px 40px;border-radius:100px;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(244,143,177,.4);transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.paw-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 36px rgba(244,143,177,.5)}
+.paw-btn svg{width:22px;height:22px}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--brown-light);font-size:.8rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+
+/* ===== PAW TRAIL ===== */
+.paw-trail{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.paw-step{position:fixed;opacity:0;transition:opacity .5s;pointer-events:none;z-index:9999;filter:drop-shadow(0 2px 4px rgba(141,110,99,.15))}
+
+/* ===== SECTION COMMON ===== */
+section{position:relative;padding:clamp(60px,10vw,120px) 0;overflow:hidden}
+.section-title{text-align:center;margin-bottom:clamp(36px,6vw,60px)}
+.section-title h2{font-size:clamp(1.6rem,4vw,2.4rem);color:var(--brown-dark);display:inline-flex;align-items:center;gap:10px}
+.section-title h2 svg{width:clamp(28px,4vw,36px);height:clamp(28px,4vw,36px)}
+.section-title p{font-size:clamp(.85rem,1.5vw,1rem);color:var(--text-light);margin-top:8px}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+
+/* ===== FEATURES ===== */
+.features{background:var(--milk)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px}
+.feature-card{background:linear-gradient(135deg,#fff 60%,var(--pink));border-radius:var(--radius-card);padding:36px 28px;text-align:center;box-shadow:var(--shadow-card);transition:transform .4s,box-shadow .4s}
+.feature-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-float)}
+.feature-card:nth-child(2){background:linear-gradient(135deg,#fff 60%,var(--blue))}
+.feature-card:nth-child(3){background:linear-gradient(135deg,#fff 60%,var(--yellow))}
+.feature-card:nth-child(4){background:linear-gradient(135deg,#fff 60%,var(--lavender))}
+.feature-icon{width:72px;height:72px;margin:0 auto 16px;background:var(--pink);border-radius:var(--radius-blob);display:flex;align-items:center;justify-content:center;font-size:2rem}
+.feature-card:nth-child(2) .feature-icon{background:var(--blue)}
+.feature-card:nth-child(3) .feature-icon{background:var(--yellow)}
+.feature-card:nth-child(4) .feature-icon{background:var(--lavender)}
+.feature-card h3{font-size:1.15rem;margin-bottom:10px;color:var(--brown-dark)}
+.feature-card p{font-size:.9rem;color:var(--text-light);line-height:1.7}
+
+/* ===== MENU ===== */
+.menu{background:linear-gradient(180deg,var(--pink) 0%,var(--milk) 100%)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+.menu-card{background:#fff;border-radius:var(--radius-card);overflow:hidden;box-shadow:var(--shadow-card);transition:transform .4s,box-shadow .4s}
+.menu-card:hover{transform:translateY(-6px) scale(1.01);box-shadow:var(--shadow-float)}
+.menu-card-img{height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.menu-card:nth-child(1) .menu-card-img{background:linear-gradient(135deg,var(--pink),var(--lavender))}
+.menu-card:nth-child(2) .menu-card-img{background:linear-gradient(135deg,var(--blue),var(--pink))}
+.menu-card:nth-child(3) .menu-card-img{background:linear-gradient(135deg,var(--yellow),var(--blue))}
+.menu-card:nth-child(4) .menu-card-img{background:linear-gradient(135deg,var(--lavender),var(--yellow))}
+.menu-card-img svg{width:80px;height:80px;opacity:.7}
+.menu-card-body{padding:24px}
+.menu-card-body h3{font-size:1.15rem;color:var(--brown-dark);margin-bottom:6px}
+.menu-card-body .price{font-size:1.4rem;font-weight:700;color:var(--pink-deep);margin-bottom:10px}
+.menu-card-body .price small{font-size:.8rem;font-weight:400;color:var(--text-light)}
+.menu-card-body p{font-size:.85rem;color:var(--text-light);line-height:1.7}
+.menu-note{text-align:center;margin-top:32px;font-size:.85rem;color:var(--text-light);background:rgba(255,255,255,.7);padding:16px;border-radius:var(--radius-soft)}
+
+/* ===== BEFORE / AFTER ===== */
+.ba{background:var(--milk)}
+.ba-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px}
+.ba-item{border-radius:var(--radius-card);overflow:hidden;box-shadow:var(--shadow-card);background:#fff}
+.ba-slider{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;cursor:col-resize;touch-action:none}
+.ba-slider .ba-img{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--brown)}
+.ba-slider .ba-before{background:linear-gradient(135deg,#e0e0e0,#bdbdbd);z-index:1;clip-path:inset(0 50% 0 0)}
+.ba-slider .ba-after{background:linear-gradient(135deg,var(--pink),var(--lavender));z-index:0}
+.ba-slider .ba-handle{position:absolute;top:0;bottom:0;left:50%;width:4px;background:#fff;z-index:3;transform:translateX(-50%);pointer-events:none}
+.ba-slider .ba-handle::after{content:'⟨ ⟩';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.15);font-size:.7rem;color:var(--brown);letter-spacing:4px}
+.ba-label{position:absolute;bottom:10px;padding:4px 14px;border-radius:100px;font-size:.75rem;font-weight:700;color:#fff;z-index:4;pointer-events:none}
+.ba-label.before{left:10px;background:rgba(141,110,99,.6)}
+.ba-label.after{right:10px;background:rgba(244,143,177,.7)}
+.ba-info{padding:20px 24px}
+.ba-info h3{font-size:1rem;color:var(--brown-dark);margin-bottom:4px}
+.ba-info p{font-size:.85rem;color:var(--text-light)}
+.ba-before-inner,.ba-after-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:8px}
+.ba-before-inner svg,.ba-after-inner svg{width:80px;height:80px;opacity:.5}
+
+/* ===== STAFF ===== */
+.staff{background:linear-gradient(180deg,var(--blue) 0%,var(--milk) 100%)}
+.staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px}
+.staff-card{text-align:center}
+.staff-avatar{width:120px;height:120px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:3rem;box-shadow:var(--shadow-card)}
+.staff-card:nth-child(1) .staff-avatar{background:linear-gradient(135deg,var(--pink),#fff)}
+.staff-card:nth-child(2) .staff-avatar{background:linear-gradient(135deg,var(--blue),#fff)}
+.staff-card:nth-child(3) .staff-avatar{background:linear-gradient(135deg,var(--lavender),#fff)}
+.staff-card h3{font-size:1.1rem;color:var(--brown-dark);margin-bottom:2px}
+.staff-role{font-size:.8rem;color:var(--pink-deep);margin-bottom:12px}
+.staff-bubble{position:relative;background:#fff;border-radius:var(--radius-soft);padding:16px 20px;font-size:.88rem;color:var(--text-light);line-height:1.7;box-shadow:var(--shadow-card)}
+.staff-bubble::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:12px solid #fff}
+
+/* ===== TESTIMONIAL ===== */
+.testimonial{background:var(--yellow);position:relative}
+.testimonial::before{content:'';position:absolute;top:-60px;left:0;right:0;height:80px;background:var(--milk);border-radius:0 0 50% 50%/0 0 100% 100%}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;position:relative;z-index:2}
+.testi-card{background:#fff;border-radius:var(--radius-card);padding:28px;box-shadow:var(--shadow-card);position:relative;transition:transform .4s}
+.testi-card:hover{transform:translateY(-4px)}
+.testi-card .testi-pet{position:absolute;top:-16px;right:20px;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.testi-card:nth-child(1) .testi-pet{background:var(--pink)}
+.testi-card:nth-child(2) .testi-pet{background:var(--blue)}
+.testi-card:nth-child(3) .testi-pet{background:var(--lavender)}
+.testi-stars{color:var(--yellow-mid);font-size:1rem;margin-bottom:10px}
+.testi-text{font-size:.9rem;color:var(--text-light);line-height:1.8;margin-bottom:14px}
+.testi-author{font-size:.85rem;font-weight:700;color:var(--brown-dark)}
+.testi-author span{font-weight:400;color:var(--text-light);font-size:.8rem}
+
+/* ===== ACCESS ===== */
+.access{background:linear-gradient(180deg,var(--milk),var(--lavender))}
+.access-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:768px){.access-wrap{grid-template-columns:1fr}}
+.access-info{background:#fff;border-radius:var(--radius-card);padding:32px;box-shadow:var(--shadow-card)}
+.access-info h3{font-size:1.2rem;color:var(--brown-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.access-info table{width:100%;font-size:.9rem;border-collapse:collapse}
+.access-info td{padding:10px 4px;border-bottom:1px dashed rgba(141,110,99,.15);vertical-align:top}
+.access-info td:first-child{font-weight:700;color:var(--brown-dark);white-space:nowrap;width:90px}
+.access-form{background:#fff;border-radius:var(--radius-card);padding:32px;box-shadow:var(--shadow-card)}
+.access-form h3{font-size:1.2rem;color:var(--brown-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.85rem;color:var(--brown);margin-bottom:6px;font-weight:700}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 16px;border:2px solid var(--pink);border-radius:16px;font-size:.9rem;font-family:var(--font-main);background:var(--milk);color:var(--text);transition:border-color .3s,box-shadow .3s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--pink-deep);box-shadow:0 0 0 4px rgba(244,143,177,.15)}
+.form-group textarea{height:100px;resize:vertical}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--pink-deep),var(--lavender-mid));color:#fff;font-size:1.05rem;font-weight:700;border:none;border-radius:100px;cursor:pointer;font-family:var(--font-main);box-shadow:0 6px 20px rgba(244,143,177,.35);transition:transform .3s,box-shadow .3s}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(244,143,177,.45)}
+
+/* ===== MAP PLACEHOLDER ===== */
+.map-placeholder{width:100%;height:200px;background:linear-gradient(135deg,var(--blue),var(--pink));border-radius:var(--radius-soft);display:flex;align-items:center;justify-content:center;color:var(--brown);font-size:.9rem;margin-top:20px}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--brown-dark);color:rgba(255,255,255,.8);padding:48px 0 24px;text-align:center}
+.footer-logo{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.footer-logo svg{width:24px;height:24px}
+.footer-links{display:flex;justify-content:center;gap:24px;margin:16px 0;font-size:.85rem;flex-wrap:wrap}
+.footer-links a{color:rgba(255,255,255,.7);transition:color .3s}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:.75rem;margin-top:20px;color:rgba(255,255,255,.4)}
+
+/* ===== MOKOMOKO BG SHAPES ===== */
+.moko-shape{position:absolute;border-radius:var(--radius-blob);opacity:.18;pointer-events:none;z-index:0}
+
+/* ===== BACK TO TOP ===== */
+.back-top{position:fixed;bottom:24px;right:24px;width:50px;height:50px;background:var(--pink-deep);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(244,143,177,.4);opacity:0;transform:translateY(20px);transition:opacity .3s,transform .3s;z-index:900}
+.back-top.show{opacity:1;transform:translateY(0)}
+.back-top:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(244,143,177,.5)}
+
+/* ===== WAVE DIVIDER ===== */
+.wave-divider{position:relative;overflow:hidden}
+.wave-divider svg{display:block;width:100%}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav" id="nav">
+<div class="nav-inner">
+<a href="#hero" class="nav-logo">
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+mofu mofu
+</a>
+<div class="nav-links" id="navLinks">
+<a href="#features">サロンの特徴</a>
+<a href="#menu">メニュー</a>
+<a href="#gallery">事例</a>
+<a href="#staff">スタッフ</a>
+<a href="#testimonial">お客様の声</a>
+<a href="#access">ご予約</a>
+</div>
+<div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+<div class="hero-clouds">
+<svg class="cloud" style="top:10%;left:5%;width:clamp(120px,20vw,220px)" viewBox="0 0 200 100"><ellipse cx="60" cy="60" rx="55" ry="35" fill="#fff" opacity=".7"/><ellipse cx="110" cy="50" rx="65" ry="40" fill="#fff" opacity=".6"/><ellipse cx="150" cy="65" rx="45" ry="30" fill="#fff" opacity=".7"/></svg>
+<svg class="cloud" style="top:20%;right:8%;width:clamp(100px,18vw,200px)" viewBox="0 0 200 100"><ellipse cx="50" cy="55" rx="50" ry="30" fill="#fff" opacity=".6"/><ellipse cx="120" cy="50" rx="60" ry="38" fill="#fff" opacity=".5"/><ellipse cx="170" cy="60" rx="35" ry="28" fill="#fff" opacity=".7"/></svg>
+<svg class="cloud" style="bottom:25%;left:15%;width:clamp(90px,15vw,180px)" viewBox="0 0 200 100"><ellipse cx="70" cy="55" rx="55" ry="32" fill="#fff" opacity=".5"/><ellipse cx="130" cy="50" rx="50" ry="35" fill="#fff" opacity=".6"/></svg>
+<svg class="cloud" style="bottom:10%;right:12%;width:clamp(100px,16vw,190px)" viewBox="0 0 200 100"><ellipse cx="55" cy="58" rx="48" ry="30" fill="#fff" opacity=".6"/><ellipse cx="130" cy="52" rx="55" ry="34" fill="#fff" opacity=".5"/></svg>
+</div>
+<div class="hero-animals">
+<svg class="hero-animal" style="top:18%;left:8%;width:clamp(60px,10vw,110px);opacity:.45" viewBox="0 0 100 100">
+<ellipse cx="50" cy="65" rx="30" ry="25" fill="#8d6e63"/>
+<circle cx="50" cy="38" r="20" fill="#8d6e63"/>
+<ellipse cx="36" cy="22" rx="8" ry="12" fill="#8d6e63"/>
+<ellipse cx="64" cy="22" rx="8" ry="12" fill="#8d6e63"/>
+<circle cx="43" cy="36" r="3" fill="#fff"/>
+<circle cx="57" cy="36" r="3" fill="#fff"/>
+<ellipse cx="50" cy="42" rx="4" ry="3" fill="#6d4c41"/>
+<ellipse cx="50" cy="90" rx="10" ry="5" fill="#a1887f"/>
+</svg>
+<svg class="hero-animal" style="bottom:22%;right:10%;width:clamp(50px,9vw,100px);opacity:.4" viewBox="0 0 100 100">
+<ellipse cx="50" cy="62" rx="28" ry="28" fill="#a1887f"/>
+<circle cx="50" cy="35" r="22" fill="#a1887f"/>
+<polygon points="30,20 38,38 22,38" fill="#a1887f"/>
+<polygon points="70,20 78,38 62,38" fill="#a1887f"/>
+<circle cx="42" cy="34" r="3" fill="#fff"/>
+<circle cx="58" cy="34" r="3" fill="#fff"/>
+<ellipse cx="50" cy="40" rx="3" ry="2.5" fill="#795548"/>
+<path d="M44,44 Q50,50 56,44" stroke="#795548" stroke-width="1.5" fill="none"/>
+<line x1="28" y1="36" x2="15" y2="32" stroke="#a1887f" stroke-width="1.2"/>
+<line x1="28" y1="40" x2="14" y2="40" stroke="#a1887f" stroke-width="1.2"/>
+<line x1="72" y1="36" x2="85" y2="32" stroke="#a1887f" stroke-width="1.2"/>
+<line x1="72" y1="40" x2="86" y2="40" stroke="#a1887f" stroke-width="1.2"/>
+<path d="M30,85 Q50,100 70,85" fill="#a1887f"/>
+</svg>
+</div>
+<div class="hero-content">
+<div class="hero-badge">🐾 犬猫トリミングサロン</div>
+<h1>
+まいにち、もふもふ。
+<span class="sub">ふわもこサロン mofu mofu</span>
+</h1>
+<p class="hero-copy">大切な家族を、やさしく、かわいく。<br>ふわふわ・もこもこに仕上げるトリミングサロンです。</p>
+<button class="paw-btn" onclick="document.getElementById('access').scrollIntoView({behavior:'smooth'})">
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#fff"/><circle cx="28" cy="10" r="5" fill="#fff"/><circle cx="7" cy="22" r="4" fill="#fff"/><circle cx="33" cy="22" r="4" fill="#fff"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#fff"/></svg>
+ご予約はこちら
+</button>
+</div>
+<div class="scroll-hint">
+<span>scroll</span>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 8L10 14L16 8" stroke="#8d6e63" stroke-width="2" stroke-linecap="round"/></svg>
+</div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features" id="features">
+<div class="container">
+<div class="section-title reveal">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+サロンの特徴
+</h2>
+<p>mofu mofu が選ばれる4つの理由</p>
+</div>
+<div class="features-grid">
+<div class="feature-card reveal reveal-delay-0">
+<div class="feature-icon">🛁</div>
+<h3>こだわりのオーガニックシャンプー</h3>
+<p>肌にやさしい天然由来成分100%のシャンプーを使用。敏感肌の子やパピーにも安心してお任せいただけます。</p>
+</div>
+<div class="feature-card reveal reveal-delay-1">
+<div class="feature-icon">✂️</div>
+<h3>経験豊富なトリマー</h3>
+<p>JKC公認トリマーA級資格保有スタッフが在籍。犬種・猫種ごとの魅力を最大限に引き出すカットをご提案します。</p>
+</div>
+<div class="feature-card reveal reveal-delay-2">
+<div class="feature-icon">🏠</div>
+<h3>ストレスフリーな空間</h3>
+<p>わんちゃん・ねこちゃん別々の待合スペースを完備。アロマとヒーリングミュージックでリラックスできる環境です。</p>
+</div>
+<div class="feature-card reveal reveal-delay-3">
+<div class="feature-icon">📸</div>
+<h3>トリミング後の撮影サービス</h3>
+<p>毎回トリミング後にプロ仕様の撮影ブースで記念写真を撮影。季節ごとの背景でSNS映えもばっちりです。</p>
+</div>
+</div>
+</div>
+<div class="moko-shape" style="width:200px;height:200px;background:var(--pink);top:-40px;right:-60px"></div>
+<div class="moko-shape" style="width:150px;height:150px;background:var(--blue);bottom:-30px;left:-40px"></div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="menu" id="menu">
+<div class="container">
+<div class="section-title reveal">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+メニュー・料金
+</h2>
+<p>すべてのコースにシャンプー・爪切り・耳掃除・肛門腺絞りが含まれます</p>
+</div>
+<div class="menu-grid">
+<div class="menu-card reveal">
+<div class="menu-card-img">
+<svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="45" r="25" fill="rgba(255,255,255,.5)"/><circle cx="40" cy="28" r="16" fill="rgba(255,255,255,.5)"/><ellipse cx="30" cy="16" rx="6" ry="10" fill="rgba(255,255,255,.5)"/><ellipse cx="50" cy="16" rx="6" ry="10" fill="rgba(255,255,255,.5)"/></svg>
+</div>
+<div class="menu-card-body">
+<h3>🐾 シャンプーコース</h3>
+<div class="price">¥3,500〜 <small>（税込）</small></div>
+<p>シャンプー＆ブローに加え、爪切り・耳掃除・肛門腺絞りをセットに。毎日のケアにおすすめのベーシックコース。</p>
+</div>
+</div>
+<div class="menu-card reveal reveal-delay-1">
+<div class="menu-card-img">
+<svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="42" r="22" fill="rgba(255,255,255,.5)"/><circle cx="40" cy="24" r="18" fill="rgba(255,255,255,.5)"/><polygon points="25,10 32,26 18,26" fill="rgba(255,255,255,.5)"/><polygon points="55,10 62,26 48,26" fill="rgba(255,255,255,.5)"/></svg>
+</div>
+<div class="menu-card-body">
+<h3>🐾 トリミングコース</h3>
+<div class="price">¥5,500〜 <small>（税込）</small></div>
+<p>シャンプーコースにデザインカットをプラス。犬種に合わせたスタイルから、ご要望のオリジナルカットまで対応。</p>
+</div>
+</div>
+<div class="menu-card reveal reveal-delay-2">
+<div class="menu-card-img">
+<svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="rgba(255,255,255,.5)"/><circle cx="28" cy="28" r="6" fill="rgba(255,255,255,.3)"/><circle cx="52" cy="28" r="6" fill="rgba(255,255,255,.3)"/><circle cx="40" cy="50" r="8" fill="rgba(255,255,255,.3)"/></svg>
+</div>
+<div class="menu-card-body">
+<h3>🐾 スペシャルスパコース</h3>
+<div class="price">¥8,800〜 <small>（税込）</small></div>
+<p>炭酸泉浴＋マイクロバブルバスで毛穴の奥まですっきり。被毛のボリュームアップと極上のふわもこ仕上がりに。</p>
+</div>
+</div>
+<div class="menu-card reveal reveal-delay-3">
+<div class="menu-card-img">
+<svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="38" r="22" fill="rgba(255,255,255,.5)"/><circle cx="40" cy="22" r="16" fill="rgba(255,255,255,.5)"/><polygon points="28,10 33,22 23,22" fill="rgba(255,255,255,.4)"/><polygon points="52,10 57,22 47,22" fill="rgba(255,255,255,.4)"/><path d="M28,62 Q40,72 52,62" stroke="rgba(255,255,255,.5)" stroke-width="3" fill="none"/></svg>
+</div>
+<div class="menu-card-body">
+<h3>🐾 猫ちゃん専用コース</h3>
+<div class="price">¥6,600〜 <small>（税込）</small></div>
+<p>猫ちゃんの性格に合わせた丁寧な施術。完全個室・短時間仕上げでストレスを最小限に抑えます。</p>
+</div>
+</div>
+</div>
+<p class="menu-note reveal">※ 料金は体重・毛量・もつれ具合により変動します。初回カウンセリングにて正確なお見積もりをご案内します。</p>
+</div>
+</section>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section class="ba" id="gallery">
+<div class="container">
+<div class="section-title reveal">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+トリミング事例
+</h2>
+<p>スライダーを左右にドラッグしてBefore / Afterをご覧ください</p>
+</div>
+<div class="ba-grid">
+<div class="ba-item reveal">
+<div class="ba-slider" data-ba>
+<div class="ba-img ba-before"><div class="ba-before-inner">
+<svg viewBox="0 0 80 80"><circle cx="40" cy="45" r="28" fill="#9e9e9e"/><circle cx="40" cy="24" r="18" fill="#9e9e9e"/><ellipse cx="28" cy="12" rx="7" ry="11" fill="#9e9e9e"/><ellipse cx="52" cy="12" rx="7" ry="11" fill="#9e9e9e"/><path d="M20,30 Q40,5 60,30" stroke="#bdbdbd" stroke-width="3" fill="none"/></svg>
+<span style="font-size:.8rem">Before</span>
+</div></div>
+<div class="ba-img ba-after"><div class="ba-after-inner">
+<svg viewBox="0 0 80 80"><circle cx="40" cy="45" r="25" fill="#f48fb1" opacity=".6"/><circle cx="40" cy="26" r="16" fill="#f48fb1" opacity=".6"/><ellipse cx="30" cy="15" rx="6" ry="10" fill="#f48fb1" opacity=".6"/><ellipse cx="50" cy="15" rx="6" ry="10" fill="#f48fb1" opacity=".6"/><circle cx="34" cy="24" r="2.5" fill="#fff"/><circle cx="46" cy="24" r="2.5" fill="#fff"/></svg>
+<span style="font-size:.8rem">After ✨</span>
+</div></div>
+<div class="ba-handle"></div>
+<span class="ba-label before">Before</span>
+<span class="ba-label after">After</span>
+</div>
+<div class="ba-info"><h3>トイプードル・ココちゃん</h3><p>もこもこテディベアカットでふわふわに仕上げました🧸</p></div>
+</div>
+<div class="ba-item reveal reveal-delay-1">
+<div class="ba-slider" data-ba>
+<div class="ba-img ba-before"><div class="ba-before-inner">
+<svg viewBox="0 0 80 80"><circle cx="40" cy="42" r="24" fill="#9e9e9e"/><circle cx="40" cy="22" r="18" fill="#9e9e9e"/><polygon points="26,8 32,22 20,22" fill="#9e9e9e"/><polygon points="54,8 60,22 48,22" fill="#9e9e9e"/></svg>
+<span style="font-size:.8rem">Before</span>
+</div></div>
+<div class="ba-img ba-after"><div class="ba-after-inner">
+<svg viewBox="0 0 80 80"><circle cx="40" cy="42" r="22" fill="#b3e5fc" opacity=".6"/><circle cx="40" cy="24" r="16" fill="#b3e5fc" opacity=".6"/><polygon points="28,10 33,24 23,24" fill="#b3e5fc" opacity=".6"/><polygon points="52,10 57,24 47,24" fill="#b3e5fc" opacity=".6"/><circle cx="35" cy="22" r="2" fill="#fff"/><circle cx="45" cy="22" r="2" fill="#fff"/></svg>
+<span style="font-size:.8rem">After ✨</span>
+</div></div>
+<div class="ba-handle"></div>
+<span class="ba-label before">Before</span>
+<span class="ba-label after">After</span>
+</div>
+<div class="ba-info"><h3>スコティッシュフォールド・むぎくん</h3><p>シャンプー＆ブローでふわさらの手触りに仕上がりました🐱</p></div>
+</div>
+<div class="ba-item reveal reveal-delay-2">
+<div class="ba-slider" data-ba>
+<div class="ba-img ba-before"><div class="ba-before-inner">
+<svg viewBox="0 0 80 80"><ellipse cx="40" cy="48" r="26" ry="22" fill="#9e9e9e"/><circle cx="40" cy="26" r="18" fill="#9e9e9e"/><ellipse cx="28" cy="14" rx="8" ry="10" fill="#9e9e9e"/><ellipse cx="52" cy="14" rx="8" ry="10" fill="#9e9e9e"/></svg>
+<span style="font-size:.8rem">Before</span>
+</div></div>
+<div class="ba-img ba-after"><div class="ba-after-inner">
+<svg viewBox="0 0 80 80"><ellipse cx="40" cy="48" rx="24" ry="20" fill="#ce93d8" opacity=".5"/><circle cx="40" cy="28" r="16" fill="#ce93d8" opacity=".5"/><ellipse cx="30" cy="16" rx="7" ry="9" fill="#ce93d8" opacity=".5"/><ellipse cx="50" cy="16" rx="7" ry="9" fill="#ce93d8" opacity=".5"/><circle cx="35" cy="26" r="2.5" fill="#fff"/><circle cx="45" cy="26" r="2.5" fill="#fff"/></svg>
+<span style="font-size:.8rem">After ✨</span>
+</div></div>
+<div class="ba-handle"></div>
+<span class="ba-label before">Before</span>
+<span class="ba-label after">After</span>
+</div>
+<div class="ba-info"><h3>ポメラニアン・モフくん</h3><p>柴カットでスッキリ！夏も快適なさっぱりスタイルに🌻</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== STAFF ===== -->
+<section class="staff" id="staff">
+<div class="container">
+<div class="section-title reveal">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+スタッフ紹介
+</h2>
+<p>動物が大好きなスタッフがお待ちしています</p>
+</div>
+<div class="staff-grid">
+<div class="staff-card reveal">
+<div class="staff-avatar">🐶</div>
+<h3>さくら</h3>
+<p class="staff-role">オーナー / トリマー歴12年</p>
+<div class="staff-bubble">
+「わんちゃん・ねこちゃんの気持ちに寄り添った施術を大切にしています。初めてのサロンで緊張する子も、帰るころには尻尾フリフリになってくれるのが私の喜びです♪」
+</div>
+</div>
+<div class="staff-card reveal reveal-delay-1">
+<div class="staff-avatar">🐱</div>
+<h3>ゆう</h3>
+<p class="staff-role">トリマー / 猫ちゃんスペシャリスト</p>
+<div class="staff-bubble">
+「猫ちゃん専門の経験を活かして、ストレスをかけない丁寧な施術を心がけています。猫ちゃんのトリミングもお気軽にご相談くださいね！」
+</div>
+</div>
+<div class="staff-card reveal reveal-delay-2">
+<div class="staff-avatar">🐾</div>
+<h3>りく</h3>
+<p class="staff-role">トリマー / デザインカット担当</p>
+<div class="staff-bubble">
+「SNSで話題のカットスタイルから、飼い主さまのご要望に合わせたオリジナルスタイルまで、なんでもお任せください！かわいいをとことん追求します✨」
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== TESTIMONIAL ===== -->
+<section class="testimonial" id="testimonial">
+<div class="container">
+<div class="section-title reveal" style="padding-top:20px">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+お客様の声
+</h2>
+<p>mofu mofu をご利用いただいたお客様からのメッセージ</p>
+</div>
+<div class="testi-grid">
+<div class="testi-card reveal">
+<div class="testi-pet">🐩</div>
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">「初めてのサロンでガタガタ震えていたうちの子が、2回目からは自分から入口に向かうようになりました。スタッフさんの優しさが伝わっているんだと思います。仕上がりもいつも最高にかわいいです！」</p>
+<p class="testi-author">M.T さま <span>トイプードル・ラテちゃん（3歳）</span></p>
+</div>
+<div class="testi-card reveal reveal-delay-1">
+<div class="testi-pet">😺</div>
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">「猫のトリミングを受けてくれるサロンが少ない中、ここは猫専門のスタッフさんがいるので安心。完全個室で施術してもらえるので、人見知りのうちの子も落ち着いて過ごせています。」</p>
+<p class="testi-author">K.S さま <span>スコティッシュ・まるくん（5歳）</span></p>
+</div>
+<div class="testi-card reveal reveal-delay-2">
+<div class="testi-pet">🐕</div>
+<div class="testi-stars">★★★★★</div>
+<p class="testi-text">「毎回トリミング後の写真撮影が楽しみで、家族みんなで見返しています。季節ごとの飾り付けがかわいくて、写真をSNSにアップするとたくさんいいねがもらえます（笑）」</p>
+<p class="testi-author">A.N さま <span>ポメラニアン・こむぎちゃん（2歳）</span></p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== ACCESS ===== -->
+<section class="access" id="access">
+<div class="container">
+<div class="section-title reveal">
+<h2>
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+アクセス・ご予約
+</h2>
+<p>お気軽にお問い合わせください</p>
+</div>
+<div class="access-wrap">
+<div class="access-info reveal">
+<h3>🏠 サロン情報</h3>
+<table>
+<tr><td>住所</td><td>〒150-0001<br>東京都渋谷区神宮前3-12-8<br>ふわもこビル 1F</td></tr>
+<tr><td>電話</td><td><a href="tel:03-1234-5678" style="color:var(--pink-deep);font-weight:700">03-1234-5678</a></td></tr>
+<tr><td>営業時間</td><td>10:00 〜 19:00（最終受付 17:30）</td></tr>
+<tr><td>定休日</td><td>毎週水曜日・第3火曜日</td></tr>
+<tr><td>駐車場</td><td>2台分あり（無料）</td></tr>
+<tr><td>アクセス</td><td>東京メトロ「表参道」駅 A2出口より徒歩5分</td></tr>
+</table>
+<div class="map-placeholder">
+<span>🗺️ Google Map がここに表示されます</span>
+</div>
+</div>
+<div class="access-form reveal reveal-delay-1">
+<h3>📅 オンライン予約</h3>
+<form onsubmit="event.preventDefault();alert('ご予約ありがとうございます！確認メールをお送りします🐾')">
+<div class="form-group">
+<label>飼い主さまのお名前</label>
+<input type="text" placeholder="例：山田 花子" required>
+</div>
+<div class="form-group">
+<label>メールアドレス</label>
+<input type="email" placeholder="例：hanako@example.com" required>
+</div>
+<div class="form-group">
+<label>お電話番号</label>
+<input type="tel" placeholder="例：090-1234-5678">
+</div>
+<div class="form-group">
+<label>ペットの種類</label>
+<select>
+<option>わんちゃん（小型犬）</option>
+<option>わんちゃん（中型犬）</option>
+<option>わんちゃん（大型犬）</option>
+<option>ねこちゃん</option>
+</select>
+</div>
+<div class="form-group">
+<label>ご希望コース</label>
+<select>
+<option>シャンプーコース</option>
+<option>トリミングコース</option>
+<option>スペシャルスパコース</option>
+<option>猫ちゃん専用コース</option>
+</select>
+</div>
+<div class="form-group">
+<label>ご希望日時・ご要望</label>
+<textarea placeholder="ご希望の日時やカットスタイルなど、お気軽にご記入ください"></textarea>
+</div>
+<button type="submit" class="submit-btn">🐾 予約する</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+<div class="container">
+<div class="footer-logo">
+<svg viewBox="0 0 40 40" fill="none"><circle cx="12" cy="10" r="5" fill="#f48fb1"/><circle cx="28" cy="10" r="5" fill="#f48fb1"/><circle cx="7" cy="22" r="4" fill="#f48fb1"/><circle cx="33" cy="22" r="4" fill="#f48fb1"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#f48fb1"/></svg>
+ふわもこサロン mofu mofu
+</div>
+<p style="font-size:.85rem;margin-bottom:4px">まいにち、もふもふ。</p>
+<div class="footer-links">
+<a href="#features">サロンの特徴</a>
+<a href="#menu">メニュー</a>
+<a href="#gallery">トリミング事例</a>
+<a href="#staff">スタッフ</a>
+<a href="#testimonial">お客様の声</a>
+<a href="#access">ご予約</a>
+</div>
+<p class="footer-copy">© 2026 ふわもこサロン mofu mofu. All Rights Reserved.</p>
+</div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="ページ上部へ戻る">↑</button>
+
+<!-- ===== PAW TRAIL CONTAINER ===== -->
+<div class="paw-trail" id="pawTrail"></div>
+
+<script>
+/* === NAV SCROLL & HAMBURGER === */
+const nav=document.getElementById('nav'),ham=document.getElementById('hamburger'),links=document.getElementById('navLinks'),backTop=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{
+nav.classList.toggle('scrolled',window.scrollY>50);
+backTop.classList.toggle('show',window.scrollY>600);
+});
+ham.addEventListener('click',()=>{ham.classList.toggle('active');links.classList.toggle('open')});
+links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('active');links.classList.remove('open')}));
+
+/* === INTERSECTION OBSERVER FOR REVEAL === */
+const revealObserver=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObserver.unobserve(e.target)}})
+},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* === BEFORE/AFTER SLIDER === */
+document.querySelectorAll('[data-ba]').forEach(slider=>{
+const handle=slider.querySelector('.ba-handle');
+const before=slider.querySelector('.ba-before');
+let dragging=false;
+function move(x){
+const rect=slider.getBoundingClientRect();
+let pct=((x-rect.left)/rect.width)*100;
+pct=Math.max(2,Math.min(98,pct));
+before.style.clipPath=`inset(0 ${100-pct}% 0 0)`;
+handle.style.left=pct+'%';
+}
+slider.addEventListener('mousedown',e=>{dragging=true;move(e.clientX)});
+slider.addEventListener('touchstart',e=>{dragging=true;move(e.touches[0].clientX)},{passive:true});
+window.addEventListener('mousemove',e=>{if(dragging)move(e.clientX)});
+window.addEventListener('touchmove',e=>{if(dragging)move(e.touches[0].clientX)},{passive:true});
+window.addEventListener('mouseup',()=>dragging=false);
+window.addEventListener('touchend',()=>dragging=false);
+});
+
+/* === PAW TRAIL ON SCROLL === */
+(function(){
+const trail=document.getElementById('pawTrail');
+const pawSVG=`<svg viewBox="0 0 40 40" width="28" height="28" fill="none"><circle cx="12" cy="10" r="4.5" fill="#f48fb1" opacity=".45"/><circle cx="28" cy="10" r="4.5" fill="#f48fb1" opacity=".45"/><circle cx="7" cy="20" r="3.5" fill="#f48fb1" opacity=".45"/><circle cx="33" cy="20" r="3.5" fill="#f48fb1" opacity=".45"/><ellipse cx="20" cy="26" rx="9" ry="8" fill="#f48fb1" opacity=".45"/></svg>`;
+let lastScroll=0;let pawCount=0;const maxPaws=18;
+const paws=[];
+window.addEventListener('scroll',()=>{
+const st=window.scrollY;
+if(Math.abs(st-lastScroll)>220&&pawCount<200){
+lastScroll=st;
+const el=document.createElement('div');
+el.className='paw-step';
+el.innerHTML=pawSVG;
+const side=pawCount%2===0;
+el.style.left=side?Math.random()*30+'%':(70+Math.random()*25)+'%';
+el.style.top=(st+window.innerHeight*(.3+Math.random()*.4))+'px';
+el.style.transform=`rotate(${side?-15+Math.random()*10:5+Math.random()*10}deg)`;
+el.style.position='absolute';
+trail.appendChild(el);
+requestAnimationFrame(()=>el.style.opacity='1');
+paws.push(el);
+if(paws.length>maxPaws){const old=paws.shift();old.style.opacity='0';setTimeout(()=>old.remove(),600)}
+pawCount++;
+}
+});
+})();
+</script>
+</body>
+</html>

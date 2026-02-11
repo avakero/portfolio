@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FORNO VIVO（フォルノ ヴィーヴォ）— 薪窯で焼き上げる本格ナポリピッツァとモダンイタリアンのレストラン。窯の鼓動が、今夜の一皿になる。">
+<title>FORNO VIVO | 薪窯ナポリピッツァ＆モダンイタリアン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#1a1a1a;--red:#d94032;--green:#3a7a34;--white:#fff8f0;--beige:#e8d5b8;--gold:#c9a840;
+--red-dark:#b8302a;--green-light:#4a9a44;
+--font-serif:'Playfair Display','Noto Serif JP',serif;
+--font-serif-jp:'Noto Serif JP',serif;
+--font-sans:'Noto Sans JP',sans-serif;
+--section-pad:clamp(60px,10vw,120px) clamp(16px,5vw,80px);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);color:var(--black);background:var(--white);overflow-x:hidden;line-height:1.8;font-weight:400}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:4px}
+
+/* === NAV === */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:16px clamp(16px,4vw,60px);display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+.nav.scrolled{background:rgba(26,26,26,.95);backdrop-filter:blur(10px);padding:10px clamp(16px,4vw,60px)}
+.nav-logo{font-family:var(--font-serif);color:var(--white);font-size:clamp(18px,2.5vw,26px);font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:clamp(12px,2vw,28px);align-items:center}
+.nav-links a{color:var(--white);font-family:var(--font-serif);font-size:clamp(10px,1.1vw,14px);letter-spacing:2px;text-transform:uppercase;position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--red);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-links a:hover{color:var(--red)}
+.nav-cta{background:var(--red);color:var(--white)!important;padding:8px 20px;border-radius:2px;font-weight:700;transition:all .3s!important}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{background:var(--gold)!important;box-shadow:0 0 20px rgba(217,64,50,.5)}
+
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:28px;height:2px;background:var(--white);transition:all .3s}
+
+/* === HERO === */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--black);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(217,64,50,.15),transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(201,168,64,.1),transparent 40%)}
+.hero-content{position:relative;z-index:10;text-align:center;padding:0 20px}
+.hero-label{font-family:var(--font-serif);color:var(--gold);font-size:clamp(11px,1.2vw,16px);letter-spacing:clamp(4px,1vw,12px);text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-title{font-family:var(--font-serif);color:var(--white);font-size:clamp(42px,8vw,120px);font-weight:900;line-height:1;letter-spacing:clamp(2px,.5vw,8px);text-transform:uppercase;margin-bottom:8px;opacity:0;animation:fadeUp .8s .7s forwards}
+.hero-title span{color:var(--red)}
+.hero-subtitle-jp{font-family:var(--font-serif-jp);color:var(--beige);font-size:clamp(12px,1.4vw,20px);letter-spacing:clamp(2px,.8vw,10px);margin-bottom:8px;font-weight:400;opacity:0;animation:fadeUp .8s .9s forwards}
+.hero-catch{font-family:var(--font-serif-jp);color:var(--white);font-size:clamp(16px,2.4vw,32px);font-weight:700;margin:clamp(16px,3vw,40px) 0;line-height:1.6;opacity:0;animation:fadeUp .8s 1.1s forwards}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .8s 1.3s forwards}
+.btn{display:inline-block;padding:clamp(12px,1.5vw,18px) clamp(28px,3vw,48px);font-family:var(--font-serif);font-size:clamp(12px,1.2vw,16px);letter-spacing:3px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn-red{background:var(--red);color:var(--white);border:2px solid var(--red)}
+.btn-red:hover{background:transparent;color:var(--red);box-shadow:0 0 30px rgba(217,64,50,.4)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid var(--gold)}
+.btn-outline:hover{background:var(--gold);color:var(--black)}
+
+/* Flame SVG */
+.flame-container{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(300px,60vw,800px);height:clamp(200px,40vh,400px);opacity:.7;pointer-events:none}
+.flame-path{animation:flicker 2s ease-in-out infinite alternate}
+.flame-path:nth-child(2){animation-delay:.3s;animation-duration:1.7s}
+.flame-path:nth-child(3){animation-delay:.6s;animation-duration:2.3s}
+.flame-path:nth-child(4){animation-delay:.15s;animation-duration:1.5s}
+
+/* Spark Particles */
+.spark{position:absolute;width:4px;height:4px;border-radius:50%;pointer-events:none}
+@keyframes sparkRise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-200px) translateX(var(--dx)) scale(0)}}
+@keyframes flicker{0%{transform:scaleY(1) scaleX(1);opacity:.8}50%{transform:scaleY(1.1) scaleX(.95);opacity:1}100%{transform:scaleY(.9) scaleX(1.05);opacity:.7}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Scroll Indicator */
+.scroll-indicator{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:10;opacity:0;animation:fadeIn 1s 2s forwards}
+.scroll-arrow{width:24px;height:24px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);animation:scrollBounce 2s infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0);opacity:1}50%{transform:rotate(45deg) translate(6px,6px);opacity:.4}}
+.scroll-text{color:var(--gold);font-family:var(--font-serif);font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+
+/* === SCROLL ANIMATIONS === */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s,transform .8s}
+.reveal.active{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-60px);transition:opacity .8s,transform .8s}
+.reveal-left.active{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(60px);transition:opacity .8s,transform .8s}
+.reveal-right.active{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.9);transition:opacity .8s,transform .8s}
+.reveal-scale.active{opacity:1;transform:scale(1)}
+
+/* === SECTION COMMON === */
+.section-label{font-family:var(--font-serif);font-size:clamp(10px,1.1vw,14px);letter-spacing:clamp(4px,1vw,10px);text-transform:uppercase;margin-bottom:8px}
+.section-title{font-family:var(--font-serif-jp);font-size:clamp(24px,3.5vw,48px);font-weight:900;line-height:1.4;margin-bottom:clamp(12px,2vw,24px)}
+.section-line{width:60px;height:3px;background:var(--red);margin-bottom:clamp(20px,3vw,40px)}
+.section-line.center{margin-left:auto;margin-right:auto}
+
+/* === FILOSOFIA === */
+.filosofia{padding:var(--section-pad);background:var(--white);position:relative;overflow:hidden}
+.filosofia::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--green),var(--white),var(--red))}
+.filo-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:center;margin-top:clamp(20px,4vw,60px)}
+.filo-text p{font-size:clamp(14px,1.1vw,17px);line-height:2;margin-bottom:1.2em;color:#444}
+.filo-text .accent{color:var(--red);font-weight:700}
+
+/* Dough Animation */
+.dough-wrap{display:flex;justify-content:center;align-items:center;position:relative}
+.dough-circle{width:clamp(200px,22vw,320px);height:clamp(200px,22vw,320px);border-radius:50%;background:radial-gradient(circle,var(--beige),#d4b896);border:3px dashed var(--gold);animation:doughSpin 6s linear infinite;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(0,0,0,.08)}
+.dough-circle::after{content:'🍕';font-size:clamp(40px,5vw,72px);animation:doughSpinReverse 6s linear infinite}
+@keyframes doughSpin{0%{transform:rotate(0) scale(1)}25%{transform:rotate(90deg) scale(1.08)}50%{transform:rotate(180deg) scale(1)}75%{transform:rotate(270deg) scale(.95)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes doughSpinReverse{0%{transform:rotate(0)}100%{transform:rotate(-360deg)}}
+.dough-label{position:absolute;bottom:-20px;font-family:var(--font-serif);font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+
+/* === PIZZA CROSS SECTION CSS ART === */
+.pizza-art{width:clamp(180px,18vw,260px);height:clamp(100px,10vw,140px);position:relative;margin:30px auto 0}
+.pizza-layer{position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-radius:50% 50% 0 0/100% 100% 0 0}
+.pizza-crust{width:100%;height:100%;background:linear-gradient(to top,#c4944a,var(--beige));z-index:1}
+.pizza-sauce{width:90%;height:75%;background:linear-gradient(to top,var(--red),#e55a4f);z-index:2;bottom:0}
+.pizza-cheese{width:85%;height:55%;background:linear-gradient(to top,#fff3d6,#ffe8a0);z-index:3;bottom:0}
+.pizza-topping{width:78%;height:35%;background:linear-gradient(to top,var(--green-light),var(--green));z-index:4;bottom:0;opacity:.7}
+
+/* === MENU === */
+.menu-section{padding:var(--section-pad);background:var(--black);color:var(--white);position:relative}
+.menu-header{text-align:center;margin-bottom:clamp(30px,5vw,60px)}
+.menu-header .section-label{color:var(--gold)}
+.menu-header .section-title{color:var(--white)}
+
+/* Chalkboard Style */
+.chalkboard{background:#2a2a2a;border:3px solid #555;border-radius:4px;padding:clamp(24px,3vw,50px);position:relative;margin-bottom:clamp(30px,4vw,60px)}
+.chalkboard::before{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,.08);border-radius:2px;pointer-events:none}
+.chalk-title{font-family:var(--font-serif);font-size:clamp(18px,2.2vw,28px);color:var(--white);text-align:center;margin-bottom:clamp(16px,2vw,30px);letter-spacing:3px;text-transform:uppercase;text-shadow:0 0 10px rgba(255,255,255,.1)}
+.menu-cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(20px,3vw,40px)}
+.menu-cat h3{font-family:var(--font-serif);color:var(--gold);font-size:clamp(14px,1.3vw,18px);letter-spacing:3px;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:8px;margin-bottom:16px}
+.menu-item{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;gap:8px}
+.menu-item-name{font-family:var(--font-serif);font-size:clamp(13px,1.1vw,16px);color:var(--beige)}
+.menu-item-name small{display:block;font-family:var(--font-sans);font-size:clamp(10px,.8vw,12px);color:#999;font-weight:300;margin-top:2px}
+.menu-item-dots{flex:1;border-bottom:1px dotted rgba(255,255,255,.2);margin:0 8px;min-width:20px}
+.menu-item-price{font-family:var(--font-serif);color:var(--gold);font-size:clamp(13px,1.1vw,16px);white-space:nowrap}
+
+/* White Paper Course */
+.course-paper{background:var(--white);color:var(--black);padding:clamp(24px,3vw,50px);border-radius:4px;position:relative;overflow:hidden}
+.course-paper::before{content:'';position:absolute;top:0;right:0;width:40px;height:40px;background:linear-gradient(135deg,transparent 50%,var(--beige) 50%)}
+.course-title{font-family:var(--font-serif);font-size:clamp(20px,2.5vw,32px);color:var(--black);text-align:center;margin-bottom:8px;font-style:italic}
+.course-subtitle{text-align:center;font-size:clamp(12px,1vw,14px);color:#888;margin-bottom:clamp(20px,3vw,40px);font-family:var(--font-serif);letter-spacing:2px}
+.course-items{max-width:600px;margin:0 auto}
+.course-item{text-align:center;padding:clamp(16px,2vw,28px) 0;border-bottom:1px solid var(--beige);opacity:0;transform:translateY(20px);transition:all .6s}
+.course-item.visible{opacity:1;transform:translateY(0)}
+.course-item-label{font-family:var(--font-serif);font-size:clamp(10px,.9vw,12px);letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.course-item-name{font-family:var(--font-serif);font-size:clamp(16px,1.6vw,22px);font-style:italic;margin-bottom:4px}
+.course-item-desc{font-size:clamp(12px,1vw,14px);color:#777}
+.course-price{text-align:center;margin-top:clamp(16px,2vw,30px);font-family:var(--font-serif);font-size:clamp(20px,2.2vw,28px);color:var(--red);font-weight:700}
+
+/* === INGREDIENTI === */
+.ingredienti{padding:var(--section-pad);background:linear-gradient(180deg,var(--white),#f5efe6);position:relative}
+.ingr-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:start;margin-top:clamp(20px,3vw,40px)}
+.italy-map-wrap{position:relative;display:flex;justify-content:center}
+.italy-map-wrap svg{width:clamp(200px,24vw,360px);height:auto}
+.map-pin{cursor:pointer;transition:transform .3s}
+.map-pin:hover{transform:scale(1.2)}
+.ingr-list{display:flex;flex-direction:column;gap:clamp(16px,2vw,28px)}
+.ingr-card{display:flex;gap:16px;align-items:flex-start;padding:clamp(12px,1.5vw,20px);background:var(--white);border-radius:8px;border-left:4px solid var(--red);box-shadow:0 2px 12px rgba(0,0,0,.05);transition:transform .3s,box-shadow .3s}
+.ingr-card:hover{transform:translateX(8px);box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.ingr-icon{font-size:clamp(24px,2.5vw,36px);flex-shrink:0}
+.ingr-card h4{font-family:var(--font-serif-jp);font-size:clamp(14px,1.2vw,18px);font-weight:700;margin-bottom:4px}
+.ingr-card .origin{font-family:var(--font-serif);font-size:clamp(10px,.9vw,12px);color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.ingr-card p{font-size:clamp(12px,1vw,14px);color:#666;line-height:1.7}
+
+/* === PIZZAIOLO === */
+.pizzaiolo{padding:var(--section-pad);background:var(--black);color:var(--white);position:relative;overflow:hidden}
+.pizzaiolo::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--green),var(--white),var(--red))}
+.chef-intro{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,4vw,60px);align-items:start;margin-top:clamp(20px,3vw,40px)}
+.chef-portrait{width:clamp(150px,16vw,240px);height:clamp(190px,20vw,300px);background:linear-gradient(135deg,#333,#555);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:80px;border:3px solid var(--gold);position:relative;overflow:hidden}
+.chef-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,.6),transparent)}
+.chef-name{font-family:var(--font-serif);font-size:clamp(20px,2.5vw,32px);margin-bottom:4px}
+.chef-name-en{font-family:var(--font-serif);font-size:clamp(12px,1.1vw,16px);color:var(--gold);letter-spacing:3px;margin-bottom:clamp(12px,1.5vw,20px)}
+.chef-desc{font-size:clamp(13px,1.1vw,16px);color:#ccc;line-height:2;margin-bottom:clamp(20px,3vw,40px)}
+
+/* Timeline */
+.timeline{position:relative;padding-left:clamp(30px,4vw,50px)}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--green),var(--white),var(--red))}
+.tl-item{position:relative;margin-bottom:clamp(20px,2.5vw,36px);padding-left:clamp(16px,2vw,30px)}
+.tl-item::before{content:'';position:absolute;left:-6px;top:6px;width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);background:var(--black);z-index:1;transition:background .3s}
+.tl-item:hover::before{background:var(--gold)}
+.tl-year{font-family:var(--font-serif);font-size:clamp(12px,1vw,14px);color:var(--gold);letter-spacing:2px;margin-bottom:2px}
+.tl-place{font-family:var(--font-serif);font-size:clamp(16px,1.4vw,20px);margin-bottom:2px}
+.tl-place .flag{margin-right:6px}
+.tl-desc{font-size:clamp(12px,1vw,14px);color:#999}
+
+/* === ATMOSFERA === */
+.atmosfera{min-height:80vh;display:grid;grid-template-columns:1fr 1fr;position:relative}
+.atmos-half{position:relative;padding:clamp(40px,5vw,80px);display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-height:50vh}
+.atmos-left{background:linear-gradient(135deg,#1a1a1a,#2a2020);color:var(--white)}
+.atmos-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 70%,rgba(217,64,50,.1),transparent);pointer-events:none}
+.atmos-right{background:linear-gradient(135deg,var(--beige),var(--white));color:var(--black)}
+.atmos-icon{font-size:clamp(40px,5vw,64px);margin-bottom:16px}
+.atmos-title{font-family:var(--font-serif);font-size:clamp(20px,2.5vw,32px);margin-bottom:clamp(12px,1.5vw,20px)}
+.atmos-left .atmos-title{color:var(--red)}
+.atmos-right .atmos-title{color:var(--green)}
+.atmos-text{font-size:clamp(13px,1.1vw,16px);line-height:2;opacity:.85}
+.atmos-features{margin-top:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:10px}
+.atmos-feat{display:flex;align-items:center;gap:10px;font-size:clamp(12px,1vw,14px)}
+.atmos-feat .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.atmos-left .dot{background:var(--red)}
+.atmos-right .dot{background:var(--green)}
+
+/* === VOCE === */
+.voce{padding:var(--section-pad);background:var(--white);text-align:center}
+.voce-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(20px,3vw,36px);margin-top:clamp(24px,3vw,48px)}
+.voce-card{background:var(--white);border:1px solid var(--beige);border-radius:8px;padding:clamp(24px,2.5vw,40px);text-align:left;transition:transform .3s,box-shadow .3s;position:relative}
+.voce-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,.08)}
+.voce-card::before{content:'"';font-family:var(--font-serif);font-size:clamp(48px,5vw,72px);color:var(--red);opacity:.15;position:absolute;top:8px;left:16px;line-height:1}
+.voce-stars{color:var(--gold);font-size:14px;margin-bottom:12px;letter-spacing:2px}
+.voce-text{font-size:clamp(13px,1.1vw,15px);line-height:1.9;color:#555;margin-bottom:16px}
+.voce-author{display:flex;align-items:center;gap:12px}
+.voce-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.voce-name{font-family:var(--font-serif-jp);font-size:14px;font-weight:700}
+.voce-info{font-size:11px;color:#999}
+
+/* === PRENOTAZIONE === */
+.prenotazione{padding:var(--section-pad);background:linear-gradient(180deg,#f5efe6,var(--white));text-align:center}
+.prenot-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);margin-top:clamp(24px,3vw,48px);text-align:left}
+.floor-map-wrap{display:flex;justify-content:center;align-items:center}
+.floor-map-wrap svg{width:100%;max-width:500px;height:auto}
+.prenot-info h3{font-family:var(--font-serif);font-size:clamp(18px,2vw,26px);margin-bottom:clamp(12px,1.5vw,20px)}
+.seat-types{display:flex;flex-direction:column;gap:clamp(12px,1.5vw,20px);margin-bottom:clamp(20px,2.5vw,36px)}
+.seat-type{display:flex;gap:12px;align-items:center;padding:12px 16px;background:var(--white);border-radius:8px;border:1px solid var(--beige);transition:border-color .3s}
+.seat-type:hover{border-color:var(--red)}
+.seat-icon{font-size:24px}
+.seat-type h4{font-family:var(--font-serif-jp);font-size:14px;font-weight:700}
+.seat-type p{font-size:12px;color:#777}
+.prenot-cta{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.prenot-tel{font-family:var(--font-serif);font-size:clamp(22px,2.8vw,36px);color:var(--red);font-weight:700;letter-spacing:2px}
+.prenot-note{font-size:12px;color:#888}
+
+/* === ACCESSO === */
+.accesso{padding:var(--section-pad);background:var(--black);color:var(--white)}
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,60px);margin-top:clamp(20px,3vw,40px)}
+.access-map{background:#333;border-radius:8px;min-height:300px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.map-placeholder{text-align:center;color:#888}
+.map-placeholder .pin{font-size:48px;margin-bottom:8px}
+.access-details dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:clamp(13px,1.1vw,15px)}
+.access-details dt{color:var(--gold);font-family:var(--font-serif);letter-spacing:1px;white-space:nowrap}
+.access-details dd{color:#ccc}
+
+/* === FOOTER === */
+.footer{background:var(--black);border-top:1px solid #333;padding:clamp(30px,4vw,50px) clamp(16px,5vw,80px);text-align:center}
+.footer-logo{font-family:var(--font-serif);font-size:clamp(24px,3vw,36px);color:var(--white);letter-spacing:4px;text-transform:uppercase;margin-bottom:8px}
+.footer-logo span{color:var(--red)}
+.footer-tagline{font-family:var(--font-serif-jp);color:var(--beige);font-size:clamp(12px,1vw,14px);margin-bottom:clamp(16px,2vw,28px)}
+.footer-links{display:flex;justify-content:center;gap:clamp(16px,2vw,32px);margin-bottom:16px;flex-wrap:wrap}
+.footer-links a{color:#888;font-size:12px;letter-spacing:1px;transition:color .3s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{color:#555;font-size:11px;letter-spacing:1px}
+
+/* Subtle Italian flag section accents */
+.flag-accent-green{border-top:3px solid var(--green)}
+.flag-accent-white{border-top:3px solid var(--beige)}
+.flag-accent-red{border-top:3px solid var(--red)}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+.nav-links{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(26,26,26,.98);flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.nav-links.open{display:flex}
+.nav-links a{font-size:16px}
+.hamburger{display:flex}
+.filo-grid,.ingr-grid,.chef-intro,.prenot-grid,.access-grid{grid-template-columns:1fr}
+.atmosfera{grid-template-columns:1fr}
+.menu-cats{grid-template-columns:1fr}
+.chef-portrait{margin:0 auto}
+.ingr-grid{text-align:center}
+.italy-map-wrap{margin-bottom:20px}
+}
+@media(max-width:600px){
+.hero-ctas{flex-direction:column;align-items:center}
+.btn{width:100%;max-width:280px;text-align:center}
+.voce-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- === NAV === -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-logo">FORNO <span>VIVO</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="#filosofia">Filosofia</a>
+    <a href="#menu">Menu</a>
+    <a href="#ingredienti">Ingredienti</a>
+    <a href="#pizzaiolo">Pizzaiolo</a>
+    <a href="#atmosfera">Atmosfera</a>
+    <a href="#prenotazione" class="nav-cta">Reserve</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open');this.classList.toggle('active')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- === HERO === -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Flame SVG -->
+  <div class="flame-container">
+    <svg viewBox="0 0 800 400" preserveAspectRatio="xMidYMax meet">
+      <defs>
+        <linearGradient id="flame1" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#d94032"/>
+          <stop offset="40%" stop-color="#e8742a"/>
+          <stop offset="70%" stop-color="#f5a623"/>
+          <stop offset="100%" stop-color="#ffe066" stop-opacity=".6"/>
+        </linearGradient>
+        <linearGradient id="flame2" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#b8302a"/>
+          <stop offset="50%" stop-color="#d94032"/>
+          <stop offset="100%" stop-color="#e8742a" stop-opacity=".4"/>
+        </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="8" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g filter="url(#glow)">
+        <path class="flame-path" d="M300,400 Q280,300 320,220 Q350,160 400,100 Q420,140 440,200 Q480,280 460,400Z" fill="url(#flame1)" opacity=".8">
+          <animate attributeName="d" dur="3s" repeatCount="indefinite" values="
+            M300,400 Q280,300 320,220 Q350,160 400,100 Q420,140 440,200 Q480,280 460,400Z;
+            M310,400 Q290,310 330,230 Q360,150 400,80 Q430,150 450,210 Q470,290 450,400Z;
+            M300,400 Q280,300 320,220 Q350,160 400,100 Q420,140 440,200 Q480,280 460,400Z"/>
+        </path>
+        <path class="flame-path" d="M250,400 Q230,330 270,260 Q310,180 350,130 Q370,190 390,250 Q420,320 400,400Z" fill="url(#flame2)" opacity=".6">
+          <animate attributeName="d" dur="2.5s" repeatCount="indefinite" values="
+            M250,400 Q230,330 270,260 Q310,180 350,130 Q370,190 390,250 Q420,320 400,400Z;
+            M260,400 Q240,320 280,250 Q320,170 355,120 Q375,180 395,240 Q410,310 395,400Z;
+            M250,400 Q230,330 270,260 Q310,180 350,130 Q370,190 390,250 Q420,320 400,400Z"/>
+        </path>
+        <path class="flame-path" d="M380,400 Q370,320 400,240 Q420,180 450,120 Q470,180 490,250 Q510,330 500,400Z" fill="url(#flame1)" opacity=".65">
+          <animate attributeName="d" dur="2.8s" repeatCount="indefinite" values="
+            M380,400 Q370,320 400,240 Q420,180 450,120 Q470,180 490,250 Q510,330 500,400Z;
+            M385,400 Q375,310 405,230 Q425,170 455,110 Q475,170 495,240 Q515,320 505,400Z;
+            M380,400 Q370,320 400,240 Q420,180 450,120 Q470,180 490,250 Q510,330 500,400Z"/>
+        </path>
+        <path class="flame-path" d="M340,400 Q330,340 370,280 Q390,230 410,170 Q420,230 430,280 Q450,340 440,400Z" fill="#ffe066" opacity=".3">
+          <animate attributeName="d" dur="2s" repeatCount="indefinite" values="
+            M340,400 Q330,340 370,280 Q390,230 410,170 Q420,230 430,280 Q450,340 440,400Z;
+            M345,400 Q335,335 375,275 Q395,220 415,165 Q425,225 435,275 Q455,335 445,400Z;
+            M340,400 Q330,340 370,280 Q390,230 410,170 Q420,230 430,280 Q450,340 440,400Z"/>
+        </path>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Sparks -->
+  <div class="sparks" id="sparks"></div>
+
+  <div class="hero-content">
+    <p class="hero-label">Pizzeria & Modern Italian</p>
+    <h1 class="hero-title">FORNO <span>VIVO</span></h1>
+    <p class="hero-subtitle-jp">薪窯ナポリピッツァ ＆ モダンイタリアン</p>
+    <p class="hero-catch">窯の鼓動が、今夜の一皿になる。</p>
+    <div class="hero-ctas">
+      <a href="#prenotazione" class="btn btn-red">Reserve</a>
+      <a href="#menu" class="btn btn-outline">Menu</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <p class="scroll-text">Scroll</p>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- === FILOSOFIA === -->
+<section class="filosofia flag-accent-green" id="filosofia">
+  <div class="reveal">
+    <p class="section-label" style="color:var(--green)">Filosofia</p>
+    <h2 class="section-title">私たちの哲学</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="filo-grid">
+    <div class="filo-text reveal-left">
+      <p>
+        ナポリの路地裏で出会った、<span class="accent">薪窯から立ち上る香り</span>——あの感動を日本の食卓に届けたい。
+        それが FORNO VIVO の原点です。
+      </p>
+      <p>
+        私たちの薪窯は、ナポリから取り寄せた耐火煉瓦で一つひとつ手積みされ、
+        窯内温度は<span class="accent">約450℃</span>。わずか<span class="accent">60〜90秒</span>で焼き上げるピッツァは、
+        外はパリッと、中はもちもちの "コルニチョーネ"（縁）が自慢です。
+      </p>
+      <p>
+        イタリアから直輸入する小麦粉「カプート サッコロッソ」、
+        D.O.P.認定のサンマルツァーノトマト、水牛モッツァレラ——
+        素材への妥協なきこだわりが、一枚のピッツァに凝縮されています。
+      </p>
+      <!-- Pizza Cross Section -->
+      <div class="pizza-art reveal-scale">
+        <div class="pizza-layer pizza-crust" style="width:100%;height:100%"></div>
+        <div class="pizza-layer pizza-sauce" style="width:88%;height:72%"></div>
+        <div class="pizza-layer pizza-cheese" style="width:80%;height:52%"></div>
+        <div class="pizza-layer pizza-topping" style="width:72%;height:32%"></div>
+      </div>
+      <p style="text-align:center;margin-top:12px;font-family:var(--font-serif);font-size:12px;color:var(--gold);letter-spacing:3px">— CROSS SECTION OF PIZZA —</p>
+    </div>
+    <div class="dough-wrap reveal-right">
+      <div class="dough-circle"></div>
+      <span class="dough-label">Impasto — 生地づくり</span>
+    </div>
+  </div>
+</section>
+
+<!-- === MENU === -->
+<section class="menu-section flag-accent-white" id="menu">
+  <div class="menu-header reveal">
+    <p class="section-label">Menu</p>
+    <h2 class="section-title">メニュー</h2>
+    <div class="section-line center" style="background:var(--gold)"></div>
+  </div>
+
+  <!-- Chalkboard Menu -->
+  <div class="chalkboard reveal-scale">
+    <p class="chalk-title">— Alla Carta —</p>
+    <div class="menu-cats">
+      <!-- Antipasti -->
+      <div>
+        <h3>🫒 Antipasti — 前菜</h3>
+        <div class="menu-item"><span class="menu-item-name">Caprese di Bufala<small>水牛モッツァレラのカプレーゼ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,480</span></div>
+        <div class="menu-item"><span class="menu-item-name">Carpaccio di Manzo<small>黒毛和牛のカルパッチョ トリュフの香り</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,980</span></div>
+        <div class="menu-item"><span class="menu-item-name">Fritto Misto<small>本日の魚介のフリットミスト</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,680</span></div>
+        <div class="menu-item"><span class="menu-item-name">Bruschetta Trio<small>3種のブルスケッタ盛り合わせ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,280</span></div>
+      </div>
+      <!-- Pasta -->
+      <div>
+        <h3>🍝 Pasta — パスタ</h3>
+        <div class="menu-item"><span class="menu-item-name">Spaghetti alle Vongole<small>あさりのスパゲッティ ビアンコ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,780</span></div>
+        <div class="menu-item"><span class="menu-item-name">Tagliatelle al Ragù<small>牛ほほ肉の煮込みラグー タリアテッレ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,980</span></div>
+        <div class="menu-item"><span class="menu-item-name">Cacio e Pepe<small>ペコリーノチーズと黒胡椒のカチョエペペ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,580</span></div>
+        <div class="menu-item"><span class="menu-item-name">Genovese<small>自家製バジルペーストのジェノベーゼ</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,680</span></div>
+      </div>
+      <!-- Pizza -->
+      <div>
+        <h3>🍕 Pizza — ピッツァ</h3>
+        <div class="menu-item"><span class="menu-item-name">Margherita D.O.C.<small>マルゲリータ D.O.C.（水牛モッツァレラ）</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,980</span></div>
+        <div class="menu-item"><span class="menu-item-name">Diavola<small>ディアヴォラ（辛口サラミ）</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥2,080</span></div>
+        <div class="menu-item"><span class="menu-item-name">Quattro Formaggi<small>クワトロフォルマッジ（4種チーズ＋蜂蜜）</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥2,280</span></div>
+        <div class="menu-item"><span class="menu-item-name">Marinara<small>マリナーラ（トマト・にんにく・オレガノ）</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥1,480</span></div>
+      </div>
+      <!-- Dolce -->
+      <div>
+        <h3>🍰 Dolce — ドルチェ</h3>
+        <div class="menu-item"><span class="menu-item-name">Tiramisù della Casa<small>自家製ティラミス</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥880</span></div>
+        <div class="menu-item"><span class="menu-item-name">Panna Cotta<small>バニラのパンナコッタ 季節の果実添え</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥780</span></div>
+        <div class="menu-item"><span class="menu-item-name">Cannolo Siciliano<small>シチリア風カンノーロ リコッタクリーム</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥880</span></div>
+        <div class="menu-item"><span class="menu-item-name">Gelato Misto<small>本日のジェラート3種盛り</small></span><span class="menu-item-dots"></span><span class="menu-item-price">¥680</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course on White Paper -->
+  <div class="course-paper reveal">
+    <p class="course-title">Cena Degustazione</p>
+    <p class="course-subtitle">— シェフのおまかせコース —</p>
+    <div class="course-items" id="courseItems">
+      <div class="course-item"><p class="course-item-label">Primo — 前菜</p><p class="course-item-name">Carpaccio di Ricciola</p><p class="course-item-desc">本日の鮮魚のカルパッチョ シチリア産オリーブオイルと共に</p></div>
+      <div class="course-item"><p class="course-item-label">Secondo — スープ</p><p class="course-item-name">Zuppa di Pesce</p><p class="course-item-desc">魚介たっぷりのズッパ ディ ペッシェ サフラン仕立て</p></div>
+      <div class="course-item"><p class="course-item-label">Terzo — パスタ</p><p class="course-item-name">Paccheri al Nero di Seppia</p><p class="course-item-desc">イカ墨のパッケリ ブッラータチーズを添えて</p></div>
+      <div class="course-item"><p class="course-item-label">Quarto — ピッツァ</p><p class="course-item-name">Pizza del Pizzaiolo</p><p class="course-item-desc">ピッツァイオーロが本日の食材で仕上げるスペシャルピッツァ</p></div>
+      <div class="course-item"><p class="course-item-label">Quinto — メイン</p><p class="course-item-name">Costoletta di Agnello</p><p class="course-item-desc">仔羊のロースト ローズマリーとバルサミコのソース</p></div>
+      <div class="course-item"><p class="course-item-label">Dolce — デザート</p><p class="course-item-name">Sinfonia di Dolci</p><p class="course-item-desc">本日のデザート3種の饗宴 エスプレッソと共に</p></div>
+    </div>
+    <p class="course-price">¥8,800 <span style="font-size:.6em;color:#888;font-weight:400">(税・サービス料込)</span></p>
+  </div>
+</section>
+
+<!-- === INGREDIENTI === -->
+<section class="ingredienti flag-accent-red" id="ingredienti">
+  <div class="reveal" style="text-align:center">
+    <p class="section-label" style="color:var(--red)">Ingredienti</p>
+    <h2 class="section-title">食材へのこだわり</h2>
+    <div class="section-line center"></div>
+  </div>
+  <div class="ingr-grid">
+    <div class="italy-map-wrap reveal-left">
+      <svg viewBox="0 0 400 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Simplified Italy outline -->
+        <path d="M180,30 Q220,25 240,50 Q260,40 280,55 Q290,70 270,85 Q285,90 290,110 Q295,130 280,145
+                 Q275,160 260,165 Q255,180 240,195 Q235,210 225,225 Q220,240 210,250
+                 Q205,265 195,280 Q190,300 180,320 Q175,340 165,355
+                 Q160,370 155,385 Q148,400 140,410 Q130,425 125,440
+                 Q118,455 115,465 Q110,478 108,485 Q105,495 110,500
+                 Q115,508 125,505 Q135,500 140,490 Q145,485 150,475
+                 Q155,468 165,465 Q170,470 168,480 Q165,490 160,500
+                 Q155,510 150,515 Q145,520 135,520 Q125,518 120,510
+                 Q100,505 95,495 Q90,488 88,478 Q80,470 85,455
+                 Q88,440 95,425 Q100,410 108,395 Q112,380 118,365
+                 Q122,350 128,335 Q130,320 135,305 Q138,290 140,275
+                 Q142,260 140,245 Q135,230 130,215 Q125,200 120,185
+                 Q115,170 118,155 Q120,140 125,125 Q128,110 135,95
+                 Q140,80 150,65 Q160,50 170,40Z"
+              fill="var(--beige)" stroke="var(--gold)" stroke-width="2" opacity=".8"/>
+        <!-- Sicily -->
+        <path d="M80,465 Q95,450 115,455 Q130,458 135,470 Q130,480 115,482 Q100,480 85,475Z"
+              fill="var(--beige)" stroke="var(--gold)" stroke-width="2" opacity=".8"/>
+        <!-- Sardinia -->
+        <path d="M50,280 Q60,265 75,270 Q85,280 80,295 Q70,305 55,300 Q45,292 50,280Z"
+              fill="var(--beige)" stroke="var(--gold)" stroke-width="2" opacity=".8"/>
+
+        <!-- Location Pins with animated pulses -->
+        <!-- Napoli -->
+        <circle cx="195" cy="370" r="6" fill="var(--red)"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/></circle>
+        <text x="205" y="368" font-family="'Playfair Display',serif" font-size="11" fill="var(--red)" font-weight="700">Napoli</text>
+        <text x="205" y="382" font-family="sans-serif" font-size="9" fill="#888">小麦粉</text>
+
+        <!-- Sicilia -->
+        <circle cx="108" cy="468" r="6" fill="var(--green)"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" begin=".5s"/></circle>
+        <text x="60" y="450" font-family="'Playfair Display',serif" font-size="11" fill="var(--green)" font-weight="700">Sicilia</text>
+        <text x="48" y="464" font-family="sans-serif" font-size="9" fill="#888">オリーブオイル</text>
+
+        <!-- Campania -->
+        <circle cx="210" cy="340" r="6" fill="var(--gold)"><animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" begin="1s"/></circle>
+        <text x="222" y="335" font-family="'Playfair Display',serif" font-size="11" fill="var(--gold)" font-weight="700">Campania</text>
+        <text x="222" y="349" font-family="sans-serif" font-size="9" fill="#888">モッツァレラ</text>
+
+        <!-- San Marzano -->
+        <circle cx="180" cy="395" r="5" fill="var(--red)" opacity=".7"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite" begin="1.5s"/></circle>
+        <text x="130" y="405" font-family="'Playfair Display',serif" font-size="10" fill="var(--red)" font-weight="700">S.Marzano</text>
+        <text x="130" y="418" font-family="sans-serif" font-size="9" fill="#888">トマト</text>
+
+        <!-- Modena -->
+        <circle cx="185" cy="195" r="5" fill="var(--gold)" opacity=".7"><animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite" begin="2s"/></circle>
+        <text x="195" y="193" font-family="'Playfair Display',serif" font-size="10" fill="var(--gold)" font-weight="700">Modena</text>
+        <text x="195" y="206" font-family="sans-serif" font-size="9" fill="#888">バルサミコ酢</text>
+
+        <!-- Title -->
+        <text x="200" y="20" font-family="'Playfair Display',serif" font-size="14" fill="var(--black)" text-anchor="middle" letter-spacing="3" font-weight="700">ITALIA</text>
+      </svg>
+    </div>
+    <div class="ingr-list reveal-right">
+      <div class="ingr-card">
+        <span class="ingr-icon">🌾</span>
+        <div>
+          <h4>カプート サッコロッソ</h4>
+          <p class="origin">Napoli, Campania</p>
+          <p>ナポリピッツァの聖地から届く最高級の「00」小麦粉。48時間低温発酵させた生地は、もちもちとした食感と小麦本来の甘みを引き出します。</p>
+        </div>
+      </div>
+      <div class="ingr-card">
+        <span class="ingr-icon">🫒</span>
+        <div>
+          <h4>シチリア産エキストラバージン</h4>
+          <p class="origin">Sicilia</p>
+          <p>太陽をたっぷり浴びたノチェッラーラ種のオリーブを、収穫から6時間以内にコールドプレス。フルーティな香りとほのかな辛みが特徴です。</p>
+        </div>
+      </div>
+      <div class="ingr-card">
+        <span class="ingr-icon">🧀</span>
+        <div>
+          <h4>水牛モッツァレラ D.O.P.</h4>
+          <p class="origin">Campania</p>
+          <p>カンパニア州の契約農家から週2回空輸。ミルキーで濃厚な味わいは、ピッツァに載せて高温で焼くことでとろけるクリーミーさに変わります。</p>
+        </div>
+      </div>
+      <div class="ingr-card">
+        <span class="ingr-icon">🍅</span>
+        <div>
+          <h4>サンマルツァーノトマト D.O.P.</h4>
+          <p class="origin">San Marzano sul Sarno</p>
+          <p>ヴェスヴィオ火山の肥沃な土壌が育む、世界最高峰のトマト。甘み・酸味・旨みの完璧なバランスが、ソースの味を決定づけます。</p>
+        </div>
+      </div>
+      <div class="ingr-card">
+        <span class="ingr-icon">🫙</span>
+        <div>
+          <h4>モデナ産バルサミコ酢</h4>
+          <p class="origin">Modena, Emilia-Romagna</p>
+          <p>12年以上熟成された伝統的なバルサミコ酢。濃密な甘みと複雑な酸味が、前菜やドルチェに奥行きのある味わいをもたらします。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === PIZZAIOLO === -->
+<section class="pizzaiolo" id="pizzaiolo">
+  <div class="reveal" style="text-align:center">
+    <p class="section-label" style="color:var(--gold)">Pizzaiolo</p>
+    <h2 class="section-title" style="color:var(--white)">ピッツァイオーロ紹介</h2>
+    <div class="section-line center" style="background:var(--gold)"></div>
+  </div>
+  <div class="chef-intro">
+    <div class="chef-portrait reveal-left">👨‍🍳</div>
+    <div class="reveal-right">
+      <h3 class="chef-name">村上 隆太郎</h3>
+      <p class="chef-name-en">RYUTARO MURAKAMI — Head Pizzaiolo</p>
+      <p class="chef-desc">
+        18歳で料理の道に進み、イタリアへ単身渡航。ナポリの名店「Da Michele」の門を叩き、
+        薪窯の前で5年間修業。その後ローマ、ミラノの星付きリストランテで研鑽を積み、
+        14年の修業を経て帰国。「本物のナポリの味を、日本の最高の食材と融合させる」
+        ——その信念のもと、FORNO VIVO を開業しました。
+      </p>
+      <div class="timeline">
+        <div class="tl-item reveal">
+          <p class="tl-year">2008 — 2013</p>
+          <p class="tl-place"><span class="flag">🇮🇹</span>Napoli — ナポリ</p>
+          <p class="tl-desc">L'Antica Pizzeria da Michele にて薪窯ピッツァの基礎を学ぶ。生地の仕込みから窯の温度管理まで、伝統の技法を体得。</p>
+        </div>
+        <div class="tl-item reveal">
+          <p class="tl-year">2013 — 2016</p>
+          <p class="tl-place"><span class="flag">🇮🇹</span>Roma — ローマ</p>
+          <p class="tl-desc">ローマの一つ星リストランテで、モダンイタリアンの技法と食材の組み合わせを探求。プレゼンテーションの美学を学ぶ。</p>
+        </div>
+        <div class="tl-item reveal">
+          <p class="tl-year">2016 — 2019</p>
+          <p class="tl-place"><span class="flag">🇮🇹</span>Milano — ミラノ</p>
+          <p class="tl-desc">ミラノのコンテンポラリーイタリアンで、革新的な料理表現と経営を学ぶ。自身の哲学を確立する。</p>
+        </div>
+        <div class="tl-item reveal">
+          <p class="tl-year">2019 — 2022</p>
+          <p class="tl-place"><span class="flag">🇯🇵</span>Tokyo — 東京</p>
+          <p class="tl-desc">帰国後、日本各地の生産者を巡り最高の食材を発掘。2022年、FORNO VIVO を開業。ナポリの伝統と日本の四季を融合させた新しいイタリアンを提案。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === ATMOSFERA === -->
+<section class="atmosfera" id="atmosfera">
+  <div class="atmos-half atmos-left reveal-left">
+    <span class="atmos-icon">🔥</span>
+    <h3 class="atmos-title">La Cucina — 厨房のライブ感</h3>
+    <p class="atmos-text">
+      オープンキッチンの中心に鎮座する薪窯。パチパチと薪が爆ぜる音、
+      生地が窯床に触れた瞬間に立ち上る白い煙、ピッツァイオーロが
+      リズミカルにパーラを操る姿——まるでライブステージのような
+      臨場感が、お料理への期待を最高潮に高めます。
+    </p>
+    <div class="atmos-features">
+      <div class="atmos-feat"><span class="dot"></span>ナポリ直輸入の耐火煉瓦製薪窯</div>
+      <div class="atmos-feat"><span class="dot"></span>窯内温度450℃の迫力</div>
+      <div class="atmos-feat"><span class="dot"></span>樫の木の薪が生む独特の香り</div>
+      <div class="atmos-feat"><span class="dot"></span>目の前で焼き上がる60秒のショー</div>
+    </div>
+  </div>
+  <div class="atmos-half atmos-right reveal-right">
+    <span class="atmos-icon">🕯️</span>
+    <h3 class="atmos-title">La Sala — 客席の温かみ</h3>
+    <p class="atmos-text">
+      無垢のオーク材のテーブル、イタリアから取り寄せたテラコッタタイルの床、
+      柔らかなキャンドルの灯り——温かみのある空間は、大切な人との
+      会話を自然と弾ませます。テラス席では、季節の風を感じながら
+      カジュアルにワインとピッツァをお楽しみいただけます。
+    </p>
+    <div class="atmos-features">
+      <div class="atmos-feat"><span class="dot"></span>全28席のインティメートな空間</div>
+      <div class="atmos-feat"><span class="dot"></span>テラス席8席（ペット同伴可）</div>
+      <div class="atmos-feat"><span class="dot"></span>イタリアンワイン200種以上</div>
+      <div class="atmos-feat"><span class="dot"></span>記念日・貸切パーティ対応</div>
+    </div>
+  </div>
+</section>
+
+<!-- === VOCE === -->
+<section class="voce flag-accent-green" id="voce">
+  <div class="reveal">
+    <p class="section-label" style="color:var(--green)">Voce</p>
+    <h2 class="section-title">お客様の声</h2>
+    <div class="section-line center"></div>
+  </div>
+  <div class="voce-grid">
+    <div class="voce-card reveal">
+      <p class="voce-stars">★★★★★</p>
+      <p class="voce-text">
+        マルゲリータを一口食べた瞬間、ナポリで食べた味が蘇りました。
+        コルニチョーネのもちもち感、トマトソースの濃厚な甘み、
+        水牛モッツァレラのクリーミーさ——すべてが本物。
+        東京にいながら、これほど本格的なピッツァに出会えるとは思いませんでした。
+      </p>
+      <div class="voce-author">
+        <div class="voce-avatar" style="background:var(--beige)">👩</div>
+        <div><p class="voce-name">田中 美咲 さん</p><p class="voce-info">30代 / 会社員 / 来店回数: 12回</p></div>
+      </div>
+    </div>
+    <div class="voce-card reveal">
+      <p class="voce-stars">★★★★★</p>
+      <p class="voce-text">
+        記念日のディナーで利用しました。おまかせコースは一皿ごとに
+        驚きがあり、特にイカ墨のパッケリは絶品。
+        ソムリエのワインペアリングも素晴らしく、妻も大満足でした。
+        薪窯の前のカウンター席は特等席ですね。
+      </p>
+      <div class="voce-author">
+        <div class="voce-avatar" style="background:#e8d5b8">👨</div>
+        <div><p class="voce-name">佐藤 健一 さん</p><p class="voce-info">40代 / 経営者 / 来店回数: 8回</p></div>
+      </div>
+    </div>
+    <div class="voce-card reveal">
+      <p class="voce-stars">★★★★★</p>
+      <p class="voce-text">
+        テラス席で愛犬と一緒にランチ。クワトロフォルマッジに
+        蜂蜜をかけて食べるのが至福の時間です。
+        スタッフの方々も温かく、まるでイタリアの下町の
+        トラットリアにいるような居心地の良さ。毎週通っています！
+      </p>
+      <div class="voce-author">
+        <div class="voce-avatar" style="background:#d5e8d5">👩‍🦰</div>
+        <div><p class="voce-name">鈴木 あかり さん</p><p class="voce-info">20代 / デザイナー / 来店回数: 20回+</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === PRENOTAZIONE === -->
+<section class="prenotazione flag-accent-red" id="prenotazione">
+  <div class="reveal" style="text-align:center">
+    <p class="section-label" style="color:var(--red)">Prenotazione</p>
+    <h2 class="section-title">ご予約</h2>
+    <div class="section-line center"></div>
+    <p style="color:#777;font-size:clamp(13px,1.1vw,16px);max-width:600px;margin:0 auto clamp(24px,3vw,40px)">
+      お電話またはオンラインでご予約を承ります。<br>特別な日のご要望もお気軽にご相談ください。
+    </p>
+  </div>
+  <div class="prenot-grid">
+    <!-- Floor Map SVG -->
+    <div class="floor-map-wrap reveal-left">
+      <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="480" height="380" rx="4" fill="none" stroke="var(--beige)" stroke-width="2"/>
+        <text x="250" y="36" font-family="'Playfair Display',serif" font-size="13" fill="var(--black)" text-anchor="middle" letter-spacing="3" font-weight="700">FLOOR MAP</text>
+
+        <!-- Kitchen Area -->
+        <rect x="30" y="55" width="200" height="120" rx="4" fill="#f5e6d0" stroke="var(--gold)" stroke-width="1.5"/>
+        <text x="130" y="75" font-family="'Playfair Display',serif" font-size="11" fill="var(--gold)" text-anchor="middle" letter-spacing="2">CUCINA</text>
+        <!-- Oven -->
+        <ellipse cx="130" cy="120" rx="40" ry="30" fill="var(--red)" opacity=".2" stroke="var(--red)" stroke-width="1.5"/>
+        <text x="130" y="124" font-family="sans-serif" font-size="9" fill="var(--red)" text-anchor="middle">薪窯</text>
+        <circle cx="130" cy="120" r="4" fill="var(--red)"><animate attributeName="opacity" values="1;.3;1" dur="2s" repeatCount="indefinite"/></circle>
+
+        <!-- Counter Seats (6 seats along kitchen) -->
+        <rect x="30" y="178" width="200" height="22" rx="2" fill="var(--gold)" opacity=".25" stroke="var(--gold)" stroke-width="1"/>
+        <text x="130" y="192" font-family="sans-serif" font-size="9" fill="var(--black)" text-anchor="middle">カウンター席 6席</text>
+        <g fill="var(--gold)" opacity=".6">
+          <circle cx="50" cy="210" r="6"/><circle cx="80" cy="210" r="6"/><circle cx="110" cy="210" r="6"/>
+          <circle cx="140" cy="210" r="6"/><circle cx="170" cy="210" r="6"/><circle cx="200" cy="210" r="6"/>
+        </g>
+
+        <!-- Table Seats -->
+        <g>
+          <rect x="270" y="65" width="60" height="40" rx="3" fill="var(--beige)" stroke="#bba882" stroke-width="1.5"/>
+          <circle cx="280" cy="62" r="5" fill="var(--green)" opacity=".4"/><circle cx="320" cy="62" r="5" fill="var(--green)" opacity=".4"/>
+          <circle cx="280" cy="108" r="5" fill="var(--green)" opacity=".4"/><circle cx="320" cy="108" r="5" fill="var(--green)" opacity=".4"/>
+        </g>
+        <g>
+          <rect x="370" y="65" width="60" height="40" rx="3" fill="var(--beige)" stroke="#bba882" stroke-width="1.5"/>
+          <circle cx="380" cy="62" r="5" fill="var(--green)" opacity=".4"/><circle cx="420" cy="62" r="5" fill="var(--green)" opacity=".4"/>
+          <circle cx="380" cy="108" r="5" fill="var(--green)" opacity=".4"/><circle cx="420" cy="108" r="5" fill="var(--green)" opacity=".4"/>
+        </g>
+        <g>
+          <rect x="270" y="150" width="60" height="40" rx="3" fill="var(--beige)" stroke="#bba882" stroke-width="1.5"/>
+          <circle cx="280" cy="147" r="5" fill="var(--green)" opacity=".4"/><circle cx="320" cy="147" r="5" fill="var(--green)" opacity=".4"/>
+          <circle cx="280" cy="193" r="5" fill="var(--green)" opacity=".4"/><circle cx="320" cy="193" r="5" fill="var(--green)" opacity=".4"/>
+        </g>
+        <g>
+          <rect x="370" y="150" width="60" height="40" rx="3" fill="var(--beige)" stroke="#bba882" stroke-width="1.5"/>
+          <circle cx="380" cy="147" r="5" fill="var(--green)" opacity=".4"/><circle cx="420" cy="147" r="5" fill="var(--green)" opacity=".4"/>
+          <circle cx="380" cy="193" r="5" fill="var(--green)" opacity=".4"/><circle cx="420" cy="193" r="5" fill="var(--green)" opacity=".4"/>
+        </g>
+        <text x="350" y="230" font-family="sans-serif" font-size="9" fill="var(--black)" text-anchor="middle">テーブル席 16席</text>
+
+        <!-- Terrace -->
+        <rect x="30" y="270" width="440" height="100" rx="4" fill="var(--green)" opacity=".08" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="250" y="295" font-family="'Playfair Display',serif" font-size="12" fill="var(--green)" text-anchor="middle" letter-spacing="2">TERRAZZA</text>
+        <g>
+          <rect x="60" y="310" width="50" height="30" rx="3" fill="var(--green)" opacity=".15" stroke="var(--green)" stroke-width="1"/>
+          <rect x="160" y="310" width="50" height="30" rx="3" fill="var(--green)" opacity=".15" stroke="var(--green)" stroke-width="1"/>
+          <rect x="260" y="310" width="50" height="30" rx="3" fill="var(--green)" opacity=".15" stroke="var(--green)" stroke-width="1"/>
+          <rect x="360" y="310" width="50" height="30" rx="3" fill="var(--green)" opacity=".15" stroke="var(--green)" stroke-width="1"/>
+        </g>
+        <text x="250" y="360" font-family="sans-serif" font-size="9" fill="var(--green)" text-anchor="middle">テラス席 8席（ペット同伴可 🐕）</text>
+
+        <!-- Entrance -->
+        <rect x="210" y="380" width="80" height="10" rx="2" fill="var(--red)" opacity=".3"/>
+        <text x="250" y="399" font-family="sans-serif" font-size="9" fill="var(--red)" text-anchor="middle" font-weight="700">ENTRATA ▲</text>
+      </svg>
+    </div>
+    <div class="prenot-info reveal-right">
+      <h3>お席のご案内</h3>
+      <div class="seat-types">
+        <div class="seat-type">
+          <span class="seat-icon">🪑</span>
+          <div>
+            <h4>カウンター席（6席）</h4>
+            <p>薪窯の目の前の特等席。ピッツァイオーロの技を間近に見られます。デートやおひとり様に人気。</p>
+          </div>
+        </div>
+        <div class="seat-type">
+          <span class="seat-icon">🍽️</span>
+          <div>
+            <h4>テーブル席（16席）</h4>
+            <p>4名テーブル×4卓。ご家族やグループでゆったりとお食事を。席の連結で最大16名様まで対応。</p>
+          </div>
+        </div>
+        <div class="seat-type">
+          <span class="seat-icon">🌿</span>
+          <div>
+            <h4>テラス席（8席）</h4>
+            <p>オリーブの木に囲まれた開放的なテラス。ペット同伴OK。春〜秋のベストシーズンに。</p>
+          </div>
+        </div>
+      </div>
+      <div class="prenot-cta">
+        <p style="font-size:clamp(12px,1vw,14px);color:#888;margin-bottom:4px">ご予約・お問い合わせ</p>
+        <a href="tel:03-1234-5678" class="prenot-tel">☎ 03-1234-5678</a>
+        <p class="prenot-note">※ 当日のご予約はお電話にて承ります</p>
+        <a href="#" class="btn btn-red" style="margin-top:12px" onmouseover="this.style.boxShadow='0 0 30px rgba(217,64,50,.6)'" onmouseout="this.style.boxShadow='none'">
+          オンライン予約
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- === ACCESSO === -->
+<section class="accesso" id="accesso">
+  <div class="reveal" style="text-align:center">
+    <p class="section-label" style="color:var(--gold)">Accesso</p>
+    <h2 class="section-title" style="color:var(--white)">アクセス・営業時間</h2>
+    <div class="section-line center" style="background:var(--gold)"></div>
+  </div>
+  <div class="access-grid">
+    <div class="access-map reveal-left">
+      <div class="map-placeholder">
+        <p class="pin">📍</p>
+        <p style="font-family:var(--font-serif);font-size:18px;color:var(--white);margin-bottom:4px">FORNO VIVO</p>
+        <p style="font-size:13px">東京都渋谷区神宮前3-12-8</p>
+        <p style="font-size:11px;margin-top:8px;color:var(--gold)">表参道駅 A2出口より徒歩5分</p>
+        <div style="margin-top:16px;padding:12px 24px;border:1px solid var(--gold);display:inline-block;border-radius:4px;color:var(--gold);font-size:12px;cursor:pointer">Google Map で開く →</div>
+      </div>
+    </div>
+    <div class="access-details reveal-right">
+      <dl>
+        <dt>所在地</dt><dd>〒150-0001<br>東京都渋谷区神宮前3-12-8 VIVO Bldg. 1F</dd>
+        <dt>最寄駅</dt><dd>東京メトロ 表参道駅 A2出口 徒歩5分<br>JR 原宿駅 表参道口 徒歩10分</dd>
+        <dt>ランチ</dt><dd>11:30 — 14:30（L.O. 14:00）</dd>
+        <dt>ディナー</dt><dd>17:30 — 23:00（L.O. 22:00）</dd>
+        <dt>定休日</dt><dd>火曜日（祝日の場合は翌水曜休み）</dd>
+        <dt>席数</dt><dd>カウンター6席 / テーブル16席 / テラス8席<br>計30席</dd>
+        <dt>駐車場</dt><dd>近隣コインパーキングをご利用ください</dd>
+        <dt>電話</dt><dd style="color:var(--red);font-weight:700">03-1234-5678</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer class="footer">
+  <p class="footer-logo">FORNO <span>VIVO</span></p>
+  <p class="footer-tagline">窯の鼓動が、今夜の一皿になる。</p>
+  <div class="footer-links">
+    <a href="#filosofia">Filosofia</a>
+    <a href="#menu">Menu</a>
+    <a href="#ingredienti">Ingredienti</a>
+    <a href="#pizzaiolo">Pizzaiolo</a>
+    <a href="#atmosfera">Atmosfera</a>
+    <a href="#prenotazione">Prenotazione</a>
+    <a href="#accesso">Accesso</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 FORNO VIVO — All Rights Reserved. Built with Next.js & WordPress</p>
+</footer>
+
+<script>
+// === Intersection Observer for Scroll Animations ===
+const observerOpts = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('active');
+    }
+  });
+}, observerOpts);
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => observer.observe(el));
+
+// === Course Items Scroll Animation ===
+const courseObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.course-item').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 0.15}s`;
+  courseObs.observe(el);
+});
+
+// === Nav Scroll Effect ===
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// === Spark Particles ===
+function createSparks() {
+  const container = document.getElementById('sparks');
+  if (!container) return;
+  const colors = ['#d94032','#e8742a','#f5a623','#ffe066'];
+  setInterval(() => {
+    if (document.hidden) return;
+    const spark = document.createElement('div');
+    spark.className = 'spark';
+    const x = 35 + Math.random() * 30;
+    const y = 50 + Math.random() * 20;
+    spark.style.cssText = `
+      left:${x}%;bottom:${y}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${2+Math.random()*4}px;height:${2+Math.random()*4}px;
+      --dx:${-30+Math.random()*60}px;
+      animation:sparkRise ${1+Math.random()*2}s ease-out forwards;
+      position:absolute;border-radius:50%;pointer-events:none;
+    `;
+    container.appendChild(spark);
+    setTimeout(() => spark.remove(), 3000);
+  }, 200);
+}
+createSparks();
+
+// === Hamburger close on link click ===
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+</script>
+</body>
+</html>

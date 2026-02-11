@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>息吹 IBUKI | 完全個室ボディトリートメントサロン</title>
+<meta name="description" content="息吹（いぶき）は、オイルマッサージ・整体・リフレクソロジーを融合した独自手技による完全個室ボディトリートメントサロンです。手が知っている、あなたの深い疲れ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --sumi:#1c1c20;--fukamidori:#1a3a2a;--geppaku:#eae8e0;
+  --hisui:#7ca898;--kare:#c0b090;--kuro:#2a2420;
+  --font:'Noto Serif JP',serif;
+  --slow:2s;--ease:cubic-bezier(.25,.46,.45,.94);
+  --ls:.15em;--ls-wide:.3em;
+}
+html{scroll-behavior:smooth;font-size:clamp(14px,1.2vw,17px);overflow-x:hidden}
+body{font-family:var(--font);font-weight:300;color:var(--geppaku);background:var(--sumi);letter-spacing:var(--ls);line-height:2;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--hisui);color:var(--sumi)}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background .8s,padding .6s,backdrop-filter .8s}
+.nav.scrolled{background:rgba(28,28,32,.92);backdrop-filter:blur(12px);padding:.8rem 2rem}
+.nav-logo{font-size:1.1rem;font-weight:400;letter-spacing:.4em;color:var(--geppaku);opacity:.9}
+.nav-logo span{font-size:.65rem;display:block;letter-spacing:.5em;opacity:.6;margin-top:-.2rem}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{font-size:.7rem;letter-spacing:.25em;opacity:.6;transition:opacity .6s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--hisui);transition:width .6s var(--ease)}
+.nav-links a:hover{opacity:1}
+.nav-links a:hover::after{width:100%}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:1001}
+.nav-burger span{width:22px;height:1px;background:var(--geppaku);transition:all .5s}
+.nav-burger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.nav-burger.active span:nth-child(2){opacity:0}
+.nav-burger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.mobile-menu{position:fixed;inset:0;background:rgba(28,28,32,.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;opacity:0;pointer-events:none;transition:opacity .8s;z-index:999}
+.mobile-menu.active{opacity:1;pointer-events:all}
+.mobile-menu a{font-size:1rem;letter-spacing:.4em;opacity:.7;transition:opacity .5s}
+.mobile-menu a:hover{opacity:1}
+
+/* Sound Button */
+.sound-btn{display:flex;align-items:center;gap:.5rem;cursor:pointer;opacity:.5;transition:opacity .6s;font-size:.65rem;letter-spacing:.15em}
+.sound-btn:hover{opacity:.9}
+.sound-wave{display:flex;gap:2px;align-items:end;height:14px}
+.sound-wave span{width:2px;background:var(--hisui);border-radius:1px;animation:wave 1.5s ease-in-out infinite;opacity:.6}
+.sound-wave span:nth-child(1){height:4px;animation-delay:0s}
+.sound-wave span:nth-child(2){height:8px;animation-delay:.15s}
+.sound-wave span:nth-child(3){height:12px;animation-delay:.3s}
+.sound-wave span:nth-child(4){height:6px;animation-delay:.45s}
+.sound-wave span:nth-child(5){height:10px;animation-delay:.6s}
+.sound-wave.paused span{animation-play-state:paused;height:2px!important}
+@keyframes wave{0%,100%{height:4px}50%{height:14px}}
+
+/* ===== HERO ===== */
+.hero{position:relative;height:100vh;min-height:600px;display:flex;justify-content:center;align-items:center;overflow:hidden;background:var(--sumi)}
+
+/* Smoke */
+.smoke-container{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.smoke{position:absolute;border-radius:50%;pointer-events:none;opacity:0}
+.smoke-a{width:120px;height:180px;bottom:25%;left:48%;background:radial-gradient(ellipse,rgba(255,255,255,.07),transparent 70%);filter:blur(25px);animation:smoke-a 12s ease-out infinite}
+.smoke-b{width:80px;height:140px;bottom:30%;left:51%;background:radial-gradient(ellipse,rgba(255,255,255,.05),transparent 70%);filter:blur(20px);animation:smoke-b 10s ease-out infinite 2s}
+.smoke-c{width:150px;height:200px;bottom:20%;left:46%;background:radial-gradient(ellipse,rgba(255,255,255,.06),transparent 70%);filter:blur(30px);animation:smoke-c 14s ease-out infinite 4s}
+.smoke-d{width:60px;height:120px;bottom:35%;left:53%;background:radial-gradient(ellipse,rgba(255,255,255,.04),transparent 70%);filter:blur(18px);animation:smoke-d 9s ease-out infinite 1s}
+.smoke-e{width:100px;height:160px;bottom:28%;left:44%;background:radial-gradient(ellipse,rgba(255,255,255,.05),transparent 70%);filter:blur(22px);animation:smoke-e 11s ease-out infinite 3s}
+.smoke-f{width:90px;height:130px;bottom:22%;left:55%;background:radial-gradient(ellipse,rgba(255,255,255,.04),transparent 65%);filter:blur(28px);animation:smoke-f 13s ease-out infinite 5s}
+@keyframes smoke-a{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}8%{opacity:.7}40%{opacity:.4}100%{transform:translateY(-65vh) translateX(-30px) scale(2.8);opacity:0}}
+@keyframes smoke-b{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}10%{opacity:.6}50%{opacity:.3}100%{transform:translateY(-55vh) translateX(40px) scale(2.5);opacity:0}}
+@keyframes smoke-c{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}7%{opacity:.5}45%{opacity:.25}100%{transform:translateY(-70vh) translateX(-50px) scale(3);opacity:0}}
+@keyframes smoke-d{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}12%{opacity:.5}100%{transform:translateY(-50vh) translateX(20px) scale(2.2);opacity:0}}
+@keyframes smoke-e{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}9%{opacity:.4}100%{transform:translateY(-60vh) translateX(-40px) scale(2.6);opacity:0}}
+@keyframes smoke-f{0%{transform:translateY(0) translateX(0) scale(1);opacity:0}8%{opacity:.35}100%{transform:translateY(-58vh) translateX(35px) scale(2.4);opacity:0}}
+
+/* Breathing Circle */
+.breath-circle{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(124,168,152,.12),rgba(124,168,152,.03) 60%,transparent 75%);animation:breathe 14s ease-in-out infinite;pointer-events:none}
+.breath-circle::after{content:'';position:absolute;inset:20%;border-radius:50%;border:1px solid rgba(124,168,152,.08);animation:breathe 14s ease-in-out infinite .5s}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.4}28.57%{transform:scale(1.5);opacity:.7}57.14%{transform:scale(1.5);opacity:.7}}
+
+/* Hero Content */
+.hero-content{position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero-title-wrap{writing-mode:vertical-rl;text-orientation:upright;margin-bottom:2rem}
+.hero-title{font-size:clamp(2.8rem,6vw,4.5rem);font-weight:400;letter-spacing:.6em;color:var(--geppaku);text-shadow:0 0 60px rgba(124,168,152,.15)}
+.hero-sub{font-size:clamp(.55rem,.9vw,.7rem);letter-spacing:.5em;opacity:.5;margin-top:1rem;writing-mode:horizontal-tb}
+.hero-catch{font-size:clamp(.85rem,1.5vw,1.15rem);font-weight:300;letter-spacing:.3em;margin-top:2.5rem;opacity:.75;writing-mode:horizontal-tb;line-height:2.2}
+.hero-en{font-size:.55rem;letter-spacing:.6em;opacity:.3;margin-top:1.5rem;font-weight:200;writing-mode:horizontal-tb;text-transform:uppercase}
+
+/* Scroll Indicator */
+.scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.8rem;opacity:.4;animation:scroll-fade 3s ease-in-out infinite}
+.scroll-indicator span{font-size:.55rem;letter-spacing:.4em;writing-mode:vertical-rl}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--geppaku),transparent);animation:scroll-line 2.5s ease-in-out infinite}
+@keyframes scroll-fade{0%,100%{opacity:.3}50%{opacity:.6}}
+@keyframes scroll-line{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ===== RIPPLE DIVIDER ===== */
+.ripple-divider{position:relative;height:80px;overflow:hidden;display:flex;justify-content:center;align-items:center}
+.ripple-divider svg{position:absolute}
+
+/* ===== SECTIONS COMMON ===== */
+.section{padding:clamp(5rem,12vh,9rem) clamp(1.5rem,5vw,4rem);position:relative}
+.section-dark{background:var(--sumi);color:var(--geppaku)}
+.section-light{background:var(--geppaku);color:var(--kuro)}
+.section-green{background:var(--fukamidori);color:var(--geppaku)}
+.section-label{font-size:.6rem;letter-spacing:.6em;opacity:.4;text-transform:uppercase;margin-bottom:1rem}
+.section-title{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:400;letter-spacing:.25em;margin-bottom:1rem;line-height:1.8}
+.section-title-en{font-size:.6rem;letter-spacing:.5em;opacity:.3;font-weight:200;margin-bottom:3rem}
+.section-body{max-width:680px;margin:0 auto;font-size:clamp(.8rem,1.1vw,.95rem);line-height:2.4;opacity:.8}
+.center{text-align:center}
+.container{max-width:1100px;margin:0 auto}
+
+/* Fade-in Animation */
+.fi{opacity:0;transform:translateY(40px);transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
+.fi.vis{opacity:1;transform:translateY(0)}
+.fi-d1{transition-delay:.2s}.fi-d2{transition-delay:.4s}.fi-d3{transition-delay:.6s}.fi-d4{transition-delay:.8s}.fi-d5{transition-delay:1s}
+.fi-up{transform:translateY(50px)}
+.fi-left{opacity:0;transform:translateX(-40px);transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
+.fi-left.vis{opacity:1;transform:translateX(0)}
+.fi-right{opacity:0;transform:translateX(40px);transition:opacity var(--slow) var(--ease),transform var(--slow) var(--ease)}
+.fi-right.vis{opacity:1;transform:translateX(0)}
+
+/* ===== CONCEPT ===== */
+.concept{overflow:hidden}
+.concept-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(2rem,5vw,5rem);align-items:center;max-width:1000px;margin:0 auto}
+.concept-vertical{writing-mode:vertical-rl;font-size:clamp(2rem,4vw,3rem);font-weight:400;letter-spacing:.5em;line-height:2;color:var(--fukamidori);opacity:.9}
+.concept-text{font-size:clamp(.8rem,1.1vw,.92rem);line-height:2.6;opacity:.75;color:var(--kuro)}
+.concept-text p+p{margin-top:1.8rem}
+.concept-line{width:40px;height:1px;background:var(--hisui);margin:2.5rem 0;opacity:.5}
+
+/* ===== MENU ===== */
+.menu-section{position:relative;overflow:hidden}
+.menu-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");opacity:.6;pointer-events:none}
+.menu-grid{display:grid;gap:2.5rem;max-width:900px;margin:0 auto}
+.menu-card{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,3vw,3rem);align-items:start;padding:2rem 0;border-bottom:1px solid rgba(124,168,152,.12);position:relative}
+.menu-card:last-child{border-bottom:none}
+.menu-card-name{writing-mode:vertical-rl;font-size:clamp(1.2rem,2vw,1.6rem);font-weight:400;letter-spacing:.4em;line-height:1.8;color:var(--geppaku);padding:0 .5rem;position:relative}
+.menu-card-name::before{content:'';position:absolute;left:0;top:0;width:1px;height:100%;background:linear-gradient(to bottom,transparent,var(--hisui),transparent);opacity:.3}
+.menu-card-body{padding-top:.5rem}
+.menu-card-en{font-size:.55rem;letter-spacing:.4em;opacity:.3;font-weight:200;margin-bottom:.8rem;text-transform:uppercase}
+.menu-card-desc{font-size:.82rem;line-height:2.2;opacity:.65;margin-bottom:1.2rem}
+.menu-card-meta{display:flex;gap:2rem;align-items:baseline;flex-wrap:wrap}
+.menu-card-time{font-size:.72rem;letter-spacing:.2em;opacity:.5}
+.menu-card-price{font-size:1.1rem;font-weight:400;letter-spacing:.15em;color:var(--kare)}
+.menu-card-price span{font-size:.65rem;opacity:.6}
+
+/* ===== FLOW ===== */
+.flow-section{overflow:hidden}
+.flow-timeline{max-width:700px;margin:0 auto;position:relative;padding-left:3rem}
+.flow-timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,var(--hisui),var(--hisui),transparent);opacity:.2}
+.flow-step{position:relative;padding:2rem 0 2rem 2.5rem;opacity:.7}
+.flow-step::before{content:'';position:absolute;left:-3rem;top:2.4rem;width:30px;height:30px;border-radius:50%;border:1px solid var(--hisui);background:var(--sumi);z-index:2;transition:all 1s}
+.flow-step.vis::before{background:rgba(124,168,152,.15);box-shadow:0 0 20px rgba(124,168,152,.1)}
+.flow-num{font-size:.55rem;letter-spacing:.3em;opacity:.3;margin-bottom:.3rem}
+.flow-title{font-size:clamp(1rem,1.8vw,1.3rem);font-weight:400;letter-spacing:.3em;margin-bottom:.5rem}
+.flow-desc{font-size:.78rem;line-height:2;opacity:.55}
+.flow-brush{position:absolute;left:-1rem;top:4rem;width:60px;height:80px;opacity:.1;pointer-events:none}
+
+/* ===== THERAPIST ===== */
+.therapist-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center;max-width:1000px;margin:0 auto}
+.therapist-portrait{position:relative;aspect-ratio:3/4;background:linear-gradient(135deg,rgba(124,168,152,.08),rgba(42,36,32,.3));border-radius:2px;overflow:hidden;display:flex;justify-content:center;align-items:center}
+.therapist-portrait svg{width:60%;opacity:.15}
+.therapist-info{padding:1rem 0}
+.therapist-name{font-size:clamp(1.2rem,2vw,1.6rem);font-weight:400;letter-spacing:.4em;margin-bottom:.3rem}
+.therapist-name-en{font-size:.55rem;letter-spacing:.4em;opacity:.3;font-weight:200;margin-bottom:2rem}
+.therapist-bio{font-size:.82rem;line-height:2.4;opacity:.65}
+.therapist-bio p+p{margin-top:1.2rem}
+.therapist-quote{margin-top:2rem;padding-left:1.5rem;border-left:1px solid rgba(124,168,152,.2);font-style:italic;opacity:.5;font-size:.82rem;line-height:2.2}
+
+/* ===== SPACE ===== */
+.space-section{overflow:hidden}
+.senses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2.5rem;max-width:1000px;margin:0 auto}
+.sense-card{text-align:center;padding:2rem 1rem}
+.sense-icon{width:48px;height:48px;margin:0 auto 1.5rem;opacity:.5}
+.sense-label{font-size:.6rem;letter-spacing:.5em;opacity:.4;margin-bottom:.5rem}
+.sense-title{font-size:clamp(.95rem,1.4vw,1.15rem);font-weight:400;letter-spacing:.3em;margin-bottom:.8rem;color:var(--fukamidori)}
+.sense-desc{font-size:.75rem;line-height:2;opacity:.6;color:var(--kuro)}
+
+/* ===== VOICE ===== */
+.voice-section{overflow:hidden}
+.voice-grid{max-width:800px;margin:0 auto;display:grid;gap:4rem}
+.voice-card{position:relative;padding:3rem 2.5rem}
+.voice-quote{position:absolute;top:0;left:.5rem;font-size:clamp(3rem,6vw,5rem);font-weight:600;opacity:.08;line-height:1;color:var(--hisui)}
+.voice-text{font-size:clamp(.82rem,1.1vw,.92rem);line-height:2.4;opacity:.75;margin-bottom:1.5rem}
+.voice-meta{font-size:.7rem;opacity:.35;letter-spacing:.2em}
+
+/* ===== RESERVATION ===== */
+.reserve-section{overflow:hidden}
+.reserve-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+.reserve-message{padding-top:1rem}
+.reserve-message h3{font-size:clamp(1.2rem,2vw,1.6rem);font-weight:300;letter-spacing:.25em;line-height:2;margin-bottom:1.5rem}
+.reserve-message p{font-size:.82rem;line-height:2.4;opacity:.65;margin-bottom:2rem}
+.btn-line{display:inline-flex;align-items:center;gap:.8rem;padding:1rem 2.5rem;background:var(--hisui);color:var(--sumi);font-family:var(--font);font-size:.78rem;letter-spacing:.25em;font-weight:400;border:none;cursor:pointer;border-radius:2px;transition:all .6s;text-decoration:none}
+.btn-line:hover{background:var(--kare);transform:translateY(-2px);box-shadow:0 8px 30px rgba(124,168,152,.2)}
+.btn-tel{display:block;margin-top:1.5rem;font-size:.72rem;opacity:.4;letter-spacing:.2em}
+.btn-tel b{font-size:1rem;opacity:.7}
+
+/* Calendar Mock */
+.calendar{background:rgba(255,255,255,.03);border:1px solid rgba(124,168,152,.1);border-radius:2px;padding:1.5rem;backdrop-filter:blur(5px)}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.cal-month{font-size:.85rem;letter-spacing:.3em;font-weight:400}
+.cal-nav{font-size:.7rem;opacity:.3;cursor:pointer;padding:.3rem .6rem;transition:opacity .4s}
+.cal-nav:hover{opacity:.7}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-day-label{font-size:.55rem;opacity:.3;letter-spacing:.1em;padding:.5rem 0}
+.cal-day{font-size:.72rem;padding:.6rem .2rem;border-radius:2px;cursor:pointer;transition:all .5s;opacity:.5}
+.cal-day.past{opacity:.15;cursor:default}
+.cal-day.available{opacity:.7}
+.cal-day.available:hover{background:rgba(124,168,152,.15);opacity:1}
+.cal-day.selected{background:var(--hisui);color:var(--sumi);opacity:1}
+.cal-day.sun{color:rgba(192,120,120,.6)}
+.cal-times{margin-top:1.2rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.cal-time{font-size:.62rem;letter-spacing:.15em;padding:.4rem .8rem;border:1px solid rgba(124,168,152,.15);border-radius:2px;opacity:.4;cursor:pointer;transition:all .5s}
+.cal-time:hover{border-color:var(--hisui);opacity:.8}
+.cal-time.active{background:rgba(124,168,152,.1);border-color:var(--hisui);opacity:.8}
+.cal-note{font-size:.58rem;opacity:.25;margin-top:1rem;letter-spacing:.1em;text-align:center}
+
+/* ===== FOOTER ===== */
+footer{padding:clamp(3rem,6vh,5rem) clamp(1.5rem,5vw,4rem) 2rem;text-align:center;border-top:1px solid rgba(124,168,152,.06)}
+.footer-logo{font-size:1.5rem;font-weight:400;letter-spacing:.5em;margin-bottom:.3rem}
+.footer-logo-en{font-size:.5rem;letter-spacing:.6em;opacity:.25;font-weight:200;margin-bottom:2.5rem}
+.footer-info{font-size:.7rem;line-height:2.4;opacity:.35;letter-spacing:.15em;margin-bottom:2rem}
+.footer-hours{display:inline-block;padding:.8rem 2rem;border:1px solid rgba(124,168,152,.08);border-radius:2px;font-size:.68rem;letter-spacing:.2em;opacity:.4;margin-bottom:2rem}
+.footer-copy{font-size:.55rem;opacity:.15;letter-spacing:.2em;margin-top:2rem}
+
+/* ===== RIPPLE SVG ===== */
+.ripple-wrap{position:absolute;top:-40px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:5}
+.ripple-circle{fill:none;stroke:var(--hisui);stroke-width:.5;opacity:0}
+.ripple-circle.animate{animation:ripple-expand 3s ease-out forwards}
+@keyframes ripple-expand{0%{r:0;opacity:.25}100%{r:180;opacity:0}}
+
+/* ===== CTA BANNER ===== */
+.cta-banner{padding:clamp(3rem,6vh,5rem) 2rem;text-align:center;background:var(--fukamidori);position:relative;overflow:hidden}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,168,152,.1),transparent 70%);pointer-events:none}
+.cta-text{font-size:clamp(.9rem,1.5vw,1.15rem);font-weight:300;letter-spacing:.3em;opacity:.8;margin-bottom:2rem;line-height:2.2}
+.btn-cta{display:inline-block;padding:1.1rem 3.5rem;border:1px solid rgba(234,232,224,.25);color:var(--geppaku);font-family:var(--font);font-size:.75rem;letter-spacing:.35em;font-weight:300;cursor:pointer;background:transparent;transition:all .8s;position:relative;overflow:hidden}
+.btn-cta::before{content:'';position:absolute;inset:0;background:var(--hisui);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease);z-index:0}
+.btn-cta:hover::before{transform:scaleX(1)}
+.btn-cta:hover{color:var(--sumi);border-color:var(--hisui)}
+.btn-cta span{position:relative;z-index:1}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  .concept-inner{grid-template-columns:1fr;text-align:center}
+  .concept-vertical{writing-mode:horizontal-tb;font-size:clamp(1.6rem,5vw,2rem);margin-bottom:1rem}
+  .menu-card{grid-template-columns:1fr;gap:1rem}
+  .menu-card-name{writing-mode:horizontal-tb;font-size:1.1rem;padding:0;border-left:2px solid rgba(124,168,152,.2);padding-left:1rem}
+  .menu-card-name::before{display:none}
+  .therapist-grid{grid-template-columns:1fr}
+  .therapist-portrait{max-width:300px;margin:0 auto}
+  .reserve-inner{grid-template-columns:1fr}
+  .senses-grid{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .hero-title{font-size:clamp(2.2rem,8vw,3rem)}
+  .flow-timeline{padding-left:2.5rem}
+  .voice-card{padding:2rem 1.5rem}
+  .breath-circle{width:220px;height:220px}
+}
+@media(max-width:480px){
+  .senses-grid{grid-template-columns:1fr}
+  .menu-card-meta{flex-direction:column;gap:.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SVG DEFS ===== -->
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+<defs>
+  <filter id="washi"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+</defs>
+</svg>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">息吹<span>IBUKI</span></div>
+  <ul class="nav-links">
+    <li><a href="#concept">コンセプト</a></li>
+    <li><a href="#menu">施術メニュー</a></li>
+    <li><a href="#flow">施術の流れ</a></li>
+    <li><a href="#space">空間</a></li>
+    <li><a href="#voice">お客様の声</a></li>
+    <li><a href="#reserve">ご予約</a></li>
+    <li>
+      <div class="sound-btn" id="soundBtn">
+        <div class="sound-wave" id="soundWave">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        音を聴く
+      </div>
+    </li>
+  </ul>
+  <div class="nav-burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#concept" class="mm-link">コンセプト</a>
+  <a href="#menu" class="mm-link">施術メニュー</a>
+  <a href="#flow" class="mm-link">施術の流れ</a>
+  <a href="#space" class="mm-link">空間</a>
+  <a href="#voice" class="mm-link">お客様の声</a>
+  <a href="#reserve" class="mm-link">ご予約</a>
+  <div class="sound-btn" style="margin-top:1rem">
+    <div class="sound-wave"><span></span><span></span><span></span><span></span><span></span></div>
+    音を聴く
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="smoke-container">
+    <div class="smoke smoke-a"></div>
+    <div class="smoke smoke-b"></div>
+    <div class="smoke smoke-c"></div>
+    <div class="smoke smoke-d"></div>
+    <div class="smoke smoke-e"></div>
+    <div class="smoke smoke-f"></div>
+  </div>
+  <div class="breath-circle"></div>
+  <div class="hero-content">
+    <div class="hero-title-wrap">
+      <h1 class="hero-title">息吹</h1>
+    </div>
+    <p class="hero-sub">完全個室ボディトリートメントサロン</p>
+    <p class="hero-catch">手が知っている、あなたの深い疲れ。</p>
+    <p class="hero-en">Body Treatment Salon &mdash; IBUKI</p>
+  </div>
+  <div class="scroll-indicator">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== CONCEPT ===== -->
+<section class="section section-light concept" id="concept">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi">
+      <p class="section-label">Concept</p>
+    </div>
+    <div class="concept-inner">
+      <div class="concept-vertical fi fi-d1">手の記憶</div>
+      <div class="concept-text fi fi-d2">
+        <p>
+          施術者の手には、何千もの身体と向き合ってきた記憶が宿っています。<br>
+          筋肉の深部で凝り固まった疲労、無意識に力んでいた肩の緊張、<br>
+          浅くなった呼吸が残した肋骨まわりのこわばり——<br>
+          それらを、指先が静かに見つけ出します。
+        </p>
+        <div class="concept-line"></div>
+        <p>
+          息吹の施術は、オイルマッサージ・整体・リフレクソロジーの<br>
+          三つの技術を融合した独自の手技「息吹流」。<br>
+          決まった型をなぞるのではなく、<br>
+          あなたの身体が今日求めている圧と流れを、<br>
+          手が対話するように探っていきます。
+        </p>
+        <div class="concept-line"></div>
+        <p>
+          完全個室の静寂の中で、呼吸がゆっくりと深くなり、<br>
+          身体の奥から力が抜けていく——<br>
+          その瞬間を、私たちは「息吹が還る」と呼んでいます。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="section section-dark menu-section" id="menu">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi">
+      <p class="section-label">Treatment Menu</p>
+      <h2 class="section-title">施術メニュー</h2>
+      <p class="section-title-en">Four Courses</p>
+    </div>
+    <div class="menu-grid">
+
+      <div class="menu-card fi fi-d1">
+        <div class="menu-card-name">深息</div>
+        <div class="menu-card-body">
+          <p class="menu-card-en">Shin-soku — Deep Breath</p>
+          <p class="menu-card-desc">温めたオイルで全身をゆるめる基本コース。背面を中心に、肩・首・腰の疲労を丁寧にほぐします。初めての方にもおすすめの、息吹の手技を堪能できる60分。</p>
+          <div class="menu-card-meta">
+            <span class="menu-card-time">60 min</span>
+            <span class="menu-card-price">¥12,000<span>（税込）</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card fi fi-d2">
+        <div class="menu-card-name">還流</div>
+        <div class="menu-card-body">
+          <p class="menu-card-en">Kan-ryū — Return Flow</p>
+          <p class="menu-card-desc">整体の矯正技術とオイルトリートメントを融合。骨格のバランスを整えながら、深部の筋膜にアプローチ。慢性的な不調やデスクワークによる歪みが気になる方へ。</p>
+          <div class="menu-card-meta">
+            <span class="menu-card-time">90 min</span>
+            <span class="menu-card-price">¥18,000<span>（税込）</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card fi fi-d3">
+        <div class="menu-card-name">大地</div>
+        <div class="menu-card-body">
+          <p class="menu-card-en">Dai-chi — Earth</p>
+          <p class="menu-card-desc">足裏から膝下までを集中的に施術するリフレクソロジーコース。全身の巡りを足元から促し、むくみや冷えにアプローチ。立ち仕事の方、よく歩く方に。</p>
+          <div class="menu-card-meta">
+            <span class="menu-card-time">60 min</span>
+            <span class="menu-card-price">¥10,000<span>（税込）</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-card fi fi-d4">
+        <div class="menu-card-name">浄化</div>
+        <div class="menu-card-body">
+          <p class="menu-card-en">Jō-ka — Purification</p>
+          <p class="menu-card-desc">足湯から始まり、リフレクソロジー・整体・オイルトリートメントのすべてを組み合わせた最上位コース。全身の滞りを解放し、深い浄化へと導く120分の特別な時間。</p>
+          <div class="menu-card-meta">
+            <span class="menu-card-time">120 min</span>
+            <span class="menu-card-price">¥25,000<span>（税込）</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLOW ===== -->
+<section class="section section-green flow-section" id="flow">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi">
+      <p class="section-label">Treatment Flow</p>
+      <h2 class="section-title">施術の流れ</h2>
+      <p class="section-title-en">From Greeting to Farewell</p>
+    </div>
+    <div class="flow-timeline">
+
+      <div class="flow-step fi">
+        <!-- Brush stroke SVG -->
+        <svg class="flow-brush" viewBox="0 0 60 80" fill="none"><path d="M30 0 C25 20 35 35 28 55 C22 70 32 78 30 80" stroke="var(--hisui)" stroke-width="2" stroke-linecap="round" opacity=".4" class="brush-path"/></svg>
+        <p class="flow-num">01</p>
+        <h3 class="flow-title">カウンセリング</h3>
+        <p class="flow-desc">お身体の状態やお悩みを丁寧に伺います。施術の方針を一緒に決め、安心してお過ごしいただける時間をつくります。</p>
+      </div>
+
+      <div class="flow-step fi fi-d1">
+        <svg class="flow-brush" viewBox="0 0 60 80" fill="none"><path d="M28 0 C32 15 20 30 35 50 C40 65 25 75 30 80" stroke="var(--hisui)" stroke-width="2" stroke-linecap="round" opacity=".4" class="brush-path"/></svg>
+        <p class="flow-num">02</p>
+        <h3 class="flow-title">足湯</h3>
+        <p class="flow-desc">天然ハーブを溶かし込んだ足湯で全身をゆるめます。足元から温まることで、施術の効果がより深く浸透します。</p>
+      </div>
+
+      <div class="flow-step fi fi-d2">
+        <svg class="flow-brush" viewBox="0 0 60 80" fill="none"><path d="M32 0 C28 18 38 32 26 52 C20 66 34 76 30 80" stroke="var(--hisui)" stroke-width="2" stroke-linecap="round" opacity=".4" class="brush-path"/></svg>
+        <p class="flow-num">03</p>
+        <h3 class="flow-title">施術</h3>
+        <p class="flow-desc">息吹流の手技で、お身体と対話するように施術を行います。呼吸のリズムに合わせ、深部の疲労を丁寧に解きほぐしていきます。</p>
+      </div>
+
+      <div class="flow-step fi fi-d3">
+        <svg class="flow-brush" viewBox="0 0 60 80" fill="none"><path d="M26 0 C30 20 22 38 34 55 C38 68 28 76 30 80" stroke="var(--hisui)" stroke-width="2" stroke-linecap="round" opacity=".4" class="brush-path"/></svg>
+        <p class="flow-num">04</p>
+        <h3 class="flow-title">ハーブティー</h3>
+        <p class="flow-desc">施術後は、季節のハーブティーとともにゆったりとお過ごしください。身体の内側からも巡りを整えるひとときです。</p>
+      </div>
+
+      <div class="flow-step fi fi-d4">
+        <p class="flow-num">05</p>
+        <h3 class="flow-title">お見送り</h3>
+        <p class="flow-desc">ご自宅でのセルフケアのアドバイスをお伝えし、次回のご予約もご案内いたします。新しい呼吸とともに、日常へ。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== THERAPIST ===== -->
+<section class="section section-dark" id="therapist">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi" style="margin-bottom:3rem">
+      <p class="section-label">Therapist</p>
+      <h2 class="section-title">施術者紹介</h2>
+      <p class="section-title-en">Hands that Remember</p>
+    </div>
+    <div class="therapist-grid">
+      <div class="therapist-portrait fi fi-left">
+        <!-- Hand silhouette SVG -->
+        <svg viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 30 C95 28 88 25 85 32 C80 42 82 58 84 70 L84 70 C80 62 74 48 68 42 C63 37 56 38 54 44 C50 55 58 72 64 82 L64 82 C58 75 50 65 44 62 C38 59 33 63 33 70 C33 80 42 92 50 100 L50 100 C44 96 36 92 30 94 C24 96 24 103 28 110 C34 120 48 130 56 136 L56 136 C52 134 44 132 40 136 C35 140 38 148 44 154 C54 166 72 176 86 182 C100 188 108 196 110 210 L110 250 C110 258 114 260 118 260 C122 260 126 258 126 250 L126 210 C128 194 134 186 140 178 C148 168 152 154 152 140 C152 120 148 100 142 84 C138 72 130 58 124 48 C118 38 108 30 100 30Z" fill="var(--geppaku)" opacity=".12"/>
+          <path d="M100 30 C95 28 88 25 85 32 C80 42 82 58 84 70 L84 70 C80 62 74 48 68 42 C63 37 56 38 54 44 C50 55 58 72 64 82 L64 82 C58 75 50 65 44 62 C38 59 33 63 33 70 C33 80 42 92 50 100 L50 100 C44 96 36 92 30 94 C24 96 24 103 28 110 C34 120 48 130 56 136 L56 136 C52 134 44 132 40 136 C35 140 38 148 44 154 C54 166 72 176 86 182 C100 188 108 196 110 210 L110 250" stroke="var(--hisui)" stroke-width=".5" opacity=".2" fill="none"/>
+        </svg>
+      </div>
+      <div class="therapist-info fi fi-right">
+        <h3 class="therapist-name">水 上 　 雅</h3>
+        <p class="therapist-name-en">Miyabi Mizukami</p>
+        <div class="therapist-bio">
+          <p>整体師としての研鑽を積んだのち、アロマセラピー・リフレクソロジーの国際資格を取得。延べ12,000人以上の施術実績を持つ。</p>
+          <p>「身体は嘘をつかない」を信条に、触れた瞬間に感じ取るお身体の声を大切にしています。力で押すのではなく、呼吸とともに深部へ沈み込んでいく——そんな施術を心がけています。</p>
+        </div>
+        <p class="therapist-quote">「あなたの身体が安心して力を抜ける、<br>その場所でありたいと思っています。」</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SPACE ===== -->
+<section class="section section-light space-section" id="space">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi" style="margin-bottom:3rem">
+      <p class="section-label" style="color:var(--fukamidori)">Private Space</p>
+      <h2 class="section-title" style="color:var(--kuro)">空間</h2>
+      <p class="section-title-en" style="color:var(--kuro)">Five Senses, One Silence</p>
+      <p class="section-body" style="color:var(--kuro)">完全個室の空間は、五感すべてに配慮を重ねた「もうひとつの世界」。<br>外の喧騒を忘れ、ただご自身の身体と呼吸だけに意識を向けていただけるよう、すべてを整えています。</p>
+    </div>
+    <div class="senses-grid">
+
+      <div class="sense-card fi fi-d1">
+        <svg class="sense-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="8" stroke="var(--fukamidori)" stroke-width="1" opacity=".6"/><path d="M24 10 L24 6 M24 42 L24 38 M38 24 L42 24 M6 24 L10 24 M34 14 L37 11 M11 37 L14 34 M34 34 L37 37 M11 11 L14 14" stroke="var(--fukamidori)" stroke-width="1" opacity=".3"/></svg>
+        <p class="sense-label">視覚</p>
+        <h3 class="sense-title">光</h3>
+        <p class="sense-desc">間接照明のみの空間。自然素材の壁と天然木の温もりが、視覚からの緊張を解きほぐします。</p>
+      </div>
+
+      <div class="sense-card fi fi-d2">
+        <svg class="sense-icon" viewBox="0 0 48 48" fill="none"><path d="M18 20 C18 14 24 8 24 8 C24 8 30 14 30 20 C30 24 27.3 27 24 27 C20.7 27 18 24 18 20Z" stroke="var(--fukamidori)" stroke-width="1" opacity=".6"/><line x1="24" y1="27" x2="24" y2="40" stroke="var(--fukamidori)" stroke-width="1" opacity=".3"/><path d="M20 34 L28 34" stroke="var(--fukamidori)" stroke-width="1" opacity=".3"/></svg>
+        <p class="sense-label">聴覚</p>
+        <h3 class="sense-title">音</h3>
+        <p class="sense-desc">防音された個室に、遠くの水音と鳥のさえずりがかすかに。心拍を穏やかにする自然音の設計。</p>
+      </div>
+
+      <div class="sense-card fi fi-d3">
+        <svg class="sense-icon" viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="28" rx="10" ry="6" stroke="var(--fukamidori)" stroke-width="1" opacity=".6"/><path d="M20 28 C20 22 24 12 24 12 C24 12 28 22 28 28" stroke="var(--fukamidori)" stroke-width="1" opacity=".4" fill="none"/><path d="M22 16 C18 18 16 22 17 26" stroke="var(--fukamidori)" stroke-width="1" opacity=".3" fill="none"/></svg>
+        <p class="sense-label">嗅覚</p>
+        <h3 class="sense-title">香</h3>
+        <p class="sense-desc">天然精油のみを使用したアロマ。季節ごとに調合を変え、その日の身体が求める香りをお選びします。</p>
+      </div>
+
+      <div class="sense-card fi fi-d4">
+        <svg class="sense-icon" viewBox="0 0 48 48" fill="none"><path d="M14 32 C14 22 20 12 24 8 C28 12 34 22 34 32 C34 38 29.5 42 24 42 C18.5 42 14 38 14 32Z" stroke="var(--fukamidori)" stroke-width="1" opacity=".6" fill="none"/><path d="M20 32 C20 28 22 24 24 22 C26 24 28 28 28 32" stroke="var(--fukamidori)" stroke-width="1" opacity=".3" fill="none"/></svg>
+        <p class="sense-label">触覚</p>
+        <h3 class="sense-title">布</h3>
+        <p class="sense-desc">オーガニックリネンのシーツとタオル。肌に触れるすべてのものに、天然素材の柔らかさを。</p>
+      </div>
+
+      <div class="sense-card fi fi-d5">
+        <svg class="sense-icon" viewBox="0 0 48 48" fill="none"><path d="M16 18 L16 28 C16 34 19.6 38 24 38 C28.4 38 32 34 32 28 L32 18" stroke="var(--fukamidori)" stroke-width="1" opacity=".6" fill="none"/><path d="M12 20 L16 18 M36 18 L32 20" stroke="var(--fukamidori)" stroke-width="1" opacity=".3"/><ellipse cx="24" cy="16" rx="8" ry="2" stroke="var(--fukamidori)" stroke-width="1" opacity=".3" fill="none"/><path d="M20 12 Q22 10 24 12 Q26 14 28 12" stroke="var(--fukamidori)" stroke-width=".8" opacity=".25" fill="none"/></svg>
+        <p class="sense-label">味覚</p>
+        <h3 class="sense-title">茶</h3>
+        <p class="sense-desc">施術後にお出しするハーブティーは、身体の巡りを内側から促すオリジナルブレンド。季節の和菓子とともに。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== VOICE ===== -->
+<section class="section section-dark voice-section" id="voice">
+  <div class="ripple-wrap"><svg width="400" height="100" viewBox="0 0 400 100"><circle class="ripple-circle rc" cx="200" cy="50"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.4s"/><circle class="ripple-circle rc" cx="200" cy="50" style="animation-delay:.8s"/></svg></div>
+  <div class="container">
+    <div class="center fi" style="margin-bottom:3rem">
+      <p class="section-label">Voice</p>
+      <h2 class="section-title">お客様の声</h2>
+      <p class="section-title-en">Words from Our Guests</p>
+    </div>
+    <div class="voice-grid">
+
+      <div class="voice-card fi">
+        <span class="voice-quote">」</span>
+        <p class="voice-text">身体に触れた瞬間、「この人の手は信頼できる」と直感しました。力任せではない、でも確実に深いところに届く不思議な施術。終わった後、身体が数キロ軽くなったような感覚で、帰り道の景色がいつもと違って見えました。</p>
+        <p class="voice-meta">40代女性 ・ 会社経営 ・ 浄化コースをご利用</p>
+      </div>
+
+      <div class="voice-card fi fi-d1">
+        <span class="voice-quote">」</span>
+        <p class="voice-text">慢性的な腰痛で何軒も通いましたが、ここが一番。整体とオイルの組み合わせが本当に気持ちよくて、施術中に自分の呼吸が深くなっていくのがわかります。月に一度の「還流」が、今では生活に欠かせない時間です。</p>
+        <p class="voice-meta">50代男性 ・ 建築士 ・ 還流コースをご利用</p>
+      </div>
+
+      <div class="voice-card fi fi-d2">
+        <span class="voice-quote">」</span>
+        <p class="voice-text">個室の静けさに包まれて、施術が始まる前からもう癒されていました。足湯のハーブの香り、リネンの肌触り、遠くに聞こえる水音——五感すべてが安心する空間です。自分へのご褒美として、大切に通い続けたいサロンに出会えました。</p>
+        <p class="voice-meta">30代女性 ・ 看護師 ・ 深息コースをご利用</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner">
+  <p class="cta-text fi">深い疲れに、深い手当てを。<br>まずは一度、息吹の手に身体を預けてみませんか。</p>
+  <a href="#reserve" class="btn-cta fi fi-d1"><span>ご予約はこちら</span></a>
+</section>
+
+<!-- ===== RESERVATION ===== -->
+<section class="section section-dark reserve-section" id="reserve">
+  <div class="container">
+    <div class="center fi" style="margin-bottom:3rem">
+      <p class="section-label">Reservation</p>
+      <h2 class="section-title">ご予約</h2>
+      <p class="section-title-en">Time for Yourself</p>
+    </div>
+    <div class="reserve-inner">
+
+      <div class="reserve-message fi fi-left">
+        <h3>ご自身のための時間を、<br>ここに確保してください。</h3>
+        <p>完全予約制のため、おひとりおひとりに十分な時間を確保しております。当日のご予約はお電話にて承ります。オンラインでのご予約はLINEからお気軽にどうぞ。</p>
+        <a href="#" class="btn-line">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          LINEで予約する
+        </a>
+        <p class="btn-tel">お電話でのご予約<br><b>03-0000-0000</b><br>受付 10:00–19:00（不定休）</p>
+      </div>
+
+      <div class="calendar fi fi-right">
+        <div class="cal-header">
+          <span class="cal-nav">◁</span>
+          <span class="cal-month">2026年 2月</span>
+          <span class="cal-nav">▷</span>
+        </div>
+        <div class="cal-days" id="calDays">
+          <span class="cal-day-label">日</span><span class="cal-day-label">月</span><span class="cal-day-label">火</span><span class="cal-day-label">水</span><span class="cal-day-label">木</span><span class="cal-day-label">金</span><span class="cal-day-label">土</span>
+        </div>
+        <div class="cal-times" id="calTimes">
+          <span class="cal-time">10:00</span>
+          <span class="cal-time">11:30</span>
+          <span class="cal-time">13:00</span>
+          <span class="cal-time active">14:30</span>
+          <span class="cal-time">16:00</span>
+          <span class="cal-time">17:30</span>
+        </div>
+        <p class="cal-note">※ カレンダーはイメージです。実際のご予約はLINEまたはお電話で承ります。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="fi">
+    <p class="footer-logo">息吹</p>
+    <p class="footer-logo-en">IBUKI — Body Treatment Salon</p>
+  </div>
+  <div class="fi fi-d1">
+    <div class="footer-hours">営業時間 10:00 – 21:00（最終受付 19:00）・ 不定休</div>
+  </div>
+  <div class="footer-info fi fi-d2">
+    〒000-0000 東京都港区南青山 0-0-0 ○○ビル 3F<br>
+    東京メトロ 表参道駅 B1出口より徒歩5分<br>
+    TEL：03-0000-0000 ／ <a href="#" style="text-decoration:underline;opacity:.6">LINE公式アカウント</a>
+  </div>
+  <p class="footer-copy fi fi-d3">&copy; 2026 息吹 IBUKI. All rights reserved.</p>
+</footer>
+
+<script>
+(function(){
+  // Intersection Observer for fade-in
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('vis')}
+    })
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fi,.fi-left,.fi-right,.flow-step').forEach(el=>obs.observe(el));
+
+  // Ripple animation observer
+  const rippleObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.querySelectorAll('.rc').forEach(c=>c.classList.add('animate'));
+        // Reset after animation
+        setTimeout(()=>{
+          e.target.querySelectorAll('.rc').forEach(c=>c.classList.remove('animate'));
+        },3500);
+      }
+    })
+  },{threshold:0.5});
+  document.querySelectorAll('.ripple-wrap').forEach(el=>rippleObs.observe(el));
+
+  // Brush stroke draw animation
+  document.querySelectorAll('.brush-path').forEach(p=>{
+    const len=p.getTotalLength();
+    p.style.strokeDasharray=len;
+    p.style.strokeDashoffset=len;
+    p.style.transition='stroke-dashoffset 2.5s ease-in-out';
+  });
+  const brushObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const p=e.target.querySelector('.brush-path');
+        if(p)p.style.strokeDashoffset='0';
+      }
+    })
+  },{threshold:0.3});
+  document.querySelectorAll('.flow-step').forEach(el=>brushObs.observe(el));
+
+  // Nav scroll
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled',window.scrollY>80);
+  });
+
+  // Mobile menu
+  const burger=document.getElementById('burger');
+  const mm=document.getElementById('mobileMenu');
+  burger.addEventListener('click',()=>{
+    burger.classList.toggle('active');
+    mm.classList.toggle('active');
+    document.body.style.overflow=mm.classList.contains('active')?'hidden':'';
+  });
+  document.querySelectorAll('.mm-link').forEach(a=>{
+    a.addEventListener('click',()=>{
+      burger.classList.remove('active');
+      mm.classList.remove('active');
+      document.body.style.overflow='';
+    });
+  });
+
+  // Sound button toggle
+  const soundBtn=document.getElementById('soundBtn');
+  const soundWave=document.getElementById('soundWave');
+  let soundOn=true;
+  soundBtn.addEventListener('click',()=>{
+    soundOn=!soundOn;
+    soundWave.classList.toggle('paused',!soundOn);
+  });
+
+  // Calendar generation (Feb 2026)
+  const calDays=document.getElementById('calDays');
+  // Feb 1, 2026 = Sunday (index 0)
+  const daysInFeb=28;
+  const startDay=0; // Sunday
+  const today=11;
+  for(let i=0;i<startDay;i++){
+    const d=document.createElement('span');
+    d.className='cal-day';
+    calDays.appendChild(d);
+  }
+  for(let i=1;i<=daysInFeb;i++){
+    const d=document.createElement('span');
+    const dayOfWeek=(startDay+i-1)%7;
+    let cls='cal-day';
+    if(i<=today)cls+=' past';
+    else cls+=' available';
+    if(i===15)cls+=' selected';
+    if(dayOfWeek===0)cls+=' sun';
+    d.className=cls;
+    d.textContent=i;
+    d.addEventListener('click',function(){
+      if(this.classList.contains('past'))return;
+      calDays.querySelectorAll('.cal-day').forEach(c=>c.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+    calDays.appendChild(d);
+  }
+
+  // Time slot click
+  document.querySelectorAll('.cal-time').forEach(t=>{
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.cal-time').forEach(x=>x.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

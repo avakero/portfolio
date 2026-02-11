@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="VECTIS（ベクティス）— 限界の、1mm先へ。次世代パフォーマンスアスレチックウェアブランド。最先端素材テクノロジーとエンジニアリングで、アスリートの可能性を拡張する。">
+<title>VECTIS — ENGINEERED FOR THE EDGE</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--carbon:#0d0d0f;--jet:#18181c;--bolt:#b5ff2b;--white:#f2f2f5;--steel:#6b6b78;--red:#ff2a2a;
+--font-heading:'Arial Narrow',Impact,'Helvetica Neue',sans-serif;
+--font-body:'Helvetica Neue','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+--font-mono:'SF Mono','Consolas','Courier New',monospace;
+--section-pad:clamp(60px,10vw,120px);
+}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
+body{background:var(--carbon);color:var(--white);font-family:var(--font-body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* Carbon fiber texture */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
+background-image:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.07) 2px,rgba(255,255,255,.07) 4px),
+repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(255,255,255,.07) 2px,rgba(255,255,255,.07) 4px)}
+::selection{background:var(--bolt);color:var(--carbon)}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{width:min(1280px,92%);margin:0 auto}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:16px 0;transition:all .4s}
+nav.scrolled{background:rgba(13,13,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(181,255,43,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;width:min(1280px,92%);margin:0 auto}
+.logo{font-family:var(--font-heading);font-size:clamp(20px,2.5vw,28px);font-weight:900;letter-spacing:.25em;color:var(--white);text-transform:uppercase}
+.logo span{color:var(--bolt)}
+.nav-links{display:flex;gap:clamp(16px,2.5vw,32px);align-items:center}
+.nav-links a{font-family:var(--font-heading);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);transition:color .3s;position:relative}
+.nav-links a:hover{color:var(--bolt)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--bolt);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.btn-nav{padding:8px 20px;border:1px solid var(--bolt);color:var(--bolt);font-family:var(--font-heading);font-size:11px;letter-spacing:.15em;text-transform:uppercase;border-radius:2px;transition:all .3s}
+.btn-nav:hover{background:var(--bolt);color:var(--carbon)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{display:block;width:24px;height:1.5px;background:var(--white);transition:all .3s}
+
+/* ===== HERO ===== */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:1;transition:opacity .5s}
+.hero-overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,rgba(13,13,15,.95) 0%,rgba(13,13,15,.6) 50%,rgba(13,13,15,.85) 100%)}
+.hero-svg-bg{position:absolute;inset:0;z-index:1}
+.hero-content{position:relative;z-index:10;width:min(1280px,92%);margin:0 auto;padding-top:100px}
+.hero-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:var(--bolt);text-transform:uppercase;margin-bottom:16px;opacity:0;transform:translateY(20px);animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:var(--font-heading);font-size:clamp(40px,8vw,100px);font-weight:900;line-height:.95;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:12px;opacity:0;transform:translateY(30px);animation:fadeUp .8s .5s forwards}
+.hero-title .green{color:var(--bolt)}
+.hero-subtitle{font-family:var(--font-heading);font-size:clamp(14px,2vw,22px);font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);margin-bottom:40px;opacity:0;transform:translateY(20px);animation:fadeUp .8s .7s forwards}
+.hero-cta-row{display:flex;gap:16px;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp .8s .9s forwards}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:var(--bolt);color:var(--carbon);font-family:var(--font-heading);font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transform:translateX(-100%);transition:transform .5s}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-primary:hover{box-shadow:0 0 30px rgba(181,255,43,.3);transform:translateY(-2px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:transparent;color:var(--white);font-family:var(--font-heading);font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;border:1px solid var(--steel);border-radius:2px;cursor:pointer;transition:all .3s}
+.btn-secondary:hover{border-color:var(--bolt);color:var(--bolt)}
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-indicator span{font-family:var(--font-mono);font-size:9px;letter-spacing:.3em;color:var(--steel);text-transform:uppercase}
+.scroll-arrow{width:20px;height:20px;border-right:1.5px solid var(--bolt);border-bottom:1.5px solid var(--bolt);transform:rotate(45deg);animation:scrollBounce 2s infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.3}50%{transform:rotate(45deg) translate(4px,4px);opacity:1}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* SVG Runner Trail */
+.runner-trail{position:absolute;right:5%;top:50%;transform:translateY(-50%);z-index:5;width:clamp(280px,35vw,500px);height:auto;opacity:.7}
+.trail-line{stroke-dasharray:1200;stroke-dashoffset:1200;animation:drawLine 2.5s 1s forwards ease-out}
+.trail-line2{animation-delay:1.3s}
+.trail-line3{animation-delay:1.6s}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+.runner-glow{filter:drop-shadow(0 0 12px rgba(181,255,43,.4))}
+
+/* ===== SECTION COMMON ===== */
+section{position:relative;z-index:5}
+.section-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.35em;color:var(--bolt);text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:var(--font-heading);font-size:clamp(28px,5vw,56px);font-weight:900;letter-spacing:.05em;text-transform:uppercase;line-height:1.05;margin-bottom:20px}
+.section-desc{font-size:clamp(14px,1.2vw,16px);color:var(--steel);max-width:600px;line-height:1.8}
+
+/* Reveal animation */
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+.reveal-delay-4{transition-delay:.6s}
+
+/* Diagonal divider */
+.divider-skew{position:relative;height:80px;overflow:hidden;z-index:6}
+.divider-skew::before{content:'';position:absolute;bottom:0;left:-5%;width:110%;height:100%;background:var(--jet);transform:skewY(-2deg);transform-origin:left}
+.divider-skew::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--bolt),transparent);z-index:1}
+
+/* ===== TECHNOLOGY ===== */
+#technology{background:var(--jet);padding:var(--section-pad) 0}
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:60px}
+.layer-animation{position:relative;width:100%;aspect-ratio:3/4;max-width:420px;margin:0 auto}
+.jacket-layer{position:absolute;left:50%;width:85%;border-radius:6px;transition:all 1s cubic-bezier(.25,.46,.45,.94);opacity:.85;transform:translateX(-50%)}
+.jacket-layer.separated-0{top:0;opacity:1}
+.jacket-layer.separated-1{top:35%;opacity:1}
+.jacket-layer.separated-2{top:70%;opacity:1}
+.layer-card{background:rgba(13,13,15,.9);border:1px solid rgba(181,255,43,.15);backdrop-filter:blur(8px);padding:24px;border-radius:4px;display:flex;align-items:center;gap:16px}
+.layer-card .layer-icon{width:48px;height:48px;border:1px solid var(--bolt);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.layer-card .layer-icon svg{width:24px;height:24px;stroke:var(--bolt)}
+.layer-label{font-family:var(--font-heading);font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);margin-bottom:4px}
+.layer-stat{font-family:var(--font-mono);font-size:clamp(20px,2.5vw,28px);font-weight:700;color:var(--bolt)}
+.layer-stat-desc{font-size:12px;color:var(--steel)}
+.layer-info{opacity:0;transform:translateX(-20px);transition:all .6s}
+.layer-info.active{opacity:1;transform:translateX(0)}
+
+/* Honeycomb for tech */
+.honeycomb{display:flex;flex-wrap:wrap;gap:8px;margin-top:40px}
+.hex{width:80px;height:92px;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);background:linear-gradient(135deg,rgba(181,255,43,.08),rgba(181,255,43,.02));display:flex;align-items:center;justify-content:center;transition:all .3s}
+.hex:hover{background:linear-gradient(135deg,rgba(181,255,43,.2),rgba(181,255,43,.05))}
+.hex svg{width:28px;height:28px;stroke:var(--bolt);stroke-width:1.5;fill:none}
+
+/* ===== PERFORMANCE DATA ===== */
+#performance{background:var(--carbon);padding:var(--section-pad) 0;text-align:center}
+.perf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;margin-top:60px}
+.perf-card{padding:40px 24px;border:1px solid rgba(255,255,255,.05);border-radius:4px;background:rgba(24,24,28,.5);transition:all .4s}
+.perf-card:hover{border-color:rgba(181,255,43,.2);transform:translateY(-4px)}
+.perf-number{font-family:var(--font-heading);font-size:clamp(48px,7vw,80px);font-weight:900;line-height:1;color:var(--bolt);margin-bottom:4px}
+.perf-number .unit{font-size:.4em;color:var(--steel)}
+.perf-number .prefix{color:var(--white)}
+.perf-label{font-family:var(--font-heading);font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--white);margin-bottom:16px}
+.progress-bar{width:100%;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;margin-top:12px}
+.progress-fill{height:100%;background:var(--bolt);border-radius:2px;width:0;transition:width 1.5s cubic-bezier(.25,.46,.45,.94)}
+
+/* ===== PRODUCTS ===== */
+#products{background:var(--jet);padding:var(--section-pad) 0}
+.products-tabs{display:flex;gap:4px;margin-bottom:48px;flex-wrap:wrap}
+.tab-btn{padding:12px 28px;font-family:var(--font-heading);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:2px;cursor:pointer;transition:all .3s}
+.tab-btn.active,.tab-btn:hover{color:var(--carbon);background:var(--bolt);border-color:var(--bolt)}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.product-card{background:rgba(13,13,15,.7);border:1px solid rgba(255,255,255,.06);border-radius:4px;overflow:hidden;cursor:pointer;transition:all .4s;perspective:800px;position:relative}
+.product-card:hover{border-color:var(--bolt);box-shadow:0 0 30px rgba(181,255,43,.08)}
+.product-card:hover .product-img{transform:rotateY(5deg) rotateX(3deg) scale(1.02)}
+.product-img{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(24,24,28,1),rgba(13,13,15,1));transition:transform .5s cubic-bezier(.25,.46,.45,.94);transform-style:preserve-3d;position:relative;overflow:hidden}
+.product-img svg{width:60%;height:60%;opacity:.5;transition:opacity .3s}
+.product-card:hover .product-img svg{opacity:.8}
+.product-info{padding:20px}
+.product-category{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;color:var(--bolt);text-transform:uppercase;margin-bottom:6px}
+.product-name{font-family:var(--font-heading);font-size:16px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.product-price{font-family:var(--font-mono);font-size:14px;color:var(--steel)}
+.product-card .new-badge{position:absolute;top:16px;right:16px;background:var(--red);color:var(--white);font-family:var(--font-heading);font-size:9px;letter-spacing:.15em;padding:4px 10px;border-radius:1px;text-transform:uppercase}
+
+/* ===== ATHLETES ===== */
+#athletes{background:var(--carbon);padding:var(--section-pad) 0}
+.athletes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-top:60px}
+.athlete-card{border:1px solid rgba(255,255,255,.06);border-radius:4px;overflow:hidden;background:rgba(24,24,28,.5);transition:all .4s}
+.athlete-card:hover{border-color:rgba(181,255,43,.15)}
+.athlete-visual{aspect-ratio:16/10;background:linear-gradient(135deg,var(--jet),var(--carbon));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.athlete-visual::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:50%;background:linear-gradient(transparent,rgba(13,13,15,.9))}
+.athlete-number{font-family:var(--font-heading);font-size:clamp(80px,10vw,120px);font-weight:900;color:rgba(181,255,43,.06);position:absolute;right:16px;bottom:-10px;line-height:1;z-index:1}
+.athlete-specs{padding:24px}
+.athlete-name{font-family:var(--font-heading);font-size:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.athlete-sport{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--bolt);text-transform:uppercase;margin-bottom:20px}
+.spec-table{width:100%;border-collapse:collapse}
+.spec-table tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.spec-table td{padding:8px 0;font-size:13px}
+.spec-table td:first-child{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--steel);text-transform:uppercase;width:40%}
+.spec-table td:last-child{font-family:var(--font-mono);color:var(--white);text-align:right}
+
+/* ===== SUSTAINABILITY ===== */
+#sustainability{background:var(--jet);padding:var(--section-pad) 0}
+.sustain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:60px}
+.sustain-card{padding:32px 24px;border:1px solid rgba(255,255,255,.05);border-radius:4px;text-align:center;background:rgba(13,13,15,.4);transition:all .4s}
+.sustain-card:hover{border-color:rgba(181,255,43,.2);transform:translateY(-4px)}
+.sustain-icon{width:56px;height:56px;margin:0 auto 20px;border:1px solid rgba(181,255,43,.3);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.sustain-icon svg{width:24px;height:24px;stroke:var(--bolt);fill:none}
+.sustain-number{font-family:var(--font-heading);font-size:clamp(32px,4vw,44px);font-weight:900;color:var(--bolt);line-height:1;margin-bottom:6px}
+.sustain-label{font-family:var(--font-heading);font-size:13px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.sustain-desc{font-size:13px;color:var(--steel);line-height:1.7}
+
+/* ===== CTA ===== */
+#cta{background:var(--carbon);padding:var(--section-pad) 0;text-align:center;position:relative;overflow:hidden}
+#cta::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(181,255,43,.06) 0%,transparent 70%);pointer-events:none}
+.cta-title{font-family:var(--font-heading);font-size:clamp(32px,6vw,72px);font-weight:900;letter-spacing:.02em;text-transform:uppercase;line-height:1;margin-bottom:20px}
+.cta-title .green{color:var(--bolt)}
+.cta-sub{font-size:clamp(14px,1.3vw,18px);color:var(--steel);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.8}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ===== FOOTER ===== */
+footer{background:var(--jet);border-top:1px solid rgba(255,255,255,.04);padding:60px 0 30px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+.footer-brand .logo{margin-bottom:16px;display:inline-block}
+.footer-brand p{font-size:13px;color:var(--steel);line-height:1.8;max-width:300px}
+.footer-col h4{font-family:var(--font-heading);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--white);margin-bottom:16px}
+.footer-col a{display:block;font-size:13px;color:var(--steel);padding:4px 0;transition:color .3s}
+.footer-col a:hover{color:var(--bolt)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;border-top:1px solid rgba(255,255,255,.04);flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--steel);text-transform:uppercase}
+
+/* ===== MOBILE NAV ===== */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:999;background:rgba(13,13,15,.98);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:var(--font-heading);font-size:24px;letter-spacing:.15em;text-transform:uppercase;color:var(--white);transition:color .3s}
+.mobile-menu a:hover{color:var(--bolt)}
+.close-menu{position:absolute;top:24px;right:24px;width:32px;height:32px;cursor:pointer;background:none;border:none}
+.close-menu::before,.close-menu::after{content:'';position:absolute;top:50%;left:0;width:100%;height:1.5px;background:var(--white)}
+.close-menu::before{transform:rotate(45deg)}
+.close-menu::after{transform:rotate(-45deg)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+.runner-trail{opacity:.4;width:50%;right:0}
+.tech-grid{grid-template-columns:1fr;gap:40px}
+.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+.nav-links{display:none}
+.hamburger{display:flex}
+.runner-trail{display:none}
+.hero-title{font-size:clamp(36px,10vw,60px)}
+.products-grid{grid-template-columns:1fr}
+.athletes-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr}
+.perf-grid{grid-template-columns:1fr 1fr}
+.products-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:8px}
+.tab-btn{white-space:nowrap;flex-shrink:0}
+}
+@media(max-width:480px){
+.perf-grid{grid-template-columns:1fr}
+.hero-cta-row{flex-direction:column}
+.hero-cta-row .btn-primary,.hero-cta-row .btn-secondary{width:100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+<div class="nav-inner">
+<a href="#hero" class="logo">VECTI<span>S</span></a>
+<div class="nav-links">
+<a href="#technology">Technology</a>
+<a href="#performance">Performance</a>
+<a href="#products">Products</a>
+<a href="#athletes">Athletes</a>
+<a href="#sustainability">Sustainability</a>
+<a href="#cta" class="btn-nav">Shop Now</a>
+</div>
+<div class="hamburger" id="hamburgerBtn" aria-label="メニューを開く">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+<button class="close-menu" id="closeMenu" aria-label="メニューを閉じる"></button>
+<a href="#technology" class="mobile-link">Technology</a>
+<a href="#performance" class="mobile-link">Performance</a>
+<a href="#products" class="mobile-link">Products</a>
+<a href="#athletes" class="mobile-link">Athletes</a>
+<a href="#sustainability" class="mobile-link">Sustainability</a>
+<a href="#cta" class="mobile-link">Shop Now</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+<div class="hero-overlay"></div>
+<!-- SVG Runner Trail -->
+<svg class="runner-trail runner-glow" viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Trail lines -->
+<path class="trail-line" d="M380 580 Q370 500 350 440 Q330 380 300 340 Q270 300 260 260 Q250 220 270 180 Q290 140 310 100 Q330 60 320 30" stroke="#b5ff2b" stroke-width="2" stroke-linecap="round" fill="none" opacity=".7"/>
+<path class="trail-line trail-line2" d="M360 580 Q350 510 340 450 Q320 390 290 350 Q260 310 240 270 Q220 230 250 190 Q280 150 290 110 Q300 70 300 30" stroke="#b5ff2b" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".4"/>
+<path class="trail-line trail-line3" d="M400 580 Q390 490 370 430 Q350 370 320 330 Q290 290 280 250 Q270 210 290 170 Q310 130 330 90 Q350 50 340 20" stroke="#b5ff2b" stroke-width="1" stroke-linecap="round" fill="none" opacity=".25"/>
+<!-- Runner silhouette -->
+<g opacity=".85" transform="translate(260,30)">
+<circle cx="30" cy="10" r="12" fill="#b5ff2b" opacity=".6"/>
+<path d="M30 22 L30 55 M30 35 L10 50 M30 35 L55 28 M30 55 L15 85 M30 55 L50 80" stroke="#b5ff2b" stroke-width="3" stroke-linecap="round" fill="none"/>
+</g>
+<!-- Motion blur silhouettes -->
+<g opacity=".2" transform="translate(240,50)">
+<circle cx="30" cy="10" r="12" fill="#b5ff2b"/>
+<path d="M30 22 L30 55 M30 35 L10 50 M30 35 L55 28 M30 55 L15 85 M30 55 L50 80" stroke="#b5ff2b" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+</g>
+<g opacity=".08" transform="translate(220,72)">
+<circle cx="30" cy="10" r="12" fill="#b5ff2b"/>
+<path d="M30 22 L30 55 M30 35 L10 50 M30 35 L55 28 M30 55 L15 85 M30 55 L50 80" stroke="#b5ff2b" stroke-width="2" stroke-linecap="round" fill="none"/>
+</g>
+<!-- Grid lines -->
+<line x1="0" y1="300" x2="500" y2="300" stroke="#b5ff2b" stroke-width=".3" opacity=".15"/>
+<line x1="250" y1="0" x2="250" y2="600" stroke="#b5ff2b" stroke-width=".3" opacity=".15"/>
+<circle cx="250" cy="300" r="150" stroke="#b5ff2b" stroke-width=".3" fill="none" opacity=".08"/>
+<circle cx="250" cy="300" r="250" stroke="#b5ff2b" stroke-width=".3" fill="none" opacity=".05"/>
+</svg>
+
+<div class="hero-content">
+<p class="hero-tag">/// Performance Athletic Wear — Since 2024</p>
+<h1 class="hero-title">限界の、<br>1mm先へ<span class="green">。</span></h1>
+<p class="hero-subtitle">Engineered for the Edge</p>
+<div class="hero-cta-row">
+<a href="#products" class="btn-primary">Shop Now →</a>
+<a href="#technology" class="btn-secondary">Explore Tech</a>
+</div>
+</div>
+<div class="scroll-indicator">
+<span>Scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider-skew"></div>
+
+<!-- TECHNOLOGY -->
+<section id="technology">
+<div class="container">
+<div class="reveal">
+<p class="section-tag">/// 01 — Technology</p>
+<h2 class="section-title">素材を、<br>エンジニアリングする。</h2>
+<p class="section-desc">VECTISの製品は、航空宇宙産業由来の素材テクノロジーを基盤に設計。三層構造の各レイヤーが独立して機能しながら、一体となってアスリートのパフォーマンスを最大化する。</p>
+</div>
+
+<div class="tech-grid">
+<div class="layer-animation reveal" id="layerAnim">
+<!-- Layer cards that separate on scroll -->
+<div class="jacket-layer" id="layer0" style="top:0">
+<div class="layer-card">
+<div class="layer-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+</div>
+<div>
+<div class="layer-label">外層 — Shield Layer</div>
+<div class="layer-stat">+40<span class="unit">%</span></div>
+<div class="layer-stat-desc">撥水性能 — DWR Nano Coating</div>
+</div>
+</div>
+</div>
+<div class="jacket-layer" id="layer1" style="top:8px">
+<div class="layer-card">
+<div class="layer-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16"/><path d="M8 4v16M16 4v16M4 8h16M4 16h16"/></svg>
+</div>
+<div>
+<div class="layer-label">中層 — Flow Layer</div>
+<div class="layer-stat">+60<span class="unit">%</span></div>
+<div class="layer-stat-desc">通気性能 — Micro Mesh Grid</div>
+</div>
+</div>
+</div>
+<div class="jacket-layer" id="layer2" style="top:16px">
+<div class="layer-card">
+<div class="layer-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+</div>
+<div>
+<div class="layer-label">内層 — Thermo Layer</div>
+<div class="layer-stat">±2<span class="unit">°C</span></div>
+<div class="layer-stat-desc">体温調節 — Adaptive Thermo Knit</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<!-- Honeycomb grid -->
+<div class="reveal reveal-delay-1">
+<h3 style="font-family:var(--font-heading);font-size:18px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px">Core Technologies</h3>
+<p style="font-size:14px;color:var(--steel);line-height:1.8;margin-bottom:32px">6つのコアテクノロジーが融合。すべてのステッチ、すべてのファイバーに意味がある。</p>
+</div>
+<div class="honeycomb reveal reveal-delay-2">
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg></div>
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+<div class="hex"><svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9"/></svg></div>
+</div>
+<div style="margin-top:32px" class="reveal reveal-delay-3">
+<div style="display:grid;gap:12px">
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">01</span>
+<span style="font-size:13px;color:var(--steel)">DWR Nano Shield — ナノレベル撥水加工</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">02</span>
+<span style="font-size:13px;color:var(--steel)">AeroFlow Mesh — 高通気マイクロメッシュ</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">03</span>
+<span style="font-size:13px;color:var(--steel)">Volt Stretch — 4Dストレッチファイバー</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">04</span>
+<span style="font-size:13px;color:var(--steel)">ThermoSync — アダプティブ体温調節</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">05</span>
+<span style="font-size:13px;color:var(--steel)">BioMotion Cut — 人体工学設計パターン</span>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--bolt);width:24px">06</span>
+<span style="font-size:13px;color:var(--steel)">Carbon Lite — 超軽量カーボン複合素材</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="divider-skew" style="transform:scaleY(-1)"></div>
+
+<!-- PERFORMANCE DATA -->
+<section id="performance">
+<div class="container">
+<div class="reveal">
+<p class="section-tag">/// 02 — Performance Data</p>
+<h2 class="section-title">数字が証明する。</h2>
+<p class="section-desc" style="margin:0 auto 20px">独立機関によるテスト結果。すべてのデータは、前世代モデルとの比較値。</p>
+</div>
+<div class="perf-grid">
+<div class="perf-card reveal reveal-delay-1">
+<div class="perf-number"><span class="prefix">-</span><span class="count-up" data-target="30">0</span><span class="unit">%</span></div>
+<div class="perf-label">軽量化</div>
+<p style="font-size:13px;color:var(--steel)">Carbon Lite素材による<br>重量の大幅な削減</p>
+<div class="progress-bar"><div class="progress-fill" data-width="75"></div></div>
+</div>
+<div class="perf-card reveal reveal-delay-2">
+<div class="perf-number"><span class="prefix">+</span><span class="count-up" data-target="40">0</span><span class="unit">%</span></div>
+<div class="perf-label">通気性</div>
+<p style="font-size:13px;color:var(--steel)">AeroFlow Meshによる<br>空気循環の劇的向上</p>
+<div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+</div>
+<div class="perf-card reveal reveal-delay-3">
+<div class="perf-number"><span class="count-up" data-target="180">0</span><span class="unit">°</span></div>
+<div class="perf-label">ストレッチ</div>
+<p style="font-size:13px;color:var(--steel)">Volt Stretchが実現する<br>全方位自在な可動域</p>
+<div class="progress-bar"><div class="progress-fill" data-width="95"></div></div>
+</div>
+<div class="perf-card reveal reveal-delay-4">
+<div class="perf-number"><span class="prefix">+</span><span class="count-up" data-target="12">0</span><span class="unit">h</span></div>
+<div class="perf-label">撥水持続</div>
+<p style="font-size:13px;color:var(--steel)">DWR Nano Shieldが誇る<br>長時間の撥水効果</p>
+<div class="progress-bar"><div class="progress-fill" data-width="70"></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="divider-skew"></div>
+
+<!-- PRODUCTS -->
+<section id="products">
+<div class="container">
+<div class="reveal">
+<p class="section-tag">/// 03 — Product Lineup</p>
+<h2 class="section-title">すべての動きに、<br>最適解を。</h2>
+</div>
+<div class="products-tabs reveal reveal-delay-1">
+<button class="tab-btn active" data-cat="all">All</button>
+<button class="tab-btn" data-cat="run">Run</button>
+<button class="tab-btn" data-cat="train">Train</button>
+<button class="tab-btn" data-cat="outdoor">Outdoor</button>
+<button class="tab-btn" data-cat="recovery">Recovery</button>
+</div>
+<div class="products-grid" id="productsGrid">
+
+<div class="product-card reveal" data-cat="run">
+<div class="product-img">
+<span class="new-badge">New</span>
+<svg viewBox="0 0 200 200" fill="none"><rect x="60" y="30" width="80" height="120" rx="4" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><line x1="70" y1="60" x2="130" y2="60" stroke="#b5ff2b" stroke-width=".5" opacity=".4"/><line x1="70" y1="80" x2="130" y2="80" stroke="#b5ff2b" stroke-width=".5" opacity=".4"/><line x1="70" y1="100" x2="130" y2="100" stroke="#b5ff2b" stroke-width=".5" opacity=".4"/><path d="M80 30 Q100 10 120 30" stroke="#b5ff2b" stroke-width=".8" opacity=".6" fill="none"/><circle cx="100" cy="170" r="12" stroke="#b5ff2b" stroke-width=".5" opacity=".3"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Run</div>
+<div class="product-name">Velocity Pro Singlet</div>
+<div class="product-price">¥12,800</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-1" data-cat="run">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><rect x="55" y="50" width="90" height="100" rx="4" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><path d="M55 80 L30 90 L30 140 L55 135" stroke="#b5ff2b" stroke-width=".8" opacity=".5" fill="none"/><path d="M145 80 L170 90 L170 140 L145 135" stroke="#b5ff2b" stroke-width=".8" opacity=".5" fill="none"/><line x1="70" y1="70" x2="130" y2="70" stroke="#b5ff2b" stroke-width=".3" opacity=".4"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Run</div>
+<div class="product-name">Aero Stride Jacket</div>
+<div class="product-price">¥24,800</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-2" data-cat="train">
+<div class="product-img">
+<span class="new-badge" style="background:var(--bolt);color:var(--carbon)">Best</span>
+<svg viewBox="0 0 200 200" fill="none"><rect x="60" y="55" width="80" height="100" rx="4" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><line x1="60" y1="80" x2="140" y2="80" stroke="#b5ff2b" stroke-width=".5" opacity=".3"/><circle cx="100" cy="110" r="15" stroke="#b5ff2b" stroke-width=".5" opacity=".3"/><path d="M85 110 L100 95 L115 110 L100 125 Z" stroke="#b5ff2b" stroke-width=".5" opacity=".4" fill="none"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Train</div>
+<div class="product-name">Force Grid Tee</div>
+<div class="product-price">¥9,800</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-3" data-cat="train">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><rect x="65" y="40" width="70" height="130" rx="3" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><line x1="75" y1="80" x2="125" y2="80" stroke="#b5ff2b" stroke-width=".3" opacity=".4"/><line x1="75" y1="120" x2="125" y2="120" stroke="#b5ff2b" stroke-width=".3" opacity=".4"/><path d="M65 40 Q100 25 135 40" stroke="#b5ff2b" stroke-width=".5" opacity=".4" fill="none"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Train</div>
+<div class="product-name">Flex Core Shorts</div>
+<div class="product-price">¥8,500</div>
+</div>
+</div>
+
+<div class="product-card reveal" data-cat="outdoor">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><rect x="50" y="35" width="100" height="130" rx="4" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><path d="M50 60 L25 70 L25 130 L50 120" stroke="#b5ff2b" stroke-width=".8" opacity=".5" fill="none"/><path d="M150 60 L175 70 L175 130 L150 120" stroke="#b5ff2b" stroke-width=".8" opacity=".5" fill="none"/><path d="M80 35 Q100 20 120 35" stroke="#b5ff2b" stroke-width=".5" opacity=".4" fill="none"/><line x1="70" y1="80" x2="130" y2="80" stroke="#b5ff2b" stroke-width=".3" opacity=".3"/><line x1="70" y1="100" x2="130" y2="100" stroke="#b5ff2b" stroke-width=".3" opacity=".3"/><rect x="80" y="110" width="40" height="20" rx="2" stroke="#b5ff2b" stroke-width=".4" opacity=".3"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Outdoor</div>
+<div class="product-name">Summit Shell Jacket</div>
+<div class="product-price">¥38,000</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-1" data-cat="outdoor">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><rect x="60" y="40" width="80" height="130" rx="4" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><line x1="70" y1="100" x2="130" y2="100" stroke="#b5ff2b" stroke-width=".3" opacity=".3"/><rect x="75" y="55" width="50" height="30" rx="2" stroke="#b5ff2b" stroke-width=".4" opacity=".3"/><circle cx="100" cy="135" r="8" stroke="#b5ff2b" stroke-width=".4" opacity=".3"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Outdoor</div>
+<div class="product-name">Trail Endure Pants</div>
+<div class="product-price">¥22,000</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-2" data-cat="recovery">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><ellipse cx="100" cy="100" rx="50" ry="60" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><path d="M70 80 Q100 60 130 80" stroke="#b5ff2b" stroke-width=".5" opacity=".4" fill="none"/><line x1="100" y1="60" x2="100" y2="140" stroke="#b5ff2b" stroke-width=".3" opacity=".3"/><circle cx="100" cy="100" r="10" stroke="#b5ff2b" stroke-width=".4" opacity=".3"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Recovery</div>
+<div class="product-name">Rest Protocol Hoodie</div>
+<div class="product-price">¥16,500</div>
+</div>
+</div>
+
+<div class="product-card reveal reveal-delay-3" data-cat="recovery">
+<div class="product-img">
+<svg viewBox="0 0 200 200" fill="none"><rect x="55" y="60" width="90" height="80" rx="8" stroke="#b5ff2b" stroke-width=".8" opacity=".6"/><path d="M75 100 Q100 85 125 100" stroke="#b5ff2b" stroke-width=".5" opacity=".4" fill="none"/><line x1="80" y1="115" x2="120" y2="115" stroke="#b5ff2b" stroke-width=".3" opacity=".3"/></svg>
+</div>
+<div class="product-info">
+<div class="product-category">Recovery</div>
+<div class="product-name">Zero Gravity Slides</div>
+<div class="product-price">¥7,800</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<div class="divider-skew" style="transform:scaleY(-1)"></div>
+
+<!-- ATHLETES -->
+<section id="athletes">
+<div class="container">
+<div class="reveal">
+<p class="section-tag">/// 04 — Athlete Endorsement</p>
+<h2 class="section-title">彼らが、VECTISを選ぶ理由。</h2>
+<p class="section-desc">世界のトップアスリートたちが信頼を寄せるパフォーマンスウェア。極限の舞台で証明された、揺るぎない品質。</p>
+</div>
+<div class="athletes-grid">
+<div class="athlete-card reveal">
+<div class="athlete-visual">
+<svg viewBox="0 0 300 180" fill="none" width="60%"><circle cx="150" cy="70" r="25" stroke="#b5ff2b" stroke-width=".8" opacity=".4"/><path d="M150 95 L150 145 M150 110 L120 130 M150 110 L180 125 M150 145 L130 175 M150 145 L170 175" stroke="#b5ff2b" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg>
+<div class="athlete-number">01</div>
+</div>
+<div class="athlete-specs">
+<div class="athlete-name">佐藤 隼人</div>
+<div class="athlete-sport">Marathon / Track & Field</div>
+<table class="spec-table">
+<tr><td>競技</td><td>マラソン</td></tr>
+<tr><td>自己ベスト</td><td>2:04:32</td></tr>
+<tr><td>主な戦績</td><td>世界選手権 銀メダル</td></tr>
+<tr><td>使用モデル</td><td>Velocity Pro Singlet</td></tr>
+<tr><td>着用歴</td><td>3 Seasons</td></tr>
+</table>
+</div>
+</div>
+
+<div class="athlete-card reveal reveal-delay-1">
+<div class="athlete-visual">
+<svg viewBox="0 0 300 180" fill="none" width="60%"><circle cx="150" cy="70" r="25" stroke="#b5ff2b" stroke-width=".8" opacity=".4"/><path d="M150 95 L150 140 M150 110 L125 95 M150 110 L175 95 M150 140 L135 175 M150 140 L165 175" stroke="#b5ff2b" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg>
+<div class="athlete-number">02</div>
+</div>
+<div class="athlete-specs">
+<div class="athlete-name">エミリー・チェン</div>
+<div class="athlete-sport">Trail Running / Ultra</div>
+<table class="spec-table">
+<tr><td>競技</td><td>ウルトラトレイル</td></tr>
+<tr><td>自己ベスト</td><td>UTMB 24:15:08</td></tr>
+<tr><td>主な戦績</td><td>UTMB 総合3位</td></tr>
+<tr><td>使用モデル</td><td>Summit Shell Jacket</td></tr>
+<tr><td>着用歴</td><td>2 Seasons</td></tr>
+</table>
+</div>
+</div>
+
+<div class="athlete-card reveal reveal-delay-2">
+<div class="athlete-visual">
+<svg viewBox="0 0 300 180" fill="none" width="60%"><circle cx="150" cy="70" r="25" stroke="#b5ff2b" stroke-width=".8" opacity=".4"/><path d="M150 95 L150 130 M150 108 L115 120 M150 108 L185 120 M150 130 L128 170 M150 130 L172 170" stroke="#b5ff2b" stroke-width="1.5" stroke-linecap="round" opacity=".4"/></svg>
+<div class="athlete-number">03</div>
+</div>
+<div class="athlete-specs">
+<div class="athlete-name">マルコ・ヴィエリ</div>
+<div class="athlete-sport">CrossFit / Functional Training</div>
+<table class="spec-table">
+<tr><td>競技</td><td>クロスフィット</td></tr>
+<tr><td>自己ベスト</td><td>Games Top 10</td></tr>
+<tr><td>主な戦績</td><td>CF Games 8位入賞</td></tr>
+<tr><td>使用モデル</td><td>Force Grid Tee</td></tr>
+<tr><td>着用歴</td><td>4 Seasons</td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="divider-skew"></div>
+
+<!-- SUSTAINABILITY -->
+<section id="sustainability">
+<div class="container">
+<div class="reveal" style="text-align:center;margin-bottom:20px">
+<p class="section-tag">/// 05 — Sustainability</p>
+<h2 class="section-title">パフォーマンスと地球、<br>その両立を。</h2>
+<p class="section-desc" style="margin:0 auto">VECTISは、持続可能なものづくりを製品設計の根幹に据えている。リサイクル素材の採用、製造工程の最適化、そして製品寿命の最大化。すべてがエンジニアリングの対象。</p>
+</div>
+<div class="sustain-grid">
+<div class="sustain-card reveal">
+<div class="sustain-icon">
+<svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>
+</div>
+<div class="sustain-number"><span class="count-up" data-target="78">0</span>%</div>
+<div class="sustain-label">リサイクル素材</div>
+<div class="sustain-desc">全製品の78%がリサイクル<br>ポリエステルを主素材に採用</div>
+</div>
+<div class="sustain-card reveal reveal-delay-1">
+<div class="sustain-icon">
+<svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2v10l4.5 4.5"/><circle cx="12" cy="12" r="10"/></svg>
+</div>
+<div class="sustain-number"><span class="count-up" data-target="45">0</span>%</div>
+<div class="sustain-label">CO₂排出削減</div>
+<div class="sustain-desc">前年比45%のCO₂削減を<br>製造プロセス改革で実現</div>
+</div>
+<div class="sustain-card reveal reveal-delay-2">
+<div class="sustain-icon">
+<svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+</div>
+<div class="sustain-number"><span class="count-up" data-target="100">0</span>%</div>
+<div class="sustain-label">カーボンオフセット</div>
+<div class="sustain-desc">全配送におけるカーボン<br>ニュートラルを完全達成</div>
+</div>
+<div class="sustain-card reveal reveal-delay-3">
+<div class="sustain-icon">
+<svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+</div>
+<div class="sustain-number"><span class="count-up" data-target="5">0</span>x</div>
+<div class="sustain-label">製品寿命</div>
+<div class="sustain-desc">業界平均の5倍の耐久性で<br>廃棄サイクルを根本から変革</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="divider-skew" style="transform:scaleY(-1)"></div>
+
+<!-- CTA -->
+<section id="cta">
+<div class="container">
+<div class="reveal">
+<p class="section-tag">/// Ready to Push Beyond?</p>
+<h2 class="cta-title">限界の、<br>1mm先へ<span class="green">。</span></h2>
+<p class="cta-sub">次世代パフォーマンスウェアで、あなたの限界を再定義する。VECTISのテクノロジーを、今すぐ体感せよ。</p>
+<div class="cta-buttons">
+<a href="#" class="btn-primary" style="font-size:15px;padding:18px 48px">Shop All Products →</a>
+<a href="#" class="btn-secondary">Find a Store</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="#hero" class="logo">VECTI<span>S</span></a>
+<p>限界の、1mm先へ。<br>次世代パフォーマンスアスレチックウェアブランド。最先端のエンジニアリングで、アスリートの可能性を拡張する。</p>
+</div>
+<div class="footer-col">
+<h4>Products</h4>
+<a href="#">Run</a>
+<a href="#">Train</a>
+<a href="#">Outdoor</a>
+<a href="#">Recovery</a>
+<a href="#">New Arrivals</a>
+</div>
+<div class="footer-col">
+<h4>Company</h4>
+<a href="#">About VECTIS</a>
+<a href="#">Technology</a>
+<a href="#">Athletes</a>
+<a href="#">Sustainability</a>
+<a href="#">Careers</a>
+</div>
+<div class="footer-col">
+<h4>Support</h4>
+<a href="#">Contact</a>
+<a href="#">Size Guide</a>
+<a href="#">Shipping</a>
+<a href="#">Returns</a>
+<a href="#">FAQ</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2026 VECTIS Inc. All Rights Reserved.</p>
+<p>Engineered in Tokyo, Japan</p>
+</div>
+</div>
+</footer>
+
+<script>
+// NAV scroll effect
+const navbar=document.getElementById('navbar');
+let lastScroll=0;
+window.addEventListener('scroll',()=>{
+const st=window.scrollY;
+navbar.classList.toggle('scrolled',st>60);
+lastScroll=st;
+},{passive:true});
+
+// Mobile menu
+const hamburgerBtn=document.getElementById('hamburgerBtn');
+const mobileMenu=document.getElementById('mobileMenu');
+const closeMenu=document.getElementById('closeMenu');
+hamburgerBtn.addEventListener('click',()=>mobileMenu.classList.add('open'));
+closeMenu.addEventListener('click',()=>mobileMenu.classList.remove('open'));
+document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click',()=>mobileMenu.classList.remove('open')));
+
+// Intersection Observer — reveal animations
+const revealEls=document.querySelectorAll('.reveal');
+const revealObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}});
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(el=>revealObs.observe(el));
+
+// Count-up animation
+const countEls=document.querySelectorAll('.count-up');
+const countObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+const el=e.target;
+const target=parseInt(el.dataset.target);
+let current=0;
+const step=target/60;
+const timer=setInterval(()=>{
+current+=step;
+if(current>=target){current=target;clearInterval(timer)}
+el.textContent=Math.round(current);
+},16);
+countObs.unobserve(el);
+}
+});
+},{threshold:0.5});
+countEls.forEach(el=>countObs.observe(el));
+
+// Progress bar animation
+const progressEls=document.querySelectorAll('.progress-fill');
+const progressObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+e.target.style.width=e.target.dataset.width+'%';
+progressObs.unobserve(e.target);
+}
+});
+},{threshold:0.5});
+progressEls.forEach(el=>progressObs.observe(el));
+
+// Layer separation animation on scroll
+const layerSection=document.getElementById('layerAnim');
+const layers=[document.getElementById('layer0'),document.getElementById('layer1'),document.getElementById('layer2')];
+const layerObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+const r=e.intersectionRatio;
+const offset=Math.min(r*2,1);
+layers[0].style.top=0+'px';
+layers[0].style.opacity=1;
+layers[1].style.top=(8+offset*120)+'px';
+layers[1].style.opacity=.6+offset*.4;
+layers[2].style.top=(16+offset*240)+'px';
+layers[2].style.opacity=.6+offset*.4;
+}
+});
+},{threshold:Array.from({length:20},(_,i)=>i/20)});
+if(layerSection)layerObs.observe(layerSection);
+
+// Product tabs
+const tabBtns=document.querySelectorAll('.tab-btn');
+const productCards=document.querySelectorAll('.product-card');
+tabBtns.forEach(btn=>{
+btn.addEventListener('click',()=>{
+tabBtns.forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+const cat=btn.dataset.cat;
+productCards.forEach(card=>{
+if(cat==='all'||card.dataset.cat===cat){
+card.style.display='';
+}else{
+card.style.display='none';
+}
+});
+});
+});
+
+// 3D tilt effect on product cards
+productCards.forEach(card=>{
+const img=card.querySelector('.product-img');
+card.addEventListener('mousemove',(e)=>{
+const rect=card.getBoundingClientRect();
+const x=(e.clientX-rect.left)/rect.width-.5;
+const y=(e.clientY-rect.top)/rect.height-.5;
+img.style.transform=`rotateY(${x*12}deg) rotateX(${-y*8}deg) scale(1.02)`;
+});
+card.addEventListener('mouseleave',()=>{
+img.style.transform='rotateY(0) rotateX(0) scale(1)';
+});
+});
+
+// Parallax hero on scroll
+const hero=document.getElementById('hero');
+window.addEventListener('scroll',()=>{
+const st=window.scrollY;
+if(st<window.innerHeight){
+const opacity=1-st/(window.innerHeight*.8);
+hero.style.opacity=Math.max(opacity,.2);
+hero.querySelector('.hero-content').style.transform=`translateY(${st*.25}px)`;
+}
+},{passive:true});
+</script>
+</body>
+</html>

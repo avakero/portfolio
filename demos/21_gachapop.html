@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GACHAPOP!（ガチャポップ）- まわせ！あけろ！あつめろ！日本発のカプセルトイブランド。ポップでカワイイガチャガチャの世界へようこそ！">
+<title>GACHAPOP! | まわせ！あけろ！あつめろ！</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--yellow:#ffe000;--pink:#ff3b8b;--blue:#3b82f6;--green:#84cc16;
+--purple:#a855f7;--white:#ffffff;--black:#1e1e2e;
+--radius:1rem;
+--font-pop:'Trebuchet MS',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font-pop);color:var(--black);background:var(--yellow);overflow-x:hidden;line-height:1.6}
+h1,h2,h3,h4{font-weight:900;letter-spacing:.02em}
+
+/* ===== UTILITY ===== */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.container{width:min(92%,1200px);margin:0 auto}
+.pop-shadow{text-shadow:3px 3px 0 #ff3b8b,-3px -3px 0 #3b82f6,2px -2px 0 #84cc16}
+.pop-shadow-sm{text-shadow:2px 2px 0 #ff3b8b,-2px -2px 0 #3b82f6,1px -1px 0 #84cc16}
+
+/* ===== SCROLL ANIMATIONS ===== */
+.reveal{opacity:0;transform:translateY(60px) scale(.92);transition:opacity .7s cubic-bezier(.34,1.56,.64,1),transform .7s cubic-bezier(.34,1.56,.64,1)}
+.reveal.visible{opacity:1;transform:translateY(0) scale(1)}
+.reveal-left{opacity:0;transform:translateX(-80px);transition:all .7s cubic-bezier(.34,1.56,.64,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(80px);transition:all .7s cubic-bezier(.34,1.56,.64,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ===== FLOATING ANIMATION ===== */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+@keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+.float{animation:float 3s ease-in-out infinite}
+.float2{animation:float2 4s ease-in-out infinite}
+.wiggle{animation:wiggle 2s ease-in-out infinite}
+
+/* ===== PATTERNS ===== */
+.pattern-dots{background-image:radial-gradient(circle,rgba(30,30,46,.1) 2px,transparent 2px);background-size:24px 24px}
+.pattern-stars{background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='28' font-size='18' opacity='.12'%3E★%3C/text%3E%3C/svg%3E")}
+.pattern-zigzag{background-image:url("data:image/svg+xml,%3Csvg width='40' height='12' viewBox='0 0 40 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 6 L10 0 L20 6 L30 0 L40 6 L40 12 L30 6 L20 12 L10 6 L0 12Z' fill='rgba(30,30,46,0.05)'/%3E%3C/svg%3E")}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.6rem 0;transition:background .3s,box-shadow .3s}
+nav.scrolled{background:rgba(255,224,0,.95);backdrop-filter:blur(10px);box-shadow:0 4px 20px rgba(0,0,0,.15)}
+nav .nav-inner{display:flex;align-items:center;justify-content:space-between;width:min(92%,1200px);margin:0 auto}
+nav .logo{font-size:clamp(1.2rem,3vw,1.6rem);font-weight:900;color:var(--black);text-decoration:none}
+nav .logo span{color:var(--pink)}
+nav .nav-links{display:flex;gap:clamp(.5rem,2vw,1.5rem);list-style:none;flex-wrap:wrap;justify-content:center}
+nav .nav-links a{color:var(--black);text-decoration:none;font-weight:700;font-size:clamp(.7rem,1.5vw,.9rem);padding:.3rem .5rem;border-radius:.5rem;transition:background .2s,transform .2s}
+nav .nav-links a:hover{background:var(--pink);color:var(--white);transform:scale(1.1)}
+.hamburger{display:none;background:none;border:none;font-size:1.8rem;cursor:pointer}
+@media(max-width:768px){
+  .hamburger{display:block}
+  nav .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--yellow);padding:1rem;gap:.5rem;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+  nav .nav-links.open{display:flex}
+  nav .nav-links a{font-size:1rem;padding:.6rem 1rem}
+}
+
+/* ===== HERO ===== */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;background:var(--yellow);overflow:hidden;padding:6rem 1rem 3rem}
+#hero .hero-content{position:relative;z-index:10}
+#hero h1{font-size:clamp(2.5rem,8vw,6rem);line-height:1.1;color:var(--black);margin-bottom:.5rem}
+#hero h1 .pop-text{display:inline-block;text-shadow:4px 4px 0 var(--pink),-3px -3px 0 var(--blue),2px -2px 0 var(--green);animation:float 3s ease-in-out infinite}
+#hero .tagline{font-size:clamp(1.2rem,4vw,2.4rem);font-weight:900;color:var(--pink);margin-bottom:2rem;text-shadow:2px 2px 0 var(--yellow)}
+.hero-cta{display:inline-flex;align-items:center;gap:.6rem;background:var(--pink);color:var(--white);font-size:clamp(1.1rem,3vw,1.6rem);font-weight:900;padding:1rem 2.5rem;border:4px solid var(--black);border-radius:60px;cursor:pointer;text-decoration:none;box-shadow:6px 6px 0 var(--black);transition:all .15s;animation:float2 3s ease-in-out infinite;position:relative;overflow:hidden}
+.hero-cta:hover{transform:translateY(-4px)!important;box-shadow:8px 10px 0 var(--black)}
+.hero-cta:active{transform:translateY(2px)!important;box-shadow:2px 2px 0 var(--black)}
+
+/* Capsule Animation */
+.capsule-container{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden}
+.capsule{position:absolute;width:60px;height:80px;border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;opacity:.7}
+@keyframes capsuleFall{0%{transform:translateY(-120px) rotate(0deg) scale(0);opacity:0}15%{opacity:.8;transform:translateY(0) rotate(90deg) scale(1)}60%{transform:translateY(calc(100vh - 200px)) rotate(360deg) scale(1)}70%{transform:translateY(calc(100vh - 280px)) rotate(400deg) scale(1.1)}80%{transform:translateY(calc(100vh - 200px)) rotate(440deg) scale(1)}90%{transform:translateY(calc(100vh - 230px)) rotate(460deg) scale(1.05)}100%{transform:translateY(calc(100vh - 200px)) rotate(480deg) scale(1);opacity:.5}}
+.capsule:nth-child(1){left:10%;background:linear-gradient(180deg,var(--pink) 50%,#fff 50%);animation:capsuleFall 3s ease-in 0s infinite;animation-delay:0s}
+.capsule:nth-child(2){left:25%;background:linear-gradient(180deg,var(--blue) 50%,#fff 50%);animation:capsuleFall 3.5s ease-in .5s infinite;width:50px;height:66px}
+.capsule:nth-child(3){left:70%;background:linear-gradient(180deg,var(--green) 50%,#fff 50%);animation:capsuleFall 2.8s ease-in 1s infinite;width:55px;height:72px}
+.capsule:nth-child(4){left:85%;background:linear-gradient(180deg,var(--purple) 50%,#fff 50%);animation:capsuleFall 3.2s ease-in 1.5s infinite;width:45px;height:60px}
+.capsule:nth-child(5){left:45%;background:linear-gradient(180deg,var(--yellow) 50%,#fff 50%);animation:capsuleFall 3.8s ease-in .8s infinite;width:52px;height:68px;border:3px solid var(--black)}
+
+/* Scroll indicator */
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:10}
+@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(12px)}}
+.scroll-indicator svg{animation:bounceDown 1.5s ease-in-out infinite;opacity:.7}
+
+/* ===== SECTION BASE ===== */
+section{padding:clamp(3rem,8vw,6rem) 0;position:relative;overflow:hidden}
+.section-title{font-size:clamp(1.8rem,5vw,3.2rem);text-align:center;margin-bottom:.5rem;position:relative;display:inline-block}
+.section-title-wrap{text-align:center;margin-bottom:3rem}
+.section-subtitle{font-size:clamp(.9rem,2vw,1.2rem);text-align:center;opacity:.8;font-weight:700}
+.section-badge{display:inline-block;background:var(--black);color:var(--white);font-size:.8rem;font-weight:900;padding:.3rem 1rem;border-radius:2rem;margin-bottom:.8rem;letter-spacing:.05em}
+
+/* ===== NEW ARRIVALS ===== */
+#new-arrivals{background:var(--pink);color:var(--white)}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.product-card{background:var(--white);border-radius:1.2rem;border:4px solid var(--black);overflow:hidden;box-shadow:6px 6px 0 var(--black);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;color:var(--black);position:relative}
+.product-card:hover{transform:translateY(-8px) rotate(-1deg);box-shadow:10px 14px 0 var(--black)}
+.product-card .card-img{height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.product-card .card-body{padding:1rem}
+.product-card h3{font-size:1.1rem;margin-bottom:.3rem}
+.product-card p{font-size:.85rem;opacity:.7;margin-bottom:.5rem}
+.price-badge{display:inline-flex;align-items:center;justify-content:center;width:65px;height:65px;background:linear-gradient(135deg,var(--yellow),#ffc800);border-radius:50%;border:3px solid var(--black);font-weight:900;font-size:.85rem;color:var(--black);box-shadow:3px 3px 0 var(--black);position:absolute;top:10px;right:10px;z-index:5;animation:wiggle 2s ease-in-out infinite}
+.price-badge span{font-size:.6rem;display:block}
+.tag{display:inline-block;background:var(--purple);color:#fff;font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:1rem;margin-right:.3rem}
+.tag.new{background:var(--pink)}
+.tag.hot{background:var(--blue)}
+
+/* Capsule SVG in cards */
+.capsule-svg{width:80px;height:110px}
+
+/* ===== COLLECTIONS ===== */
+#collections{background:var(--blue);color:var(--white)}
+.collection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.collection-card{background:rgba(255,255,255,.15);backdrop-filter:blur(5px);border:3px solid rgba(255,255,255,.3);border-radius:1.2rem;padding:1.5rem;transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer;position:relative;overflow:hidden}
+.collection-card:hover{background:rgba(255,255,255,.25);transform:translateY(-6px) scale(1.02);border-color:var(--yellow)}
+.collection-card::after{content:'';position:absolute;top:-50%;right:-50%;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);pointer-events:none}
+.collection-card h3{font-size:1.3rem;margin-bottom:.4rem}
+.collection-card p{font-size:.9rem;opacity:.85;margin-bottom:.8rem;line-height:1.5}
+.collection-meta{display:flex;gap:.8rem;font-size:.8rem;opacity:.7;font-weight:700}
+.collection-icon{font-size:2.5rem;margin-bottom:.8rem;display:block}
+
+/* ===== HOW TO PLAY ===== */
+#howto{background:var(--green);color:var(--black)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;counter-reset:step}
+.step{text-align:center;position:relative;padding:2rem 1rem}
+.step::before{counter-increment:step;content:counter(step);display:flex;align-items:center;justify-content:center;width:70px;height:70px;background:var(--yellow);border:4px solid var(--black);border-radius:50%;font-size:2rem;font-weight:900;margin:0 auto 1rem;box-shadow:4px 4px 0 var(--black);animation:float 3s ease-in-out infinite}
+.step:nth-child(2)::before{animation-delay:.5s}
+.step:nth-child(3)::before{animation-delay:1s}
+.step:nth-child(4)::before{animation-delay:1.5s}
+.step h3{font-size:1.2rem;margin-bottom:.5rem}
+.step p{font-size:.9rem;opacity:.8;line-height:1.5}
+.step-icon{font-size:2.5rem;margin-bottom:.5rem}
+
+/* ===== SPOT SEARCH ===== */
+#spots{background:var(--purple);color:var(--white)}
+.spots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem}
+.spot-card{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.2);border-radius:1rem;padding:1.2rem;transition:all .3s;display:flex;gap:1rem;align-items:center}
+.spot-card:hover{background:rgba(255,255,255,.2);transform:translateX(8px)}
+.spot-icon{width:50px;height:50px;background:var(--yellow);border-radius:.8rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;border:2px solid var(--black)}
+.spot-card h3{font-size:1rem;margin-bottom:.2rem}
+.spot-card p{font-size:.8rem;opacity:.75}
+.search-box{display:flex;gap:.8rem;max-width:600px;margin:0 auto 2.5rem;flex-wrap:wrap;justify-content:center}
+.search-box input{flex:1;min-width:200px;padding:.8rem 1.2rem;border:3px solid var(--black);border-radius:2rem;font-size:1rem;font-weight:700;background:var(--white);color:var(--black);outline:none}
+.search-box input:focus{border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,224,0,.4)}
+.search-box button{padding:.8rem 1.5rem;background:var(--yellow);color:var(--black);border:3px solid var(--black);border-radius:2rem;font-weight:900;font-size:1rem;cursor:pointer;box-shadow:3px 3px 0 var(--black);transition:all .15s}
+.search-box button:hover{transform:translateY(-2px);box-shadow:5px 5px 0 var(--black)}
+
+/* ===== SNS GALLERY ===== */
+#sns{background:var(--yellow)}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}
+.gallery-item{aspect-ratio:1;border-radius:1rem;border:3px solid var(--black);overflow:hidden;position:relative;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:4px 4px 0 var(--black)}
+.gallery-item:hover{transform:rotate(-3deg) scale(1.05);box-shadow:6px 8px 0 var(--black);z-index:2}
+.gallery-item .gallery-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.gallery-item .overlay{position:absolute;inset:0;background:rgba(30,30,46,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.gallery-item:hover .overlay{opacity:1}
+.overlay span{color:#fff;font-size:2rem}
+
+/* ===== ONLINE STORE CTA ===== */
+#store-cta{background:linear-gradient(135deg,var(--pink),var(--purple));color:var(--white);text-align:center;position:relative}
+#store-cta::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.1) 2px,transparent 2px);background-size:30px 30px}
+.store-cta-content{position:relative;z-index:2}
+.store-cta-content h2{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:1rem;text-shadow:3px 3px 0 rgba(0,0,0,.2)}
+.store-cta-content p{font-size:clamp(1rem,2vw,1.3rem);max-width:600px;margin:0 auto 2rem;opacity:.9;line-height:1.6}
+.cta-btn-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-pop{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 2rem;border:4px solid var(--white);border-radius:60px;font-weight:900;font-size:clamp(1rem,2vw,1.2rem);cursor:pointer;box-shadow:5px 5px 0 rgba(0,0,0,.2);transition:all .15s;text-decoration:none;animation:float2 3.5s ease-in-out infinite}
+.btn-pop.primary{background:var(--yellow);color:var(--black);border-color:var(--black)}
+.btn-pop.secondary{background:transparent;color:var(--white)}
+.btn-pop:hover{transform:translateY(-4px)!important;box-shadow:7px 9px 0 rgba(0,0,0,.3)}
+
+/* ===== FOOTER ===== */
+footer{background:var(--black);color:var(--white);padding:3rem 0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-bottom:2rem}
+.footer-brand{font-size:1.5rem;font-weight:900;margin-bottom:.8rem}
+.footer-brand span{color:var(--pink)}
+footer p{font-size:.85rem;opacity:.7;line-height:1.6}
+footer h4{font-size:1rem;margin-bottom:.8rem;color:var(--yellow)}
+footer ul{list-style:none}
+footer ul li{margin-bottom:.4rem}
+footer ul a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.85rem;transition:color .2s}
+footer ul a:hover{color:var(--yellow)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;text-align:center;font-size:.8rem;opacity:.5}
+.social-links{display:flex;gap:.8rem;margin-top:1rem}
+.social-link{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s;text-decoration:none}
+.social-link:hover{background:var(--pink);transform:scale(1.2)}
+
+/* ===== CAPSULE OPEN INTERACTION ===== */
+.capsule-interactive{width:120px;height:160px;margin:0 auto;cursor:pointer;position:relative;transition:transform .3s}
+.capsule-interactive:hover{transform:scale(1.08)}
+.capsule-top{width:120px;height:80px;border-radius:60px 60px 0 0;position:absolute;top:0;transition:all .5s cubic-bezier(.34,1.56,.64,1);z-index:2}
+.capsule-bottom{width:120px;height:80px;border-radius:0 0 60px 60px;position:absolute;bottom:0;background:#fff;border:3px solid var(--black);border-top:none}
+.capsule-top.opened{transform:translateY(-60px) rotate(-30deg);opacity:.7}
+.capsule-prize{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:3rem;transition:all .5s cubic-bezier(.34,1.56,.64,1) .2s;z-index:1}
+.capsule-prize.show{transform:translate(-50%,-50%) scale(1)}
+
+/* ===== CONFETTI ===== */
+.confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+
+/* ===== DECORATIVE ===== */
+.deco-star{position:absolute;font-size:2rem;opacity:.15;animation:float 4s ease-in-out infinite;pointer-events:none}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .product-grid,.collection-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr 1fr}
+  .capsule{width:35px!important;height:46px!important}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="logo">GACHA<span>POP!</span></a>
+    <button class="hamburger" aria-label="メニューを開く" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <ul class="nav-links">
+      <li><a href="#new-arrivals" onclick="closeMenu()">🆕 新商品</a></li>
+      <li><a href="#collections" onclick="closeMenu()">📦 コレクション</a></li>
+      <li><a href="#howto" onclick="closeMenu()">🎮 遊び方</a></li>
+      <li><a href="#spots" onclick="closeMenu()">📍 設置場所</a></li>
+      <li><a href="#sns" onclick="closeMenu()">📸 ギャラリー</a></li>
+      <li><a href="#store-cta" onclick="closeMenu()">🛒 ストア</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="capsule-container" aria-hidden="true">
+    <div class="capsule"></div><div class="capsule"></div><div class="capsule"></div><div class="capsule"></div><div class="capsule"></div>
+  </div>
+  <span class="deco-star" style="top:15%;left:8%">★</span>
+  <span class="deco-star" style="top:25%;right:12%;animation-delay:1s">✦</span>
+  <span class="deco-star" style="bottom:30%;left:15%;animation-delay:2s">●</span>
+  <span class="deco-star" style="top:40%;right:5%;animation-delay:.5s;font-size:1.5rem">★</span>
+  <div class="hero-content">
+    <p style="font-size:clamp(.9rem,2vw,1.1rem);font-weight:700;margin-bottom:.5rem;opacity:.7">🎪 日本発カプセルトイブランド</p>
+    <h1><span class="pop-text">GACHAPOP!</span></h1>
+    <p class="tagline">まわせ！あけろ！あつめろ！</p>
+    <div style="margin-bottom:2rem">
+      <div class="capsule-interactive" id="heroCapsule" onclick="openCapsule(this)" role="button" aria-label="カプセルを開ける" tabindex="0">
+        <div class="capsule-top" style="background:linear-gradient(135deg,var(--pink),#ff6b9d);border:3px solid var(--black);border-bottom:none"></div>
+        <div class="capsule-bottom"></div>
+        <div class="capsule-prize" id="heroPrize">🧸</div>
+      </div>
+      <p style="font-size:.8rem;opacity:.5;margin-top:.5rem;font-weight:700">↑ タップしてカプセルを開けよう！</p>
+    </div>
+    <a href="#new-arrivals" class="hero-cta">🎰 ラインナップを見る</a>
+  </div>
+  <div class="scroll-indicator">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--black)" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section id="new-arrivals" class="pattern-dots">
+  <div class="container">
+    <div class="section-title-wrap reveal">
+      <span class="section-badge">🆕 NEW ARRIVAL</span>
+      <h2 class="section-title pop-shadow" style="color:#fff">新商品ラインナップ</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,.85)">2026年2月の注目アイテムをチェック！</p>
+    </div>
+    <div class="product-grid">
+
+      <div class="product-card reveal" style="transition-delay:.1s">
+        <div class="card-img" style="background:linear-gradient(135deg,#ffeaa7,#fdcb6e)">
+          <svg class="capsule-svg" viewBox="0 0 80 110"><ellipse cx="40" cy="40" rx="35" ry="38" fill="#ff3b8b"/><ellipse cx="40" cy="40" rx="35" ry="38" fill="url(#g1)" opacity=".3"/><ellipse cx="40" cy="70" rx="35" ry="38" fill="#fff"/><ellipse cx="30" cy="30" rx="8" ry="6" fill="rgba(255,255,255,.4)" transform="rotate(-20 30 30)"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".5"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>
+          <div class="price-badge">¥400<span>（税込）</span></div>
+        </div>
+        <div class="card-body">
+          <span class="tag new">NEW</span><span class="tag">全6種</span>
+          <h3>ふわもち☆にゃんこパン</h3>
+          <p>猫×食パンの最強コンビ。もちもち触感のスクイーズ仕様でずっと触りたくなる！</p>
+        </div>
+      </div>
+
+      <div class="product-card reveal" style="transition-delay:.2s">
+        <div class="card-img" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">
+          <svg class="capsule-svg" viewBox="0 0 80 110"><ellipse cx="40" cy="40" rx="35" ry="38" fill="#a855f7"/><ellipse cx="40" cy="70" rx="35" ry="38" fill="#fff"/><ellipse cx="30" cy="30" rx="8" ry="6" fill="rgba(255,255,255,.4)" transform="rotate(-20 30 30)"/><text x="28" y="78" font-size="22">🐸</text></svg>
+          <div class="price-badge">¥500<span>（税込）</span></div>
+        </div>
+        <div class="card-body">
+          <span class="tag new">NEW</span><span class="tag hot">🔥人気</span>
+          <h3>ケロケロ温泉旅館</h3>
+          <p>カエルたちが温泉でリラックス。タオルや桶のミニチュア付きで、推し活デスクにぴったり。</p>
+        </div>
+      </div>
+
+      <div class="product-card reveal" style="transition-delay:.3s">
+        <div class="card-img" style="background:linear-gradient(135deg,#55efc4,#00b894)">
+          <svg class="capsule-svg" viewBox="0 0 80 110"><ellipse cx="40" cy="40" rx="35" ry="38" fill="#84cc16"/><ellipse cx="40" cy="70" rx="35" ry="38" fill="#fff"/><ellipse cx="30" cy="30" rx="8" ry="6" fill="rgba(255,255,255,.4)" transform="rotate(-20 30 30)"/><text x="25" y="78" font-size="22">🍣</text></svg>
+          <div class="price-badge">¥300<span>（税込）</span></div>
+        </div>
+        <div class="card-body">
+          <span class="tag new">NEW</span><span class="tag">全8種</span>
+          <h3>お寿司アニマルズ</h3>
+          <p>シャリに乗った動物たち。ネタ違いでシークレット含む全8種。つなげて回転寿司にも！</p>
+        </div>
+      </div>
+
+      <div class="product-card reveal" style="transition-delay:.4s">
+        <div class="card-img" style="background:linear-gradient(135deg,#fd79a8,#e84393)">
+          <svg class="capsule-svg" viewBox="0 0 80 110"><ellipse cx="40" cy="40" rx="35" ry="38" fill="#3b82f6"/><ellipse cx="40" cy="70" rx="35" ry="38" fill="#fff"/><ellipse cx="30" cy="30" rx="8" ry="6" fill="rgba(255,255,255,.4)" transform="rotate(-20 30 30)"/><text x="22" y="78" font-size="22">💎</text></svg>
+          <div class="price-badge" style="background:linear-gradient(135deg,#ffd700,#ff9500)">¥600<span>（税込）</span></div>
+        </div>
+        <div class="card-body">
+          <span class="tag new">NEW</span><span class="tag" style="background:#ff9500">プレミアム</span>
+          <h3>宝石キラリンリング</h3>
+          <p>本物みたいに輝くジュエリーリング。サイズ調整可能で実際に着用OK。大人女子にも大人気！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section id="collections" class="pattern-stars">
+  <div class="container">
+    <div class="section-title-wrap reveal">
+      <span class="section-badge" style="background:var(--yellow);color:var(--black)">📦 COLLECTION</span>
+      <h2 class="section-title pop-shadow">コレクション一覧</h2>
+      <p class="section-subtitle">全シリーズをコンプリートしよう！</p>
+    </div>
+    <div class="collection-grid">
+      <div class="collection-card reveal-left" style="transition-delay:.1s">
+        <span class="collection-icon">🐱</span>
+        <h3>にゃんこワールド</h3>
+        <p>100種類以上の猫フィギュア。寝姿・座り・じゃれ合い…猫好きにはたまらないシリーズ。</p>
+        <div class="collection-meta"><span>🎯 全112種</span><span>💰 ¥300〜</span><span>⭐ 人気No.1</span></div>
+      </div>
+      <div class="collection-card reveal-right" style="transition-delay:.2s">
+        <span class="collection-icon">🍔</span>
+        <h3>ミニチュアフード天国</h3>
+        <p>精巧すぎるミニチュアフード。ハンバーガーからラーメンまで、思わず食べたくなるリアルさ。</p>
+        <div class="collection-meta"><span>🎯 全86種</span><span>💰 ¥400〜</span><span>🔥 話題沸騰</span></div>
+      </div>
+      <div class="collection-card reveal-left" style="transition-delay:.3s">
+        <span class="collection-icon">🦕</span>
+        <h3>ゆるきょうりゅう</h3>
+        <p>ゆるーい顔の恐竜たち。ティラノもプテラノドンも全部かわいい。おこさまにも大人気。</p>
+        <div class="collection-meta"><span>🎯 全48種</span><span>💰 ¥300〜</span><span>👶 キッズ人気</span></div>
+      </div>
+      <div class="collection-card reveal-right" style="transition-delay:.4s">
+        <span class="collection-icon">🌸</span>
+        <h3>和モダンコレクション</h3>
+        <p>和菓子・招き猫・だるま…日本の伝統モチーフをポップにアレンジした外国人にも人気のシリーズ。</p>
+        <div class="collection-meta"><span>🎯 全64種</span><span>💰 ¥400〜</span><span>🌏 海外人気</span></div>
+      </div>
+      <div class="collection-card reveal-left" style="transition-delay:.5s">
+        <span class="collection-icon">🪐</span>
+        <h3>コスモアドベンチャー</h3>
+        <p>宇宙飛行士や惑星のフィギュア。蓄光素材で暗闇で光る！デスクに置けばそこは宇宙。</p>
+        <div class="collection-meta"><span>🎯 全36種</span><span>💰 ¥500〜</span><span>✨ 光る！</span></div>
+      </div>
+      <div class="collection-card reveal-right" style="transition-delay:.6s">
+        <span class="collection-icon">🎀</span>
+        <h3>レトロポップガールズ</h3>
+        <p>80年代風レトロポップな女の子フィギュア。アクスタ風スタンド付きで飾りやすい。</p>
+        <div class="collection-meta"><span>🎯 全54種</span><span>💰 ¥400〜</span><span>📸 映える</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO PLAY -->
+<section id="howto" class="pattern-zigzag">
+  <div class="container">
+    <div class="section-title-wrap reveal">
+      <span class="section-badge" style="background:var(--black);color:var(--green)">🎮 HOW TO PLAY</span>
+      <h2 class="section-title pop-shadow-sm">遊び方ガイド</h2>
+      <p class="section-subtitle">はじめてでもカンタン！4ステップでガチャを楽しもう</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-icon">🪙</div>
+        <h3>コインを入れる</h3>
+        <p>100円玉・500円玉に対応！金額はシリーズによって異なります。両替機も設置店舗に完備。</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.2s">
+        <div class="step-icon">🔄</div>
+        <h3>ハンドルを回す</h3>
+        <p>ガチャンッ！と気持ちいい手応え。ゆっくり回してもOK、勢いよく回してもOK。ワクワクの瞬間！</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.3s">
+        <div class="step-icon">💊</div>
+        <h3>カプセルを取り出す</h3>
+        <p>コロンと出てくるカプセルを取り出そう。何が入っているかはお楽しみ！ドキドキが止まらない。</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.4s">
+        <div class="step-icon">🎉</div>
+        <h3>開けて楽しむ！</h3>
+        <p>カプセルを開けたら…推しが出た！？ SNSにシェアして仲間と盛り上がろう。コンプを目指せ！</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem" class="reveal">
+      <div class="capsule-interactive" id="demoCapsule" onclick="openCapsule(this)" role="button" aria-label="デモ：カプセルを開ける" tabindex="0" style="margin-bottom:1rem">
+        <div class="capsule-top" style="background:linear-gradient(135deg,var(--blue),#60a5fa);border:3px solid var(--black);border-bottom:none"></div>
+        <div class="capsule-bottom"></div>
+        <div class="capsule-prize">🦖</div>
+      </div>
+      <p style="font-weight:700;opacity:.6;font-size:.9rem">↑ カプセルをタップして体験！</p>
+    </div>
+  </div>
+</section>
+
+<!-- GACHA SPOTS -->
+<section id="spots">
+  <div class="container">
+    <div class="section-title-wrap reveal">
+      <span class="section-badge" style="background:var(--yellow);color:var(--black)">📍 GACHA SPOT</span>
+      <h2 class="section-title pop-shadow">ガチャスポット検索</h2>
+      <p class="section-subtitle">お近くのGACHAPOP!設置場所を探そう</p>
+    </div>
+    <div class="search-box reveal">
+      <input type="text" placeholder="🔍 エリア名・駅名で検索..." aria-label="設置場所を検索">
+      <button type="button">検索する</button>
+    </div>
+    <div class="spots-grid">
+      <div class="spot-card reveal-left" style="transition-delay:.1s">
+        <div class="spot-icon">🏬</div>
+        <div><h3>GACHAPOP! 渋谷109店</h3><p>東京都渋谷区道玄坂 / 常時200台設置 / 限定シリーズあり</p></div>
+      </div>
+      <div class="spot-card reveal-right" style="transition-delay:.15s">
+        <div class="spot-icon">🎪</div>
+        <div><h3>GACHAPOP! なんばパークス店</h3><p>大阪府大阪市浪速区 / 常時150台設置 / 関西限定あり</p></div>
+      </div>
+      <div class="spot-card reveal-left" style="transition-delay:.2s">
+        <div class="spot-icon">🗼</div>
+        <div><h3>東京スカイツリータウン店</h3><p>東京都墨田区押上 / 常時180台設置 / 観光客に人気</p></div>
+      </div>
+      <div class="spot-card reveal-right" style="transition-delay:.25s">
+        <div class="spot-icon">✈️</div>
+        <div><h3>成田空港 第1ターミナル店</h3><p>千葉県成田市 / 常時100台設置 / 旅の思い出に！</p></div>
+      </div>
+      <div class="spot-card reveal-left" style="transition-delay:.3s">
+        <div class="spot-icon">🏯</div>
+        <div><h3>GACHAPOP! 名古屋栄店</h3><p>愛知県名古屋市中区 / 常時120台設置 / 東海限定あり</p></div>
+      </div>
+      <div class="spot-card reveal-right" style="transition-delay:.35s">
+        <div class="spot-icon">⛩️</div>
+        <div><h3>GACHAPOP! 博多キャナル店</h3><p>福岡県福岡市博多区 / 常時100台設置 / 九州限定あり</p></div>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:2rem;opacity:.7;font-weight:700" class="reveal">全国350店舗以上に設置中！ 🗾</p>
+  </div>
+</section>
+
+<!-- SNS GALLERY -->
+<section id="sns" class="pattern-dots">
+  <div class="container">
+    <div class="section-title-wrap reveal">
+      <span class="section-badge">📸 SNS GALLERY</span>
+      <h2 class="section-title pop-shadow-sm">#GACHAPOP で投稿しよう</h2>
+      <p class="section-subtitle">みんなの戦利品をチェック！投稿でオリジナルステッカーが当たる🎁</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal" style="transition-delay:.05s"><div class="gallery-bg" style="background:linear-gradient(135deg,#ffeaa7,#fdcb6e)">🐱</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.1s"><div class="gallery-bg" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7)">🍔</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.15s"><div class="gallery-bg" style="background:linear-gradient(135deg,#55efc4,#00b894)">🦕</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.2s"><div class="gallery-bg" style="background:linear-gradient(135deg,#fd79a8,#e84393)">💎</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.25s"><div class="gallery-bg" style="background:linear-gradient(135deg,#74b9ff,#0984e3)">🪐</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.3s"><div class="gallery-bg" style="background:linear-gradient(135deg,#ffeaa7,#e17055)">🎀</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.35s"><div class="gallery-bg" style="background:linear-gradient(135deg,#dfe6e9,#b2bec3)">🍣</div><div class="overlay"><span>❤️</span></div></div>
+      <div class="gallery-item reveal" style="transition-delay:.4s"><div class="gallery-bg" style="background:linear-gradient(135deg,#fab1a0,#e84393)">🐸</div><div class="overlay"><span>❤️</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ONLINE STORE CTA -->
+<section id="store-cta">
+  <div class="container store-cta-content">
+    <div class="reveal">
+      <p style="font-size:4rem;margin-bottom:.5rem">🛒</p>
+      <h2>オンラインストアで<br>おうちガチャしよう！</h2>
+      <p>お店に行けなくても大丈夫。GACHAPOP!オンラインストアなら、自宅でガチャ体験ができる！<br>限定カラー・Web先行販売アイテムも盛りだくさん。</p>
+      <div class="cta-btn-group">
+        <a href="#" class="btn-pop primary">🎰 オンラインストアへ</a>
+        <a href="#" class="btn-pop secondary">📱 公式アプリをダウンロード</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">GACHA<span>POP!</span></div>
+        <p>まわせ！あけろ！あつめろ！<br>日本発、世界へ届けるカプセルトイの新体験。</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="X (Twitter)">𝕏</a>
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶</a>
+          <a href="#" class="social-link" aria-label="TikTok">♪</a>
+        </div>
+      </div>
+      <div>
+        <h4>コンテンツ</h4>
+        <ul>
+          <li><a href="#new-arrivals">新商品ラインナップ</a></li>
+          <li><a href="#collections">コレクション一覧</a></li>
+          <li><a href="#howto">遊び方ガイド</a></li>
+          <li><a href="#spots">設置場所検索</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>サポート</h4>
+        <ul>
+          <li><a href="#">よくある質問</a></li>
+          <li><a href="#">お問い合わせ</a></li>
+          <li><a href="#">卸売・法人のお客様</a></li>
+          <li><a href="#">採用情報</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>法的情報</h4>
+        <ul>
+          <li><a href="#">プライバシーポリシー</a></li>
+          <li><a href="#">利用規約</a></li>
+          <li><a href="#">特定商取引法に基づく表記</a></li>
+          <li><a href="#">会社概要</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 GACHAPOP! Inc. All rights reserved. | まわせ！あけろ！あつめろ！</p>
+    </div>
+  </div>
+</footer>
+
+<!-- CONFETTI CANVAS -->
+<canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+<script>
+// ===== MOBILE MENU =====
+function closeMenu(){document.querySelector('.nav-links').classList.remove('open')}
+
+// ===== NAVBAR SCROLL =====
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)},{passive:true});
+
+// ===== INTERSECTION OBSERVER - SCROLL REVEAL =====
+const revealEls=document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}});
+},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(el=>revealObs.observe(el));
+
+// ===== CAPSULE OPEN INTERACTION =====
+const prizes=['🧸','🐱','🍔','🦕','💎','🐸','🍣','🪐','🎀','🌸','🍩','🦄','🐧','🎪','🌈'];
+function openCapsule(el){
+  const top=el.querySelector('.capsule-top');
+  const prize=el.querySelector('.capsule-prize');
+  if(top.classList.contains('opened')){
+    top.classList.remove('opened');
+    prize.classList.remove('show');
+    setTimeout(()=>{prize.textContent=prizes[Math.floor(Math.random()*prizes.length)]},400);
+  }else{
+    top.classList.add('opened');
+    prize.classList.add('show');
+    fireConfetti(el);
+  }
+}
+
+// ===== CONFETTI =====
+const canvas=document.getElementById('confettiCanvas');
+const ctx=canvas.getContext('2d');
+let confettiPieces=[];
+let animating=false;
+
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+function fireConfetti(source){
+  const rect=source.getBoundingClientRect();
+  const cx=rect.left+rect.width/2;
+  const cy=rect.top+rect.height/2;
+  const colors=['#ffe000','#ff3b8b','#3b82f6','#84cc16','#a855f7','#fff'];
+  for(let i=0;i<50;i++){
+    confettiPieces.push({
+      x:cx,y:cy,
+      vx:(Math.random()-.5)*12,
+      vy:(Math.random()-.5)*12-4,
+      w:Math.random()*8+4,
+      h:Math.random()*6+3,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      rot:Math.random()*360,
+      rv:(Math.random()-.5)*10,
+      life:1,
+      decay:.012+Math.random()*.008
+    });
+  }
+  if(!animating){animating=true;animateConfetti()}
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.rot+=p.rv;p.life-=p.decay;
+    if(p.life>0){
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+      ctx.globalAlpha=p.life;ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    }
+  });
+  confettiPieces=confettiPieces.filter(p=>p.life>0);
+  if(confettiPieces.length>0){requestAnimationFrame(animateConfetti)}
+  else{animating=false;ctx.clearRect(0,0,canvas.width,canvas.height)}
+}
+
+// ===== SECTION CONFETTI ON SCROLL =====
+const sections=document.querySelectorAll('section[id]');
+const sectionConfettiObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const rect=e.target.getBoundingClientRect();
+      const fakeEl={getBoundingClientRect:()=>({left:rect.width*.3,top:rect.top+60,width:rect.width*.4,height:20})};
+      fireConfetti(fakeEl);
+      sectionConfettiObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+sections.forEach(s=>{if(s.id!=='hero')sectionConfettiObs.observe(s)});
+
+// ===== STAGGER CARD ANIMATION DELAYS (bounce) =====
+document.querySelectorAll('.product-card, .collection-card, .spot-card, .gallery-item').forEach((card,i)=>{
+  card.style.transitionDelay=`${i*.07}s`;
+});
+</script>
+</body>
+</html>

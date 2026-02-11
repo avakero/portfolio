@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ROAST & REST（ロースト＆レスト）は、自家焙煎スペシャルティコーヒー専門店です。一杯に、物語がある。厳選された産地の豆を丁寧に焙煎し、最高の一杯をお届けします。">
+<title>ROAST & REST | 自家焙煎スペシャルティコーヒー専門店 — 一杯に、物語がある。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --espresso: #2c1810;
+  --roast-beige: #d4b896;
+  --cream: #f5efe6;
+  --terracotta: #c4704b;
+  --milk: #faf7f2;
+  --charcoal: #333333;
+  --chalk: #e8e0d0;
+  --dark-board: #1a2a1a;
+  --font-serif: 'Noto Serif JP', 'Georgia', serif;
+  --font-sans: 'Noto Sans JP', 'Helvetica Neue', sans-serif;
+  --font-cursive: 'Segoe Script', 'Comic Sans MS', cursive;
+  --section-pad: clamp(3rem, 8vw, 7rem);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-sans);
+  color: var(--charcoal);
+  background: var(--milk);
+  overflow-x: hidden;
+  line-height: 1.8;
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: .5;
+}
+body > * { position: relative; z-index: 1; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: .8rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: background .4s, box-shadow .4s, padding .4s;
+}
+.nav.scrolled {
+  background: rgba(44,24,16,.95);
+  box-shadow: 0 2px 20px rgba(0,0,0,.3);
+  padding: .5rem 2rem;
+  backdrop-filter: blur(10px);
+}
+.nav-logo {
+  font-family: 'Georgia', var(--font-serif);
+  font-weight: 900;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  color: var(--cream);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--terracotta); }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a {
+  color: var(--cream);
+  font-size: .8rem;
+  letter-spacing: .1em;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color .3s;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 0; height: 1px; background: var(--terracotta);
+  transition: width .3s;
+}
+.nav-links a:hover { color: var(--roast-beige); }
+.nav-links a:hover::after { width: 100%; }
+
+.hamburger {
+  display: none; flex-direction: column; gap: 5px; cursor: pointer;
+  background: none; border: none; padding: 4px; z-index: 1001;
+}
+.hamburger span {
+  width: 24px; height: 2px; background: var(--cream);
+  transition: transform .3s, opacity .3s;
+}
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0; background: rgba(44,24,16,.97);
+  z-index: 999;
+  flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: var(--cream); font-size: 1.2rem; font-family: var(--font-serif);
+  letter-spacing: .15em;
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(175deg, var(--espresso) 0%, #1a0e08 60%, #0d0704 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 30% 70%, rgba(196,112,75,.15), transparent),
+    radial-gradient(ellipse 500px 500px at 70% 30%, rgba(212,184,150,.08), transparent);
+}
+.hero-content { position: relative; z-index: 2; padding: 2rem; }
+.hero-badge {
+  display: inline-block;
+  border: 1px solid var(--roast-beige);
+  padding: .4rem 1.5rem;
+  font-size: .7rem;
+  letter-spacing: .3em;
+  color: var(--roast-beige);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  opacity: 0; animation: fadeUp .8s .3s forwards;
+}
+.hero-logo-text {
+  font-family: 'Georgia', var(--font-serif);
+  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: .12em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  opacity: 0; animation: fadeUp .8s .5s forwards;
+}
+.hero-logo-text .amp {
+  color: var(--terracotta);
+  font-style: italic;
+  display: inline-block;
+  transform: scale(1.1);
+}
+.hero-sub {
+  font-family: var(--font-serif);
+  font-size: clamp(.85rem, 2vw, 1.1rem);
+  color: var(--roast-beige);
+  margin-top: .5rem;
+  letter-spacing: .15em;
+  opacity: 0; animation: fadeUp .8s .7s forwards;
+}
+.hero-catch {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 3vw, 1.7rem);
+  color: var(--cream);
+  margin-top: 2rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+  opacity: 0; animation: fadeUp .8s .9s forwards;
+}
+.hero-catch em {
+  font-style: normal;
+  color: var(--terracotta);
+  position: relative;
+}
+.hero-ctas {
+  margin-top: 2.5rem;
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .8s 1.1s forwards;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .9rem 2.2rem;
+  border-radius: 50px;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  transition: all .3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  font-family: var(--font-sans);
+}
+.btn-primary {
+  background: var(--terracotta);
+  color: var(--cream);
+}
+.btn-primary:hover { background: #d4814f; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(196,112,75,.4); }
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--roast-beige);
+  color: var(--roast-beige);
+}
+.btn-outline:hover { background: var(--roast-beige); color: var(--espresso); }
+.btn .ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  transform: scale(0); animation: ripple .6s linear;
+  pointer-events: none;
+}
+@keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+/* Steam */
+.steam-container {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 200px;
+  z-index: 1;
+  opacity: .5;
+}
+/* Coffee cup silhouette */
+.hero-cup {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: .12;
+}
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  color: var(--roast-beige); font-size: .65rem; letter-spacing: .2em;
+  opacity: 0; animation: fadeUp .8s 1.5s forwards;
+}
+.scroll-arrow {
+  width: 20px; height: 30px; border: 1.5px solid var(--roast-beige);
+  border-radius: 10px; position: relative;
+}
+.scroll-arrow::before {
+  content: ''; position: absolute; top: 6px; left: 50%;
+  width: 3px; height: 6px; background: var(--roast-beige);
+  border-radius: 2px; transform: translateX(-50%);
+  animation: scrollDot 1.8s infinite;
+}
+@keyframes scrollDot {
+  0% { opacity: 1; top: 6px; }
+  100% { opacity: 0; top: 18px; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Coffee Stain Divider ===== */
+.stain-divider {
+  display: flex; justify-content: center; padding: 1rem 0;
+  opacity: .2;
+}
+
+/* ===== SECTION COMMON ===== */
+.section {
+  padding: var(--section-pad) clamp(1rem, 5vw, 4rem);
+}
+.section-label {
+  font-size: .7rem;
+  letter-spacing: .3em;
+  color: var(--terracotta);
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+  font-weight: 700;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 900;
+  color: var(--espresso);
+  letter-spacing: .08em;
+  line-height: 1.4;
+  margin-bottom: .5rem;
+}
+.section-title-en {
+  font-family: 'Georgia', var(--font-serif);
+  font-size: .75rem;
+  letter-spacing: .25em;
+  color: var(--roast-beige);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .8s cubic-bezier(.25,.46,.45,.94), transform .8s cubic-bezier(.25,.46,.45,.94);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===== ABOUT ===== */
+.about {
+  background: var(--cream);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.about-img-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #a08060, #6b4c35);
+  filter: sepia(.3);
+}
+.about-img-wrap::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(145deg, rgba(212,184,150,.3), transparent);
+  z-index: 1;
+}
+.about-img-wrap::after {
+  content: '☕'; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-size: 4rem; opacity: .3; z-index: 2;
+}
+.tape {
+  position: absolute; z-index: 3;
+  width: 80px; height: 28px;
+  background: rgba(212,184,150,.55);
+  backdrop-filter: blur(2px);
+}
+.tape-tl { top: -5px; left: 15px; transform: rotate(-12deg); }
+.tape-br { bottom: -5px; right: 15px; transform: rotate(8deg); }
+.about-text p {
+  margin-bottom: 1.2rem;
+  font-size: clamp(.9rem, 1.5vw, 1rem);
+  color: #555;
+  line-height: 2;
+}
+.about-text .handwrite {
+  font-family: var(--font-cursive);
+  color: var(--terracotta);
+  font-size: 1.1rem;
+}
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== ROASTING TIMELINE ===== */
+.roasting {
+  background: var(--espresso);
+  color: var(--cream);
+  overflow: hidden;
+}
+.roasting .section-title { color: var(--cream); }
+.roasting .section-label { color: var(--terracotta); }
+
+.roast-bar-wrap {
+  margin: 2rem 0;
+  position: relative;
+}
+.roast-bar-label {
+  display: flex; justify-content: space-between;
+  font-size: .75rem; letter-spacing: .1em; color: var(--roast-beige);
+  margin-bottom: .4rem;
+}
+.roast-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(255,255,255,.1);
+  overflow: hidden;
+}
+.roast-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #c8a96e 0%, #a0724a 40%, #6b3a20 70%, #2c1810 100%);
+  width: 0;
+  transition: width 1.5s cubic-bezier(.25,.46,.45,.94);
+}
+.roast-bar-fill.animated { width: 100%; }
+
+.timeline-scroll {
+  display: flex; gap: 0;
+  overflow-x: auto;
+  padding: 2rem 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--terracotta) rgba(255,255,255,.1);
+}
+.timeline-scroll::-webkit-scrollbar { height: 6px; }
+.timeline-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,.1); border-radius: 3px; }
+.timeline-scroll::-webkit-scrollbar-thumb { background: var(--terracotta); border-radius: 3px; }
+
+.tl-step {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+  padding: 1.5rem;
+  position: relative;
+  text-align: center;
+}
+.tl-step::after {
+  content: '→';
+  position: absolute; right: -8px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--terracotta); font-size: 1.5rem;
+}
+.tl-step:last-child::after { display: none; }
+.tl-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(212,184,150,.12);
+  border: 2px solid var(--roast-beige);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  transition: transform .3s, background .3s;
+}
+.tl-step:hover .tl-icon {
+  transform: scale(1.1);
+  background: rgba(196,112,75,.2);
+}
+.tl-num {
+  font-family: 'Georgia', var(--font-serif);
+  font-size: .7rem; color: var(--terracotta);
+  letter-spacing: .2em; margin-bottom: .3rem;
+}
+.tl-name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem; font-weight: 700;
+  margin-bottom: .5rem;
+}
+.tl-desc {
+  font-size: .8rem; color: rgba(245,239,230,.65);
+  line-height: 1.7;
+}
+.scroll-hint-h {
+  text-align: center;
+  font-size: .7rem;
+  color: var(--roast-beige);
+  letter-spacing: .15em;
+  margin-top: .5rem;
+  opacity: .7;
+}
+
+/* ===== MENU (Chalkboard) ===== */
+.menu-section {
+  background: var(--dark-board);
+  position: relative;
+  overflow: hidden;
+}
+.menu-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: .8;
+}
+.menu-section .container { position: relative; z-index: 1; }
+.menu-section .section-title { color: var(--chalk); }
+.menu-section .section-label { color: var(--terracotta); }
+.menu-section .section-title-en { color: rgba(232,224,208,.4); }
+
+.chalk-border {
+  border: 2px dashed rgba(232,224,208,.2);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.menu-cat-title {
+  font-family: var(--font-cursive);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  color: var(--roast-beige);
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.menu-item {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .6rem 0;
+  border-bottom: 1px dotted rgba(232,224,208,.15);
+  transition: transform .2s;
+}
+.menu-item:hover { transform: translateX(5px); }
+.menu-item-name {
+  font-family: var(--font-serif);
+  color: var(--chalk);
+  font-size: .95rem;
+  font-weight: 500;
+}
+.menu-item-note {
+  font-size: .7rem;
+  color: rgba(232,224,208,.5);
+  font-family: var(--font-cursive);
+}
+.menu-item-price {
+  color: var(--terracotta);
+  font-weight: 700;
+  font-size: .9rem;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+.chalk-illust {
+  text-align: center;
+  font-size: .75rem;
+  color: rgba(232,224,208,.35);
+  margin-top: 1rem;
+  font-family: var(--font-cursive);
+}
+
+/* ===== ORIGIN MAP ===== */
+.origin {
+  background: var(--cream);
+}
+.map-wrap {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.map-wrap svg { width: 100%; height: auto; }
+.map-pin {
+  cursor: pointer;
+  transition: transform .3s;
+}
+.map-pin:hover { transform: scale(1.3); }
+.map-pin circle { transition: fill .3s; }
+.map-pin:hover circle { fill: var(--terracotta); }
+.pin-popup {
+  position: absolute;
+  background: var(--espresso);
+  color: var(--cream);
+  padding: 1rem 1.3rem;
+  border-radius: 10px;
+  font-size: .8rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s, transform .3s;
+  z-index: 10;
+  min-width: 180px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+.pin-popup.show { opacity: 1; transform: translateY(0); }
+.pin-popup-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: .95rem;
+  margin-bottom: .3rem;
+}
+.pin-popup-flavor {
+  color: var(--roast-beige);
+  font-size: .75rem;
+  font-family: var(--font-cursive);
+}
+.pin-popup::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 20px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--espresso);
+}
+
+.origin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+.origin-card {
+  background: var(--milk);
+  border: 1px solid rgba(212,184,150,.3);
+  border-radius: 12px;
+  padding: 1.3rem;
+  transition: transform .3s, box-shadow .3s;
+}
+.origin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(44,24,16,.1);
+}
+.origin-card-flag { font-size: 1.8rem; margin-bottom: .5rem; }
+.origin-card-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--espresso);
+  margin-bottom: .3rem;
+}
+.origin-card-detail {
+  font-size: .78rem;
+  color: #888;
+  line-height: 1.7;
+}
+.origin-card-flavor {
+  font-family: var(--font-cursive);
+  color: var(--terracotta);
+  font-size: .8rem;
+  margin-top: .4rem;
+}
+
+/* ===== ROASTER ===== */
+.roaster {
+  background: var(--milk);
+}
+.polaroid-wrap {
+  display: flex; flex-wrap: wrap; gap: 2rem;
+  justify-content: center; align-items: flex-start;
+}
+.polaroid {
+  background: #fff;
+  padding: 1rem 1rem .5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.08);
+  transform: rotate(var(--rot, -2deg));
+  transition: transform .4s;
+  max-width: 300px;
+  width: 100%;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.03); }
+.polaroid-img {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #b09070, #7a5840);
+  filter: sepia(.25) saturate(.9);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; opacity: .7;
+  position: relative; overflow: hidden;
+}
+.polaroid-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(245,239,230,.15), transparent 50%);
+}
+.polaroid-text {
+  padding: .8rem .2rem .3rem;
+  text-align: center;
+}
+.polaroid-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--espresso);
+}
+.polaroid-role {
+  font-size: .7rem;
+  color: var(--terracotta);
+  letter-spacing: .15em;
+  margin-bottom: .5rem;
+}
+.polaroid-comment {
+  font-family: var(--font-cursive);
+  font-size: .8rem;
+  color: #777;
+  line-height: 1.6;
+}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials {
+  background: var(--cream);
+}
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.testi-card {
+  background: var(--milk);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  border: 1px solid rgba(212,184,150,.2);
+  transition: transform .3s;
+}
+.testi-card:hover { transform: translateY(-4px); }
+.testi-card::before {
+  content: '"';
+  font-family: 'Georgia', serif;
+  font-size: 4rem;
+  color: var(--roast-beige);
+  opacity: .3;
+  position: absolute;
+  top: .5rem; left: 1.2rem;
+  line-height: 1;
+}
+.testi-text {
+  font-size: .9rem;
+  line-height: 1.9;
+  color: #555;
+  margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+.testi-author {
+  display: flex; align-items: center; gap: .8rem;
+}
+.testi-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--roast-beige), var(--terracotta));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: .85rem;
+}
+.testi-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--espresso);
+}
+.testi-detail {
+  font-size: .7rem;
+  color: #999;
+}
+.testi-stars {
+  color: var(--terracotta);
+  font-size: .8rem;
+  letter-spacing: 2px;
+}
+
+/* ===== ACCESS ===== */
+.access {
+  background: var(--milk);
+}
+.access-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.access-map {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #e8dfd0, #d4c8b5);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(212,184,150,.3);
+}
+.access-map::after {
+  content: '📍 Map Area';
+  font-size: 1rem;
+  color: var(--espresso);
+  opacity: .4;
+  font-family: var(--font-sans);
+}
+.access-info h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--espresso);
+  margin-bottom: 1rem;
+}
+.access-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.access-table th,
+.access-table td {
+  padding: .7rem 0;
+  font-size: .88rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(212,184,150,.25);
+  vertical-align: top;
+}
+.access-table th {
+  color: var(--terracotta);
+  font-weight: 700;
+  width: 90px;
+  font-size: .8rem;
+  letter-spacing: .05em;
+}
+.access-cta {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--espresso);
+  border-radius: 16px;
+  text-align: center;
+  color: var(--cream);
+}
+.access-cta p {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .access-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--espresso);
+  color: rgba(245,239,230,.6);
+  padding: 3rem clamp(1rem, 5vw, 4rem) 1.5rem;
+}
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(245,239,230,.1);
+}
+.footer-logo {
+  font-family: 'Georgia', var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: .12em;
+}
+.footer-logo span { color: var(--terracotta); }
+.footer-tagline {
+  font-family: var(--font-serif);
+  font-size: .8rem;
+  color: var(--roast-beige);
+  margin-top: .3rem;
+}
+.footer-links {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+.footer-links a {
+  font-size: .78rem;
+  letter-spacing: .08em;
+  transition: color .3s;
+}
+.footer-links a:hover { color: var(--terracotta); }
+.footer-bottom {
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: .7rem;
+  letter-spacing: .1em;
+}
+.footer-bottom .heart { color: var(--terracotta); }
+
+/* ===== ANIMATIONS ===== */
+.reveal-left {
+  opacity: 0; transform: translateX(-40px);
+  transition: opacity .8s, transform .8s;
+}
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+.reveal-right {
+  opacity: 0; transform: translateX(40px);
+  transition: opacity .8s, transform .8s;
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-scale {
+  opacity: 0; transform: scale(.92);
+  transition: opacity .8s, transform .8s;
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+.stagger > * {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .6s, transform .6s;
+}
+.stagger.visible > *:nth-child(1) { transition-delay: .1s; }
+.stagger.visible > *:nth-child(2) { transition-delay: .2s; }
+.stagger.visible > *:nth-child(3) { transition-delay: .3s; }
+.stagger.visible > *:nth-child(4) { transition-delay: .4s; }
+.stagger.visible > *:nth-child(5) { transition-delay: .5s; }
+.stagger.visible > *:nth-child(6) { transition-delay: .6s; }
+.stagger.visible > * { opacity: 0; transform: translateY(30px); }
+.stagger.visible > * {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== Utility ===== */
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-logo">ROAST <span>&</span> REST</a>
+  <div class="nav-links">
+    <a href="#about">OUR COFFEE</a>
+    <a href="#roasting">ROASTING</a>
+    <a href="#menu">MENU</a>
+    <a href="#origin">ORIGIN</a>
+    <a href="#roaster">ROASTER</a>
+    <a href="#access">ACCESS</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobile()">OUR COFFEE</a>
+  <a href="#roasting" onclick="closeMobile()">ROASTING</a>
+  <a href="#menu" onclick="closeMobile()">MENU</a>
+  <a href="#origin" onclick="closeMobile()">ORIGIN</a>
+  <a href="#roaster" onclick="closeMobile()">ROASTER</a>
+  <a href="#access" onclick="closeMobile()">ACCESS</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <!-- Steam SVG -->
+  <svg class="steam-container" viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="steam-line" d="M40 200 Q30 160 50 130 Q70 100 40 70 Q20 45 45 10" stroke="rgba(245,239,230,.35)" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+        values="M40 200 Q30 160 50 130 Q70 100 40 70 Q20 45 45 10;
+                M40 200 Q55 165 35 130 Q15 100 45 70 Q65 45 40 10;
+                M40 200 Q30 160 50 130 Q70 100 40 70 Q20 45 45 10"/>
+      <animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0.4;0.15;0.4"/>
+    </path>
+    <path class="steam-line" d="M60 200 Q75 165 55 135 Q35 105 65 75 Q85 50 60 15" stroke="rgba(245,239,230,.3)" stroke-width="2" fill="none" stroke-linecap="round">
+      <animate attributeName="d" dur="5s" repeatCount="indefinite"
+        values="M60 200 Q75 165 55 135 Q35 105 65 75 Q85 50 60 15;
+                M60 200 Q45 170 70 135 Q90 105 55 75 Q35 50 65 15;
+                M60 200 Q75 165 55 135 Q35 105 65 75 Q85 50 60 15"/>
+      <animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0.3;0.1;0.3"/>
+    </path>
+    <path class="steam-line" d="M80 200 Q65 170 85 140 Q100 110 75 80 Q55 55 80 20" stroke="rgba(245,239,230,.25)" stroke-width="1.8" fill="none" stroke-linecap="round">
+      <animate attributeName="d" dur="4.5s" repeatCount="indefinite"
+        values="M80 200 Q65 170 85 140 Q100 110 75 80 Q55 55 80 20;
+                M80 200 Q90 170 70 140 Q50 110 80 80 Q100 55 75 20;
+                M80 200 Q65 170 85 140 Q100 110 75 80 Q55 55 80 20"/>
+      <animate attributeName="opacity" dur="4.5s" repeatCount="indefinite" values="0.25;0.08;0.25"/>
+    </path>
+  </svg>
+  <!-- Cup silhouette -->
+  <svg class="hero-cup" width="160" height="100" viewBox="0 0 160 100" fill="none">
+    <ellipse cx="70" cy="20" rx="55" ry="16" stroke="rgba(212,184,150,.5)" stroke-width="2"/>
+    <path d="M15 20 Q15 90 70 95 Q125 90 125 20" stroke="rgba(212,184,150,.5)" stroke-width="2" fill="none"/>
+    <path d="M125 35 Q155 35 155 55 Q155 75 125 70" stroke="rgba(212,184,150,.5)" stroke-width="2" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-badge">Specialty Coffee Since 2018</div>
+    <h1 class="hero-logo-text">
+      ROAST <span class="amp">&</span> REST
+    </h1>
+    <p class="hero-sub">自家焙煎スペシャルティコーヒー専門店</p>
+    <p class="hero-catch">一杯に、<em>物語</em>がある。</p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn btn-primary" onclick="createRipple(event)">MENU を見る</a>
+      <a href="#access" class="btn btn-outline">ACCESS・ご予約</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- STAIN DIVIDER -->
+<div class="stain-divider">
+  <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+    <circle cx="40" cy="40" r="30" stroke="#c4704b" stroke-width="2.5" opacity=".25" stroke-dasharray="4 3"/>
+    <circle cx="40" cy="40" r="22" stroke="#c4704b" stroke-width="1.5" opacity=".12"/>
+    <circle cx="55" cy="55" r="12" stroke="#d4b896" stroke-width="1.5" opacity=".15" stroke-dasharray="3 4"/>
+  </svg>
+</div>
+
+<!-- ABOUT -->
+<section class="section about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal reveal-left">
+        <div class="tape tape-tl"></div>
+        <div class="tape tape-br"></div>
+      </div>
+      <div class="about-text reveal reveal-right">
+        <p class="section-label">Our Philosophy</p>
+        <h2 class="section-title">私たちのコーヒーは、<br>「対話」から始まります。</h2>
+        <p class="section-title-en">What We Believe</p>
+        <p>
+          産地の農園と直接つながり、土壌の香りまで知ること。
+          生豆の個性を見極め、最適な焙煎プロファイルを探ること。
+          そして、お客様の好みに寄り添い、一杯ずつ丁寧に淹れること。
+        </p>
+        <p>
+          ROAST & REST は、2018年に東京・蔵前の古い倉庫をリノベーションして生まれた小さなコーヒー専門店です。
+          「スペシャルティコーヒーをもっと身近に」という想いのもと、焙煎から抽出まですべての工程にこだわっています。
+        </p>
+        <p>
+          忙しい日常のなかで、ほっと息をつける場所でありたい。
+          コーヒーの香りに包まれながら、自分だけの時間を楽しんでいただけたら──それが私たちの願いです。
+        </p>
+        <p class="handwrite">— "Good coffee, good rest." —</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAIN DIVIDER -->
+<div class="stain-divider">
+  <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <circle cx="30" cy="30" r="24" stroke="#d4b896" stroke-width="2" opacity=".2" stroke-dasharray="5 3"/>
+    <circle cx="30" cy="30" r="16" stroke="#c4704b" stroke-width="1" opacity=".1"/>
+  </svg>
+</div>
+
+<!-- ROASTING -->
+<section class="section roasting" id="roasting">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Roasting Process</p>
+      <h2 class="section-title">生豆から一杯のカップへ。<br>焙煎の旅路をたどる。</h2>
+      <p class="section-title-en">From Green to Cup</p>
+    </div>
+
+    <div class="roast-bar-wrap reveal" id="roastBarWrap">
+      <div class="roast-bar-label">
+        <span>LIGHT ライト</span>
+        <span>MEDIUM ミディアム</span>
+        <span>DARK ダーク</span>
+      </div>
+      <div class="roast-bar">
+        <div class="roast-bar-fill" id="roastBarFill"></div>
+      </div>
+    </div>
+
+    <div class="timeline-scroll reveal">
+      <div class="tl-step">
+        <div class="tl-icon">🌱</div>
+        <p class="tl-num">STEP 01</p>
+        <h3 class="tl-name">生豆の選定</h3>
+        <p class="tl-desc">世界各地の農園から届いたグリーンビーンズを、カッピングで厳選。品質スコア80点以上のスペシャルティグレードのみを使用します。</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">🔬</div>
+        <p class="tl-num">STEP 02</p>
+        <h3 class="tl-name">ハンドピック</h3>
+        <p class="tl-desc">一粒ずつ手作業で欠点豆を取り除きます。地道な作業ですが、雑味のないクリーンな味わいの基盤となる大切な工程です。</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">🔥</div>
+        <p class="tl-num">STEP 03</p>
+        <h3 class="tl-name">焙煎</h3>
+        <p class="tl-desc">豆の個性に合わせた焙煎プロファイルで丁寧にロースト。温度・時間・火力を1℃単位で管理し、甘さと酸味のバランスを追求します。</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">⏳</div>
+        <p class="tl-num">STEP 04</p>
+        <h3 class="tl-name">エイジング</h3>
+        <p class="tl-desc">焙煎直後の豆は2〜5日間寝かせます。ガスが抜け、フレーバーが安定することで、豆本来のポテンシャルが開花します。</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">💧</div>
+        <p class="tl-num">STEP 05</p>
+        <h3 class="tl-name">抽出</h3>
+        <p class="tl-desc">ハンドドリップ、エスプレッソ、フレンチプレス──。お客様のお好みと豆の特性に合わせた最適な抽出方法で、一杯ずつお淹れします。</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-icon">☕</div>
+        <p class="tl-num">STEP 06</p>
+        <h3 class="tl-name">ご提供</h3>
+        <p class="tl-desc">淹れたてのコーヒーを、温かみのある器でお届け。産地の物語やフレーバーの特徴もお伝えしながら、至福の一杯をお楽しみください。</p>
+      </div>
+    </div>
+    <p class="scroll-hint-h">← スワイプして全工程を見る →</p>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="section menu-section" id="menu">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Menu</p>
+      <h2 class="section-title" style="color:var(--chalk)">本日のメニュー</h2>
+      <p class="section-title-en">Today's Offerings</p>
+    </div>
+
+    <!-- Drink -->
+    <div class="chalk-border reveal">
+      <h3 class="menu-cat-title">☕ Drink / ドリンク</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">本日のハンドドリップ</span><br>
+            <span class="menu-item-note">single origin, daily selection</span>
+          </div>
+          <span class="menu-item-price">¥550</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">エスプレッソ</span><br>
+            <span class="menu-item-note">double shot</span>
+          </div>
+          <span class="menu-item-price">¥450</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">カフェラテ</span><br>
+            <span class="menu-item-note">oat milk +50yen</span>
+          </div>
+          <span class="menu-item-price">¥580</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">カプチーノ</span><br>
+            <span class="menu-item-note">with latte art</span>
+          </div>
+          <span class="menu-item-price">¥560</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">フラットホワイト</span><br>
+            <span class="menu-item-note">Australian style</span>
+          </div>
+          <span class="menu-item-price">¥580</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">アイスコーヒー（水出し）</span><br>
+            <span class="menu-item-note">cold brew, 12hrs</span>
+          </div>
+          <span class="menu-item-price">¥550</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">季節のスペシャルティラテ</span><br>
+            <span class="menu-item-note">ask staff for today's flavor</span>
+          </div>
+          <span class="menu-item-price">¥650</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">ほうじ茶ラテ</span><br>
+            <span class="menu-item-note">Kyoto roasted green tea</span>
+          </div>
+          <span class="menu-item-price">¥520</span>
+        </div>
+      </div>
+      <p class="chalk-illust">* テイクアウトは全品 -30円引き *</p>
+    </div>
+
+    <!-- Food -->
+    <div class="chalk-border reveal">
+      <h3 class="menu-cat-title">🍞 Food / フード</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">自家製グラノーラボウル</span><br>
+            <span class="menu-item-note">with seasonal fruits</span>
+          </div>
+          <span class="menu-item-price">¥780</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">バスクチーズケーキ</span><br>
+            <span class="menu-item-note">baked in-house daily</span>
+          </div>
+          <span class="menu-item-price">¥580</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">クロワッサン（発酵バター）</span><br>
+            <span class="menu-item-note">from local bakery</span>
+          </div>
+          <span class="menu-item-price">¥380</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">あんバタートースト</span><br>
+            <span class="menu-item-note">Hokkaido butter × tsubuan</span>
+          </div>
+          <span class="menu-item-price">¥480</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">コーヒーゼリーパフェ</span><br>
+            <span class="menu-item-note">our signature dessert</span>
+          </div>
+          <span class="menu-item-price">¥680</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">スコーン＆クロテッドクリーム</span><br>
+            <span class="menu-item-note">afternoon tea set +drink ¥1,100</span>
+          </div>
+          <span class="menu-item-price">¥520</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beans -->
+    <div class="chalk-border reveal">
+      <h3 class="menu-cat-title">🫘 Take Out Beans / お持ち帰り豆</h3>
+      <div class="menu-grid">
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">エチオピア イルガチェフェ</span><br>
+            <span class="menu-item-note">floral, bergamot, light roast</span>
+          </div>
+          <span class="menu-item-price">¥1,400 / 100g</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">グアテマラ アンティグア</span><br>
+            <span class="menu-item-note">chocolate, nutty, medium</span>
+          </div>
+          <span class="menu-item-price">¥1,300 / 100g</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">ブラジル セラード</span><br>
+            <span class="menu-item-note">caramel, smooth, med-dark</span>
+          </div>
+          <span class="menu-item-price">¥1,200 / 100g</span>
+        </div>
+        <div class="menu-item">
+          <div>
+            <span class="menu-item-name">ROASTブレンド「REST」</span><br>
+            <span class="menu-item-note">our house blend, balanced</span>
+          </div>
+          <span class="menu-item-price">¥1,100 / 100g</span>
+        </div>
+      </div>
+      <p class="chalk-illust">* 200g以上のご購入で10%OFF *</p>
+    </div>
+  </div>
+</section>
+
+<!-- STAIN -->
+<div class="stain-divider" style="background:var(--cream);padding:1.5rem 0;">
+  <svg width="70" height="70" viewBox="0 0 70 70" fill="none">
+    <circle cx="35" cy="35" r="28" stroke="#c4704b" stroke-width="2" opacity=".2" stroke-dasharray="6 4"/>
+    <circle cx="25" cy="50" r="10" stroke="#d4b896" stroke-width="1.5" opacity=".12"/>
+  </svg>
+</div>
+
+<!-- ORIGIN MAP -->
+<section class="section origin" id="origin">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Coffee Origins</p>
+      <h2 class="section-title">豆の産地を巡る。</h2>
+      <p class="section-title-en">Where Our Beans Come From</p>
+    </div>
+
+    <div class="map-wrap reveal-scale reveal" id="mapWrap">
+      <!-- Simplified world map with pins -->
+      <svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <!-- Simplified continents -->
+        <rect width="800" height="400" fill="none"/>
+        <!-- Grid lines -->
+        <line x1="0" y1="200" x2="800" y2="200" stroke="rgba(212,184,150,.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="400" y1="0" x2="400" y2="400" stroke="rgba(212,184,150,.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- Coffee belt zone -->
+        <rect x="0" y="140" width="800" height="120" fill="rgba(196,112,75,.06)" rx="4"/>
+        <text x="790" y="155" fill="rgba(196,112,75,.3)" font-size="9" text-anchor="end" font-family="Georgia">Coffee Belt</text>
+        <!-- Simplified continents as paths -->
+        <path d="M80 60 Q120 50 160 70 Q180 90 170 130 Q155 160 130 180 Q100 190 80 170 Q65 140 70 110 Q75 80 80 60Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <path d="M140 180 Q160 175 190 200 Q220 230 210 280 Q195 330 170 350 Q150 360 135 340 Q120 310 125 270 Q130 230 140 180Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <path d="M300 50 Q400 40 500 60 Q540 80 530 120 Q510 150 480 160 Q430 170 380 160 Q340 150 310 130 Q290 100 300 50Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <path d="M350 120 Q380 130 420 160 Q440 190 430 230 Q410 260 380 270 Q350 265 340 240 Q330 210 335 180 Q340 150 350 120Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <path d="M480 100 Q560 80 640 100 Q700 120 720 170 Q730 220 700 250 Q660 270 620 260 Q560 240 520 200 Q490 160 480 100Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <path d="M600 250 Q650 240 700 270 Q730 310 710 350 Q680 370 640 360 Q610 340 600 310 Q595 280 600 250Z" fill="rgba(212,184,150,.12)" stroke="rgba(212,184,150,.2)" stroke-width="1"/>
+        <!-- Pins -->
+        <g class="map-pin" data-pin="ethiopia" onmouseenter="showPin(this,420,175,'エチオピア イルガチェフェ','フローラル・ベルガモット・レモン')" onmouseleave="hidePin()">
+          <circle cx="420" cy="195" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="420" cy="195" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="420" y="199" fill="white" font-size="8" text-anchor="middle" font-weight="bold">ET</text>
+        </g>
+        <g class="map-pin" data-pin="guatemala" onmouseenter="showPin(this,165,195,'グアテマラ アンティグア','チョコレート・ナッツ・オレンジ')" onmouseleave="hidePin()">
+          <circle cx="165" cy="195" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="165" cy="195" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="2.3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="165" y="199" fill="white" font-size="8" text-anchor="middle" font-weight="bold">GT</text>
+        </g>
+        <g class="map-pin" data-pin="brazil" onmouseenter="showPin(this,210,260,'ブラジル セラード','キャラメル・ナッツ・スムース')" onmouseleave="hidePin()">
+          <circle cx="210" cy="260" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="210" cy="260" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <text x="210" y="264" fill="white" font-size="8" text-anchor="middle" font-weight="bold">BR</text>
+        </g>
+        <g class="map-pin" data-pin="colombia" onmouseenter="showPin(this,175,225,'コロンビア ウィラ','ベリー・ブラウンシュガー・クリーミー')" onmouseleave="hidePin()">
+          <circle cx="175" cy="225" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="175" cy="225" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="2.1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.1s" repeatCount="indefinite"/>
+          </circle>
+          <text x="175" y="229" fill="white" font-size="8" text-anchor="middle" font-weight="bold">CO</text>
+        </g>
+        <g class="map-pin" data-pin="indonesia" onmouseenter="showPin(this,620,225,'インドネシア マンデリン','ハーブ・スパイス・ダークチョコ')" onmouseleave="hidePin()">
+          <circle cx="620" cy="225" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="620" cy="225" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="1.9s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="1.9s" repeatCount="indefinite"/>
+          </circle>
+          <text x="620" y="229" fill="white" font-size="8" text-anchor="middle" font-weight="bold">ID</text>
+        </g>
+        <g class="map-pin" data-pin="kenya" onmouseenter="showPin(this,435,220,'ケニア ニエリ','カシス・トマト・ブラックティー')" onmouseleave="hidePin()">
+          <circle cx="435" cy="220" r="8" fill="var(--terracotta)" opacity=".85"/>
+          <circle cx="435" cy="220" r="12" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4">
+            <animate attributeName="r" values="12;18;12" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0;0.4" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="435" y="224" fill="white" font-size="8" text-anchor="middle" font-weight="bold">KE</text>
+        </g>
+      </svg>
+      <div class="pin-popup" id="pinPopup">
+        <p class="pin-popup-name" id="pinPopupName"></p>
+        <p class="pin-popup-flavor" id="pinPopupFlavor"></p>
+      </div>
+    </div>
+
+    <div class="origin-cards stagger reveal">
+      <div class="origin-card">
+        <div class="origin-card-flag">🇪🇹</div>
+        <h3 class="origin-card-name">エチオピア</h3>
+        <p class="origin-card-detail">イルガチェフェ地区・ウォッシュド精製<br>標高 1,800〜2,000m</p>
+        <p class="origin-card-flavor">Floral, Bergamot, Lemon</p>
+      </div>
+      <div class="origin-card">
+        <div class="origin-card-flag">🇬🇹</div>
+        <h3 class="origin-card-name">グアテマラ</h3>
+        <p class="origin-card-detail">アンティグア地区・フルウォッシュド<br>標高 1,500〜1,700m</p>
+        <p class="origin-card-flavor">Chocolate, Nutty, Orange</p>
+      </div>
+      <div class="origin-card">
+        <div class="origin-card-flag">🇧🇷</div>
+        <h3 class="origin-card-name">ブラジル</h3>
+        <p class="origin-card-detail">セラード地区・ナチュラル精製<br>標高 1,000〜1,200m</p>
+        <p class="origin-card-flavor">Caramel, Nuts, Smooth</p>
+      </div>
+      <div class="origin-card">
+        <div class="origin-card-flag">🇨🇴</div>
+        <h3 class="origin-card-name">コロンビア</h3>
+        <p class="origin-card-detail">ウィラ地区・ウォッシュド精製<br>標高 1,600〜1,900m</p>
+        <p class="origin-card-flavor">Berry, Brown Sugar, Creamy</p>
+      </div>
+      <div class="origin-card">
+        <div class="origin-card-flag">🇮🇩</div>
+        <h3 class="origin-card-name">インドネシア</h3>
+        <p class="origin-card-detail">スマトラ島・ウェットハル精製<br>標高 1,200〜1,500m</p>
+        <p class="origin-card-flavor">Herb, Spice, Dark Chocolate</p>
+      </div>
+      <div class="origin-card">
+        <div class="origin-card-flag">🇰🇪</div>
+        <h3 class="origin-card-name">ケニア</h3>
+        <p class="origin-card-detail">ニエリ地区・ケニア式ウォッシュド<br>標高 1,700〜2,000m</p>
+        <p class="origin-card-flavor">Cassis, Tomato, Black Tea</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROASTER -->
+<section class="section roaster" id="roaster">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Our Roaster</p>
+      <h2 class="section-title">焙煎士のご紹介</h2>
+      <p class="section-title-en">The People Behind Your Cup</p>
+    </div>
+
+    <div class="polaroid-wrap">
+      <div class="polaroid reveal" style="--rot:-3deg">
+        <div class="polaroid-img">👨‍🍳</div>
+        <div class="polaroid-text">
+          <h3 class="polaroid-name">田中 悠人</h3>
+          <p class="polaroid-role">HEAD ROASTER / FOUNDER</p>
+          <p class="polaroid-comment">
+            「コーヒーは科学であり、アートでもある。<br>
+            豆と会話しながら、最高の一杯を追求しています。」
+          </p>
+        </div>
+      </div>
+      <div class="polaroid reveal" style="--rot:2deg">
+        <div class="polaroid-img">👩‍🍳</div>
+        <div class="polaroid-text">
+          <h3 class="polaroid-name">佐藤 美咲</h3>
+          <p class="polaroid-role">BARISTA / Q GRADER</p>
+          <p class="polaroid-comment">
+            「お客様の"いつもの一杯"に出会えるお手伝いが<br>
+            私の何よりの喜びです。」
+          </p>
+        </div>
+      </div>
+      <div class="polaroid reveal" style="--rot:-1.5deg">
+        <div class="polaroid-img">🧑‍🍳</div>
+        <div class="polaroid-text">
+          <h3 class="polaroid-name">木村 蓮</h3>
+          <p class="polaroid-role">ROASTER / PASTRY CHEF</p>
+          <p class="polaroid-comment">
+            「コーヒーに合うスイーツを求めて日々研究中。<br>
+            焙煎も製菓も、温度管理が命です。」
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAIN -->
+<div class="stain-divider">
+  <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
+    <circle cx="45" cy="45" r="35" stroke="#c4704b" stroke-width="2" opacity=".18" stroke-dasharray="3 5"/>
+    <circle cx="45" cy="45" r="25" stroke="#d4b896" stroke-width="1.5" opacity=".1"/>
+    <circle cx="60" cy="65" r="14" stroke="#c4704b" stroke-width="1" opacity=".12" stroke-dasharray="4 3"/>
+  </svg>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials" id="testimonials">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Testimonials</p>
+      <h2 class="section-title">お客様の声</h2>
+      <p class="section-title-en">What Our Guests Say</p>
+    </div>
+
+    <div class="testi-grid stagger reveal">
+      <div class="testi-card">
+        <p class="testi-text">
+          週末の朝はここからスタートするのが習慣です。ハンドドリップの繊細な味わいはもちろん、
+          焙煎士の田中さんが豆の産地について熱く語ってくれるのが楽しみで。
+          コーヒーの世界がこんなに奥深いなんて、ここに来るまで知りませんでした。
+        </p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">S.M</div>
+          <div>
+            <p class="testi-name">鈴木 真理子さん</p>
+            <p class="testi-detail">30代・会社員 / 常連歴3年</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">
+          自宅用の豆をいつも購入しています。エチオピアのフローラルな香りが大のお気に入り。
+          挽き方や淹れ方のアドバイスも丁寧にしてくれるので、
+          家でもお店に近い味が再現できるようになりました。もうスーパーの豆には戻れません。
+        </p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">K.T</div>
+          <div>
+            <p class="testi-name">高橋 健一さん</p>
+            <p class="testi-detail">40代・デザイナー / 常連歴2年</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-text">
+          友人に連れられて初めて来店しましたが、一口飲んで衝撃を受けました。
+          コーヒーってこんなにフルーティーで甘いものなんですね。
+          居心地の良い空間で過ごす時間そのものが贅沢で、すっかりファンになりました。
+        </p>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">Y.N</div>
+          <div>
+            <p class="testi-name">中村 結衣さん</p>
+            <p class="testi-detail">20代・学生 / 来店歴半年</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="section access" id="access">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">Access</p>
+      <h2 class="section-title">店舗情報・アクセス</h2>
+      <p class="section-title-en">Visit Us</p>
+    </div>
+
+    <div class="access-grid">
+      <div class="access-map reveal reveal-left">
+        <!-- Decorative map placeholder -->
+        <svg width="100%" height="100%" viewBox="0 0 400 300" fill="none" style="position:absolute;inset:0;">
+          <rect x="20" y="20" width="360" height="260" rx="8" stroke="rgba(44,24,16,.1)" stroke-width="1" stroke-dasharray="5 5"/>
+          <line x1="200" y1="40" x2="200" y2="260" stroke="rgba(44,24,16,.06)" stroke-width="1"/>
+          <line x1="40" y1="150" x2="360" y2="150" stroke="rgba(44,24,16,.06)" stroke-width="1"/>
+          <circle cx="200" cy="140" r="6" fill="var(--terracotta)"/>
+          <circle cx="200" cy="140" r="14" fill="none" stroke="var(--terracotta)" stroke-width="1.5" opacity=".4"/>
+          <text x="200" y="170" text-anchor="middle" font-size="11" fill="var(--espresso)" font-family="Noto Serif JP, serif" opacity=".6">ROAST &amp; REST</text>
+          <text x="200" y="185" text-anchor="middle" font-size="8" fill="var(--charcoal)" opacity=".4">蔵前駅より徒歩5分</text>
+        </svg>
+      </div>
+      <div class="access-info reveal reveal-right">
+        <h3>ROAST & REST</h3>
+        <table class="access-table">
+          <tr><th>住所</th><td>〒111-0051<br>東京都台東区蔵前4-20-12<br>KURAMAE WAREHOUSE 1F</td></tr>
+          <tr><th>最寄駅</th><td>都営浅草線・大江戸線「蔵前駅」A6出口より徒歩5分<br>つくばエクスプレス「新御徒町駅」より徒歩8分</td></tr>
+          <tr><th>営業時間</th><td>8:00 – 18:00（L.O. 17:30）<br><span style="font-size:.75rem;color:#999;">※焙煎体験は要予約・土日のみ</span></td></tr>
+          <tr><th>定休日</th><td>毎週水曜日・第3火曜日</td></tr>
+          <tr><th>電話</th><td>03-XXXX-XXXX</td></tr>
+          <tr><th>席数</th><td>店内 18席（カウンター6席＋テーブル12席）<br>テラス 4席</td></tr>
+          <tr><th>設備</th><td>Wi-Fi完備 / 電源あり / 禁煙</td></tr>
+        </table>
+
+        <div class="access-cta">
+          <p>焙煎体験ワークショップ<br>毎月開催中 ☕</p>
+          <a href="#" class="btn btn-primary" onclick="createRipple(event)">予約・お問い合わせ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="footer">
+  <div class="footer-top container">
+    <div>
+      <div class="footer-logo">ROAST <span>&</span> REST</div>
+      <p class="footer-tagline">一杯に、物語がある。</p>
+    </div>
+    <div class="footer-links">
+      <a href="#about">私たちのコーヒー</a>
+      <a href="#roasting">焙煎について</a>
+      <a href="#menu">メニュー</a>
+      <a href="#origin">豆の産地</a>
+      <a href="#access">店舗情報</a>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <p>&copy; 2018 – 2026 ROAST & REST. All rights reserved. Crafted with <span class="heart">♥</span> and ☕</p>
+  </div>
+</footer>
+
+<script>
+// ===== Navbar scroll =====
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ===== Mobile menu =====
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  hamburger.classList.remove('active');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== Ripple effect =====
+function createRipple(e) {
+  const btn = e.currentTarget;
+  const circle = document.createElement('span');
+  const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+  const radius = diameter / 2;
+  const rect = btn.getBoundingClientRect();
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${e.clientX - rect.left - radius}px`;
+  circle.style.top = `${e.clientY - rect.top - radius}px`;
+  circle.classList.add('ripple');
+  const existingRipple = btn.querySelector('.ripple');
+  if (existingRipple) existingRipple.remove();
+  btn.appendChild(circle);
+}
+
+// ===== Intersection Observer for reveals =====
+const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Roast bar animation
+      if (entry.target.id === 'roastBarWrap') {
+        document.getElementById('roastBarFill').classList.add('animated');
+      }
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+
+// ===== Map Pin Popup =====
+const pinPopup = document.getElementById('pinPopup');
+const mapWrap = document.getElementById('mapWrap');
+
+function showPin(el, x, y, name, flavor) {
+  const popupName = document.getElementById('pinPopupName');
+  const popupFlavor = document.getElementById('pinPopupFlavor');
+  popupName.textContent = name;
+  popupFlavor.textContent = '🫘 ' + flavor;
+
+  const svg = mapWrap.querySelector('svg');
+  const svgRect = svg.getBoundingClientRect();
+  const wrapRect = mapWrap.getBoundingClientRect();
+  const scaleX = svgRect.width / 800;
+  const scaleY = svgRect.height / 400;
+
+  const left = (x * scaleX) + (svgRect.left - wrapRect.left) - 30;
+  const top = (y * scaleY) + (svgRect.top - wrapRect.top) - pinPopup.offsetHeight - 15;
+
+  pinPopup.style.left = Math.max(0, Math.min(left, wrapRect.width - 200)) + 'px';
+  pinPopup.style.top = top + 'px';
+  pinPopup.classList.add('show');
+}
+
+function hidePin() {
+  pinPopup.classList.remove('show');
+}
+
+// ===== Smooth Scroll for anchor links =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

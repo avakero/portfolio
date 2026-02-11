@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="STRIDE Labs - アスリート向けAIパフォーマンス分析プラットフォーム。データが導く、次の一歩。">
+<title>STRIDE Labs | データが導く、次の一歩。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--white:#ffffff;--snow:#f8f9fb;--navy:#0f172a;--blue:#3b82f6;--green:#22c55e;--orange:#f59e0b;--gray:#94a3b8;--light-border:#e2e8f0;
+--font-body:'Noto Sans JP','Hiragino Sans',sans-serif;
+--font-heading:'Inter','Noto Sans JP',sans-serif;
+--font-mono:'SF Mono','Roboto Mono',monospace;
+--section-pad:clamp(80px,12vw,160px);
+--container:1200px;
+--ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);font-weight:300;color:var(--navy);background:var(--white);line-height:1.8;font-size:clamp(14px,1.1vw,16px);overflow-x:hidden}
+h1,h2,h3,h4,h5{font-family:var(--font-heading);line-height:1.25}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{max-width:var(--container);margin:0 auto;padding:0 clamp(20px,4vw,40px)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);transition:all .4s var(--ease)}
+nav .nav-inner{max-width:var(--container);margin:0 auto;padding:0 clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-family:var(--font-heading);font-weight:800;font-size:18px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.nav-logo .logo-icon{width:28px;height:28px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center}
+.nav-logo .logo-icon svg{width:16px;height:16px}
+.nav-links{display:flex;gap:clamp(16px,2.5vw,36px);align-items:center}
+.nav-links a{font-size:13px;font-weight:400;color:var(--navy);opacity:.6;transition:opacity .3s}
+.nav-links a:hover{opacity:1}
+.nav-cta{font-size:13px!important;font-weight:600!important;background:var(--navy);color:var(--white)!important;opacity:1!important;padding:8px 20px;border-radius:980px;transition:background .3s,transform .2s}
+.nav-cta:hover{background:var(--blue);transform:scale(1.03)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.hamburger span{width:20px;height:1.5px;background:var(--navy);transition:all .3s}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;background:var(--white);padding-top:80px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center;width:100%}
+.hero-text{z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--snow);border:1px solid var(--light-border);border-radius:980px;padding:6px 16px;font-size:12px;font-weight:500;color:var(--gray);margin-bottom:24px}
+.hero-badge .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(36px,5vw,64px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:16px}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--blue),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:var(--font-heading);font-size:clamp(11px,1.2vw,14px);font-weight:600;letter-spacing:.15em;color:var(--gray);margin-bottom:24px;text-transform:uppercase}
+.hero-desc{font-size:clamp(15px,1.2vw,18px);color:#64748b;max-width:480px;margin-bottom:40px;font-weight:300;line-height:1.9}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:var(--white);padding:14px 32px;border-radius:980px;font-family:var(--font-heading);font-weight:600;font-size:15px;border:none;cursor:pointer;transition:all .3s var(--ease);box-shadow:0 4px 20px rgba(59,130,246,.25)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,.35)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--navy);padding:14px 28px;border-radius:980px;font-family:var(--font-heading);font-weight:600;font-size:15px;border:1px solid var(--light-border);cursor:pointer;transition:all .3s var(--ease)}
+.btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Hero Visual */
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:500px}
+.device-watch{width:180px;height:220px;background:var(--navy);border-radius:40px;position:absolute;top:40px;right:10%;box-shadow:0 25px 60px rgba(15,23,42,.15),0 0 0 1px rgba(255,255,255,.1);transform:rotate(-5deg);transition:transform 1s var(--ease);z-index:3}
+.watch-screen{margin:20px;width:140px;height:140px;background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:28px;overflow:hidden;display:flex;flex-direction:column;padding:16px}
+.watch-time{font-family:var(--font-heading);font-size:28px;font-weight:700;color:var(--white)}
+.watch-bpm{display:flex;align-items:center;gap:4px;margin-top:8px}
+.watch-bpm .heart{color:#ef4444;font-size:12px;animation:heartbeat 1s infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.watch-bpm span{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--green)}
+.watch-bpm small{font-size:10px;color:var(--gray)}
+.watch-graph{margin-top:auto}
+.device-phone{width:260px;height:460px;background:var(--white);border-radius:32px;position:relative;box-shadow:0 30px 80px rgba(15,23,42,.12),0 0 0 1px var(--light-border);z-index:2;overflow:hidden;transition:transform 1s var(--ease)}
+.phone-notch{width:100px;height:24px;background:var(--navy);border-radius:0 0 16px 16px;margin:0 auto}
+.phone-content{padding:20px 16px}
+.phone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.phone-header h4{font-size:14px;font-weight:700}
+.phone-header span{font-size:11px;color:var(--green);font-weight:600}
+.phone-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.phone-stat{background:var(--snow);border-radius:12px;padding:10px}
+.phone-stat label{font-size:9px;color:var(--gray);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.phone-stat .val{font-family:var(--font-mono);font-size:20px;font-weight:700;display:block;margin-top:2px}
+.phone-stat .val.blue{color:var(--blue)}
+.phone-stat .val.green{color:var(--green)}
+.phone-stat .val.orange{color:var(--orange)}
+.phone-chart{background:var(--snow);border-radius:12px;padding:12px;height:120px;overflow:hidden}
+
+/* Scroll indicator */
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.5}
+.scroll-hint span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray)}
+.scroll-arrow{width:20px;height:20px;border-right:1.5px solid var(--gray);border-bottom:1.5px solid var(--gray);transform:rotate(45deg);animation:bounce-arrow 2s infinite}
+@keyframes bounce-arrow{0%,100%{transform:rotate(45deg) translate(0,0);opacity:1}50%{transform:rotate(45deg) translate(4px,4px);opacity:.4}}
+
+/* SECTION DEFAULTS */
+section{padding:var(--section-pad) 0;position:relative}
+.section-label{font-family:var(--font-heading);font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.section-title{font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+.section-desc{font-size:clamp(15px,1.1vw,18px);color:#64748b;max-width:560px;font-weight:300;line-height:1.9}
+.text-center{text-align:center}
+.mx-auto{margin-left:auto;margin-right:auto}
+
+/* Reveal animations */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.15s}
+.reveal-delay-2{transition-delay:.3s}
+.reveal-delay-3{transition-delay:.45s}
+
+/* PROBLEM */
+.problem{background:var(--snow)}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px}
+.problem-card{background:var(--white);border:1px solid var(--light-border);border-radius:20px;padding:36px 28px;transition:all .4s var(--ease)}
+.problem-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(15,23,42,.06)}
+.problem-icon{width:48px;height:48px;background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(59,130,246,.03));border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.problem-card h3{font-size:18px;font-weight:700;margin-bottom:10px}
+.problem-card p{font-size:14px;color:#64748b;line-height:1.8}
+
+/* PRODUCT / DASHBOARD */
+.product{background:var(--white)}
+.dashboard-mock{background:var(--snow);border:1px solid var(--light-border);border-radius:24px;padding:clamp(24px,3vw,40px);margin-top:56px;overflow:hidden}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.dash-header h3{font-size:18px;font-weight:700}
+.dash-tabs{display:flex;gap:4px;background:var(--white);border-radius:12px;padding:4px;border:1px solid var(--light-border)}
+.dash-tab{padding:6px 16px;border-radius:8px;font-size:12px;font-weight:500;color:var(--gray);cursor:pointer}
+.dash-tab.active{background:var(--blue);color:var(--white)}
+.dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px}
+.dash-chart-area{background:var(--white);border-radius:16px;padding:24px;border:1px solid var(--light-border)}
+.dash-chart-title{font-size:13px;font-weight:600;margin-bottom:4px}
+.dash-chart-val{font-family:var(--font-mono);font-size:32px;font-weight:700;color:var(--blue)}
+.dash-chart-val small{font-size:14px;color:var(--gray);font-weight:400}
+.hr-chart-svg{width:100%;margin-top:16px}
+.dash-gauges{display:flex;flex-direction:column;gap:16px}
+.gauge-card{background:var(--white);border-radius:16px;padding:20px;border:1px solid var(--light-border)}
+.gauge-label{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.gauge-value{font-family:var(--font-mono);font-size:24px;font-weight:700;margin-bottom:8px}
+.gauge-bar{height:6px;background:var(--snow);border-radius:3px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:3px;width:0;transition:width 1.5s var(--ease)}
+.gauge-fill.blue{background:var(--blue)}
+.gauge-fill.green{background:var(--green)}
+.gauge-fill.orange{background:var(--orange)}
+
+/* FEATURES CARDS */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.feature-card{background:var(--white);border:1px solid var(--light-border);border-radius:20px;padding:32px 28px;transition:all .4s var(--ease);cursor:default}
+.feature-card:hover{border-color:rgba(59,130,246,.2);box-shadow:0 8px 40px rgba(59,130,246,.08);transform:translateY(-2px)}
+.feature-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.feature-icon.blue{background:rgba(59,130,246,.1)}
+.feature-icon.green{background:rgba(34,197,94,.1)}
+.feature-icon.orange{background:rgba(245,158,11,.1)}
+.feature-card h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.feature-card p{font-size:14px;color:#64748b;line-height:1.8;margin-bottom:16px}
+.sparkline-container{height:36px}
+
+/* FORM ANALYSIS */
+.form-analysis{background:var(--snow)}
+.form-demo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:center;margin-top:56px}
+.form-svg-wrap{background:var(--white);border-radius:24px;border:1px solid var(--light-border);padding:40px;display:flex;justify-content:center;position:relative;min-height:400px}
+.form-toggle-label{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:600;color:var(--blue);background:rgba(59,130,246,.08);padding:6px 16px;border-radius:980px}
+.form-info h3{font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:16px;letter-spacing:-.02em}
+.form-info p{color:#64748b;font-size:15px;line-height:1.9;margin-bottom:28px}
+.form-metrics{display:flex;flex-direction:column;gap:16px}
+.form-metric{display:flex;align-items:center;gap:16px;padding:16px;background:var(--white);border:1px solid var(--light-border);border-radius:14px}
+.form-metric .fm-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.form-metric .fm-text h4{font-size:14px;font-weight:600}
+.form-metric .fm-text p{font-size:12px;color:var(--gray);margin:0}
+
+/* TRUST NUMBERS */
+.trust{background:var(--white);position:relative;overflow:hidden}
+.trust-bg{position:absolute;inset:0;background-image:radial-gradient(circle,var(--light-border) 1px,transparent 1px);background-size:24px 24px;opacity:.5}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px;position:relative;z-index:1}
+.trust-card{text-align:center;padding:40px 20px}
+.trust-number{font-family:var(--font-mono);font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1;margin-bottom:8px}
+.trust-number .unit{font-size:.4em;font-weight:600;color:var(--gray)}
+.trust-label{font-size:14px;color:var(--gray);font-weight:400}
+
+/* DEVICES */
+.devices{background:var(--snow)}
+.devices-row{display:flex;justify-content:center;gap:clamp(24px,4vw,56px);flex-wrap:wrap;margin-top:56px}
+.device-item{display:flex;flex-direction:column;align-items:center;gap:12px;cursor:default;transition:transform .3s var(--ease)}
+.device-item:hover{transform:translateY(-6px)}
+.device-icon-wrap{width:80px;height:80px;background:var(--white);border:1px solid var(--light-border);border-radius:20px;display:flex;align-items:center;justify-content:center;transition:all .3s var(--ease)}
+.device-item:hover .device-icon-wrap{border-color:var(--blue);box-shadow:0 8px 30px rgba(59,130,246,.1)}
+.device-name{font-size:13px;font-weight:500;color:var(--gray)}
+
+/* ATHLETES */
+.athletes{background:var(--white)}
+.athletes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.athlete-card{background:var(--snow);border:1px solid var(--light-border);border-radius:20px;overflow:hidden;transition:all .4s var(--ease)}
+.athlete-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(15,23,42,.06)}
+.athlete-photo{height:200px;background:linear-gradient(135deg,var(--navy),#1e3a5f);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.athlete-photo .silhouette{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+.athlete-photo .silhouette svg{width:40px;height:40px;opacity:.6}
+.athlete-sport{position:absolute;top:16px;left:16px;font-size:11px;font-weight:600;color:var(--white);background:rgba(255,255,255,.15);backdrop-filter:blur(8px);padding:4px 12px;border-radius:980px}
+.athlete-info{padding:24px}
+.athlete-info h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.athlete-info .athlete-team{font-size:12px;color:var(--gray);margin-bottom:16px}
+.athlete-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.athlete-stat{text-align:center;padding:10px 4px;background:var(--white);border-radius:10px}
+.athlete-stat .as-val{font-family:var(--font-mono);font-size:16px;font-weight:700;display:block}
+.athlete-stat .as-label{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em}
+.athlete-stat .as-change{font-size:10px;color:var(--green);font-weight:600}
+
+/* PRICING */
+.pricing{background:var(--snow)}
+.price-toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:32px;margin-bottom:40px}
+.price-toggle-wrap span{font-size:14px;font-weight:500;color:var(--gray);transition:color .3s}
+.price-toggle-wrap span.active-label{color:var(--navy);font-weight:600}
+.toggle-switch{position:relative;width:52px;height:28px;cursor:pointer}
+.toggle-switch input{display:none}
+.toggle-track{position:absolute;inset:0;background:var(--light-border);border-radius:14px;transition:background .3s}
+.toggle-switch input:checked~.toggle-track{background:var(--blue)}
+.toggle-knob{position:absolute;top:3px;left:3px;width:22px;height:22px;background:var(--white);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.15);transition:transform .3s var(--ease)}
+.toggle-switch input:checked~.toggle-knob{transform:translateX(24px)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.price-card{background:var(--white);border:1px solid var(--light-border);border-radius:24px;padding:36px 28px;transition:all .4s var(--ease);position:relative}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(15,23,42,.06)}
+.price-card.featured{border-color:var(--blue);box-shadow:0 8px 40px rgba(59,130,246,.12)}
+.price-card.featured::before{content:"人気No.1";position:absolute;top:-12px;right:24px;background:var(--blue);color:var(--white);font-size:11px;font-weight:600;padding:4px 14px;border-radius:980px}
+.price-name{font-size:14px;font-weight:600;color:var(--gray);margin-bottom:8px}
+.price-amount{font-family:var(--font-mono);font-size:40px;font-weight:800;margin-bottom:4px}
+.price-amount small{font-size:14px;font-weight:400;color:var(--gray)}
+.price-period{font-size:12px;color:var(--gray);margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:28px}
+.price-features li{font-size:14px;padding:8px 0;border-bottom:1px solid var(--snow);display:flex;align-items:center;gap:8px}
+.price-features li::before{content:"";width:16px;height:16px;background:rgba(34,197,94,.1);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='3'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:10px}
+.price-btn{display:block;width:100%;text-align:center;padding:14px;border-radius:14px;font-family:var(--font-heading);font-weight:600;font-size:14px;border:1px solid var(--light-border);background:var(--white);color:var(--navy);cursor:pointer;transition:all .3s var(--ease)}
+.price-btn:hover{border-color:var(--blue);color:var(--blue)}
+.price-card.featured .price-btn{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.price-card.featured .price-btn:hover{background:#2563eb}
+
+.monthly-price,.yearly-price{display:none}
+.monthly-price.show,.yearly-price.show{display:inline}
+
+/* CTA */
+.cta-section{background:var(--white);text-align:center}
+.cta-box{background:linear-gradient(135deg,var(--navy) 0%,#1e3a5f 100%);border-radius:32px;padding:clamp(48px,6vw,80px) clamp(24px,4vw,60px);position:relative;overflow:hidden}
+.cta-box::before{content:"";position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(59,130,246,.2),transparent 70%);border-radius:50%}
+.cta-box h2{color:var(--white);font-size:clamp(28px,4vw,44px);font-weight:700;margin-bottom:12px;position:relative;letter-spacing:-.02em}
+.cta-box p{color:rgba(255,255,255,.6);font-size:clamp(14px,1.1vw,17px);margin-bottom:36px;position:relative}
+.cta-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:980px;padding:6px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,.7);margin-bottom:24px;position:relative}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--navy);padding:16px 40px;border-radius:980px;font-family:var(--font-heading);font-weight:700;font-size:16px;border:none;cursor:pointer;transition:all .3s var(--ease);position:relative}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,255,255,.2)}
+
+/* FOOTER */
+footer{background:var(--navy);color:var(--white);padding:64px 0 32px}
+.footer-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:40px;margin-bottom:48px}
+.footer-brand .logo{font-family:var(--font-heading);font-size:20px;font-weight:800;margin-bottom:12px}
+.footer-brand p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;max-width:260px}
+.footer-col h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:16px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.6);padding:4px 0;transition:color .3s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.3)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+.hero-grid{grid-template-columns:1fr;text-align:center}
+.hero-desc{margin-left:auto;margin-right:auto}
+.hero-actions{justify-content:center}
+.hero-visual{min-height:400px;margin-top:20px}
+.dash-grid{grid-template-columns:1fr}
+.form-demo{grid-template-columns:1fr}
+.trust-grid{grid-template-columns:repeat(2,1fr)}
+.pricing-grid{grid-template-columns:1fr}
+.pricing-grid .price-card{max-width:420px;margin:0 auto;width:100%}
+.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+.nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--white);flex-direction:column;padding:20px;border-bottom:1px solid var(--light-border);gap:12px}
+.nav-links.open{display:flex}
+.hamburger{display:flex}
+.problem-grid{grid-template-columns:1fr}
+.features-grid{grid-template-columns:1fr}
+.athletes-grid{grid-template-columns:1fr}
+.trust-grid{grid-template-columns:1fr 1fr}
+.device-watch{width:140px;height:175px;right:0;top:20px}
+.watch-screen{margin:16px;width:108px;height:108px;border-radius:20px;padding:12px}
+.device-phone{width:200px;height:360px}
+.footer-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+.hero-visual{min-height:320px}
+.device-phone{width:180px;height:320px}
+.device-watch{width:120px;height:150px;top:10px}
+.watch-screen{margin:12px;width:96px;height:96px;padding:10px}
+}
+
+/* SVG ANIMATIONS */
+.hr-path{stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 2s var(--ease)}
+.hr-path.animate{stroke-dashoffset:0}
+.sparkline-path{stroke-dasharray:200;stroke-dashoffset:200;transition:stroke-dashoffset 1.5s var(--ease)}
+.sparkline-path.animate{stroke-dashoffset:0}
+
+/* Running Form SVG */
+.form-joint{fill:var(--blue);transition:all 1s var(--ease)}
+.form-bone{stroke:var(--navy);stroke-width:2;transition:all 1s var(--ease)}
+.form-angle{font-family:var(--font-mono);font-size:10px;fill:var(--blue);transition:all 1s var(--ease)}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+<div class="nav-inner">
+<a href="#" class="nav-logo">
+<div class="logo-icon">
+<svg viewBox="0 0 16 16" fill="none"><path d="M3 12L8 4l5 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+STRIDE Labs
+</a>
+<div class="nav-links" id="navLinks">
+<a href="#product">機能</a>
+<a href="#form-analysis">分析</a>
+<a href="#trust">実績</a>
+<a href="#pricing">料金</a>
+<a href="#cta" class="nav-cta">無料で始める</a>
+</div>
+<div class="hamburger" id="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="container">
+<div class="hero-grid">
+<div class="hero-text">
+<div class="hero-badge"><span class="dot"></span> AI Performance Analytics</div>
+<h1>データが導く、<br><span class="gradient">次の一歩。</span></h1>
+<p class="hero-sub">— Science of Movement</p>
+<p class="hero-desc">センサーとAIが、あなたの動きをリアルタイムに解析。感覚では気づけなかったパフォーマンスの可能性を、データで可視化します。</p>
+<div class="hero-actions">
+<button class="btn-primary" onclick="location.href='#cta'">無料で始める <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+<button class="btn-secondary" onclick="location.href='#product'">機能を見る</button>
+</div>
+</div>
+<div class="hero-visual" id="heroVisual">
+<div class="device-phone" id="devicePhone">
+<div class="phone-notch"></div>
+<div class="phone-content">
+<div class="phone-header"><h4>ダッシュボード</h4><span>● Live</span></div>
+<div class="phone-stat-row">
+<div class="phone-stat"><label>心拍数</label><span class="val blue" id="heroHr">156</span></div>
+<div class="phone-stat"><label>ペース</label><span class="val green">4'12"</span></div>
+</div>
+<div class="phone-stat-row">
+<div class="phone-stat"><label>ケイデンス</label><span class="val orange">182</span></div>
+<div class="phone-stat"><label>ストライド</label><span class="val">1.24m</span></div>
+</div>
+<div class="phone-chart">
+<svg viewBox="0 0 220 80" fill="none" style="width:100%;height:100%">
+<path d="M0 60 Q20 40,40 50 T80 35 T120 45 T160 25 T200 40 L220 30" stroke="var(--blue)" stroke-width="2" fill="none" opacity=".8"/>
+<path d="M0 60 Q20 40,40 50 T80 35 T120 45 T160 25 T200 40 L220 30 L220 80 L0 80Z" fill="url(#heroGrad)" opacity=".15"/>
+<defs><linearGradient id="heroGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--blue)"/><stop offset="100%" stop-color="var(--blue)" stop-opacity="0"/></linearGradient></defs>
+</svg>
+</div>
+</div>
+</div>
+<div class="device-watch" id="deviceWatch">
+<div class="watch-screen">
+<div class="watch-time">12:34</div>
+<div class="watch-bpm"><span class="heart">♥</span> <span id="watchBpm">156</span> <small>bpm</small></div>
+<div class="watch-graph">
+<svg viewBox="0 0 100 30" fill="none" style="width:100%">
+<path d="M0 20 L10 20 L15 8 L20 25 L25 15 L30 20 L40 20 L50 18 L55 6 L60 24 L65 14 L70 20 L80 20 L90 18 L95 8 L100 20" stroke="var(--green)" stroke-width="1.5" fill="none"/>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="scroll-hint">
+<span>Scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">The Problem</p>
+<h2 class="section-title">感覚に頼るトレーニングの限界</h2>
+<p class="section-desc mx-auto">「調子が良い」「フォームが安定している」——本当にそうですか？主観に頼った評価では、パフォーマンスの真の課題を見逃しています。</p>
+</div>
+<div class="problem-grid">
+<div class="problem-card reveal reveal-delay-1">
+<div class="problem-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+</div>
+<h3>見えないオーバートレーニング</h3>
+<p>疲労の蓄積は自覚症状より先に身体データに現れます。心拍変動やストライド長の微細な変化を見逃すことが、故障の原因に。</p>
+</div>
+<div class="problem-card reveal reveal-delay-2">
+<div class="problem-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg>
+</div>
+<h3>停滞するパフォーマンス</h3>
+<p>記録が伸び悩む原因は、しばしばフォームの非効率やペース配分の偏りにあります。数値化しなければ、改善ポイントは特定できません。</p>
+</div>
+<div class="problem-card reveal reveal-delay-3">
+<div class="problem-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+</div>
+<h3>属人的なコーチング</h3>
+<p>コーチの経験と勘に依存した指導では、選手ごとの最適解にたどり着くまでに時間がかかりすぎます。データが共通言語になります。</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PRODUCT -->
+<section class="product" id="product">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Product</p>
+<h2 class="section-title">すべてを、ひとつのダッシュボードに。</h2>
+<p class="section-desc mx-auto">リアルタイムデータ、AIによるフォーム解析、トレーニング最適化。STRIDE Labsは、あなたのパフォーマンスを360°可視化します。</p>
+</div>
+<div class="dashboard-mock reveal">
+<div class="dash-header">
+<h3>📊 リアルタイムモニター</h3>
+<div class="dash-tabs">
+<div class="dash-tab active">ラン</div>
+<div class="dash-tab">バイク</div>
+<div class="dash-tab">スイム</div>
+</div>
+</div>
+<div class="dash-grid">
+<div class="dash-chart-area">
+<div class="dash-chart-title">心拍数</div>
+<div class="dash-chart-val"><span id="dashHr">0</span> <small>bpm</small></div>
+<svg class="hr-chart-svg" viewBox="0 0 600 120" fill="none" id="hrChart">
+<defs>
+<linearGradient id="hrGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="var(--blue)" stop-opacity=".2"/>
+<stop offset="100%" stop-color="var(--blue)" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<path d="M0 80 Q30 70,60 75 T120 60 T180 65 T240 45 T300 55 T360 40 T420 50 T480 30 T540 45 T600 35" stroke="var(--blue)" stroke-width="2.5" fill="none" class="hr-path" id="hrPath"/>
+<path d="M0 80 Q30 70,60 75 T120 60 T180 65 T240 45 T300 55 T360 40 T420 50 T480 30 T540 45 T600 35 L600 120 L0 120Z" fill="url(#hrGrad)" opacity="0" id="hrFill" style="transition:opacity 1.5s"/>
+</svg>
+</div>
+<div class="dash-gauges">
+<div class="gauge-card">
+<div class="gauge-label">VO2 Max</div>
+<div class="gauge-value" style="color:var(--blue)"><span class="counter" data-target="62.4" data-decimals="1">0</span> <small style="font-size:12px;color:var(--gray)">ml/kg/min</small></div>
+<div class="gauge-bar"><div class="gauge-fill blue" data-width="78"></div></div>
+</div>
+<div class="gauge-card">
+<div class="gauge-label">ケイデンス</div>
+<div class="gauge-value" style="color:var(--green)"><span class="counter" data-target="182" data-decimals="0">0</span> <small style="font-size:12px;color:var(--gray)">spm</small></div>
+<div class="gauge-bar"><div class="gauge-fill green" data-width="85"></div></div>
+</div>
+<div class="gauge-card">
+<div class="gauge-label">ストライド長</div>
+<div class="gauge-value" style="color:var(--orange)"><span class="counter" data-target="1.24" data-decimals="2">0</span> <small style="font-size:12px;color:var(--gray)">m</small></div>
+<div class="gauge-bar"><div class="gauge-fill orange" data-width="72"></div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Features -->
+<div class="features-grid">
+<div class="feature-card reveal reveal-delay-1">
+<div class="feature-icon blue">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+</div>
+<h3>リアルタイムバイオメトリクス</h3>
+<p>心拍数・VO2Max・乳酸閾値をミリ秒単位でモニタリング。AIがゾーン管理を自動で最適化。</p>
+<div class="sparkline-container">
+<svg viewBox="0 0 120 36" fill="none" style="width:100%"><path d="M0 28 Q10 20,20 24 T40 18 T60 22 T80 12 T100 16 T120 8" stroke="var(--blue)" stroke-width="1.5" fill="none" class="sparkline-path"/></svg>
+</div>
+</div>
+<div class="feature-card reveal reveal-delay-2">
+<div class="feature-icon green">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><circle cx="12" cy="5" r="3"/><path d="M12 8v8M8 20l4-4 4 4"/><path d="M7 12l5 1 5-1"/></svg>
+</div>
+<h3>3Dフォーム解析</h3>
+<p>IMUセンサーとAIポーズ推定で関節角度をリアルタイム解析。改善ポイントを自動でフィードバック。</p>
+<div class="sparkline-container">
+<svg viewBox="0 0 120 36" fill="none" style="width:100%"><path d="M0 24 Q15 16,30 20 T60 10 T90 18 T120 6" stroke="var(--green)" stroke-width="1.5" fill="none" class="sparkline-path"/></svg>
+</div>
+</div>
+<div class="feature-card reveal reveal-delay-3">
+<div class="feature-icon orange">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17.5 14v7m-3.5-3.5h7"/></svg>
+</div>
+<h3>AIコーチング</h3>
+<p>過去のデータと目標レースから逆算し、週間トレーニングプランを自動生成。負荷バランスも最適化。</p>
+<div class="sparkline-container">
+<svg viewBox="0 0 120 36" fill="none" style="width:100%"><path d="M0 30 Q10 26,20 28 T40 22 T60 16 T80 18 T100 10 T120 4" stroke="var(--orange)" stroke-width="1.5" fill="none" class="sparkline-path"/></svg>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FORM ANALYSIS -->
+<section class="form-analysis" id="form-analysis">
+<div class="container">
+<div class="form-demo">
+<div class="form-svg-wrap reveal">
+<svg viewBox="0 0 240 360" width="240" id="formSvg">
+<!-- Skeleton - Before (default) / After (on scroll) -->
+<!-- Head -->
+<circle class="form-joint" cx="120" cy="40" r="18" fill="none" stroke="var(--navy)" stroke-width="1.5" opacity=".15"/>
+<circle class="form-joint" id="jHead" cx="120" cy="40" r="6"/>
+<!-- Neck to Hip -->
+<line class="form-bone" id="bSpine" x1="120" y1="46" x2="120" y2="140"/>
+<!-- Shoulders -->
+<line class="form-bone" id="bLShoulder" x1="120" y1="70" x2="80" y2="80"/>
+<line class="form-bone" id="bRShoulder" x1="120" y1="70" x2="160" y2="80"/>
+<!-- Arms -->
+<line class="form-bone" id="bLArm" x1="80" y1="80" x2="70" y2="130"/>
+<line class="form-bone" id="bRArm" x1="160" y1="80" x2="170" y2="130"/>
+<!-- Forearms -->
+<line class="form-bone" id="bLForearm" x1="70" y1="130" x2="85" y2="115"/>
+<line class="form-bone" id="bRForearm" x1="170" y1="130" x2="155" y2="115"/>
+<!-- Hip -->
+<line class="form-bone" id="bHip" x1="105" y1="140" x2="135" y2="140"/>
+<!-- Thighs -->
+<line class="form-bone" id="bLThigh" x1="105" y1="140" x2="80" y2="210"/>
+<line class="form-bone" id="bRThigh" x1="135" y1="140" x2="170" y2="200"/>
+<!-- Shins -->
+<line class="form-bone" id="bLShin" x1="80" y1="210" x2="75" y2="290"/>
+<line class="form-bone" id="bRShin" x1="170" y1="200" x2="190" y2="270"/>
+<!-- Feet -->
+<line class="form-bone" id="bLFoot" x1="75" y1="290" x2="60" y2="300"/>
+<line class="form-bone" id="bRFoot" x1="190" y1="270" x2="210" y2="278"/>
+<!-- Joints -->
+<circle class="form-joint" id="jLShoulder" cx="80" cy="80" r="5"/>
+<circle class="form-joint" id="jRShoulder" cx="160" cy="80" r="5"/>
+<circle class="form-joint" id="jLElbow" cx="70" cy="130" r="4"/>
+<circle class="form-joint" id="jRElbow" cx="170" cy="130" r="4"/>
+<circle class="form-joint" id="jLHip" cx="105" cy="140" r="5"/>
+<circle class="form-joint" id="jRHip" cx="135" cy="140" r="5"/>
+<circle class="form-joint" id="jLKnee" cx="80" cy="210" r="5"/>
+<circle class="form-joint" id="jRKnee" cx="170" cy="200" r="5"/>
+<circle class="form-joint" id="jLAnkle" cx="75" cy="290" r="4"/>
+<circle class="form-joint" id="jRAnkle" cx="190" cy="270" r="4"/>
+<!-- Angle labels -->
+<text class="form-angle" id="aKnee" x="60" y="220">158°</text>
+<text class="form-angle" id="aHip" x="100" y="160">165°</text>
+<text class="form-angle" id="aTrunk" x="128" y="100">8°</text>
+</svg>
+<div class="form-toggle-label" id="formLabel">改善前のフォーム</div>
+</div>
+<div class="form-info reveal">
+<p class="section-label">Form Analysis</p>
+<h3>AIが、フォームの「なぜ」を解き明かす。</h3>
+<p>関節角度・接地パターン・体幹の傾きをリアルタイム計測。改善前後のフォームを重ね合わせ、具体的な修正ポイントをミリ単位で提示します。</p>
+<div class="form-metrics">
+<div class="form-metric">
+<div class="fm-icon" style="background:rgba(59,130,246,.1)">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.5"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+</div>
+<div class="fm-text"><h4>膝関節角度 +12° 改善</h4><p>接地時の過度な屈曲を修正</p></div>
+</div>
+<div class="form-metric">
+<div class="fm-icon" style="background:rgba(34,197,94,.1)">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+</div>
+<div class="fm-text"><h4>推進効率 +8.4% 向上</h4><p>ストライドあたりのエネルギー消費を削減</p></div>
+</div>
+<div class="form-metric">
+<div class="fm-icon" style="background:rgba(245,158,11,.1)">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+</div>
+<div class="fm-text"><h4>接地時間 -18ms 短縮</h4><p>前足部接地パターンへの移行</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" id="trust">
+<div class="trust-bg"></div>
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Trust & Accuracy</p>
+<h2 class="section-title">数字が証明する、信頼性。</h2>
+<p class="section-desc mx-auto">STRIDE Labsのアルゴリズムは、トップアスリートのデータで検証済み。研究機関との共同開発で、競技レベルの精度を実現しています。</p>
+</div>
+<div class="trust-grid">
+<div class="trust-card reveal">
+<div class="trust-number" style="color:var(--blue)"><span class="counter" data-target="99.2" data-decimals="1">0</span><span class="unit">%</span></div>
+<div class="trust-label">フォーム解析精度</div>
+</div>
+<div class="trust-card reveal reveal-delay-1">
+<div class="trust-number" style="color:var(--green)"><span class="counter" data-target="12" data-decimals="0">0</span><span class="unit">ms</span></div>
+<div class="trust-label">データレイテンシ</div>
+</div>
+<div class="trust-card reveal reveal-delay-2">
+<div class="trust-number" style="color:var(--orange)"><span class="counter" data-target="1.2" data-decimals="1">0</span><span class="unit">B+</span></div>
+<div class="trust-label">処理データポイント</div>
+</div>
+<div class="trust-card reveal reveal-delay-3">
+<div class="trust-number" style="color:var(--navy)"><span class="counter" data-target="4800" data-decimals="0">0</span><span class="unit">+</span></div>
+<div class="trust-label">導入アスリート数</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- DEVICES -->
+<section class="devices" id="devices">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Integrations</p>
+<h2 class="section-title">あなたのデバイスと、シームレスに。</h2>
+<p class="section-desc mx-auto">主要なウェアラブルデバイスと連携。既存のトレーニング環境をそのまま活かせます。</p>
+</div>
+<div class="devices-row reveal">
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><rect x="6" y="2" width="12" height="20" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5" fill="var(--navy)"/></svg>
+</div>
+<div class="device-name">Apple Watch</div>
+</div>
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/><path d="M3 12h2M19 12h2M12 3v2M12 19v2"/></svg>
+</div>
+<div class="device-name">Garmin</div>
+</div>
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 010 18" fill="none"/><path d="M12 7v5"/><circle cx="12" cy="12" r="1.5" fill="var(--navy)"/></svg>
+</div>
+<div class="device-name">Polar</div>
+</div>
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><rect x="5" y="4" width="14" height="16" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+</div>
+<div class="device-name">Wahoo</div>
+</div>
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+</div>
+<div class="device-name">Stryd</div>
+</div>
+<div class="device-item">
+<div class="device-icon-wrap">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+</div>
+<div class="device-name">COROS</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ATHLETES -->
+<section class="athletes" id="athletes">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Athletes</p>
+<h2 class="section-title">トップアスリートが選ぶ理由。</h2>
+<p class="section-desc mx-auto">競技を問わず、データドリブンなアプローチが記録更新をサポートしています。</p>
+</div>
+<div class="athletes-grid">
+<div class="athlete-card reveal reveal-delay-1">
+<div class="athlete-photo" style="background:linear-gradient(135deg,#1e3a5f,#0f172a)">
+<div class="silhouette"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="5" r="3"/><path d="M12 8v6M8 20l4-6 4 6"/></svg></div>
+<div class="athlete-sport">マラソン</div>
+</div>
+<div class="athlete-info">
+<h3>田中 翔太</h3>
+<p class="athlete-team">実業団チーム所属 / サブ2:10ランナー</p>
+<div class="athlete-stats">
+<div class="athlete-stat"><span class="as-val" style="color:var(--blue)">62.4</span><span class="as-label">VO2Max</span><span class="as-change">+3.2</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--green)">2:08</span><span class="as-label">PB</span><span class="as-change">-2:14</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--orange)">96</span><span class="as-label">効率%</span><span class="as-change">+8.4</span></div>
+</div>
+</div>
+</div>
+<div class="athlete-card reveal reveal-delay-2">
+<div class="athlete-photo" style="background:linear-gradient(135deg,#1a4731,#0f172a)">
+<div class="silhouette"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="5" r="3"/><path d="M6 20l3-8h6l3 8"/><path d="M9 12l3-4 3 4"/></svg></div>
+<div class="athlete-sport">トライアスロン</div>
+</div>
+<div class="athlete-info">
+<h3>鈴木 美咲</h3>
+<p class="athlete-team">プロトライアスリート / Asia Top 10</p>
+<div class="athlete-stats">
+<div class="athlete-stat"><span class="as-val" style="color:var(--blue)">58.1</span><span class="as-label">VO2Max</span><span class="as-change">+4.1</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--green)">9:42</span><span class="as-label">IM PB</span><span class="as-change">-11:30</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--orange)">94</span><span class="as-label">効率%</span><span class="as-change">+12.1</span></div>
+</div>
+</div>
+</div>
+<div class="athlete-card reveal reveal-delay-3">
+<div class="athlete-photo" style="background:linear-gradient(135deg,#4a1942,#0f172a)">
+<div class="silhouette"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="5" r="3"/><path d="M8 20v-6l4-2 4 2v6"/><path d="M12 12v-4"/></svg></div>
+<div class="athlete-sport">サイクリング</div>
+</div>
+<div class="athlete-info">
+<h3>佐藤 健一</h3>
+<p class="athlete-team">プロサイクリスト / UCI登録</p>
+<div class="athlete-stats">
+<div class="athlete-stat"><span class="as-val" style="color:var(--blue)">71.2</span><span class="as-label">VO2Max</span><span class="as-change">+2.8</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--green)">5.8</span><span class="as-label">W/kg</span><span class="as-change">+0.4</span></div>
+<div class="athlete-stat"><span class="as-val" style="color:var(--orange)">97</span><span class="as-label">効率%</span><span class="as-change">+5.6</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Pricing</p>
+<h2 class="section-title">あなたのレベルに合ったプランを。</h2>
+<p class="section-desc mx-auto">すべてのプランに14日間の無料トライアル付き。クレジットカード不要で今すぐ始められます。</p>
+</div>
+<div class="price-toggle-wrap">
+<span id="monthLabel" class="active-label">月額</span>
+<label class="toggle-switch">
+<input type="checkbox" id="priceToggle" onchange="togglePrice()">
+<div class="toggle-track"></div>
+<div class="toggle-knob"></div>
+</label>
+<span id="yearLabel">年額<small style="color:var(--green);font-size:11px;margin-left:4px">2ヶ月分お得</small></span>
+</div>
+<div class="pricing-grid">
+<div class="price-card reveal reveal-delay-1">
+<div class="price-name">Starter</div>
+<div class="price-amount">
+<span class="monthly-price show">¥1,980</span>
+<span class="yearly-price">¥1,650</span>
+<small>/月</small>
+</div>
+<div class="price-period">
+<span class="monthly-price show">月額プラン</span>
+<span class="yearly-price">年額 ¥19,800/年</span>
+</div>
+<ul class="price-features">
+<li>基本バイオメトリクス</li>
+<li>日次トレーニングログ</li>
+<li>週間レポート</li>
+<li>1デバイス連携</li>
+<li>コミュニティアクセス</li>
+</ul>
+<button class="price-btn">無料で始める</button>
+</div>
+<div class="price-card featured reveal reveal-delay-2">
+<div class="price-name">Pro</div>
+<div class="price-amount">
+<span class="monthly-price show">¥4,980</span>
+<span class="yearly-price">¥4,150</span>
+<small>/月</small>
+</div>
+<div class="price-period">
+<span class="monthly-price show">月額プラン</span>
+<span class="yearly-price">年額 ¥49,800/年</span>
+</div>
+<ul class="price-features">
+<li>全バイオメトリクス + AI分析</li>
+<li>3Dフォーム解析</li>
+<li>AIコーチング（週間プラン自動生成）</li>
+<li>無制限デバイス連携</li>
+<li>リアルタイムダッシュボード</li>
+<li>データエクスポート</li>
+</ul>
+<button class="price-btn">無料で始める</button>
+</div>
+<div class="price-card reveal reveal-delay-3">
+<div class="price-name">Team</div>
+<div class="price-amount">
+<span class="monthly-price show">¥14,800</span>
+<span class="yearly-price">¥12,300</span>
+<small>/月</small>
+</div>
+<div class="price-period">
+<span class="monthly-price show">月額プラン（5名〜）</span>
+<span class="yearly-price">年額 ¥147,600/年（5名〜）</span>
+</div>
+<ul class="price-features">
+<li>Pro全機能</li>
+<li>チームダッシュボード</li>
+<li>選手間比較分析</li>
+<li>コーチ専用管理画面</li>
+<li>APIアクセス</li>
+<li>優先サポート</li>
+</ul>
+<button class="price-btn">お問い合わせ</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+<div class="container">
+<div class="cta-box reveal">
+<div class="cta-badge">🎉 14日間完全無料・クレジットカード不要</div>
+<h2>あなたのパフォーマンスを、<br>データで解放しよう。</h2>
+<p>5分でセットアップ完了。次のトレーニングから、AIがあなたの専属アナリストに。</p>
+<button class="cta-btn">無料トライアルを始める <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<div class="logo">STRIDE Labs</div>
+<p>アスリートのパフォーマンスを、データサイエンスの力で最大化するAIプラットフォーム。</p>
+</div>
+<div class="footer-col">
+<h4>プロダクト</h4>
+<a href="#">機能一覧</a>
+<a href="#">料金プラン</a>
+<a href="#">連携デバイス</a>
+<a href="#">API ドキュメント</a>
+</div>
+<div class="footer-col">
+<h4>リソース</h4>
+<a href="#">ブログ</a>
+<a href="#">導入事例</a>
+<a href="#">ヘルプセンター</a>
+<a href="#">開発者向け</a>
+</div>
+<div class="footer-col">
+<h4>会社情報</h4>
+<a href="#">チーム</a>
+<a href="#">採用情報</a>
+<a href="#">プレスキット</a>
+<a href="#">お問い合わせ</a>
+</div>
+</div>
+<div class="footer-bottom">
+<p>&copy; 2026 STRIDE Labs Inc. All rights reserved.</p>
+<p>プライバシーポリシー ・ 利用規約 ・ 特定商取引法に基づく表記</p>
+</div>
+</div>
+</footer>
+
+<script>
+// Intersection Observer for scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Counter animation
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.target);
+  const decimals = parseInt(el.dataset.decimals) || 0;
+  const duration = 2000;
+  const start = performance.now();
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = eased * target;
+    el.textContent = current.toFixed(decimals);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !entry.target.dataset.animated) {
+      entry.target.dataset.animated = '1';
+      animateCounter(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+// Gauge fill animation
+const gaugeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fill = entry.target;
+      fill.style.width = fill.dataset.width + '%';
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.gauge-fill').forEach(el => gaugeObserver.observe(el));
+
+// HR Chart animation
+const hrObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('hrPath').classList.add('animate');
+      document.getElementById('hrFill').style.opacity = '1';
+      // Animate HR number
+      let hr = 80;
+      const hrTarget = 156;
+      const hrEl = document.getElementById('dashHr');
+      const hrInterval = setInterval(() => {
+        hr += 2;
+        if (hr >= hrTarget) { hr = hrTarget; clearInterval(hrInterval); }
+        hrEl.textContent = hr;
+      }, 25);
+    }
+  });
+}, { threshold: 0.3 });
+
+hrObserver.observe(document.getElementById('hrChart'));
+
+// Sparkline animation
+const sparkObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate');
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.sparkline-path').forEach(el => sparkObserver.observe(el));
+
+// Form analysis morphing
+const formBefore = {
+  jHead: [120, 40], jLShoulder: [80, 80], jRShoulder: [160, 80],
+  jLElbow: [70, 130], jRElbow: [170, 130], jLHip: [105, 140], jRHip: [135, 140],
+  jLKnee: [80, 210], jRKnee: [170, 200], jLAnkle: [75, 290], jRAnkle: [190, 270],
+  bSpine: [120, 46, 120, 140], bLShoulder: [120, 70, 80, 80], bRShoulder: [120, 70, 160, 80],
+  bLArm: [80, 80, 70, 130], bRArm: [160, 80, 170, 130],
+  bLForearm: [70, 130, 85, 115], bRForearm: [170, 130, 155, 115],
+  bHip: [105, 140, 135, 140],
+  bLThigh: [105, 140, 80, 210], bRThigh: [135, 140, 170, 200],
+  bLShin: [80, 210, 75, 290], bRShin: [170, 200, 190, 270],
+  bLFoot: [75, 290, 60, 300], bRFoot: [190, 270, 210, 278],
+  aKnee: '158°', aHip: '165°', aTrunk: '8°'
+};
+
+const formAfter = {
+  jHead: [118, 38], jLShoulder: [82, 76], jRShoulder: [155, 76],
+  jLElbow: [75, 118], jRElbow: [162, 120], jLHip: [108, 138], jRHip: [138, 138],
+  jLKnee: [90, 205], jRKnee: [175, 190], jLAnkle: [85, 285], jRAnkle: [195, 262],
+  bSpine: [118, 44, 123, 138], bLShoulder: [123, 68, 82, 76], bRShoulder: [123, 68, 155, 76],
+  bLArm: [82, 76, 75, 118], bRArm: [155, 76, 162, 120],
+  bLForearm: [75, 118, 92, 108], bRForearm: [162, 120, 148, 108],
+  bHip: [108, 138, 138, 138],
+  bLThigh: [108, 138, 90, 205], bRThigh: [138, 138, 175, 190],
+  bLShin: [90, 205, 85, 285], bRShin: [175, 190, 195, 262],
+  bLFoot: [85, 285, 75, 293], bRFoot: [195, 262, 215, 268],
+  aKnee: '170°', aHip: '172°', aTrunk: '4°'
+};
+
+let formState = 'before';
+
+function morphForm(target, duration = 1000) {
+  const start = performance.now();
+  const from = formState === 'before' ? formBefore : formAfter;
+  const to = target;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function animate(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+
+    // Joints (circles)
+    ['jHead','jLShoulder','jRShoulder','jLElbow','jRElbow','jLHip','jRHip','jLKnee','jRKnee','jLAnkle','jRAnkle'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && from[id] && to[id]) {
+        el.setAttribute('cx', lerp(from[id][0], to[id][0], eased));
+        el.setAttribute('cy', lerp(from[id][1], to[id][1], eased));
+      }
+    });
+
+    // Bones (lines)
+    ['bSpine','bLShoulder','bRShoulder','bLArm','bRArm','bLForearm','bRForearm','bHip','bLThigh','bRThigh','bLShin','bRShin','bLFoot','bRFoot'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && from[id] && to[id]) {
+        el.setAttribute('x1', lerp(from[id][0], to[id][0], eased));
+        el.setAttribute('y1', lerp(from[id][1], to[id][1], eased));
+        el.setAttribute('x2', lerp(from[id][2], to[id][2], eased));
+        el.setAttribute('y2', lerp(from[id][3], to[id][3], eased));
+      }
+    });
+
+    if (t < 1) requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+const formObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && formState === 'before') {
+      setTimeout(() => {
+        morphForm(formAfter, 1500);
+        formState = 'after';
+        document.getElementById('formLabel').textContent = '改善後のフォーム ✓';
+        document.getElementById('formLabel').style.color = 'var(--green)';
+        document.getElementById('formLabel').style.background = 'rgba(34,197,94,.08)';
+        // Update angle texts
+        setTimeout(() => {
+          document.getElementById('aKnee').textContent = '170°';
+          document.getElementById('aHip').textContent = '172°';
+          document.getElementById('aTrunk').textContent = '4°';
+        }, 800);
+      }, 600);
+    }
+  });
+}, { threshold: 0.5 });
+
+formObserver.observe(document.getElementById('formSvg'));
+
+// Parallax for hero devices
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      const phone = document.getElementById('devicePhone');
+      const watch = document.getElementById('deviceWatch');
+      if (phone && scrollY < window.innerHeight) {
+        phone.style.transform = `translateY(${scrollY * 0.08}px) rotate(${scrollY * 0.01}deg)`;
+        watch.style.transform = `rotate(${-5 + scrollY * 0.02}deg) translateY(${scrollY * -0.06}px)`;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+// Hero heart rate animation
+let heroHrVal = 150;
+setInterval(() => {
+  heroHrVal = 150 + Math.floor(Math.random() * 12);
+  const el = document.getElementById('heroHr');
+  const wb = document.getElementById('watchBpm');
+  if (el) el.textContent = heroHrVal;
+  if (wb) wb.textContent = heroHrVal;
+}, 1200);
+
+// Price toggle
+function togglePrice() {
+  const checked = document.getElementById('priceToggle').checked;
+  document.querySelectorAll('.monthly-price').forEach(el => {
+    el.classList.toggle('show', !checked);
+  });
+  document.querySelectorAll('.yearly-price').forEach(el => {
+    el.classList.toggle('show', checked);
+  });
+  document.getElementById('monthLabel').classList.toggle('active-label', !checked);
+  document.getElementById('yearLabel').classList.toggle('active-label', checked);
+}
+</script>
+</body>
+</html>

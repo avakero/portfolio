@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOID HEAD SPA — 虚（うつろ）| 意識の外側へ</title>
+<meta name="description" content="完全暗室×特殊音響×ヘッドスパ。意識の外側へ導く、没入型ヘッドスパ専門店 VOID HEAD SPA。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300&family=Noto+Sans+JP:wght@200;300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#000000;--near-black:#0a0a0a;--purple:#1a1028;
+  --ether-blue:#4060c0;--ghost:#d0d0e0;--gold:#a08850;
+  --ff:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
+  --ls:0.3em;--ls-w:0.5em;
+  --purple-opacity:0;
+}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#1a1028 #000}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#1a1028;border-radius:2px}
+body{
+  font-family:var(--ff);font-weight:200;
+  background:var(--black);color:var(--ghost);
+  overflow-x:hidden;line-height:1.8;
+  -webkit-font-smoothing:antialiased;
+}
+body.locked{overflow:hidden}
+
+/* === PURPLE OVERLAY (scroll-speed reactive) === */
+#purple-veil{
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,var(--purple) 0%,transparent 70%);
+  opacity:var(--purple-opacity);
+  pointer-events:none;z-index:0;
+  transition:opacity .6s ease;
+}
+
+/* === RIPPLE CONTAINER === */
+#ripples{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.ripple{
+  position:absolute;top:50%;left:50%;
+  width:120px;height:120px;
+  margin:-60px 0 0 -60px;
+  border-radius:50%;
+  border:0.5px solid rgba(64,96,192,.06);
+  transform:scale(0);
+  animation:ripEx 10s linear forwards;
+  will-change:transform,opacity;
+}
+@keyframes ripEx{
+  0%{transform:scale(0);opacity:1}
+  100%{transform:scale(18);opacity:0}
+}
+
+/* === INTRO OVERLAY === */
+#intro{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1.5rem;
+  transition:opacity 1.8s ease;
+}
+#intro.out{opacity:0;pointer-events:none}
+#light-pt{
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(208,208,224,.5) 0%,rgba(64,96,192,.12) 35%,transparent 65%);
+  transform:scale(0);opacity:0;
+  transition:transform 2.2s cubic-bezier(.16,1,.3,1),opacity 1.6s ease;
+}
+#light-pt.on{transform:scale(1);opacity:1}
+#brand-txt{
+  opacity:0;text-align:center;
+  transition:opacity 1.8s ease .2s;
+}
+#brand-txt.on{opacity:.65}
+#brand-txt h1{
+  font-size:clamp(.75rem,2vw,1.1rem);font-weight:200;
+  letter-spacing:var(--ls-w);text-transform:uppercase;
+  color:var(--ghost);
+}
+#brand-txt .sub{
+  font-size:clamp(.55rem,1vw,.7rem);letter-spacing:var(--ls);
+  color:rgba(160,136,80,.45);margin-top:.5rem;
+}
+
+/* === HERO === */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;z-index:2;
+  text-align:center;padding:2rem;
+}
+.hero-copy{
+  opacity:0;transform:translateY(30px);
+  transition:opacity 2s ease 1s,transform 2s ease 1s;
+}
+.hero-copy.vis{opacity:.7;transform:translateY(0)}
+.hero-copy h2{
+  font-size:clamp(1.1rem,3.5vw,2rem);font-weight:200;
+  letter-spacing:var(--ls-w);line-height:1.6;
+}
+.hero-copy .en{
+  font-size:clamp(.55rem,1.2vw,.8rem);letter-spacing:var(--ls-w);
+  opacity:.4;margin-top:1.2rem;text-transform:uppercase;
+}
+.scroll-hint{
+  position:absolute;bottom:8vh;left:50%;
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  opacity:0;animation:hintIn 1.5s ease 8s forwards;
+}
+@keyframes hintIn{to{opacity:.35}}
+.scroll-hint span{
+  font-size:.55rem;letter-spacing:var(--ls);text-transform:uppercase;
+  color:var(--ghost);
+}
+.scroll-line{
+  width:1px;height:36px;
+  background:linear-gradient(to bottom,transparent,rgba(208,208,224,.35));
+  animation:linePulse 2.5s ease-in-out infinite;
+}
+@keyframes linePulse{
+  0%,100%{transform:scaleY(.4);opacity:.2}
+  50%{transform:scaleY(1);opacity:.5}
+}
+
+/* === SECTIONS COMMON === */
+.phase{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;z-index:2;
+  text-align:center;padding:2rem;
+}
+.phase-label{
+  font-size:clamp(2rem,9vw,5.5rem);font-weight:200;
+  letter-spacing:var(--ls-w);
+  opacity:0;transform:translateY(40px);
+  transition:opacity 2.5s ease,transform 2.5s ease;
+}
+.phase-en{
+  font-size:clamp(.5rem,1.1vw,.75rem);font-weight:300;
+  letter-spacing:var(--ls-w);text-transform:uppercase;
+  opacity:0;margin-top:1rem;
+  transition:opacity 2.5s ease .5s;
+}
+.phase.vis .phase-label{opacity:.55;transform:translateY(0)}
+.phase.vis .phase-en{opacity:.25}
+
+/* Phase: DARKNESS */
+#p-dark{background:var(--black)}
+
+/* Phase: SOUND */
+#p-sound{background:var(--black)}
+.sound-wave{
+  width:clamp(180px,50vw,400px);height:60px;
+  margin-bottom:2.5rem;opacity:0;
+  transition:opacity 2s ease .3s;
+}
+#p-sound.vis .sound-wave{opacity:1}
+.sw-bar{fill:rgba(64,96,192,.25)}
+
+/* Phase: PRESSURE */
+#p-pressure{background:var(--black)}
+.pressure-wrap{
+  position:relative;width:160px;height:160px;
+  margin-bottom:2rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.p-core{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(160,136,80,.45);
+  opacity:0;transition:opacity 1.5s ease;
+}
+#p-pressure.vis .p-core{opacity:1;animation:pCore 3s ease-in-out infinite}
+@keyframes pCore{
+  0%,100%{transform:scale(1);opacity:.45}
+  50%{transform:scale(2);opacity:.65}
+}
+.p-ring{
+  position:absolute;top:50%;left:50%;
+  width:14px;height:14px;margin:-7px 0 0 -7px;
+  border-radius:50%;
+  border:.5px solid rgba(160,136,80,.12);
+  opacity:0;transform:scale(1);
+}
+#p-pressure.vis .p-ring{
+  animation:pRingEx 3.5s ease-out infinite;
+  animation-delay:var(--d);
+}
+@keyframes pRingEx{
+  0%{transform:scale(1);opacity:.3}
+  100%{transform:scale(16);opacity:0}
+}
+
+/* Phase: RELEASE */
+#p-release{background:var(--black);transition:background 3s ease}
+#p-release.vis{
+  background:radial-gradient(circle at 50% 50%,rgba(26,16,40,.18) 0%,var(--black) 75%);
+}
+
+/* === MENU === */
+.menu-sec{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;z-index:2;padding:4rem 2rem;
+}
+.menu-sec h2{
+  font-size:clamp(.5rem,1vw,.7rem);font-weight:200;
+  letter-spacing:var(--ls-w);text-transform:uppercase;
+  opacity:0;margin-bottom:clamp(3rem,8vh,6rem);
+  transition:opacity 2s ease;
+}
+.menu-sec.vis h2{opacity:.3}
+.menu-item{
+  display:flex;align-items:baseline;
+  gap:clamp(1.5rem,4vw,4rem);
+  padding:1rem 0;
+  opacity:0;transform:translateY(15px);
+  transition:opacity 1.8s ease,transform 1.8s ease;
+  transition-delay:var(--d);
+  flex-wrap:wrap;justify-content:center;
+}
+.menu-sec.vis .menu-item{opacity:.55;transform:translateY(0)}
+.menu-item .name{
+  font-size:clamp(.8rem,1.5vw,1rem);letter-spacing:var(--ls);
+  font-weight:200;min-width:6em;
+}
+.menu-item .dur{
+  font-size:clamp(.6rem,1vw,.75rem);letter-spacing:var(--ls);
+  opacity:.5;
+}
+.menu-item .price{
+  font-size:clamp(.7rem,1.2vw,.85rem);letter-spacing:var(--ls);
+  opacity:.6;
+}
+
+/* === TESTIMONIALS === */
+.test-sec{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:clamp(4rem,10vh,8rem);
+  position:relative;z-index:2;padding:6rem 2rem;
+}
+.test-item{
+  text-align:center;max-width:36ch;
+  opacity:0;transform:translateY(20px);
+  transition:opacity 2.5s ease,transform 2.5s ease;
+  transition-delay:var(--d);
+}
+.test-sec.vis .test-item{opacity:.5;transform:translateY(0)}
+.test-item .dots{
+  font-size:clamp(.8rem,1.4vw,1rem);
+  letter-spacing:.6em;opacity:.3;
+  margin-bottom:.8rem;display:block;
+}
+.test-item p{
+  font-size:clamp(.75rem,1.3vw,.9rem);
+  letter-spacing:.15em;line-height:2;font-weight:200;
+}
+
+/* === RESERVATION === */
+.reserve-sec{
+  min-height:60vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  position:relative;z-index:2;padding:4rem 2rem;
+  gap:1.5rem;
+}
+.reserve-sec .label{
+  font-size:clamp(.45rem,.9vw,.6rem);
+  letter-spacing:var(--ls-w);text-transform:uppercase;
+  opacity:0;transition:opacity 2s ease;
+}
+.reserve-sec.vis .label{opacity:.2}
+.reserve-btn{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.07);
+  color:rgba(208,208,224,.18);
+  font-family:var(--ff);font-size:clamp(.6rem,1vw,.78rem);
+  font-weight:200;letter-spacing:var(--ls-w);
+  padding:1.1em 3.5em;cursor:pointer;
+  transition:all 1.2s cubic-bezier(.25,.46,.45,.94);
+  text-transform:uppercase;
+  opacity:0;transform:translateY(10px);
+}
+.reserve-sec.vis .reserve-btn{opacity:1;transform:translateY(0);transition-delay:.4s}
+.reserve-btn:hover{
+  border-color:rgba(255,255,255,.28);
+  color:rgba(208,208,224,.65);
+  box-shadow:0 0 50px rgba(64,96,192,.07),0 0 15px rgba(64,96,192,.04);
+  text-shadow:0 0 20px rgba(64,96,192,.15);
+}
+
+/* === VOID END === */
+.void-end{
+  min-height:80vh;display:flex;
+  align-items:center;justify-content:center;
+  position:relative;z-index:2;padding:2rem;
+}
+.void-end p{
+  font-size:clamp(.7rem,1.3vw,.9rem);
+  font-weight:200;letter-spacing:var(--ls);
+  opacity:0;transition:opacity 3s ease;
+}
+.void-end.vis p{opacity:.4}
+
+/* === FOOTER === */
+footer{
+  padding:4rem 2rem 3rem;text-align:center;
+  position:relative;z-index:2;
+  border-top:1px solid rgba(255,255,255,.03);
+}
+footer *{
+  font-size:clamp(.42rem,.7vw,.52rem);
+  letter-spacing:var(--ls);opacity:.18;
+  font-weight:200;line-height:2.4;
+}
+footer .f-brand{
+  font-size:clamp(.5rem,.8vw,.6rem);
+  letter-spacing:var(--ls-w);opacity:.22;
+  margin-bottom:1rem;
+}
+
+/* === REVEAL UTILITY === */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 2s ease,transform 2s ease;
+}
+.reveal.vis{opacity:.6;transform:translateY(0)}
+
+/* === RESPONSIVE === */
+@media(max-width:640px){
+  .menu-item{flex-direction:column;gap:.4rem;align-items:center;padding:1.5rem 0}
+  .test-sec{gap:5rem}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- Purple veil (scroll-speed reactive) -->
+<div id="purple-veil"></div>
+
+<!-- Ripple container -->
+<div id="ripples"></div>
+
+<!-- ===== INTRO OVERLAY ===== -->
+<div id="intro">
+  <div id="light-pt"></div>
+  <div id="brand-txt">
+    <h1>VOID HEAD SPA</h1>
+    <div class="sub">虚（うつろ）</div>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-copy" id="hero-copy">
+    <h2>意識の外側へ。</h2>
+    <div class="en">— Beyond Consciousness —</div>
+  </div>
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== PHASE 1: DARKNESS ===== -->
+<section class="phase" id="p-dark">
+  <div class="phase-label">暗闇</div>
+  <div class="phase-en">Darkness</div>
+</section>
+
+<!-- ===== PHASE 2: SOUND ===== -->
+<section class="phase" id="p-sound">
+  <svg class="sound-wave" viewBox="0 0 120 40" preserveAspectRatio="xMidYMid meet">
+    <rect class="sw-bar" x="4"  y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;22;4"  dur="1.8s" begin="0s"   repeatCount="indefinite"/><animate attributeName="y" values="18;9;18"  dur="1.8s" begin="0s"   repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="12" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;28;4"  dur="1.4s" begin=".2s"  repeatCount="indefinite"/><animate attributeName="y" values="18;6;18"  dur="1.4s" begin=".2s"  repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="20" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;18;4"  dur="2.1s" begin=".1s"  repeatCount="indefinite"/><animate attributeName="y" values="18;11;18" dur="2.1s" begin=".1s"  repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="28" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;32;4"  dur="1.6s" begin=".35s" repeatCount="indefinite"/><animate attributeName="y" values="18;4;18"  dur="1.6s" begin=".35s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="36" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;14;4"  dur="2.4s" begin=".15s" repeatCount="indefinite"/><animate attributeName="y" values="18;13;18" dur="2.4s" begin=".15s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="44" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;26;4"  dur="1.3s" begin=".4s"  repeatCount="indefinite"/><animate attributeName="y" values="18;7;18"  dur="1.3s" begin=".4s"  repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="52" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;34;4"  dur="1.7s" begin=".05s" repeatCount="indefinite"/><animate attributeName="y" values="18;3;18"  dur="1.7s" begin=".05s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="60" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;20;4"  dur="2.0s" begin=".25s" repeatCount="indefinite"/><animate attributeName="y" values="18;10;18" dur="2.0s" begin=".25s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="68" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;30;4"  dur="1.5s" begin=".3s"  repeatCount="indefinite"/><animate attributeName="y" values="18;5;18"  dur="1.5s" begin=".3s"  repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="76" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;16;4"  dur="2.2s" begin=".12s" repeatCount="indefinite"/><animate attributeName="y" values="18;12;18" dur="2.2s" begin=".12s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="84" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;24;4"  dur="1.9s" begin=".38s" repeatCount="indefinite"/><animate attributeName="y" values="18;8;18"  dur="1.9s" begin=".38s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="92" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;12;4"  dur="2.3s" begin=".08s" repeatCount="indefinite"/><animate attributeName="y" values="18;14;18" dur="2.3s" begin=".08s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="100" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;28;4" dur="1.55s" begin=".22s" repeatCount="indefinite"/><animate attributeName="y" values="18;6;18" dur="1.55s" begin=".22s" repeatCount="indefinite"/></rect>
+    <rect class="sw-bar" x="108" y="18" width="2" height="4" rx="1"><animate attributeName="height" values="4;18;4" dur="2.05s" begin=".32s" repeatCount="indefinite"/><animate attributeName="y" values="18;11;18" dur="2.05s" begin=".32s" repeatCount="indefinite"/></rect>
+  </svg>
+  <div class="phase-label">音</div>
+  <div class="phase-en">Sound</div>
+</section>
+
+<!-- ===== PHASE 3: PRESSURE ===== -->
+<section class="phase" id="p-pressure">
+  <div class="pressure-wrap">
+    <div class="p-core"></div>
+    <div class="p-ring" style="--d:0s"></div>
+    <div class="p-ring" style="--d:.7s"></div>
+    <div class="p-ring" style="--d:1.4s"></div>
+    <div class="p-ring" style="--d:2.1s"></div>
+  </div>
+  <div class="phase-label">指圧</div>
+  <div class="phase-en">Pressure</div>
+</section>
+
+<!-- ===== PHASE 4: RELEASE ===== -->
+<section class="phase" id="p-release">
+  <div class="phase-label">解放</div>
+  <div class="phase-en">Release</div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="menu-sec" id="menu">
+  <h2>Treatment Menu</h2>
+  <div class="menu-item" style="--d:.2s">
+    <span class="name">VOID 60</span>
+    <span class="dur">60 min</span>
+    <span class="price">¥15,000</span>
+  </div>
+  <div class="menu-item" style="--d:.5s">
+    <span class="name">VOID 90</span>
+    <span class="dur">90 min</span>
+    <span class="price">¥22,000</span>
+  </div>
+  <div class="menu-item" style="--d:.8s">
+    <span class="name">VOID 120</span>
+    <span class="dur">120 min</span>
+    <span class="price">¥30,000</span>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="test-sec" id="testimonials">
+  <div class="test-item" style="--d:.2s">
+    <span class="dots">. . .</span>
+    <p>言葉にならない。<br>ただ、戻りたい。</p>
+  </div>
+  <div class="test-item" style="--d:.6s">
+    <span class="dots">. . .</span>
+    <p>自分が溶けていく感覚。</p>
+  </div>
+  <div class="test-item" style="--d:1s">
+    <span class="dots">. . .</span>
+    <p>沈黙の中で、<br>何かに触れた。</p>
+  </div>
+</section>
+
+<!-- ===== RESERVATION ===== -->
+<section class="reserve-sec" id="reserve">
+  <div class="label">Reservation</div>
+  <button class="reserve-btn" onclick="void(0)">予約する &ensp;/&ensp; Reserve</button>
+</section>
+
+<!-- ===== VOID END ===== -->
+<section class="void-end" id="void-end">
+  <p>ここには、何もない。</p>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer id="footer">
+  <div class="f-brand">VOID HEAD SPA — 虚</div>
+  <div>東京都港区南青山 3-X-X &ensp;B1F</div>
+  <div>完全予約制 &ensp;|&ensp; 11 : 00 — 21 : 00 &ensp;|&ensp; 不定休</div>
+  <div>info@void-headspa.jp</div>
+  <div style="margin-top:1.2rem;opacity:.12">© 2026 VOID HEAD SPA. All rights reserved.</div>
+</footer>
+
+<script>
+(function(){
+  /* ===== INTRO SEQUENCE ===== */
+  const intro  = document.getElementById('intro');
+  const light  = document.getElementById('light-pt');
+  const brand  = document.getElementById('brand-txt');
+  const body   = document.body;
+
+  setTimeout(()=>{ light.classList.add('on'); },2800);
+  setTimeout(()=>{ brand.classList.add('on'); },4200);
+  setTimeout(()=>{ intro.classList.add('out'); },6000);
+  setTimeout(()=>{
+    intro.style.display='none';
+    body.classList.remove('locked');
+    document.getElementById('hero-copy').classList.add('vis');
+  },7800);
+
+  /* ===== INTERSECTION OBSERVER ===== */
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('vis');
+    });
+  },{threshold:0.25,rootMargin:'0px 0px -5% 0px'});
+
+  document.querySelectorAll('.phase,.menu-sec,.test-sec,.reserve-sec,.void-end')
+    .forEach(el=>obs.observe(el));
+
+  /* ===== RIPPLES ON SCROLL ===== */
+  const ripC = document.getElementById('ripples');
+  let lastRip = 0;
+  const RIP_CD = 2800;
+  let activeRip = 0;
+  const MAX_RIP = 6;
+
+  function spawnRipple(){
+    if(activeRip >= MAX_RIP) return;
+    const d = document.createElement('div');
+    d.className = 'ripple';
+    ripC.appendChild(d);
+    activeRip++;
+    setTimeout(()=>{ d.remove(); activeRip--; },10200);
+  }
+
+  /* ===== SCROLL SPEED → PURPLE ===== */
+  let lastY = window.scrollY;
+  let lastT = performance.now();
+  let purpleVal = 0;
+
+  function onScroll(){
+    const now = performance.now();
+    const dt  = now - lastT;
+    const dy  = Math.abs(window.scrollY - lastY);
+
+    if(dt > 10){
+      const speed = dy / dt;
+      const target = speed < 0.25 ? 0.22 : speed < 0.6 ? 0.10 : 0.02;
+      purpleVal += (target - purpleVal) * 0.08;
+      document.documentElement.style.setProperty('--purple-opacity', purpleVal.toFixed(3));
+    }
+
+    lastY = window.scrollY;
+    lastT = now;
+
+    if(now - lastRip > RIP_CD){ spawnRipple(); lastRip = now; }
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){ requestAnimationFrame(()=>{ onScroll(); ticking=false; }); ticking=true; }
+  },{passive:true});
+
+  /* Decay purple when not scrolling */
+  setInterval(()=>{
+    purpleVal *= 0.96;
+    document.documentElement.style.setProperty('--purple-opacity', purpleVal.toFixed(3));
+  },120);
+})();
+</script>
+</body>
+</html>
