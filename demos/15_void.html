@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOID — 何者でもない、すべてである。</title>
+<meta name="description" content="VOID（ヴォイド）— ジェンダーレスファッションブランド。SS26コレクション。何者でもない、すべてである。BE VOID.">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#000000;--white:#ffffff;--violet:#8b00ff;
+--font-display:'Helvetica Neue',Arial,sans-serif;
+--font-body:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden;background:var(--black);color:var(--white)}
+body{font-family:var(--font-body);overflow-x:hidden;cursor:none}
+a{color:inherit;text-decoration:none;cursor:none}
+button{cursor:none}
+::selection{background:var(--violet);color:var(--white)}
+
+/* Custom Cursor */
+.cursor{position:fixed;width:32px;height:32px;border-radius:50%;background:var(--white);pointer-events:none;z-index:100000;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+.cursor.hover{width:64px;height:64px}
+
+/* Intro */
+.intro-overlay{position:fixed;inset:0;z-index:99999;background:var(--black);display:flex;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
+.intro-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.intro-text{font-family:var(--font-display);font-size:clamp(3rem,12vw,10rem);font-weight:900;letter-spacing:-.04em;display:flex;gap:.02em}
+.intro-text span{opacity:0;transform:translateY(60px);display:inline-block;animation:introIn .5s forwards}
+@keyframes introIn{to{opacity:1;transform:translateY(0)}}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:9999;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;mix-blend-mode:difference}
+.nav-logo{font-family:var(--font-display);font-size:1.2rem;font-weight:900;letter-spacing:.15em}
+.nav-links{display:flex;gap:2rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase}
+.nav-links a{position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--white);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;font-family:var(--font-display)}
+@media(max-width:768px){
+.nav-links{display:none}
+.nav-menu-btn{display:block}
+.mobile-menu{position:fixed;inset:0;background:var(--black);z-index:99998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;visibility:hidden;transition:all .4s}
+.mobile-menu.active{opacity:1;visibility:visible}
+.mobile-menu a{font-size:2rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;padding:2rem}
+.hero-title{font-family:var(--font-display);font-size:clamp(5rem,22vw,20rem);font-weight:900;letter-spacing:-.06em;line-height:.85;text-align:center;display:flex;flex-wrap:wrap;justify-content:center}
+.hero-title .letter{display:inline-block;transition:transform 1s cubic-bezier(.25,.46,.45,.94),opacity 1s}
+.hero-sub{margin-top:2rem;font-size:clamp(.65rem,1.2vw,.9rem);letter-spacing:.3em;text-transform:uppercase;opacity:.6;text-align:center}
+.hero-statement{position:absolute;bottom:12vh;font-size:clamp(.7rem,1vw,.85rem);letter-spacing:.15em;text-align:center;line-height:2}
+.hero-statement em{font-style:normal;color:var(--violet)}
+.scroll-arrow{position:absolute;bottom:3vh;display:flex;flex-direction:column;align-items:center;gap:.5rem;animation:bounce 2s infinite}
+.scroll-arrow span{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;opacity:.4}
+.scroll-arrow svg{width:20px;height:20px;opacity:.4}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+
+/* Marquee */
+.marquee{overflow:hidden;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);white-space:nowrap}
+.marquee-inner{display:inline-flex;animation:marquee 20s linear infinite}
+.marquee-inner span{font-family:var(--font-display);font-size:clamp(.75rem,1.5vw,1rem);letter-spacing:.3em;text-transform:uppercase;padding:0 2rem;opacity:.4}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* Section common */
+.section{padding:clamp(4rem,10vw,10rem) clamp(1.5rem,4vw,4rem);opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.section.visible{opacity:1;transform:translateY(0)}
+.section-label{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;opacity:.4;margin-bottom:1rem}
+.section-title{font-family:var(--font-display);font-size:clamp(2.5rem,7vw,6rem);font-weight:900;letter-spacing:-.04em;line-height:.95;margin-bottom:clamp(2rem,4vw,4rem)}
+.section-title .violet{color:var(--violet)}
+
+/* Collection - Horizontal Scroll */
+.collection{padding:clamp(4rem,10vw,10rem) 0;opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.collection.visible{opacity:1;transform:translateY(0)}
+.collection-header{padding:0 clamp(1.5rem,4vw,4rem);margin-bottom:3rem}
+.collection-scroll{display:flex;gap:clamp(1rem,2vw,2rem);overflow-x:auto;padding:0 clamp(1.5rem,4vw,4rem);scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+.collection-scroll::-webkit-scrollbar{display:none}
+.collection-item{flex:0 0 auto;scroll-snap-align:start;position:relative;overflow:hidden}
+.collection-item:nth-child(odd){width:clamp(260px,28vw,380px);height:clamp(380px,42vw,560px)}
+.collection-item:nth-child(even){width:clamp(220px,22vw,300px);height:clamp(320px,35vw,460px);margin-top:clamp(2rem,5vw,5rem)}
+.collection-item .img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a 0%,#333 50%,#1a1a1a 100%);transition:all .6s;position:relative;overflow:hidden}
+.collection-item:nth-child(1) .img-placeholder{clip-path:circle(50% at 50% 50%)}
+.collection-item:nth-child(2) .img-placeholder{clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.collection-item:nth-child(3) .img-placeholder{clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 80%,80% 100%,20% 100%,0% 80%,0% 20%)}
+.collection-item:nth-child(4) .img-placeholder{clip-path:circle(50% at 50% 50%)}
+.collection-item:nth-child(5) .img-placeholder{clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%)}
+.collection-item:nth-child(6) .img-placeholder{clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%)}
+.collection-item:nth-child(7) .img-placeholder{clip-path:circle(50% at 50% 50%)}
+.collection-item:nth-child(8) .img-placeholder{clip-path:polygon(0% 15%,15% 0%,85% 0%,100% 15%,100% 85%,85% 100%,15% 100%,0% 85%)}
+.collection-item .img-placeholder::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));z-index:1}
+.collection-item .img-placeholder::after{content:'';position:absolute;inset:0;background:var(--violet);mix-blend-mode:color;opacity:0;transition:opacity .6s;z-index:2}
+.collection-item:hover .img-placeholder::after{opacity:.8}
+.collection-item .look-info{position:absolute;bottom:1.5rem;left:1.5rem;z-index:3}
+.collection-item .look-num{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.03em;line-height:1}
+.collection-item .look-name{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;opacity:.6;margin-top:.3rem}
+.collection-item .silhouette{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center}
+.collection-item .silhouette svg{width:60%;height:80%;opacity:.15}
+
+/* Philosophy */
+.philosophy{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,6rem);align-items:center;width:100%}
+.philosophy-text{padding-right:clamp(1rem,3vw,4rem)}
+.philosophy-text p{font-size:clamp(.75rem,1vw,.9rem);line-height:2.2;letter-spacing:.05em;opacity:.7;margin-bottom:1.5rem}
+.philosophy-visual{position:relative;height:clamp(400px,50vw,700px)}
+.philosophy-visual .block{position:absolute;background:var(--white)}
+.philosophy-visual .block:nth-child(1){width:60%;height:70%;top:0;right:0}
+.philosophy-visual .block:nth-child(2){width:40%;height:40%;bottom:0;left:0;background:var(--violet)}
+.philosophy-visual .overlay-text{position:absolute;top:50%;left:-10%;transform:translateY(-50%);font-family:var(--font-display);font-size:clamp(3rem,8vw,7rem);font-weight:900;letter-spacing:-.04em;color:var(--black);mix-blend-mode:difference;z-index:2;writing-mode:vertical-rl}
+@media(max-width:768px){
+.philosophy-grid{grid-template-columns:1fr}
+.philosophy-visual{height:300px}
+.philosophy-visual .overlay-text{writing-mode:horizontal-tb;left:0;font-size:clamp(2rem,8vw,4rem)}
+}
+
+/* Lookbook Video Section */
+.lookbook-video{position:relative;min-height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--white);color:var(--black)}
+.lookbook-video .bg-text{position:absolute;font-family:var(--font-display);font-size:clamp(8rem,25vw,22rem);font-weight:900;letter-spacing:-.06em;opacity:.04;white-space:nowrap;user-select:none}
+.lookbook-video-content{text-align:center;z-index:1;padding:2rem}
+.lookbook-video-content .play-btn{width:clamp(80px,10vw,120px);height:clamp(80px,10vw,120px);border-radius:50%;border:2px solid var(--black);display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;transition:all .4s;background:transparent}
+.lookbook-video-content .play-btn:hover{background:var(--violet);border-color:var(--violet);transform:scale(1.1)}
+.lookbook-video-content .play-btn svg{width:30%;margin-left:5%}
+.lookbook-video-content h3{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.lookbook-video-content p{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;opacity:.5}
+
+/* Stockist */
+.stockist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:rgba(255,255,255,.1)}
+.stockist-item{background:var(--black);padding:clamp(1.5rem,3vw,2.5rem);transition:background .4s}
+.stockist-item:hover{background:rgba(139,0,255,.08)}
+.stockist-item h4{font-family:var(--font-display);font-size:clamp(1rem,1.5vw,1.3rem);font-weight:700;letter-spacing:.05em;margin-bottom:.5rem}
+.stockist-item .city{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;opacity:.4;margin-bottom:.8rem}
+.stockist-item p{font-size:.75rem;line-height:1.8;opacity:.5}
+
+/* News */
+.news-list{display:flex;flex-direction:column;border-top:1px solid rgba(255,255,255,.15)}
+.news-item{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(1rem,3vw,3rem);align-items:center;padding:clamp(1.2rem,2vw,2rem) 0;border-bottom:1px solid rgba(255,255,255,.15);transition:padding-left .3s}
+.news-item:hover{padding-left:1rem}
+.news-item .date{font-family:var(--font-display);font-size:.7rem;letter-spacing:.15em;opacity:.4;white-space:nowrap}
+.news-item .title{font-size:clamp(.8rem,1.2vw,1rem);letter-spacing:.05em}
+.news-item .arrow{font-size:1.2rem;opacity:.3;transition:opacity .3s,transform .3s}
+.news-item:hover .arrow{opacity:1;transform:translateX(4px)}
+@media(max-width:768px){
+.news-item{grid-template-columns:1fr;gap:.3rem}
+}
+
+/* CTA */
+.cta-section{position:relative;min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.cta-section .bg-circle{position:absolute;width:clamp(300px,50vw,600px);height:clamp(300px,50vw,600px);border-radius:50%;border:1px solid rgba(139,0,255,.2);animation:pulse 4s ease-in-out infinite}
+.cta-section .bg-circle:nth-child(2){width:clamp(400px,65vw,800px);height:clamp(400px,65vw,800px);animation-delay:1s}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.05);opacity:.6}}
+.cta-content{z-index:1}
+.cta-content h2{font-family:var(--font-display);font-size:clamp(2.5rem,8vw,7rem);font-weight:900;letter-spacing:-.04em;line-height:.95;margin-bottom:1.5rem}
+.cta-content p{font-size:clamp(.7rem,1vw,.85rem);letter-spacing:.15em;opacity:.5;margin-bottom:2.5rem}
+.cta-btn{display:inline-block;padding:clamp(.9rem,1.5vw,1.2rem) clamp(2.5rem,4vw,4rem);border:1px solid var(--white);font-family:var(--font-display);font-size:clamp(.7rem,1vw,.85rem);font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--white);background:transparent;transition:all .4s;position:relative;overflow:hidden}
+.cta-btn::before{content:'';position:absolute;inset:0;background:var(--violet);transform:translateY(100%);transition:transform .4s}
+.cta-btn:hover::before{transform:translateY(0)}
+.cta-btn span{position:relative;z-index:1}
+
+/* Footer */
+footer{padding:clamp(3rem,6vw,6rem) clamp(1.5rem,4vw,4rem) clamp(1.5rem,3vw,2rem);border-top:1px solid rgba(255,255,255,.1)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(2rem,4vw,4rem);margin-bottom:clamp(3rem,5vw,5rem)}
+.footer-brand{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.03em;margin-bottom:1rem}
+.footer-tagline{font-size:.7rem;letter-spacing:.1em;opacity:.4;line-height:1.8}
+.footer-col h5{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;opacity:.3;margin-bottom:1.2rem}
+.footer-col a{display:block;font-size:.75rem;letter-spacing:.05em;opacity:.5;margin-bottom:.7rem;transition:opacity .3s}
+.footer-col a:hover{opacity:1}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);font-size:.6rem;letter-spacing:.15em;opacity:.3}
+@media(max-width:768px){
+.footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+.footer-top{grid-template-columns:1fr}
+}
+
+/* Asymmetric features grid */
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.08)}
+.feature-card{background:var(--black);padding:clamp(2rem,4vw,4rem);position:relative;overflow:hidden;transition:background .5s}
+.feature-card:hover{background:rgba(139,0,255,.04)}
+.feature-card:nth-child(1){grid-row:span 2}
+.feature-card .num{font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:900;opacity:.06;position:absolute;top:-.5rem;right:1rem;line-height:1}
+.feature-card h3{font-family:var(--font-display);font-size:clamp(1.2rem,2vw,1.8rem);font-weight:700;letter-spacing:.02em;margin-bottom:1rem}
+.feature-card p{font-size:clamp(.7rem,.9vw,.8rem);line-height:2;opacity:.5;letter-spacing:.03em}
+@media(max-width:768px){
+.features-grid{grid-template-columns:1fr}
+.feature-card:nth-child(1){grid-row:span 1}
+}
+
+/* Utility */
+.text-violet{color:var(--violet)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Intro Overlay -->
+<div class="intro-overlay" id="intro">
+<div class="intro-text" id="introText"></div>
+</div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+<a href="#hero" onclick="closeMobileMenu()">Home</a>
+<a href="#collection" onclick="closeMobileMenu()">Collection</a>
+<a href="#philosophy" onclick="closeMobileMenu()">Philosophy</a>
+<a href="#stockist" onclick="closeMobileMenu()">Stockist</a>
+<a href="#news" onclick="closeMobileMenu()">News</a>
+<a href="#shop" onclick="closeMobileMenu()">Shop</a>
+</div>
+
+<!-- Nav -->
+<nav>
+<div class="nav-logo">VOID</div>
+<div class="nav-links">
+<a href="#collection">Collection</a>
+<a href="#philosophy">Philosophy</a>
+<a href="#stockist">Stockist</a>
+<a href="#news">News</a>
+<a href="#shop">Shop</a>
+</div>
+<button class="nav-menu-btn" id="menuBtn" onclick="toggleMobileMenu()" aria-label="メニュー">☰</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+<h1 class="hero-title" id="heroTitle"></h1>
+<p class="hero-sub">Spring / Summer 2026 — Genderless Fashion</p>
+<div class="hero-statement">
+何者でもない、すべてである。<br>
+<em>— BE VOID.</em>
+</div>
+<div class="scroll-arrow">
+<span>Scroll</span>
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+</section>
+
+<!-- Marquee 1 -->
+<div class="marquee">
+<div class="marquee-inner">
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+</div>
+</div>
+
+<!-- Collection -->
+<section class="collection" id="collection">
+<div class="collection-header">
+<div class="section-label">SS26 Collection</div>
+<h2 class="section-title">Look<br>b<span class="violet">oo</span>k.</h2>
+</div>
+<div class="collection-scroll" id="collectionScroll">
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><rect x="35" y="10" width="30" height="25" rx="12" fill="white"/><rect x="30" y="38" width="40" height="60" rx="3" fill="white"/><rect x="25" y="45" width="12" height="45" rx="3" fill="white" transform="rotate(-10 31 45)"/><rect x="63" y="45" width="12" height="45" rx="3" fill="white" transform="rotate(10 69 45)"/><rect x="33" y="98" width="15" height="55" rx="3" fill="white" transform="rotate(-2 40 98)"/><rect x="52" y="98" width="15" height="55" rx="3" fill="white" transform="rotate(2 60 98)"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">01</div><div class="look-name">Silhouette Void</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><ellipse cx="50" cy="22" rx="14" ry="16" fill="white"/><path d="M30 40 Q50 35 70 40 L75 110 Q50 115 25 110 Z" fill="white"/><rect x="33" y="110" width="14" height="50" rx="3" fill="white"/><rect x="53" y="110" width="14" height="50" rx="3" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">02</div><div class="look-name">Fluid Form</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><circle cx="50" cy="22" r="14" fill="white"/><rect x="28" y="38" width="44" height="65" rx="5" fill="white"/><rect x="30" y="103" width="18" height="55" rx="4" fill="white"/><rect x="52" y="103" width="18" height="55" rx="4" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">03</div><div class="look-name">Binary Break</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><ellipse cx="50" cy="20" rx="13" ry="15" fill="white"/><path d="M25 38 Q50 32 75 38 L80 95 Q50 100 20 95 Z" fill="white"/><rect x="35" y="95" width="13" height="60" rx="3" fill="white"/><rect x="52" y="95" width="13" height="60" rx="3" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">04</div><div class="look-name">Deco Null</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><circle cx="50" cy="22" r="13" fill="white"/><rect x="32" y="38" width="36" height="58" rx="4" fill="white"/><rect x="20" y="42" width="14" height="40" rx="4" fill="white" transform="rotate(-8 27 42)"/><rect x="66" y="42" width="14" height="40" rx="4" fill="white" transform="rotate(8 73 42)"/><rect x="34" y="96" width="14" height="58" rx="3" fill="white"/><rect x="52" y="96" width="14" height="58" rx="3" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">05</div><div class="look-name">Absence</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><ellipse cx="50" cy="22" rx="12" ry="14" fill="white"/><path d="M28 38 L72 38 L78 120 L22 120 Z" fill="white"/><rect x="32" y="120" width="16" height="50" rx="4" fill="white"/><rect x="52" y="120" width="16" height="50" rx="4" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">06</div><div class="look-name">Zero State</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><circle cx="50" cy="20" r="14" fill="white"/><rect x="30" y="36" width="40" height="60" rx="6" fill="white"/><rect x="33" y="96" width="15" height="58" rx="3" fill="white"/><rect x="52" y="96" width="15" height="58" rx="3" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">07</div><div class="look-name">Spectra</div></div>
+</div>
+<div class="collection-item">
+<div class="img-placeholder">
+<div class="silhouette"><svg viewBox="0 0 100 200"><ellipse cx="50" cy="21" rx="14" ry="16" fill="white"/><path d="M26 40 Q50 34 74 40 L70 100 Q50 108 30 100 Z" fill="white"/><rect x="32" y="100" width="16" height="56" rx="4" fill="white"/><rect x="52" y="100" width="16" height="56" rx="4" fill="white"/></svg></div>
+</div>
+<div class="look-info"><div class="look-num">08</div><div class="look-name">Neither/Nor</div></div>
+</div>
+</div>
+</section>
+
+<!-- Marquee 2 -->
+<div class="marquee">
+<div class="marquee-inner" style="animation-direction:reverse">
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+<span>GENDERLESS — TIMELESS — BORDERLESS —</span>
+</div>
+</div>
+
+<!-- Philosophy -->
+<section class="philosophy section" id="philosophy">
+<div class="philosophy-grid" style="padding:0 clamp(1.5rem,4vw,4rem)">
+<div class="philosophy-text">
+<div class="section-label">Brand Philosophy</div>
+<h2 class="section-title">Bey<span class="violet">o</span>nd<br>Binary.</h2>
+<p>VOIDは「空白」を意味する。私たちは、性別という枠組みが生み出す境界線を無効化するためにこのブランドを立ち上げた。纏うものに性別はない。あるのは、身体と布の間に生まれる純粋な対話だけだ。</p>
+<p>SS26コレクション "BEYOND BINARY" は、従来のメンズ・ウィメンズという二項対立を完全に解体する。オーバーサイズのシルエットは身体の輪郭を曖昧にし、モノクロームのパレットは視覚的なノイズを排除する。残るのは、構造と動きの本質だけ。</p>
+<p>私たちが目指すのは、誰もが「何者でもない自分」として存在できる服。ラベルを剥がし、カテゴリーを超え、ただ純粋に自己を表現するための装置としてのファッション。</p>
+</div>
+<div class="philosophy-visual">
+<div class="block"></div>
+<div class="block"></div>
+<div class="overlay-text">VOID</div>
+</div>
+</div>
+</section>
+
+<!-- Lookbook Video Section -->
+<section class="lookbook-video section" id="lookbook-video">
+<div class="bg-text">VOID</div>
+<div class="lookbook-video-content">
+<button class="play-btn" aria-label="動画を再生">
+<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+</button>
+<h3>SS26 Film</h3>
+<p>Watch the collection film — 2:34</p>
+</div>
+</section>
+
+<!-- Marquee 3 -->
+<div class="marquee" style="background:var(--black)">
+<div class="marquee-inner">
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+<span>VOID — SS26 — BEYOND BINARY —</span>
+</div>
+</div>
+
+<!-- Stockist -->
+<section class="section" id="stockist">
+<div class="section-label">Stockist</div>
+<h2 class="section-title">St<span class="violet">o</span>res.</h2>
+<div class="stockist-grid">
+<div class="stockist-item">
+<h4>VOID Aoyama</h4>
+<div class="city">Tokyo — Flagship</div>
+<p>東京都港区南青山5-12-8<br>11:00 — 20:00</p>
+</div>
+<div class="stockist-item">
+<h4>VOID Daikanyama</h4>
+<div class="city">Tokyo</div>
+<p>東京都渋谷区猿楽町18-6<br>11:00 — 20:00</p>
+</div>
+<div class="stockist-item">
+<h4>SSENSE</h4>
+<div class="city">Montreal — Online</div>
+<p>ssense.com/void<br>Worldwide Shipping</p>
+</div>
+<div class="stockist-item">
+<h4>Dover Street Market</h4>
+<div class="city">London / Tokyo / Beijing</div>
+<p>Global Stockist<br>Select Pieces</p>
+</div>
+<div class="stockist-item">
+<h4>GR8</h4>
+<div class="city">Tokyo — Harajuku</div>
+<p>東京都渋谷区神宮前1-11-6<br>12:00 — 20:00</p>
+</div>
+<div class="stockist-item">
+<h4>Machine-A</h4>
+<div class="city">London — Soho</div>
+<p>28 Brewer Street, London<br>11:00 — 19:00</p>
+</div>
+</div>
+</section>
+
+<!-- News -->
+<section class="section" id="news">
+<div class="section-label">News</div>
+<h2 class="section-title">Upd<span class="violet">a</span>tes.</h2>
+<div class="news-list">
+<a href="#" class="news-item">
+<span class="date">2026.02.10</span>
+<span class="title">SS26 "BEYOND BINARY" コレクション — 2月28日より順次デリバリー開始</span>
+<span class="arrow">→</span>
+</a>
+<a href="#" class="news-item">
+<span class="date">2026.01.28</span>
+<span class="title">Paris Fashion Week Men's SS26 — VOIDランウェイショーのバックステージ公開</span>
+<span class="arrow">→</span>
+</a>
+<a href="#" class="news-item">
+<span class="date">2026.01.15</span>
+<span class="title">VOID × SSENSE エクスクルーシブカプセルコレクション発売</span>
+<span class="arrow">→</span>
+</a>
+<a href="#" class="news-item">
+<span class="date">2025.12.20</span>
+<span class="title">VOID Aoyama フラッグシップストア — リニューアルオープン</span>
+<span class="arrow">→</span>
+</a>
+<a href="#" class="news-item">
+<span class="date">2025.12.01</span>
+<span class="title">i-D Japan 特集 —「ジェンダーレスの先にあるもの」VOIDデザイナーインタビュー</span>
+<span class="arrow">→</span>
+</a>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section section" id="shop">
+<div class="bg-circle"></div>
+<div class="bg-circle"></div>
+<div class="cta-content">
+<h2>Shop<br>V<span class="text-violet">o</span>id.</h2>
+<p>SS26 "BEYOND BINARY" — Now Available Online</p>
+<a href="#" class="cta-btn"><span>Enter Online Store</span></a>
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="footer-top">
+<div>
+<div class="footer-brand">VOID</div>
+<p class="footer-tagline">何者でもない、すべてである。<br>BE VOID. — Since 2021</p>
+</div>
+<div class="footer-col">
+<h5>Brand</h5>
+<a href="#">About</a>
+<a href="#">Philosophy</a>
+<a href="#">Careers</a>
+<a href="#">Press</a>
+</div>
+<div class="footer-col">
+<h5>Shop</h5>
+<a href="#">All Items</a>
+<a href="#">New Arrivals</a>
+<a href="#">Archive</a>
+<a href="#">Gift Cards</a>
+</div>
+<div class="footer-col">
+<h5>Connect</h5>
+<a href="#">Instagram</a>
+<a href="#">Twitter / X</a>
+<a href="#">Newsletter</a>
+<a href="#">Contact</a>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 VOID. All rights reserved.</span>
+<span>Tokyo / London / Online</span>
+</div>
+</footer>
+
+<script>
+// === CURSOR ===
+const cursor = document.getElementById('cursor');
+let curX = 0, curY = 0, tarX = 0, tarY = 0;
+document.addEventListener('mousemove', e => { tarX = e.clientX; tarY = e.clientY; });
+function animCursor() {
+  curX += (tarX - curX) * 0.15;
+  curY += (tarY - curY) * 0.15;
+  cursor.style.left = curX + 'px';
+  cursor.style.top = curY + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+document.querySelectorAll('a, button, .cta-btn, .collection-item').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+// Hide custom cursor on touch devices
+if ('ontouchstart' in window) cursor.style.display = 'none';
+
+// === INTRO ===
+const introText = document.getElementById('introText');
+const introOverlay = document.getElementById('intro');
+const letters = 'VOID';
+letters.split('').forEach((ch, i) => {
+  const span = document.createElement('span');
+  span.textContent = ch;
+  span.style.animationDelay = (0.3 + i * 0.15) + 's';
+  introText.appendChild(span);
+});
+setTimeout(() => { introOverlay.classList.add('hidden'); }, 2200);
+
+// === HERO TITLE ===
+const heroTitle = document.getElementById('heroTitle');
+const heroLetters = 'VOID';
+heroLetters.split('').forEach(ch => {
+  const span = document.createElement('span');
+  span.className = 'letter';
+  span.textContent = ch;
+  heroTitle.appendChild(span);
+});
+
+// Hero split on scroll
+const heroLetterEls = heroTitle.querySelectorAll('.letter');
+function heroScroll() {
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+  const progress = Math.min(scrollY / vh, 1);
+  heroLetterEls.forEach((el, i) => {
+    const dir = i < 2 ? -1 : 1;
+    const offset = (i % 2 === 0 ? 1 : -1);
+    el.style.transform = `translate(${dir * progress * 120}px, ${offset * progress * 80}px)`;
+    el.style.opacity = 1 - progress * 0.8;
+  });
+}
+window.addEventListener('scroll', heroScroll, { passive: true });
+
+// === INTERSECTION OBSERVER ===
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.section, .collection').forEach(el => observer.observe(el));
+
+// === MOBILE MENU ===
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('menuBtn');
+  const isActive = menu.classList.toggle('active');
+  btn.textContent = isActive ? '✕' : '☰';
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('active');
+  document.getElementById('menuBtn').textContent = '☰';
+}
+
+// === HORIZONTAL SCROLL HINT (drag) ===
+const cs = document.getElementById('collectionScroll');
+let isDown = false, startX, scrollLeft;
+cs.addEventListener('mousedown', e => { isDown = true; cs.style.cursor = 'grabbing'; startX = e.pageX - cs.offsetLeft; scrollLeft = cs.scrollLeft; });
+cs.addEventListener('mouseleave', () => { isDown = false; cs.style.cursor = 'grab'; });
+cs.addEventListener('mouseup', () => { isDown = false; cs.style.cursor = 'grab'; });
+cs.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - cs.offsetLeft; cs.scrollLeft = scrollLeft - (x - startX) * 1.5; });
+cs.style.cursor = 'grab';
+</script>
+</body>
+</html>

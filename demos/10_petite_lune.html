@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Petite Lune（プティ・リュンヌ）- 小さな月が灯す、甘い幸福。厳選素材と伝統製法で仕上げるフランス菓子とカフェ。">
+<title>Petite Lune｜パティスリー＆カフェ プティ・リュンヌ</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--cream:#fdf6ec;--rose:#d4a0a0;--chocolat:#3c2415;--gold:#c9a84c;--pink:#f5e1e1;
+--rose-light:#e8c4c4;--gold-light:#d4b96a;--chocolat-light:#5a3a25;
+--font-ja:"Noto Serif JP","Yu Mincho","游明朝",serif;
+--font-en:"Playfair Display",Georgia,serif;
+--font-script:cursive;
+--section-py:clamp(4rem,10vw,8rem);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-ja);background:var(--cream);color:var(--chocolat);overflow-x:hidden;line-height:1.9}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{width:min(90%,1200px);margin:0 auto}
+
+/* ===== Particles ===== */
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.particle{position:absolute;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{
+0%{transform:translateY(100vh) rotate(0deg) scale(.5);opacity:0}
+10%{opacity:.7}
+90%{opacity:.7}
+100%{transform:translateY(-10vh) rotate(360deg) scale(1);opacity:0}
+}
+
+/* ===== Navigation ===== */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 0;transition:all .4s ease}
+.nav.scrolled{background:rgba(253,246,236,.95);backdrop-filter:blur(12px);box-shadow:0 2px 30px rgba(60,36,21,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;width:min(92%,1200px);margin:0 auto}
+.nav-logo{font-family:var(--font-script);font-size:clamp(1.2rem,3vw,1.6rem);color:var(--chocolat);letter-spacing:.05em}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:clamp(.8rem,2vw,2rem);list-style:none}
+.nav-links a{font-size:.82rem;letter-spacing:.1em;position:relative;padding:.25rem 0;transition:color .3s}
+.nav-links a::after{content:"";position:absolute;bottom:0;left:0;width:0;height:1.5px;background:var(--gold);transition:width .3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;background:none;border:none}
+.hamburger span{display:block;width:24px;height:2px;background:var(--chocolat);transition:all .3s;border-radius:2px}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+@media(max-width:768px){
+.hamburger{display:flex}
+.nav-links{position:fixed;top:0;right:-100%;width:70%;max-width:320px;height:100vh;background:var(--cream);flex-direction:column;justify-content:center;align-items:center;gap:2rem;transition:right .4s ease;box-shadow:-4px 0 30px rgba(0,0,0,.1)}
+.nav-links.open{right:0}
+.nav-links a{font-size:1rem}
+}
+
+/* ===== Scroll Animations ===== */
+.fade-up{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-left.visible{opacity:1;transform:translateX(0)}
+.fade-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-right.visible{opacity:1;transform:translateX(0)}
+.scale-in{opacity:0;transform:scale(.9);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.scale-in.visible{opacity:1;transform:scale(1)}
+
+/* ===== Section Titles ===== */
+.section-title{text-align:center;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.section-title .en{font-family:var(--font-script);font-size:clamp(2rem,5vw,3.2rem);color:var(--gold);display:block;line-height:1.2}
+.section-title .ja{font-size:clamp(.85rem,1.5vw,1rem);letter-spacing:.25em;margin-top:.5rem;display:block;color:var(--chocolat-light)}
+.section-title .line{display:block;width:40px;height:1.5px;background:var(--gold);margin:1rem auto 0}
+
+/* ===== Lace Divider SVG ===== */
+.lace-divider{width:100%;overflow:hidden;line-height:0;padding:0;margin:0}
+.lace-divider svg{width:100%;height:auto;display:block}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--cream) 0%,var(--pink) 40%,var(--rose-light) 100%)}
+.hero-bg-deco{position:absolute;width:100%;height:100%;top:0;left:0}
+.hero-circle{position:absolute;border-radius:50%;opacity:.15}
+.hero-circle:nth-child(1){width:clamp(300px,50vw,600px);height:clamp(300px,50vw,600px);background:radial-gradient(circle,var(--rose),transparent 70%);top:-10%;right:-10%;animation:gentleFloat 8s ease-in-out infinite}
+.hero-circle:nth-child(2){width:clamp(200px,35vw,450px);height:clamp(200px,35vw,450px);background:radial-gradient(circle,var(--gold),transparent 70%);bottom:-5%;left:-5%;animation:gentleFloat 10s ease-in-out infinite reverse}
+.hero-circle:nth-child(3){width:clamp(100px,20vw,250px);height:clamp(100px,20vw,250px);background:radial-gradient(circle,var(--pink),transparent 70%);top:30%;left:20%;animation:gentleFloat 12s ease-in-out infinite}
+@keyframes gentleFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+.hero-content{position:relative;z-index:2;text-align:center;padding:2rem}
+.hero-catch{font-family:var(--font-script);font-size:clamp(1rem,2.5vw,1.4rem);color:var(--gold);letter-spacing:.2em;margin-bottom:1rem;opacity:0;animation:fadeSlideUp 1s .3s forwards}
+.hero-logo-text{font-family:var(--font-script);font-size:clamp(3rem,10vw,7rem);color:var(--chocolat);line-height:1.1;margin-bottom:.5rem;opacity:0;animation:fadeSlideUp 1s .6s forwards}
+.hero-sub{font-size:clamp(.8rem,1.5vw,1.1rem);letter-spacing:.35em;color:var(--chocolat-light);margin-bottom:.5rem;opacity:0;animation:fadeSlideUp 1s .9s forwards}
+.hero-tagline{font-size:clamp(1.1rem,2.5vw,1.6rem);letter-spacing:.15em;color:var(--chocolat);margin-top:1.5rem;position:relative;display:inline-block;opacity:0;animation:fadeSlideUp 1s 1.2s forwards}
+.hero-tagline::before,.hero-tagline::after{content:"";position:absolute;top:50%;width:clamp(30px,5vw,60px);height:1px;background:var(--gold)}
+.hero-tagline::before{right:calc(100% + 15px)}
+.hero-tagline::after{left:calc(100% + 15px)}
+/* Moon CSS Art */
+.hero-moon{width:clamp(60px,10vw,100px);height:clamp(60px,10vw,100px);border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold),#e8cf8a);margin:0 auto 1.5rem;position:relative;box-shadow:0 0 40px rgba(201,168,76,.3),0 0 80px rgba(201,168,76,.15);opacity:0;animation:fadeSlideUp 1s .1s forwards}
+.hero-moon::after{content:"";position:absolute;width:75%;height:75%;border-radius:50%;background:var(--cream);top:5%;right:-10%;opacity:.85}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+/* Scroll Indicator */
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fadeSlideUp 1s 1.8s forwards}
+.scroll-indicator span{font-size:.7rem;letter-spacing:.2em;color:var(--chocolat-light)}
+.scroll-arrow{width:20px;height:20px;border-right:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);transform:rotate(45deg);animation:bounceArrow 2s infinite}
+@keyframes bounceArrow{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(5px,5px)}}
+
+/* ===== Macaron Decorations ===== */
+.macaron-deco{position:absolute;border-radius:50%;z-index:1}
+.macaron-deco::before,.macaron-deco::after{content:"";position:absolute;border-radius:50%}
+.macaron{width:50px;height:50px;position:relative}
+.macaron-top{width:100%;height:45%;background:var(--rose);border-radius:50% 50% 5px 5px;position:absolute;top:0}
+.macaron-fill{width:80%;height:15%;background:#fff;border-radius:3px;position:absolute;top:42%;left:10%}
+.macaron-bottom{width:100%;height:45%;background:var(--rose);border-radius:5px 5px 50% 50%;position:absolute;bottom:0}
+
+/* ===== CONCEPT ===== */
+.concept{padding:var(--section-py) 0;position:relative;background:var(--cream)}
+.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.concept-visual{position:relative;display:flex;justify-content:center;align-items:center}
+.concept-cake{width:clamp(200px,25vw,300px);height:clamp(220px,28vw,340px);position:relative}
+.cake-layer{border-radius:50%/30%;position:absolute;left:50%;transform:translateX(-50%)}
+.cake-layer-1{width:100%;height:35%;bottom:0;background:linear-gradient(to bottom,#f0d6a8,#e8c890);border-bottom-left-radius:8px;border-bottom-right-radius:8px}
+.cake-layer-2{width:85%;height:30%;bottom:30%;background:linear-gradient(to bottom,var(--pink),var(--rose-light))}
+.cake-layer-3{width:70%;height:25%;bottom:55%;background:linear-gradient(to bottom,#fff5f5,var(--pink));border-radius:50% 50% 20% 20%}
+.cake-cream{position:absolute;width:15px;height:25px;background:radial-gradient(ellipse,#fff,#f5e8d0);border-radius:50% 50% 0 0}
+.cake-cream:nth-child(4){top:20%;left:15%}
+.cake-cream:nth-child(5){top:18%;right:18%}
+.cake-cream:nth-child(6){top:10%;left:38%}
+.cake-strawberry{position:absolute;top:2%;left:50%;transform:translateX(-50%);width:25px;height:28px;background:radial-gradient(circle at 40% 30%,#ff6b6b,#cc3333);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;z-index:2}
+.cake-strawberry::before{content:"";position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:14px;height:8px;background:#4a7;border-radius:50% 50% 0 0}
+.concept-text{padding:1rem}
+.concept-text h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.6;margin-bottom:1.5rem;font-weight:500}
+.concept-text h2 .highlight{position:relative;display:inline}
+.concept-text h2 .highlight::after{content:"";position:absolute;bottom:2px;left:0;width:100%;height:8px;background:rgba(201,168,76,.2);z-index:-1;border-radius:2px}
+.concept-text p{font-size:clamp(.9rem,1.2vw,1rem);line-height:2;color:var(--chocolat-light);margin-bottom:1rem}
+@media(max-width:768px){
+.concept-grid{grid-template-columns:1fr;text-align:center}
+.concept-visual{order:-1;margin-bottom:1rem}
+}
+
+/* ===== KODAWARI ===== */
+.kodawari{padding:var(--section-py) 0;background:linear-gradient(180deg,var(--pink) 0%,var(--cream) 100%);position:relative}
+.kodawari-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:2rem}
+.kodawari-card{background:#fff;border-radius:16px;padding:clamp(2rem,3vw,2.5rem);text-align:center;box-shadow:0 4px 30px rgba(60,36,21,.06);transition:transform .4s,box-shadow .4s;position:relative;overflow:hidden}
+.kodawari-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--gold),var(--rose),var(--gold))}
+.kodawari-card:hover{transform:translateY(-8px);box-shadow:0 12px 40px rgba(60,36,21,.12)}
+.kodawari-icon{width:70px;height:70px;border-radius:50%;background:var(--pink);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;font-size:1.8rem}
+.kodawari-card h3{font-size:1.15rem;margin-bottom:1rem;letter-spacing:.1em}
+.kodawari-card p{font-size:.9rem;color:var(--chocolat-light);line-height:1.9}
+
+/* ===== MENU ===== */
+.menu{padding:var(--section-py) 0;background:var(--cream);position:relative}
+.menu-categories{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.menu-cat-btn{padding:.6rem 1.5rem;border:1.5px solid var(--rose);background:transparent;border-radius:30px;font-family:var(--font-ja);font-size:.85rem;cursor:pointer;transition:all .3s;letter-spacing:.1em;color:var(--chocolat)}
+.menu-cat-btn.active,.menu-cat-btn:hover{background:var(--rose);color:#fff}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
+.menu-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 20px rgba(60,36,21,.06);transition:transform .4s,box-shadow .4s;position:relative;cursor:pointer}
+.menu-card:hover{transform:translateY(-6px) rotate(-.5deg);box-shadow:0 15px 40px rgba(60,36,21,.12)}
+.menu-card-img{height:180px;position:relative;overflow:hidden}
+.menu-card-img .img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.menu-card-body{padding:1.2rem 1.5rem}
+.menu-card-body h3{font-size:1rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.menu-card-body .price{font-family:var(--font-en);color:var(--gold);font-size:1.1rem;font-weight:600}
+.menu-card-body p{font-size:.82rem;color:var(--chocolat-light);line-height:1.7;margin-top:.5rem}
+.badge-osusume{display:inline-block;background:var(--gold);color:#fff;font-size:.65rem;padding:.15rem .5rem;border-radius:10px;letter-spacing:.1em;animation:none;font-weight:normal}
+.menu-card:hover .badge-osusume{animation:badgeBounce .5s ease}
+@keyframes badgeBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.3)}60%{transform:scale(.9)}80%{transform:scale(1.1)}}
+/* Plate colors */
+.plate-pink{background:linear-gradient(135deg,var(--pink),var(--rose-light))}
+.plate-brown{background:linear-gradient(135deg,#f0e0d0,#e0c8b0)}
+.plate-gold{background:linear-gradient(135deg,#fdf6ec,#f0e0c0)}
+.plate-green{background:linear-gradient(135deg,#e8f0e0,#d0e0c0)}
+
+/* ===== PATISSIER ===== */
+.patissier{padding:var(--section-py) 0;background:linear-gradient(180deg,var(--cream) 0%,var(--pink) 100%);position:relative}
+.patissier-content{display:grid;grid-template-columns:auto 1fr;gap:clamp(2rem,5vw,4rem);align-items:center;max-width:900px;margin:0 auto}
+.patissier-photo{width:clamp(180px,22vw,260px);height:clamp(220px,28vw,320px);border-radius:120px 120px 20px 20px;background:linear-gradient(135deg,var(--rose-light),var(--rose));position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;box-shadow:0 10px 40px rgba(60,36,21,.1)}
+.patissier-silhouette{width:80%;height:75%;background:linear-gradient(to top,var(--chocolat) 0%,var(--chocolat-light) 100%);border-radius:50% 50% 0 0;opacity:.2}
+.patissier-hat{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:60px;height:50px;background:#fff;border-radius:10px 10px 50% 50%;opacity:.3}
+.patissier-hat::before{content:"";position:absolute;bottom:-5px;left:-10px;width:80px;height:15px;background:#fff;border-radius:50%;opacity:1}
+.patissier-info h3{font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:.5rem}
+.patissier-info .name-en{font-family:var(--font-script);color:var(--gold);font-size:clamp(1rem,2vw,1.2rem);display:block;margin-bottom:1.5rem}
+.patissier-info p{font-size:clamp(.88rem,1.1vw,.95rem);line-height:2.1;color:var(--chocolat-light);margin-bottom:1rem}
+.patissier-info .quote{font-style:italic;border-left:3px solid var(--gold);padding-left:1rem;margin-top:1.5rem;color:var(--chocolat)}
+@media(max-width:768px){
+.patissier-content{grid-template-columns:1fr;text-align:center;justify-items:center}
+.patissier-info .quote{text-align:left}
+}
+
+/* ===== GALLERY ===== */
+.gallery{padding:var(--section-py) 0;background:var(--cream)}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.gallery-item{border-radius:14px;overflow:hidden;aspect-ratio:1;position:relative;box-shadow:0 4px 20px rgba(60,36,21,.08);cursor:pointer;transition:transform .4s}
+.gallery-item:hover{transform:scale(1.03)}
+.gallery-item::after{content:"♥";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-size:2rem;color:#fff;transition:transform .3s;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.gallery-item:hover::after{transform:translate(-50%,-50%) scale(1)}
+.gallery-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+@media(max-width:768px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}}
+
+/* ===== SHOP INFO ===== */
+.shopinfo{padding:var(--section-py) 0;background:var(--pink);position:relative}
+.shopinfo-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start}
+.shopinfo-map{aspect-ratio:4/3;border-radius:16px;background:linear-gradient(135deg,var(--rose-light),#ddd);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 6px 30px rgba(60,36,21,.08)}
+.map-placeholder{text-align:center;color:var(--chocolat-light);font-size:.9rem}
+.map-placeholder .pin{font-size:3rem;display:block;margin-bottom:.5rem;animation:pinBounce 2s infinite}
+@keyframes pinBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.shopinfo-details{padding:1rem 0}
+.shopinfo-details h3{font-family:var(--font-script);font-size:clamp(1.5rem,3vw,2rem);color:var(--chocolat);margin-bottom:1.5rem}
+.info-table{width:100%}
+.info-table tr{border-bottom:1px solid rgba(60,36,21,.08)}
+.info-table th{font-weight:500;font-size:.85rem;padding:.8rem 0;width:5.5rem;vertical-align:top;color:var(--gold);text-align:left;white-space:nowrap}
+.info-table td{font-size:.88rem;padding:.8rem 0;line-height:1.7}
+@media(max-width:768px){.shopinfo-grid{grid-template-columns:1fr}}
+
+/* ===== CTA ===== */
+.cta{padding:var(--section-py) 0;background:linear-gradient(135deg,var(--chocolat) 0%,var(--chocolat-light) 100%);text-align:center;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23c9a84c' opacity='.1'/%3E%3C/svg%3E");pointer-events:none}
+.cta h2{font-family:var(--font-script);font-size:clamp(1.8rem,5vw,3rem);color:var(--gold);margin-bottom:1rem}
+.cta p{color:var(--rose-light);font-size:clamp(.9rem,1.3vw,1.05rem);margin-bottom:2rem;line-height:1.9}
+.cta-btn{display:inline-block;padding:1rem 3rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--chocolat);font-size:1rem;font-family:var(--font-ja);letter-spacing:.15em;border:none;border-radius:50px;cursor:pointer;transition:all .4s;box-shadow:0 4px 20px rgba(201,168,76,.3);text-decoration:none;position:relative;overflow:hidden}
+.cta-btn::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .5s}
+.cta-btn:hover::before{left:100%}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(201,168,76,.5)}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--chocolat);color:var(--rose-light);padding:3rem 0 1.5rem;text-align:center}
+.footer-logo{font-family:var(--font-script);font-size:clamp(1.5rem,4vw,2rem);color:var(--gold);margin-bottom:.5rem}
+.footer-tagline{font-size:.8rem;letter-spacing:.2em;color:var(--rose);margin-bottom:2rem}
+.footer-sns{display:flex;justify-content:center;gap:1.5rem;margin-bottom:2rem}
+.footer-sns a{width:40px;height:40px;border-radius:50%;border:1px solid var(--rose);display:flex;align-items:center;justify-content:center;transition:all .3s;font-size:.9rem}
+.footer-sns a:hover{background:var(--gold);border-color:var(--gold);color:var(--chocolat)}
+.footer-links{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.footer-links a{font-size:.78rem;letter-spacing:.1em;transition:color .3s}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:.72rem;color:rgba(212,160,160,.5);letter-spacing:.1em}
+
+/* ===== Ribbon Decoration ===== */
+.ribbon-deco{text-align:center;padding:1rem 0;overflow:hidden}
+.ribbon-deco svg{max-width:300px;margin:0 auto}
+
+/* ===== Handwritten underline ===== */
+.hand-underline{position:relative;display:inline-block}
+.hand-underline::after{content:"";position:absolute;bottom:-4px;left:-5%;width:110%;height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12'%3E%3Cpath d='M2 8 Q50 2 100 7 T198 5' stroke='%23c9a84c' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/contain}
+
+/* ===== Back to top ===== */
+.back-top{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 15px rgba(201,168,76,.3);z-index:999;opacity:0;transform:translateY(20px);transition:all .4s;border:none;font-size:1.2rem}
+.back-top.show{opacity:1;transform:translateY(0)}
+.back-top:hover{transform:translateY(-4px);box-shadow:0 6px 25px rgba(201,168,76,.5)}
+
+/* ===== Accessibility ===== */
+@media(prefers-reduced-motion:reduce){
+*{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating Particles -->
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+<div class="nav-inner">
+<a href="#hero" class="nav-logo">Petite <span>Lune</span></a>
+<button class="hamburger" id="hamburger" aria-label="メニューを開く"><span></span><span></span><span></span></button>
+<ul class="nav-links" id="navLinks">
+<li><a href="#concept">Concept</a></li>
+<li><a href="#kodawari">Commitment</a></li>
+<li><a href="#menu-section">Menu</a></li>
+<li><a href="#patissier">Pâtissier</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#shopinfo">Info</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+<div class="hero-bg-deco" aria-hidden="true">
+<div class="hero-circle"></div>
+<div class="hero-circle"></div>
+<div class="hero-circle"></div>
+</div>
+<div class="hero-content">
+<div class="hero-moon" aria-hidden="true"></div>
+<p class="hero-catch">Pâtisserie & Café</p>
+<h1 class="hero-logo-text">Petite Lune</h1>
+<p class="hero-sub">プティ・リュンヌ</p>
+<p class="hero-tagline">小さな月が灯す、甘い幸福。</p>
+</div>
+<div class="scroll-indicator" aria-hidden="true">
+<span>Scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+</section>
+
+<!-- Lace Divider -->
+<div class="lace-divider" aria-hidden="true">
+<svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+<path d="M0,20 Q30,0 60,20 Q90,40 120,20 Q150,0 180,20 Q210,40 240,20 Q270,0 300,20 Q330,40 360,20 Q390,0 420,20 Q450,40 480,20 Q510,0 540,20 Q570,40 600,20 Q630,0 660,20 Q690,40 720,20 Q750,0 780,20 Q810,40 840,20 Q870,0 900,20 Q930,40 960,20 Q990,0 1020,20 Q1050,40 1080,20 Q1110,0 1140,20 Q1170,40 1200,20 Q1230,0 1260,20 Q1290,40 1320,20 Q1350,0 1380,20 Q1410,40 1440,20 L1440,40 L0,40 Z" fill="#fdf6ec"/>
+</svg>
+</div>
+
+<!-- ============ CONCEPT ============ -->
+<section class="concept" id="concept">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Concept</span>
+<span class="ja">プティ・リュンヌの想い</span>
+<span class="line"></span>
+</div>
+<div class="concept-grid">
+<div class="concept-visual fade-left">
+<div class="concept-cake" aria-hidden="true">
+<div class="cake-layer cake-layer-1"></div>
+<div class="cake-layer cake-layer-2"></div>
+<div class="cake-layer cake-layer-3"></div>
+<div class="cake-cream"></div>
+<div class="cake-cream"></div>
+<div class="cake-cream"></div>
+<div class="cake-strawberry"></div>
+</div>
+</div>
+<div class="concept-text fade-right">
+<h2>月明かりのように<br><span class="highlight hand-underline">そっと寄り添う</span>お菓子を</h2>
+<p>「Petite Lune」——フランス語で"小さな月"。夜空にそっと浮かぶ月のように、日常にやさしい光を灯すお菓子をお届けしたい。そんな想いから、この小さなパティスリーは生まれました。</p>
+<p>フランスの伝統と、日本の四季の恵み。ふたつの美しさが溶け合うとき、ひとくちごとに広がる"甘い幸福"が生まれます。大切な人と過ごす時間に、おひとりの静かなご褒美に。プティ・リュンヌのお菓子が、あなたの日常を少しだけ特別に彩りますように。</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ KODAWARI ============ -->
+<section class="kodawari" id="kodawari">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Commitment</span>
+<span class="ja">私たちのこだわり</span>
+<span class="line"></span>
+</div>
+<div class="kodawari-cards">
+<div class="kodawari-card fade-up" style="transition-delay:.1s">
+<div class="kodawari-icon">🌾</div>
+<h3>厳選された素材</h3>
+<p>北海道産の発酵バター、奄美大島の純黒糖、瀬戸内レモン——。日本各地の生産者と直接つながり、季節ごとに最も輝く素材だけを選び抜いています。素材の声に耳を澄ませることが、すべてのはじまりです。</p>
+</div>
+<div class="kodawari-card fade-up" style="transition-delay:.2s">
+<div class="kodawari-icon">🇫🇷</div>
+<h3>フランス伝統製法</h3>
+<p>パリの名店で磨いた技術と、師匠から受け継いだクラシックなルセット。生地の折り込みは手作業で72層、カスタードは銅鍋で丁寧に炊き上げる。手間を惜しまない伝統製法が、奥行きのある味わいを生み出します。</p>
+</div>
+<div class="kodawari-card fade-up" style="transition-delay:.3s">
+<div class="kodawari-icon">🌸</div>
+<h3>四季を味わう</h3>
+<p>春は桜と苺、夏は白桃とマンゴー、秋は栗と無花果、冬はショコラと柚子。日本の移ろう季節を一皿に閉じ込めて、今この瞬間だけの味わいをお届けします。月替わりの限定メニューをお楽しみください。</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="menu" id="menu-section">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Menu</span>
+<span class="ja">メニュー</span>
+<span class="line"></span>
+</div>
+<div class="menu-categories fade-up">
+<button class="menu-cat-btn active">Gâteaux</button>
+<button class="menu-cat-btn">Macarons</button>
+<button class="menu-cat-btn">Café</button>
+<button class="menu-cat-btn">Saison</button>
+</div>
+<div class="menu-grid">
+<div class="menu-card scale-in" style="transition-delay:.05s">
+<div class="menu-card-img plate-pink">
+<div class="img-placeholder">🎂</div>
+</div>
+<div class="menu-card-body">
+<h3>タルト・オ・フレーズ <span class="badge-osusume">おすすめ</span></h3>
+<span class="price">¥780</span>
+<p>自家製カスタードと紅ほっぺ苺。サクサクのパート・シュクレに季節の苺をたっぷりと。</p>
+</div>
+</div>
+<div class="menu-card scale-in" style="transition-delay:.1s">
+<div class="menu-card-img plate-brown">
+<div class="img-placeholder">🍫</div>
+</div>
+<div class="menu-card-body">
+<h3>フォンダン・ショコラ</h3>
+<span class="price">¥720</span>
+<p>ヴァローナ社カカオ70%使用。ナイフを入れると、とろりと溢れるガナッシュの至福。</p>
+</div>
+</div>
+<div class="menu-card scale-in" style="transition-delay:.15s">
+<div class="menu-card-img plate-gold">
+<div class="img-placeholder">🥐</div>
+</div>
+<div class="menu-card-body">
+<h3>クロワッサン・ブール</h3>
+<span class="price">¥420</span>
+<p>72層に折り込んだ北海道バターの香り。外はパリッと、中はふんわりの黄金バランス。</p>
+</div>
+</div>
+<div class="menu-card scale-in" style="transition-delay:.2s">
+<div class="menu-card-img plate-pink">
+<div class="img-placeholder">🧁</div>
+</div>
+<div class="menu-card-body">
+<h3>マカロン（6個セット）<span class="badge-osusume">おすすめ</span></h3>
+<span class="price">¥1,800</span>
+<p>ピスターシュ、フランボワーズ、ショコラ、シトロン、ローズ、キャラメル・ブール・サレ。</p>
+</div>
+</div>
+<div class="menu-card scale-in" style="transition-delay:.25s">
+<div class="menu-card-img plate-green">
+<div class="img-placeholder">🍰</div>
+</div>
+<div class="menu-card-body">
+<h3>ミルフィーユ・ヴァニーユ</h3>
+<span class="price">¥820</span>
+<p>マダガスカル産バニラビーンズ香るディプロマットと、キャラメリゼしたフイユタージュ。</p>
+</div>
+</div>
+<div class="menu-card scale-in" style="transition-delay:.3s">
+<div class="menu-card-img plate-gold">
+<div class="img-placeholder">☕</div>
+</div>
+<div class="menu-card-body">
+<h3>カフェ・オ・レ</h3>
+<span class="price">¥550</span>
+<p>自家焙煎のスペシャリティコーヒーを、北海道ジャージー牛乳でまろやかに。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ PATISSIER ============ -->
+<section class="patissier" id="patissier">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Pâtissier</span>
+<span class="ja">パティシエ紹介</span>
+<span class="line"></span>
+</div>
+<div class="patissier-content">
+<div class="patissier-photo fade-left" aria-label="パティシエのイメージ">
+<div class="patissier-hat"></div>
+<div class="patissier-silhouette"></div>
+</div>
+<div class="patissier-info fade-right">
+<h3>藤原 彩乃</h3>
+<span class="name-en">Ayano Fujiwara</span>
+<p>東京の製菓学校を卒業後、パリへ渡仏。「Pierre Hermé Paris」「Ladurée」で計6年の修業を経て帰国。2019年に地元・鎌倉にて「Petite Lune」をオープン。</p>
+<p>2022年、サロン・デュ・ショコラ東京にてゴールドアワード受賞。フランスの伝統技法と日本の繊細な季節感を融合させたスタイルが国内外で高い評価を受けている。</p>
+<div class="quote">
+<p>「お菓子は"おいしい"の先にある、<br>記憶に残る幸せを届けるもの。<br>一つひとつに心を込めて。」</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Gallery</span>
+<span class="ja">ギャラリー</span>
+<span class="line"></span>
+</div>
+<div class="gallery-grid">
+<div class="gallery-item scale-in" style="transition-delay:.05s"><div class="gallery-placeholder plate-pink">🍓</div></div>
+<div class="gallery-item scale-in" style="transition-delay:.1s"><div class="gallery-placeholder plate-brown">🍫</div></div>
+<div class="gallery-item scale-in" style="transition-delay:.15s"><div class="gallery-placeholder plate-gold">🥐</div></div>
+<div class="gallery-item scale-in" style="transition-delay:.2s"><div class="gallery-placeholder plate-green">🌿</div></div>
+<div class="gallery-item scale-in" style="transition-delay:.25s"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#f5e1e1,#fdf6ec)">☕</div></div>
+<div class="gallery-item scale-in" style="transition-delay:.3s"><div class="gallery-placeholder" style="background:linear-gradient(135deg,#e8c4c4,#d4a0a0)">🎀</div></div>
+</div>
+</div>
+</section>
+
+<!-- ============ SHOP INFO ============ -->
+<section class="shopinfo" id="shopinfo">
+<div class="container">
+<div class="section-title fade-up">
+<span class="en">Information</span>
+<span class="ja">店舗情報</span>
+<span class="line"></span>
+</div>
+<div class="shopinfo-grid">
+<div class="shopinfo-map fade-left">
+<div class="map-placeholder">
+<span class="pin">📍</span>
+<p>鎌倉駅西口より徒歩5分<br>小町通りを抜けた静かな路地</p>
+</div>
+</div>
+<div class="shopinfo-details fade-right">
+<h3>Petite Lune</h3>
+<table class="info-table">
+<tr><th>住所</th><td>〒248-0006<br>神奈川県鎌倉市小町2-7-15 Moon Bldg. 1F</td></tr>
+<tr><th>営業時間</th><td>10:00 – 19:00（L.O. 18:30）<br>カフェ 11:00 – 18:00（L.O. 17:30）</td></tr>
+<tr><th>定休日</th><td>毎週水曜日・第3火曜日</td></tr>
+<tr><th>電話</th><td>0467-00-0000</td></tr>
+<tr><th>座席</th><td>店内16席 / テラス6席</td></tr>
+<tr><th>駐車場</th><td>なし（近隣コインパーキングをご利用ください）</td></tr>
+<tr><th>アクセス</th><td>JR横須賀線・江ノ島電鉄「鎌倉」駅西口 徒歩5分</td></tr>
+</table>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="cta">
+<div class="container fade-up">
+<h2>Online Boutique</h2>
+<p>プティ・リュンヌの味わいを、ご自宅でも。<br>焼き菓子の詰め合わせ、季節のギフトボックス、<br>大切な方への贈り物にもお選びいただけます。</p>
+<a href="#" class="cta-btn">オンラインショップへ →</a>
+</div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+<div class="container">
+<div class="footer-logo">Petite Lune</div>
+<p class="footer-tagline">小さな月が灯す、甘い幸福。</p>
+<div class="footer-sns">
+<a href="#" aria-label="Instagram">📷</a>
+<a href="#" aria-label="X (Twitter)">𝕏</a>
+<a href="#" aria-label="LINE">💬</a>
+<a href="#" aria-label="Facebook">f</a>
+</div>
+<div class="footer-links">
+<a href="#">プライバシーポリシー</a>
+<a href="#">特定商取引法に基づく表記</a>
+<a href="#">お問い合わせ</a>
+<a href="#">採用情報</a>
+</div>
+<p class="footer-copy">&copy; 2026 Petite Lune. All Rights Reserved.</p>
+</div>
+</footer>
+
+<!-- Back to Top -->
+<button class="back-top" id="backTop" aria-label="ページトップへ戻る">↑</button>
+
+<script>
+/* ===== Floating Particles ===== */
+(function(){
+const c=document.getElementById('particles');
+const symbols=['♥','✦','☆','✧','♡','⋆'];
+const colors=['#d4a0a0','#c9a84c','#f5e1e1','#e8c4c4'];
+function spawn(){
+const p=document.createElement('span');
+p.className='particle';
+p.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+p.style.left=Math.random()*100+'%';
+p.style.fontSize=(Math.random()*12+8)+'px';
+p.style.color=colors[Math.floor(Math.random()*colors.length)];
+const d=Math.random()*12+10;
+p.style.animationDuration=d+'s';
+p.style.animationDelay=Math.random()*5+'s';
+c.appendChild(p);
+setTimeout(()=>p.remove(),(d+5)*1000);
+}
+for(let i=0;i<8;i++) setTimeout(spawn,i*2000);
+setInterval(spawn,3000);
+})();
+
+/* ===== Scroll Animations (Intersection Observer) ===== */
+(function(){
+const els=document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in');
+const obs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+e.target.classList.add('visible');
+obs.unobserve(e.target);
+}
+});
+},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+els.forEach(el=>obs.observe(el));
+})();
+
+/* ===== Navbar scroll ===== */
+(function(){
+const nav=document.getElementById('nav');
+const backTop=document.getElementById('backTop');
+window.addEventListener('scroll',()=>{
+const y=window.scrollY;
+nav.classList.toggle('scrolled',y>80);
+backTop.classList.toggle('show',y>600);
+},{passive:true});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+
+/* ===== Hamburger ===== */
+(function(){
+const btn=document.getElementById('hamburger');
+const links=document.getElementById('navLinks');
+btn.addEventListener('click',()=>{
+btn.classList.toggle('active');
+links.classList.toggle('open');
+});
+links.querySelectorAll('a').forEach(a=>{
+a.addEventListener('click',()=>{
+btn.classList.remove('active');
+links.classList.remove('open');
+});
+});
+})();
+
+/* ===== Menu Category Toggle (visual only) ===== */
+(function(){
+const btns=document.querySelectorAll('.menu-cat-btn');
+btns.forEach(b=>{
+b.addEventListener('click',()=>{
+btns.forEach(x=>x.classList.remove('active'));
+b.classList.add('active');
+});
+});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>懐石 月白（つきしろ）| 京都・祇園の日本料理</title>
+<meta name="description" content="京都祇園に佇む懐石料理店「月白」。四季折々の食材を匠の技で仕立てる、一期一会の味わいをお届けいたします。">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--kuro:#0a0a0a;--kin:#c9a84c;--kin-light:#e0c96e;--hakuji:#f5f0eb;--fukahi:#8b2500;
+--bg:#0a0a0a;--text:#f5f0eb;--text-dim:rgba(245,240,235,.55);
+--font-jp:'Noto Serif JP',serif;--font-en:'Georgia','Times New Roman',serif;
+--section-pad:clamp(4rem,10vw,8rem) clamp(1rem,5vw,4rem);
+}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden}
+body{font-family:var(--font-jp);background:var(--bg);color:var(--text);line-height:1.9;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--kin);color:var(--kuro)}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background .5s,backdrop-filter .5s,padding .4s}
+.nav.scrolled{background:rgba(10,10,10,.92);backdrop-filter:blur(12px);padding:.7rem 2rem}
+.nav-logo{font-size:1.1rem;letter-spacing:.3em;color:var(--kin);font-weight:400}
+.nav-links{display:flex;gap:clamp(1rem,3vw,2.5rem);list-style:none}
+.nav-links a{font-size:.78rem;letter-spacing:.15em;color:var(--text-dim);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--kin);transition:width .4s}
+.nav-links a:hover{color:var(--kin)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:24px;height:1px;background:var(--kin);transition:all .3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+/* Mobile Menu */
+.mobile-menu{position:fixed;top:0;right:-100%;width:70%;max-width:320px;height:100vh;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2rem;transition:right .5s cubic-bezier(.4,0,.2,1)}
+.mobile-menu.open{right:0}
+.mobile-menu a{font-size:1rem;letter-spacing:.2em;color:var(--text-dim);transition:color .3s}
+.mobile-menu a:hover{color:var(--kin)}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+}
+
+/* ===== HERO ===== */
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#050505}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(201,168,76,.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(139,37,0,.05) 0%,transparent 50%),var(--kuro);z-index:0}
+.hero-particles{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;opacity:0;animation:heroIn 2s 0.5s forwards}
+.hero-en{font-family:var(--font-en);font-size:clamp(.7rem,1.2vw,.9rem);letter-spacing:.5em;color:var(--kin);text-transform:uppercase;margin-bottom:1.5rem;opacity:.7}
+.hero-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:300;letter-spacing:.3em;color:var(--hakuji);margin-bottom:.5rem}
+.hero-title .accent{color:var(--kin);font-weight:400}
+.hero-sub{font-size:clamp(.85rem,1.5vw,1.1rem);letter-spacing:.35em;color:var(--text-dim);margin-bottom:3rem;font-weight:300}
+.hero-catch{font-size:clamp(1rem,2vw,1.5rem);letter-spacing:.4em;color:var(--kin);font-weight:300;position:relative;display:inline-block}
+.hero-catch::before,.hero-catch::after{content:'';position:absolute;top:50%;width:clamp(2rem,5vw,4rem);height:1px;background:linear-gradient(to right,transparent,var(--kin))}
+.hero-catch::before{right:calc(100% + 1.5rem);background:linear-gradient(to left,transparent,var(--kin))}
+.hero-catch::after{left:calc(100% + 1.5rem)}
+.scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.scroll-indicator span{font-size:.65rem;letter-spacing:.3em;color:var(--text-dim);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--kin),transparent);animation:scrollLine 2s infinite}
+@keyframes heroIn{to{opacity:1}}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ===== SECTION BASE ===== */
+.section{padding:var(--section-pad);position:relative}
+.section-label{font-family:var(--font-en);font-size:.7rem;letter-spacing:.4em;color:var(--kin);text-transform:uppercase;margin-bottom:1rem;opacity:.8}
+.section-title{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:300;letter-spacing:.2em;margin-bottom:1rem;line-height:1.5}
+.section-title .kin{color:var(--kin)}
+.section-line{width:40px;height:1px;background:var(--kin);margin-bottom:2.5rem}
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-up.d1{transition-delay:.15s}.fade-up.d2{transition-delay:.3s}.fade-up.d3{transition-delay:.45s}.fade-up.d4{transition-delay:.6s}
+.fade-left{opacity:0;transform:translateX(-40px);transition:opacity .9s,transform .9s}.fade-left.visible{opacity:1;transform:translateX(0)}
+.fade-right{opacity:0;transform:translateX(40px);transition:opacity .9s,transform .9s}.fade-right.visible{opacity:1;transform:translateX(0)}
+
+/* ===== TATEGAKI (Vertical text) ===== */
+.tategaki{writing-mode:vertical-rl;text-orientation:mixed}
+
+/* ===== PHILOSOPHY ===== */
+.philosophy{min-height:100vh;display:flex;align-items:center;background:var(--kuro);overflow:hidden}
+.philosophy-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem);align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.philosophy-visual{position:relative;aspect-ratio:3/4;border-radius:2px;overflow:hidden}
+.philosophy-visual .plate{width:100%;height:100%;background:radial-gradient(circle at 50% 45%,rgba(201,168,76,.15),transparent 55%),radial-gradient(ellipse at 55% 50%,#1a1612 0%,#0f0d0a 100%);position:relative;display:flex;align-items:center;justify-content:center}
+.plate-circle{width:60%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 45% 40%,#f5f0eb 0%,#d4cfc8 40%,#b8b0a4 100%);position:relative;box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 2px 10px rgba(255,255,255,.1)}
+.plate-food{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50%;aspect-ratio:1;border-radius:30% 70% 50% 50%;background:radial-gradient(circle at 40% 35%,#8b6914,#5a3e0a 60%,#3d2a08);box-shadow:0 4px 20px rgba(0,0,0,.3);filter:blur(0.5px)}
+.plate-garnish{position:absolute;top:30%;right:25%;width:15%;height:3%;background:linear-gradient(90deg,#2d5a1e,#4a8a32);border-radius:50%;transform:rotate(-15deg)}
+.philosophy-text{max-width:500px}
+.philosophy-text p{font-size:clamp(.88rem,1.3vw,1rem);line-height:2.2;color:var(--text-dim);margin-bottom:1.5rem;letter-spacing:.05em;font-weight:300}
+.philosophy-tategaki{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:.75rem;letter-spacing:.8em;color:rgba(201,168,76,.12);font-weight:300;z-index:0}
+
+@media(max-width:768px){
+  .philosophy-inner{grid-template-columns:1fr;gap:2rem}
+  .philosophy-visual{max-width:80%;margin:0 auto}
+}
+
+/* ===== SEASONAL MENU ===== */
+.seasonal{min-height:100vh;background:var(--kuro);position:relative;overflow:hidden}
+.season-bg{position:absolute;inset:0;transition:opacity 1s;opacity:0;z-index:0}
+.season-bg.active{opacity:1}
+.season-bg.spring{background:radial-gradient(ellipse at 30% 60%,rgba(255,183,197,.06),transparent 60%),var(--kuro)}
+.season-bg.summer{background:radial-gradient(ellipse at 70% 40%,rgba(0,100,80,.06),transparent 60%),var(--kuro)}
+.season-bg.autumn{background:radial-gradient(ellipse at 50% 50%,rgba(139,37,0,.08),transparent 60%),var(--kuro)}
+.season-bg.winter{background:radial-gradient(ellipse at 40% 30%,rgba(200,210,230,.05),transparent 60%),var(--kuro)}
+.seasonal-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+.season-indicator{display:flex;justify-content:center;gap:3rem;margin-bottom:4rem}
+.season-tab{font-size:.85rem;letter-spacing:.3em;color:var(--text-dim);cursor:pointer;padding:.5rem 0;border-bottom:1px solid transparent;transition:all .4s;opacity:.4}
+.season-tab.active{color:var(--kin);border-bottom-color:var(--kin);opacity:1}
+.season-content{display:none;animation:fadeMenu .8s forwards}
+.season-content.active{display:block}
+@keyframes fadeMenu{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:2rem}
+.menu-card{background:rgba(245,240,235,.03);border:1px solid rgba(201,168,76,.1);padding:2rem;border-radius:2px;transition:all .5s;position:relative;overflow:hidden}
+.menu-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:1px;background:linear-gradient(to right,transparent,var(--kin),transparent);transition:left .8s}
+.menu-card:hover::before{left:100%}
+.menu-card:hover{border-color:rgba(201,168,76,.3);background:rgba(245,240,235,.05)}
+.menu-card-visual{aspect-ratio:16/10;margin-bottom:1.5rem;border-radius:2px;overflow:hidden;position:relative}
+.dish-art{width:100%;height:100%;position:relative}
+.dish-art.spring-dish{background:linear-gradient(135deg,#1a1210,#231a14);overflow:hidden}
+.dish-art.spring-dish::after{content:'';position:absolute;top:20%;left:15%;width:70%;height:60%;border-radius:45% 55% 50% 50%;background:radial-gradient(ellipse at 50% 40%,rgba(255,183,197,.3),rgba(201,168,76,.15),transparent);filter:blur(8px)}
+.dish-art.summer-dish{background:linear-gradient(135deg,#0a1a18,#0f1a15)}
+.dish-art.summer-dish::after{content:'';position:absolute;top:15%;left:20%;width:60%;height:65%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,180,120,.2),rgba(100,200,150,.1),transparent);filter:blur(10px)}
+.dish-art.autumn-dish{background:linear-gradient(135deg,#1a120a,#201510)}
+.dish-art.autumn-dish::after{content:'';position:absolute;top:20%;left:15%;width:65%;height:55%;border-radius:40% 60% 55% 45%;background:radial-gradient(ellipse,rgba(201,120,30,.25),rgba(139,37,0,.15),transparent);filter:blur(8px)}
+.dish-art.winter-dish{background:linear-gradient(135deg,#12141a,#0f1015)}
+.dish-art.winter-dish::after{content:'';position:absolute;top:15%;left:18%;width:64%;height:60%;border-radius:50% 50% 45% 55%;background:radial-gradient(ellipse,rgba(200,210,240,.15),rgba(180,190,210,.08),transparent);filter:blur(10px)}
+.menu-card h3{font-size:1.05rem;font-weight:400;letter-spacing:.15em;margin-bottom:.5rem}
+.menu-card p{font-size:.82rem;color:var(--text-dim);line-height:1.9;font-weight:300}
+
+/* ===== SPACE ===== */
+.space{min-height:100vh;background:var(--kuro);overflow:hidden}
+.space-inner{max-width:1300px;margin:0 auto}
+.space-grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;margin-top:3rem;height:clamp(400px,55vw,600px)}
+.space-item{border-radius:2px;overflow:hidden;position:relative}
+.space-item .room-art{width:100%;height:100%;transition:transform .8s}
+.space-item:hover .room-art{transform:scale(1.05)}
+.room-art.counter{background:linear-gradient(160deg,#1a1510 0%,#0f0d08 40%,#1a150e 100%);position:relative}
+.room-art.counter::before{content:'';position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(to right,#2a1f12,#3a2a18,#2a1f12);opacity:.6}
+.room-art.counter::after{content:'';position:absolute;top:15%;left:10%;right:10%;height:2px;background:linear-gradient(to right,transparent,rgba(201,168,76,.3),transparent)}
+.room-art.private{background:linear-gradient(135deg,#12100a,#1a1510);position:relative}
+.room-art.private::before{content:'';position:absolute;inset:10%;border:1px solid rgba(201,168,76,.08);border-radius:2px}
+.room-art.private::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30%;aspect-ratio:1;background:radial-gradient(circle,rgba(201,168,76,.1),transparent);border-radius:50%}
+.room-art.garden{background:linear-gradient(180deg,#0a0f0a,#0f150f);position:relative}
+.room-art.garden::before{content:'';position:absolute;bottom:20%;left:20%;width:60%;height:40%;background:radial-gradient(ellipse,rgba(40,80,30,.3),transparent);border-radius:50%;filter:blur(15px)}
+.space-item:first-child{grid-row:1/3}
+.space-caption{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(10,10,10,.9),transparent);z-index:1}
+.space-caption h3{font-size:.95rem;letter-spacing:.15em;font-weight:400;margin-bottom:.3rem}
+.space-caption p{font-size:.75rem;color:var(--text-dim);font-weight:300}
+
+@media(max-width:768px){
+  .space-grid{grid-template-columns:1fr;grid-template-rows:auto;height:auto}
+  .space-item{aspect-ratio:16/9}
+  .space-item:first-child{grid-row:auto}
+}
+
+/* ===== CHEF ===== */
+.chef{min-height:80vh;display:flex;align-items:center;background:var(--kuro);overflow:hidden}
+.chef-inner{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem);align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.chef-portrait{position:relative;aspect-ratio:3/4;max-width:400px;margin:0 auto}
+.chef-portrait-art{width:100%;height:100%;background:linear-gradient(170deg,#1a1815,#0a0908);border-radius:2px;position:relative;overflow:hidden}
+.chef-portrait-art::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:55%;aspect-ratio:3/4;border-radius:45% 55% 50% 50%;background:radial-gradient(ellipse at 48% 35%,#d4c4a8,#a89478 40%,#6b5a44 70%,transparent);filter:blur(2px);opacity:.6}
+.chef-portrait-art::after{content:'';position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to bottom,transparent,#0a0908)}
+.chef-name-vertical{position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-size:.85rem;letter-spacing:.5em;color:rgba(201,168,76,.25)}
+.chef-text h3{font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;letter-spacing:.15em;margin-bottom:.5rem}
+.chef-text .chef-name-sub{font-size:.8rem;color:var(--kin);letter-spacing:.2em;margin-bottom:2rem}
+.chef-text p{font-size:clamp(.85rem,1.2vw,.95rem);line-height:2.2;color:var(--text-dim);margin-bottom:1.2rem;font-weight:300}
+
+@media(max-width:768px){
+  .chef-inner{grid-template-columns:1fr;gap:2rem}
+  .chef-portrait{max-width:60%;order:-1}
+}
+
+/* ===== RESERVATION ===== */
+.reservation{min-height:80vh;display:flex;align-items:center;background:linear-gradient(180deg,var(--kuro),#0d0a06);position:relative;overflow:hidden}
+.reservation::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--kin),transparent);opacity:.3}
+.reservation-inner{max-width:1000px;margin:0 auto;width:100%;text-align:center}
+.reservation-info{display:grid;grid-template-columns:1fr 1px 1fr;gap:3rem;margin:3rem 0;align-items:start}
+.reservation-divider{background:rgba(201,168,76,.2);height:100%;min-height:120px}
+.reservation-block h3{font-size:.85rem;letter-spacing:.25em;color:var(--kin);margin-bottom:1.2rem;font-weight:400}
+.reservation-block p{font-size:.88rem;line-height:2;color:var(--text-dim);font-weight:300}
+.reservation-block .tel{font-family:var(--font-en);font-size:clamp(1.3rem,2.5vw,1.8rem);letter-spacing:.1em;color:var(--hakuji);display:block;margin:.8rem 0}
+.cta-button{display:inline-block;padding:1rem 3.5rem;border:1px solid var(--kin);color:var(--kin);font-size:.85rem;letter-spacing:.3em;transition:all .5s;position:relative;overflow:hidden;margin-top:2rem;cursor:pointer;background:transparent;font-family:var(--font-jp)}
+.cta-button::before{content:'';position:absolute;inset:0;background:var(--kin);transform:scaleX(0);transform-origin:right;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.cta-button:hover{color:var(--kuro)}
+.cta-button:hover::before{transform:scaleX(1);transform-origin:left}
+.cta-button span{position:relative;z-index:1}
+.map-placeholder{margin-top:3rem;aspect-ratio:21/9;max-height:250px;background:linear-gradient(135deg,#15130f,#1a1812);border:1px solid rgba(201,168,76,.08);border-radius:2px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.map-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(201,168,76,.03) 30px,rgba(201,168,76,.03) 31px),repeating-linear-gradient(90deg,transparent,transparent 30px,rgba(201,168,76,.03) 30px,rgba(201,168,76,.03) 31px)}
+.map-placeholder p{font-size:.8rem;color:var(--text-dim);letter-spacing:.15em}
+
+@media(max-width:768px){
+  .reservation-info{grid-template-columns:1fr;gap:2rem}
+  .reservation-divider{display:none}
+}
+
+/* ===== FOOTER ===== */
+.footer{padding:3rem clamp(1rem,5vw,4rem);border-top:1px solid rgba(201,168,76,.08);text-align:center;background:var(--kuro)}
+.footer-logo{font-size:1.2rem;letter-spacing:.4em;color:var(--kin);margin-bottom:.5rem;font-weight:400}
+.footer-logo-en{font-family:var(--font-en);font-size:.65rem;letter-spacing:.4em;color:var(--text-dim);margin-bottom:2rem}
+.footer-links{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.footer-links a{font-size:.75rem;letter-spacing:.15em;color:var(--text-dim);transition:color .3s}
+.footer-links a:hover{color:var(--kin)}
+.footer-copy{font-size:.65rem;color:rgba(245,240,235,.25);letter-spacing:.1em}
+
+/* ===== SEASON DECORATION ===== */
+.season-deco{position:fixed;top:0;right:2rem;z-index:50;padding-top:8rem;pointer-events:none}
+.season-kanji{font-size:1.2rem;letter-spacing:.8em;color:rgba(201,168,76,.08);transition:all 1.5s}
+
+/* ===== GOLD SEPARATOR ===== */
+.gold-sep{text-align:center;padding:2rem 0;position:relative}
+.gold-sep::before{content:'◆';color:var(--kin);font-size:.5rem;opacity:.4}
+
+/* ===== PARALLAX ===== */
+.parallax-wrap{overflow:hidden;position:relative}
+.parallax-el{transition:transform .1s linear}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">月白</div>
+  <ul class="nav-links">
+    <li><a href="#philosophy">料理哲学</a></li>
+    <li><a href="#seasonal">季節の献立</a></li>
+    <li><a href="#space">空間</a></li>
+    <li><a href="#chef">料理長</a></li>
+    <li><a href="#reservation">ご予約</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#philosophy" onclick="closeMobile()">料理哲学</a>
+  <a href="#seasonal" onclick="closeMobile()">季節の献立</a>
+  <a href="#space" onclick="closeMobile()">空間</a>
+  <a href="#chef" onclick="closeMobile()">料理長</a>
+  <a href="#reservation" onclick="closeMobile()">ご予約</a>
+</div>
+
+<!-- Season Decoration (fixed vertical text) -->
+<div class="season-deco tategaki" id="seasonDeco">
+  <span class="season-kanji" id="seasonKanji">春</span>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <canvas class="hero-particles" id="particles"></canvas>
+  <div class="hero-content">
+    <p class="hero-en">Kaiseki Tsukishiro — Kyoto</p>
+    <h1 class="hero-title">懐石 <span class="accent">月白</span></h1>
+    <p class="hero-sub">京都・祇園</p>
+    <p class="hero-catch">一期一会の、味わいを。</p>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="section philosophy" id="philosophy">
+  <div class="philosophy-inner" style="position:relative">
+    <div class="tategaki philosophy-tategaki fade-up" aria-hidden="true">四季折々の美味</div>
+    <div class="philosophy-visual fade-left">
+      <div class="plate">
+        <div class="plate-circle">
+          <div class="plate-food"></div>
+          <div class="plate-garnish"></div>
+        </div>
+      </div>
+    </div>
+    <div class="philosophy-text fade-right">
+      <p class="section-label">Philosophy</p>
+      <h2 class="section-title">素材が語る、<br><span class="kin">季節の物語</span></h2>
+      <div class="section-line"></div>
+      <p>京の地で三十余年。月白が大切にしてきたのは、素材との対話です。毎朝、京都中央市場と契約農家を巡り、その日もっとも美しい食材を見極める。それが私たちの一日の始まりです。</p>
+      <p>懐石とは、茶の湯の心から生まれた「もてなし」の形。一椀に込められた季節の移ろい、器と料理が織りなす小宇宙——その静謐な美しさを、現代の感性で紡ぎ直すことが、月白の料理哲学です。</p>
+      <p>余計なものを削ぎ落とし、素材の声に耳を澄ます。その先にある、凛とした一皿をお届けいたします。</p>
+    </div>
+  </div>
+</section>
+
+<div class="gold-sep"></div>
+
+<!-- SEASONAL MENU -->
+<section class="section seasonal" id="seasonal">
+  <div class="season-bg spring active" id="bgSpring"></div>
+  <div class="season-bg summer" id="bgSummer"></div>
+  <div class="season-bg autumn" id="bgAutumn"></div>
+  <div class="season-bg winter" id="bgWinter"></div>
+  
+  <div class="seasonal-inner">
+    <div class="fade-up" style="text-align:center">
+      <p class="section-label">Seasonal Course</p>
+      <h2 class="section-title" style="margin-bottom:0">季節の<span class="kin">献立</span></h2>
+      <p style="font-size:.85rem;color:var(--text-dim);margin:1rem 0 2rem;letter-spacing:.1em;font-weight:300">旬を映す、月替わりの懐石をご用意しております</p>
+    </div>
+    
+    <div class="season-indicator fade-up d1">
+      <span class="season-tab active" data-season="spring" onclick="changeSeason('spring')">春</span>
+      <span class="season-tab" data-season="summer" onclick="changeSeason('summer')">夏</span>
+      <span class="season-tab" data-season="autumn" onclick="changeSeason('autumn')">秋</span>
+      <span class="season-tab" data-season="winter" onclick="changeSeason('winter')">冬</span>
+    </div>
+
+    <!-- Spring -->
+    <div class="season-content active" id="content-spring">
+      <div class="menu-grid">
+        <div class="menu-card fade-up">
+          <div class="menu-card-visual"><div class="dish-art spring-dish"></div></div>
+          <h3>先附　桜鯛の昆布〆</h3>
+          <p>明石の桜鯛を薄造りにし、利尻昆布で一晩〆めたもの。木の芽の香りとともに、春の訪れをお届けいたします。</p>
+        </div>
+        <div class="menu-card fade-up d1">
+          <div class="menu-card-visual"><div class="dish-art spring-dish"></div></div>
+          <h3>椀盛　蛤真薯 花筏仕立て</h3>
+          <p>淡路の蛤を丁寧に裏漉しした真薯を、桜の花びらを浮かべた吸い地で。蓋を開けた瞬間の春景色をお楽しみください。</p>
+        </div>
+        <div class="menu-card fade-up d2">
+          <div class="menu-card-visual"><div class="dish-art spring-dish"></div></div>
+          <h3>主菜　若竹煮 木の芽味噌</h3>
+          <p>京都西山産の朝掘り筍を、かつお出汁でじっくり炊き上げました。若布とともに、春の大地の力強さを感じていただけます。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summer -->
+    <div class="season-content" id="content-summer">
+      <div class="menu-grid">
+        <div class="menu-card fade-up">
+          <div class="menu-card-visual"><div class="dish-art summer-dish"></div></div>
+          <h3>先附　鱧の落とし 梅肉添え</h3>
+          <p>祇園祭の頃に旬を迎える鱧。骨切りを施し、氷水に落とした身は花が咲いたよう。紀州南高梅の梅肉とともに。</p>
+        </div>
+        <div class="menu-card fade-up d1">
+          <div class="menu-card-visual"><div class="dish-art summer-dish"></div></div>
+          <h3>椀盛　冬瓜と鮑の冷やし椀</h3>
+          <p>翡翠色に仕上げた冬瓜と、柔らかく蒸し上げた鮑を、冷たい葛仕立ての椀で。涼やかなひとときを。</p>
+        </div>
+        <div class="menu-card fade-up d2">
+          <div class="menu-card-visual"><div class="dish-art summer-dish"></div></div>
+          <h3>焼物　鮎の塩焼き 蓼酢</h3>
+          <p>清流で育った天然鮎を炭火で香ばしく。頭から尾まで丸ごとお召し上がりいただける、夏の醍醐味です。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Autumn -->
+    <div class="season-content" id="content-autumn">
+      <div class="menu-grid">
+        <div class="menu-card fade-up">
+          <div class="menu-card-visual"><div class="dish-art autumn-dish"></div></div>
+          <h3>先附　松茸と銀杏の土瓶蒸し</h3>
+          <p>丹波産の松茸を贅沢に使い、鱧の身と銀杏を合わせた土瓶蒸し。秋の香りが器いっぱいに広がります。</p>
+        </div>
+        <div class="menu-card fade-up d1">
+          <div class="menu-card-visual"><div class="dish-art autumn-dish"></div></div>
+          <h3>焼物　甘鯛の若狭焼き</h3>
+          <p>若狭湾の甘鯛に酒を振り、鱗ごと香ばしく焼き上げる若狭焼き。パリパリの鱗と柔らかな身の対比をお楽しみください。</p>
+        </div>
+        <div class="menu-card fade-up d2">
+          <div class="menu-card-visual"><div class="dish-art autumn-dish"></div></div>
+          <h3>御飯　栗ご飯 赤出汁</h3>
+          <p>丹波栗をたっぷりと炊き込んだ土鍋ご飯。赤味噌の出汁と香の物を添えて、秋の実りを締めくくります。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Winter -->
+    <div class="season-content" id="content-winter">
+      <div class="menu-grid">
+        <div class="menu-card fade-up">
+          <div class="menu-card-visual"><div class="dish-art winter-dish"></div></div>
+          <h3>先附　蕪蒸し 蟹餡</h3>
+          <p>聖護院蕪をすりおろし、間人蟹の身を包んで蒸し上げます。とろりとした銀餡が、冬の温もりを伝えます。</p>
+        </div>
+        <div class="menu-card fade-up d1">
+          <div class="menu-card-visual"><div class="dish-art winter-dish"></div></div>
+          <h3>造里　寒鰤の厚造り</h3>
+          <p>日本海で揚がった寒鰤を、贅沢な厚切りで。脂の乗った冬の鰤は、醤油をさっとくぐらせるだけで至福の一切れに。</p>
+        </div>
+        <div class="menu-card fade-up d2">
+          <div class="menu-card-visual"><div class="dish-art winter-dish"></div></div>
+          <h3>鍋物　すっぽん鍋 九条葱</h3>
+          <p>丸鍋とも呼ばれる京都の冬の定番。すっぽんの滋味深い出汁に九条葱を合わせた、身体の芯から温まる一品です。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up d2" style="text-align:center;margin-top:3rem">
+      <p style="font-size:.78rem;color:var(--text-dim);letter-spacing:.1em">懐石コース ￥22,000〜 / 特別懐石 ￥35,000〜（税・サービス料別）</p>
+    </div>
+  </div>
+</section>
+
+<div class="gold-sep"></div>
+
+<!-- SPACE -->
+<section class="section space" id="space">
+  <div class="space-inner">
+    <div style="text-align:center" class="fade-up">
+      <p class="section-label">Interior</p>
+      <h2 class="section-title">空間と<span class="kin">設え</span></h2>
+      <div class="section-line" style="margin:0 auto 1rem"></div>
+      <p style="font-size:.88rem;color:var(--text-dim);max-width:600px;margin:0 auto 1rem;font-weight:300;letter-spacing:.05em">数寄屋建築の粋を集めた空間で、<br>料理とともに京の美意識をご堪能ください。</p>
+    </div>
+    <div class="space-grid fade-up d1">
+      <div class="space-item">
+        <div class="room-art counter"></div>
+        <div class="space-caption">
+          <h3>檜カウンター　八席</h3>
+          <p>樹齢二百年の吉野檜を使った一枚板のカウンター。料理長の手仕事を間近にご覧いただけます。</p>
+        </div>
+      </div>
+      <div class="space-item">
+        <div class="room-art private"></div>
+        <div class="space-caption">
+          <h3>個室　二室</h3>
+          <p>茶室の趣を取り入れた完全個室。接待やお祝いの席に。</p>
+        </div>
+      </div>
+      <div class="space-item">
+        <div class="room-art garden"></div>
+        <div class="space-caption">
+          <h3>坪庭</h3>
+          <p>四季の移ろいを映す、小さな庭。灯篭の灯りが夜を彩ります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-sep"></div>
+
+<!-- CHEF -->
+<section class="section chef" id="chef">
+  <div class="chef-inner">
+    <div class="chef-portrait fade-left">
+      <div class="chef-portrait-art"></div>
+      <div class="tategaki chef-name-vertical">料理長 藤村紘一</div>
+    </div>
+    <div class="chef-text fade-right">
+      <p class="section-label">Head Chef</p>
+      <h2 class="section-title">料理長<span class="kin">紹介</span></h2>
+      <div class="section-line"></div>
+      <h3>藤村 紘一</h3>
+      <p class="chef-name-sub">Koichi Fujimura</p>
+      <p>京都に生まれ、十五歳で料理の道へ。老舗料亭「菊乃井」にて十二年間の修業を経たのち、東京の星付き日本料理店で副料理長を務める。</p>
+      <p>二〇一〇年、生まれ故郷の祇園に「月白」を開店。以来、京都の伝統を敬いながらも、現代の感性を取り入れた独自の懐石を追求し続けている。</p>
+      <p>「食材に優劣はない。旬のものを、その一番美しい瞬間にお出しする。それだけのことです」——素材への敬意と、飽くなき探究心が、月白の味を支えています。</p>
+    </div>
+  </div>
+</section>
+
+<div class="gold-sep"></div>
+
+<!-- RESERVATION -->
+<section class="section reservation" id="reservation">
+  <div class="reservation-inner">
+    <div class="fade-up">
+      <p class="section-label">Reservation & Access</p>
+      <h2 class="section-title">ご予約・<span class="kin">アクセス</span></h2>
+      <div class="section-line" style="margin:0 auto 2rem"></div>
+    </div>
+    
+    <div class="reservation-info fade-up d1">
+      <div class="reservation-block">
+        <h3>ご予約</h3>
+        <p>完全予約制でございます。<br>お電話にてご予約を承ります。</p>
+        <span class="tel">075-561-XXXX</span>
+        <p>受付時間：10:00〜18:00（水曜定休）<br>※二名様より承ります<br>※三日前までにご予約ください</p>
+      </div>
+      <div class="reservation-divider"></div>
+      <div class="reservation-block">
+        <h3>アクセス</h3>
+        <p>〒605-0074<br>京都府京都市東山区祇園町南側 XXX-X<br><br>京阪「祇園四条」駅より徒歩5分<br>阪急「京都河原町」駅より徒歩8分</p>
+        <p style="margin-top:.8rem">営業時間<br>昼席　12:00〜14:30（最終入店 12:30）<br>夜席　17:30〜22:00（最終入店 19:30）</p>
+      </div>
+    </div>
+
+    <div class="fade-up d2">
+      <button class="cta-button" onclick="alert('お電話にてご予約を承ります。\n075-561-XXXX')"><span>ご予約はこちら</span></button>
+    </div>
+
+    <div class="map-placeholder fade-up d3">
+      <p>祇園四条駅より花見小路を南へ　徒歩五分</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p class="footer-logo">月白</p>
+  <p class="footer-logo-en">KAISEKI TSUKISHIRO</p>
+  <div class="footer-links">
+    <a href="#philosophy">料理哲学</a>
+    <a href="#seasonal">季節の献立</a>
+    <a href="#space">空間</a>
+    <a href="#chef">料理長</a>
+    <a href="#reservation">ご予約</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 懐石 月白 All Rights Reserved.</p>
+</footer>
+
+<script>
+/* ===== GOLD PARTICLE ANIMATION ===== */
+(function(){
+  const c=document.getElementById('particles'),ctx=c.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}
+  window.addEventListener('resize',resize);resize();
+  class P{
+    constructor(){this.reset()}
+    reset(){
+      this.x=Math.random()*W;this.y=-10-Math.random()*H*.5;
+      this.s=Math.random()*3+1;this.vy=Math.random()*.4+.15;
+      this.vx=(Math.random()-.5)*.3;this.a=Math.random()*.5+.2;
+      this.rot=Math.random()*Math.PI*2;this.rotS=(Math.random()-.5)*.02;
+      this.life=1;this.decay=Math.random()*.0003+.0001;
+    }
+    update(){
+      this.y+=this.vy;this.x+=this.vx+Math.sin(this.y*.005)*.2;
+      this.rot+=this.rotS;this.life-=this.decay;
+      if(this.y>H+10||this.life<=0)this.reset();
+    }
+    draw(){
+      ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rot);
+      ctx.globalAlpha=this.a*this.life;
+      ctx.fillStyle=Math.random()>.3?'#c9a84c':'#e0c96e';
+      ctx.fillRect(-this.s/2,-this.s/2,this.s,this.s*.6);
+      ctx.restore();
+    }
+  }
+  for(let i=0;i<60;i++)particles.push(new P());
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{p.update();p.draw()});
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ===== SCROLL ANIMATIONS (Intersection Observer) ===== */
+const observerOpts={threshold:0.1,rootMargin:'0px 0px -50px 0px'};
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+  });
+},observerOpts);
+document.querySelectorAll('.fade-up,.fade-left,.fade-right').forEach(el=>observer.observe(el));
+
+/* ===== NAV SCROLL ===== */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>80);
+});
+
+/* ===== HAMBURGER ===== */
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+});
+function closeMobile(){
+  hamburger.classList.remove('active');
+  mobileMenu.classList.remove('open');
+}
+
+/* ===== SEASON TABS ===== */
+function changeSeason(s){
+  document.querySelectorAll('.season-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector(`[data-season="${s}"]`).classList.add('active');
+  document.querySelectorAll('.season-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('content-'+s).classList.add('active');
+  document.querySelectorAll('.season-bg').forEach(b=>b.classList.remove('active'));
+  document.getElementById('bg'+s.charAt(0).toUpperCase()+s.slice(1)).classList.add('active');
+  // Re-observe new fade elements
+  document.querySelectorAll('#content-'+s+' .fade-up').forEach(el=>{
+    el.classList.remove('visible');
+    observer.observe(el);
+  });
+  updateSeasonKanji(s);
+}
+
+/* ===== SEASON SCROLL DETECTION ===== */
+const seasonMap={0:'春',1:'夏',2:'秋',3:'冬'};
+const seasonKeys=['spring','summer','autumn','winter'];
+function updateSeasonKanji(s){
+  const idx=seasonKeys.indexOf(s);
+  const kanji=document.getElementById('seasonKanji');
+  kanji.style.opacity='0';
+  setTimeout(()=>{kanji.textContent=seasonMap[idx]||'春';kanji.style.opacity='1'},400);
+}
+
+/* ===== PARALLAX on scroll ===== */
+let ticking=false;
+window.addEventListener('scroll',()=>{
+  if(!ticking){
+    requestAnimationFrame(()=>{
+      const scrollY=window.scrollY;
+      const hero=document.querySelector('.hero-content');
+      if(hero){hero.style.transform=`translateY(${scrollY*.25}px)`;hero.style.opacity=1-scrollY/600}
+      // Season auto-change based on scroll in seasonal section
+      const seasonal=document.getElementById('seasonal');
+      if(seasonal){
+        const rect=seasonal.getBoundingClientRect();
+        const progress=Math.max(0,Math.min(1,(-rect.top)/(rect.height-window.innerHeight)));
+        const idx=Math.min(3,Math.floor(progress*4));
+        const current=document.querySelector('.season-tab.active');
+        if(current&&current.dataset.season!==seasonKeys[idx]&&rect.top<window.innerHeight&&rect.bottom>0){
+          changeSeason(seasonKeys[idx]);
+        }
+      }
+      ticking=false;
+    });
+    ticking=true;
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SETO 凪（なぎ）— 瀬戸内の静寂に抱かれるブティックホテル。波音と、ただ在る時間。">
+<title>SETO 凪｜瀬戸内ブティックホテル</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --indigo:#1a1a3e;--orange:#e87040;--beige:#e8dcc8;--blue:#3a7ca5;--white:#f8f6f2;
+  --font-serif:"Georgia","Hiragino Mincho ProN","Yu Mincho","MS PMincho",serif;
+  --font-sans:"Helvetica Neue","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  --section-h:100vh;--section-h-min:100dvh;
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+}
+html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--blue) var(--indigo)}
+body{font-family:var(--font-sans);color:var(--white);background:var(--indigo);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:clamp(1rem,3vw,2rem) clamp(1.5rem,5vw,4rem);display:flex;justify-content:space-between;align-items:center;transition:background .6s,backdrop-filter .6s}
+.nav.scrolled{background:rgba(26,26,62,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav-logo{font-family:var(--font-serif);font-size:clamp(1.2rem,2.5vw,1.6rem);letter-spacing:.3em;font-weight:400;opacity:.95}
+.nav-logo span{color:var(--orange);margin-left:.2em}
+.nav-links{display:flex;gap:clamp(1rem,3vw,2.5rem);font-size:.75rem;letter-spacing:.25em;text-transform:uppercase}
+.nav-links a{position:relative;padding:.3em 0;opacity:.7;transition:opacity .4s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--orange);transition:width .4s var(--ease-out-expo)}
+.nav-links a:hover{opacity:1}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;background:none;border:none;padding:8px}
+.hamburger span{display:block;width:24px;height:1.5px;background:var(--white);transition:all .4s var(--ease-out-expo)}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-5px)}
+.mobile-menu{position:fixed;inset:0;background:rgba(26,26,62,.97);backdrop-filter:blur(20px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2rem;opacity:0;pointer-events:none;transition:opacity .5s;z-index:999}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{font-family:var(--font-serif);font-size:1.4rem;letter-spacing:.3em;opacity:.8;transition:opacity .3s}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+}
+
+/* ── SECTIONS COMMON ── */
+.section{position:relative;min-height:var(--section-h-min,100vh);display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
+
+/* ── FADE-IN SYSTEM ── */
+.fade-in{opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease-out-expo),transform 1s var(--ease-out-expo)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-left{opacity:0;transform:translateX(-60px);transition:opacity 1s var(--ease-out-expo),transform 1s var(--ease-out-expo)}
+.fade-in-left.visible{opacity:1;transform:translateX(0)}
+.fade-in-right{opacity:0;transform:translateX(60px);transition:opacity 1s var(--ease-out-expo),transform 1s var(--ease-out-expo)}
+.fade-in-right.visible{opacity:1;transform:translateX(0)}
+.delay-1{transition-delay:.15s}
+.delay-2{transition-delay:.3s}
+.delay-3{transition-delay:.45s}
+.delay-4{transition-delay:.6s}
+
+/* ── HERO ── */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg-gradient{position:absolute;inset:0;background:linear-gradient(180deg,#0d1b3e 0%,#1a2d5e 30%,#3a7ca5 55%,#e87040 80%,#e8dcc8 100%);opacity:.85;animation:heroShift 12s ease-in-out infinite alternate}
+@keyframes heroShift{0%{filter:brightness(.7) saturate(1.1)}50%{filter:brightness(.9) saturate(1.2)}100%{filter:brightness(.7) saturate(1)}}
+.hero-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,transparent 40%,rgba(26,26,62,.6) 100%);z-index:1}
+.hero-content{position:relative;z-index:2;max-width:800px;padding:0 2rem}
+.hero-eyebrow{font-size:clamp(.65rem,.9vw,.8rem);letter-spacing:.6em;text-transform:uppercase;opacity:.6;margin-bottom:2rem;font-weight:300}
+.hero-title{font-family:var(--font-serif);font-size:clamp(2.2rem,6vw,5rem);font-weight:400;letter-spacing:.15em;line-height:1.3;margin-bottom:1rem}
+.hero-title em{font-style:normal;color:var(--orange)}
+.hero-catch{font-family:var(--font-serif);font-size:clamp(1rem,2.5vw,1.8rem);letter-spacing:.4em;font-weight:300;opacity:.85;margin-bottom:3rem}
+.hero-cta-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5em;padding:clamp(.8rem,1.5vw,1rem) clamp(1.8rem,3vw,3rem);font-size:clamp(.7rem,1vw,.85rem);letter-spacing:.25em;border:1px solid rgba(255,255,255,.3);background:transparent;color:var(--white);cursor:pointer;transition:all .5s var(--ease-out-expo);position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;inset:0;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-out-expo);z-index:-1}
+.btn:hover::before{transform:scaleX(1)}
+.btn:hover{border-color:var(--orange)}
+.btn-primary{background:var(--orange);border-color:var(--orange)}
+.btn-primary::before{background:var(--indigo)}
+
+/* Scroll Indicator */
+.scroll-indicator{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.8rem;opacity:.6}
+.scroll-indicator span{font-size:.6rem;letter-spacing:.4em;writing-mode:vertical-rl}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--white),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.5)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ── TIME GRADIENT (scroll-driven) ── */
+.time-bg{position:fixed;inset:0;z-index:-1;transition:background 1.5s ease}
+.time-morning{background:linear-gradient(180deg,#2d3a6e 0%,#6fa8c7 40%,#f0c27f 70%,#e8dcc8 100%)}
+.time-noon{background:linear-gradient(180deg,#1e90b8 0%,#3a7ca5 40%,#87ceeb 70%,#e8dcc8 100%)}
+.time-evening{background:linear-gradient(180deg,#1a1a3e 0%,#4a3060 30%,#e87040 65%,#f5c77e 100%)}
+.time-night{background:linear-gradient(180deg,#0a0a20 0%,#1a1a3e 50%,#1e2a5e 100%)}
+
+/* ── STORY ── */
+.story{padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem);text-align:center;background:rgba(26,26,62,.3);backdrop-filter:blur(2px)}
+.section-label{font-size:clamp(.6rem,.8vw,.75rem);letter-spacing:.6em;text-transform:uppercase;opacity:.4;margin-bottom:1.5rem;font-weight:300}
+.section-title{font-family:var(--font-serif);font-size:clamp(1.6rem,4vw,3rem);letter-spacing:.2em;font-weight:400;margin-bottom:clamp(2rem,5vw,3.5rem);line-height:1.5}
+.section-title em{font-style:normal;color:var(--orange)}
+.story-text{max-width:680px;margin:0 auto;font-size:clamp(.85rem,1.1vw,1rem);line-height:2.2;letter-spacing:.08em;opacity:.8;font-weight:300}
+.story-text p+p{margin-top:1.5em}
+.story-visual{margin-top:clamp(3rem,6vw,5rem);display:flex;justify-content:center;gap:2px;max-width:900px;margin-left:auto;margin-right:auto}
+.story-bar{height:clamp(120px,20vw,200px);border-radius:2px;flex:1;opacity:.6;transition:opacity .6s,flex .6s var(--ease-out-expo)}
+.story-bar:hover{opacity:1;flex:1.5}
+.story-bar:nth-child(1){background:linear-gradient(180deg,#f0c27f,#e87040)}
+.story-bar:nth-child(2){background:linear-gradient(180deg,#87ceeb,#3a7ca5)}
+.story-bar:nth-child(3){background:linear-gradient(180deg,#e8dcc8,#c4a882)}
+.story-bar:nth-child(4){background:linear-gradient(180deg,#4a3060,#1a1a3e)}
+.story-bar:nth-child(5){background:linear-gradient(180deg,#e87040,#c44f28)}
+
+/* ── ROOMS ── */
+.rooms{padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem);background:rgba(26,26,62,.5)}
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:clamp(1.5rem,3vw,2rem);max-width:1200px;margin:0 auto;perspective:1200px}
+.room-card{position:relative;height:clamp(350px,45vw,450px);cursor:pointer;transform-style:preserve-3d;transition:transform .8s var(--ease-out-expo)}
+.room-card.flipped{transform:rotateY(180deg)}
+.room-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:4px;overflow:hidden}
+.room-front{display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(1.5rem,3vw,2.5rem)}
+.room-front-bg{position:absolute;inset:0;z-index:-1}
+.room-1 .room-front-bg{background:linear-gradient(135deg,#3a7ca5 0%,#1e5a80 50%,#1a1a3e 100%)}
+.room-2 .room-front-bg{background:linear-gradient(135deg,#e87040 0%,#c44f28 50%,#1a1a3e 100%)}
+.room-3 .room-front-bg{background:linear-gradient(135deg,#e8dcc8 0%,#c4a882 50%,#4a3060 100%)}
+.room-front-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,62,.8) 0%,transparent 60%)}
+.room-front .room-icon{width:60px;height:60px;margin-bottom:1rem;opacity:.5}
+.room-front h3{font-family:var(--font-serif);font-size:clamp(1.3rem,2vw,1.6rem);letter-spacing:.2em;margin-bottom:.5rem}
+.room-front .room-size{font-size:.7rem;letter-spacing:.3em;opacity:.5}
+.room-tap-hint{position:absolute;top:1rem;right:1rem;font-size:.6rem;letter-spacing:.15em;opacity:.4;display:flex;align-items:center;gap:.3em}
+.room-tap-hint svg{animation:tapRotate 3s ease-in-out infinite}
+@keyframes tapRotate{0%,100%{transform:rotateY(0)}50%{transform:rotateY(20deg)}}
+.room-back{transform:rotateY(180deg);background:var(--indigo);border:1px solid rgba(255,255,255,.1);padding:clamp(1.5rem,3vw,2.5rem);display:flex;flex-direction:column;justify-content:center}
+.room-back h3{font-family:var(--font-serif);font-size:clamp(1.1rem,1.8vw,1.4rem);letter-spacing:.2em;margin-bottom:1.2rem;color:var(--orange)}
+.room-back p{font-size:clamp(.78rem,1vw,.88rem);line-height:1.9;opacity:.75;letter-spacing:.05em;margin-bottom:1rem}
+.room-back .room-features{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:auto}
+.room-back .room-features span{font-size:.65rem;letter-spacing:.15em;padding:.4em .8em;border:1px solid rgba(255,255,255,.15);border-radius:2px;opacity:.6}
+.room-price{font-family:var(--font-serif);font-size:1.3rem;color:var(--orange);margin-top:1rem;letter-spacing:.1em}
+
+/* ── DINING ── */
+.dining{padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem);background:rgba(26,26,62,.2)}
+.dining-content{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+@media(max-width:768px){.dining-content{grid-template-columns:1fr}}
+.dining-visual{position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden}
+.dining-visual-bg{position:absolute;inset:0;background:linear-gradient(160deg,#e8dcc8 0%,#c4a882 30%,#8b6914 60%,#4a3060 100%);animation:diningShimmer 8s ease-in-out infinite alternate}
+@keyframes diningShimmer{0%{filter:brightness(.8) hue-rotate(0deg)}100%{filter:brightness(1.1) hue-rotate(10deg)}}
+.dining-visual::after{content:'瀬戸内の恵み';position:absolute;bottom:2rem;left:2rem;font-family:var(--font-serif);font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:.3em;opacity:.3}
+.dining-visual .plate-art{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:55%;aspect-ratio:1;border:1px solid rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.plate-art::before{content:'';width:80%;height:80%;border-radius:50%;border:1px solid rgba(255,255,255,.08)}
+.dining-info h3{font-family:var(--font-serif);font-size:clamp(1rem,1.5vw,1.2rem);letter-spacing:.3em;margin-bottom:1rem;color:var(--orange)}
+.dining-info p{font-size:clamp(.82rem,1vw,.92rem);line-height:2;opacity:.75;letter-spacing:.06em;margin-bottom:1.5rem}
+.dining-menu-item{padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:baseline}
+.dining-menu-item .name{font-family:var(--font-serif);font-size:clamp(.85rem,1.1vw,1rem);letter-spacing:.15em}
+.dining-menu-item .desc{font-size:.7rem;opacity:.4;letter-spacing:.1em}
+
+/* ── EXPERIENCE ── */
+.experience{padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem);background:rgba(26,26,62,.4)}
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:clamp(1rem,2vw,1.5rem);max-width:1200px;margin:0 auto}
+.exp-card{position:relative;padding:clamp(2rem,3vw,3rem);border:1px solid rgba(255,255,255,.06);border-radius:4px;overflow:hidden;transition:all .5s var(--ease-out-expo);cursor:default}
+.exp-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .5s;z-index:0}
+.exp-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(58,124,165,.15),transparent)}
+.exp-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(232,112,64,.15),transparent)}
+.exp-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(232,220,200,.1),transparent)}
+.exp-card:nth-child(4)::before{background:linear-gradient(135deg,rgba(74,48,96,.2),transparent)}
+.exp-card:hover::before{opacity:1}
+.exp-card:hover{border-color:rgba(255,255,255,.15);transform:translateY(-4px)}
+.exp-card>*{position:relative;z-index:1}
+.exp-icon{width:48px;height:48px;margin-bottom:1.5rem;opacity:.5}
+.exp-card h3{font-family:var(--font-serif);font-size:clamp(1rem,1.5vw,1.2rem);letter-spacing:.2em;margin-bottom:1rem}
+.exp-card p{font-size:clamp(.78rem,.95vw,.85rem);line-height:1.9;opacity:.65;letter-spacing:.05em}
+
+/* ── ACCESS ── */
+.access{padding:clamp(4rem,10vw,8rem) clamp(1.5rem,5vw,4rem);background:rgba(26,26,62,.3)}
+.access-content{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem)}
+@media(max-width:768px){.access-content{grid-template-columns:1fr}}
+.access-map{position:relative;aspect-ratio:1;border-radius:4px;overflow:hidden;background:#1e2a5e}
+.map-illustration{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.map-illustration svg{width:80%;height:80%;opacity:.4}
+.map-pin{position:absolute;top:45%;left:55%;width:20px;height:20px;background:var(--orange);border-radius:50%;animation:pinPulse 2s ease-in-out infinite}
+.map-pin::after{content:'';position:absolute;inset:-6px;border:2px solid var(--orange);border-radius:50%;animation:pinRing 2s ease-in-out infinite}
+@keyframes pinPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes pinRing{0%{transform:scale(1);opacity:.6}100%{transform:scale(2);opacity:0}}
+.access-info h3{font-family:var(--font-serif);font-size:clamp(1rem,1.3vw,1.1rem);letter-spacing:.2em;margin-bottom:1.2rem;color:var(--orange)}
+.access-info dl{margin-bottom:2rem}
+.access-info dt{font-size:.7rem;letter-spacing:.3em;opacity:.4;margin-bottom:.4rem;text-transform:uppercase}
+.access-info dd{font-size:clamp(.85rem,1vw,.95rem);letter-spacing:.08em;margin-bottom:1.2rem;line-height:1.7;opacity:.8}
+
+/* ── CTA ── */
+.cta-section{padding:clamp(5rem,12vw,10rem) clamp(1.5rem,5vw,4rem);text-align:center;position:relative}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(232,112,64,.1) 0%,transparent 70%)}
+.cta-title{font-family:var(--font-serif);font-size:clamp(1.8rem,4.5vw,3.5rem);letter-spacing:.25em;font-weight:400;margin-bottom:1rem;line-height:1.5}
+.cta-sub{font-size:clamp(.8rem,1.1vw,.95rem);letter-spacing:.2em;opacity:.5;margin-bottom:clamp(2rem,5vw,3.5rem);font-weight:300}
+.cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ── */
+.footer{padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem);background:rgba(10,10,30,.6);border-top:1px solid rgba(255,255,255,.04)}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(2rem,4vw,3rem)}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr}}
+.footer-brand .logo{font-family:var(--font-serif);font-size:1.4rem;letter-spacing:.3em;margin-bottom:1rem}
+.footer-brand .logo span{color:var(--orange)}
+.footer-brand p{font-size:.78rem;line-height:1.9;opacity:.4;letter-spacing:.05em}
+.footer-col h4{font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;opacity:.3;margin-bottom:1rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:.6rem}
+.footer-col a{font-size:.8rem;opacity:.5;letter-spacing:.1em;transition:opacity .3s}
+.footer-col a:hover{opacity:1;color:var(--orange)}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom small{font-size:.65rem;letter-spacing:.15em;opacity:.25}
+
+/* ── WAVE SVG ── */
+.wave-container{position:fixed;bottom:0;left:0;width:100%;z-index:10;pointer-events:none;opacity:.3;transition:opacity .5s}
+.wave-container svg{display:block;width:100%;height:auto}
+.wave1{animation:waveFlow1 7s ease-in-out infinite}
+.wave2{animation:waveFlow2 9s ease-in-out infinite}
+.wave3{animation:waveFlow3 11s ease-in-out infinite}
+@keyframes waveFlow1{0%,100%{transform:translateX(0)}50%{transform:translateX(-20px)}}
+@keyframes waveFlow2{0%,100%{transform:translateX(0)}50%{transform:translateX(15px)}}
+@keyframes waveFlow3{0%,100%{transform:translateX(0)}50%{transform:translateX(-10px)}}
+
+/* ── PARALLAX PARTICLES ── */
+.particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.particle{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.15);border-radius:50%;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh) scale(1);opacity:0}}
+
+/* ── ENDROLL TEXT ── */
+.endroll{opacity:0;transform:translateY(30px);transition:opacity 1.2s ease,transform 1.2s ease}
+.endroll.visible{opacity:1;transform:translateY(0)}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--orange));z-index:1001;transform-origin:left;transform:scaleX(0);transition:transform .1s linear}
+
+/* ── Section divider ── */
+.section-divider{width:40px;height:1px;background:var(--orange);margin:0 auto 2rem;opacity:.5}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .hero-title{letter-spacing:.08em}
+  .hero-catch{letter-spacing:.2em}
+  .section-title{letter-spacing:.1em}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Time-shifting Background -->
+<div class="time-bg time-morning" id="timeBg"></div>
+
+<!-- Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-logo">SETO<span>凪</span></div>
+  <div class="nav-links">
+    <a href="#story">物語</a>
+    <a href="#rooms">客室</a>
+    <a href="#dining">食</a>
+    <a href="#experience">体験</a>
+    <a href="#access">アクセス</a>
+    <a href="#booking">予約</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#story">物語</a>
+  <a href="#rooms">客室</a>
+  <a href="#dining">食</a>
+  <a href="#experience">体験</a>
+  <a href="#access">アクセス</a>
+  <a href="#booking">予約</a>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero section" id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow fade-in">Setouchi Boutique Hotel</p>
+    <h1 class="hero-title fade-in delay-1">SETO<em>凪</em></h1>
+    <p class="hero-catch fade-in delay-2">波音と、ただ在る時間。</p>
+    <div class="hero-cta-group fade-in delay-3">
+      <a href="#booking" class="btn btn-primary">宿泊予約</a>
+      <a href="#story" class="btn">物語を読む</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ STORY ═══════════════ -->
+<section class="story section" id="story">
+  <div class="section-label fade-in">Our Story</div>
+  <h2 class="section-title fade-in delay-1">凪ぐ海に、<em>心をあずける</em></h2>
+  <div class="section-divider fade-in delay-2"></div>
+  <div class="story-text endroll">
+    <p>
+      瀬戸内海に浮かぶ島々を望む小高い丘の上、
+      わずか12室のブティックホテル「SETO 凪」は
+      2024年、静かに生まれました。
+    </p>
+    <p>
+      建築家・西村隆之が手がけた建物は、
+      潮の満ち引きに呼応するかのように
+      海と陸のあわいに佇んでいます。
+      瀬戸内の穏やかな凪のように、
+      ここでは時間がゆるやかに流れます。
+    </p>
+    <p>
+      私たちが提供するのは、特別なサービスではなく
+      「何もしない」という贅沢。
+      波音だけが聴こえる空間で、
+      あなたはただ、在ればいい。
+    </p>
+  </div>
+  <div class="story-visual fade-in delay-3">
+    <div class="story-bar"></div>
+    <div class="story-bar"></div>
+    <div class="story-bar"></div>
+    <div class="story-bar"></div>
+    <div class="story-bar"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ ROOMS ═══════════════ -->
+<section class="rooms section" id="rooms">
+  <div class="section-label fade-in">Rooms</div>
+  <h2 class="section-title fade-in delay-1">海と眠る、<em>三つの部屋</em></h2>
+  <div class="section-divider fade-in delay-2"></div>
+  <div class="rooms-grid">
+    <!-- Room 1 -->
+    <div class="room-card room-1 fade-in delay-1" onclick="this.classList.toggle('flipped')">
+      <div class="room-face room-front">
+        <div class="room-front-bg"></div>
+        <div class="room-tap-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16m-7-7 7 7-7 7"/></svg>
+          TAP
+        </div>
+        <svg class="room-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1"><circle cx="24" cy="24" r="20"/><path d="M12 32h24M16 24c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        <h3>凪 NAGI</h3>
+        <div class="room-size">52㎡ — Ocean View</div>
+      </div>
+      <div class="room-face room-back">
+        <h3>凪 NAGI — スタンダード</h3>
+        <p>瀬戸内海を一望するオーシャンビュー。天然木のインテリアと、地元の職人が手がけた和紙照明が、穏やかな時間を演出します。テラスに置かれた寝椅子で、朝焼けから夕暮れまでの海の表情を独り占めできます。</p>
+        <div class="room-features">
+          <span>テラス</span><span>レインシャワー</span><span>海一望</span><span>天然木家具</span>
+        </div>
+        <div class="room-price">¥45,000〜 / 泊</div>
+      </div>
+    </div>
+    <!-- Room 2 -->
+    <div class="room-card room-2 fade-in delay-2" onclick="this.classList.toggle('flipped')">
+      <div class="room-face room-front">
+        <div class="room-front-bg"></div>
+        <div class="room-tap-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16m-7-7 7 7-7 7"/></svg>
+          TAP
+        </div>
+        <svg class="room-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1"><circle cx="24" cy="24" r="20"/><path d="M14 28h20M10 20h28"/></svg>
+        <h3>暁 AKATSUKI</h3>
+        <div class="room-size">78㎡ — Suite</div>
+      </div>
+      <div class="room-face room-back">
+        <h3>暁 AKATSUKI — スイート</h3>
+        <p>東向きの大窓から瀬戸内の朝焼けが室内を琥珀色に染める特別室。露天風呂付きのプライベートテラスと、リビングスペースを備えた贅沢な空間です。備前焼の茶器でいただく朝の一服は、ここだけの体験。</p>
+        <div class="room-features">
+          <span>露天風呂</span><span>リビング</span><span>朝焼け</span><span>備前焼茶器</span>
+        </div>
+        <div class="room-price">¥78,000〜 / 泊</div>
+      </div>
+    </div>
+    <!-- Room 3 -->
+    <div class="room-card room-3 fade-in delay-3" onclick="this.classList.toggle('flipped')">
+      <div class="room-face room-front">
+        <div class="room-front-bg"></div>
+        <div class="room-tap-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16m-7-7 7 7-7 7"/></svg>
+          TAP
+        </div>
+        <svg class="room-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1"><circle cx="24" cy="24" r="20"/><path d="M16 16l16 16M32 16L16 32"/></svg>
+        <h3>月白 TSUKISHIRO</h3>
+        <div class="room-size">105㎡ — Premium Suite</div>
+      </div>
+      <div class="room-face room-back">
+        <h3>月白 TSUKISHIRO — プレミアム</h3>
+        <p>最上階に位置する唯一無二の一室。270度のパノラマオーシャンビュー、プライベートプール、専用サウナを完備。夜は月明かりに照らされた瀬戸内の多島美を、誰にも邪魔されることなく眺められます。</p>
+        <div class="room-features">
+          <span>プール</span><span>サウナ</span><span>270°眺望</span><span>バトラー</span>
+        </div>
+        <div class="room-price">¥150,000〜 / 泊</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DINING ═══════════════ -->
+<section class="dining section" id="dining">
+  <div style="text-align:center">
+    <div class="section-label fade-in">Dining</div>
+    <h2 class="section-title fade-in delay-1">瀬戸内が育む、<em>一皿の物語</em></h2>
+    <div class="section-divider fade-in delay-2"></div>
+  </div>
+  <div class="dining-content" style="margin-top:clamp(2rem,4vw,3rem)">
+    <div class="dining-visual fade-in-left">
+      <div class="dining-visual-bg"></div>
+      <div class="plate-art"></div>
+    </div>
+    <div class="dining-info fade-in-right">
+      <h3>Restaurant 潮路 — SHIOJI</h3>
+      <p>
+        料理長・田中誠一が手がけるのは、瀬戸内の海と山の恵みを
+        フレンチの技法で昇華させた「瀬戸内キュイジーヌ」。
+        毎朝、地元の漁師から届く魚介と、
+        島で育てられた柑橘やオリーブが食卓を彩ります。
+      </p>
+      <p>
+        ペアリングには瀬戸内産のワインと日本酒を。
+        夕暮れ時のダイニングでは、
+        料理と景色が溶け合う特別な時間を過ごせます。
+      </p>
+      <div style="margin-top:1.5rem">
+        <div class="dining-menu-item"><span class="name">朝食</span><span class="desc">7:30 – 10:00</span></div>
+        <div class="dining-menu-item"><span class="name">ランチ</span><span class="desc">11:30 – 14:00</span></div>
+        <div class="dining-menu-item"><span class="name">ディナー</span><span class="desc">17:30 – 21:00（要予約）</span></div>
+        <div class="dining-menu-item"><span class="name">バー</span><span class="desc">21:00 – 24:00</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXPERIENCE ═══════════════ -->
+<section class="experience section" id="experience">
+  <div class="section-label fade-in">Experience</div>
+  <h2 class="section-title fade-in delay-1">この土地でしか<em>できないこと</em></h2>
+  <div class="section-divider fade-in delay-2"></div>
+  <div class="exp-grid">
+    <div class="exp-card fade-in delay-1">
+      <svg class="exp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M24 4c-6 8-16 14-16 26a16 16 0 0 0 32 0C40 18 30 12 24 4z"/>
+      </svg>
+      <h3>島めぐりクルーズ</h3>
+      <p>専用のクルーザーで瀬戸内の島々を巡る半日ツアー。船上からしか見えない断崖の絶景や、無人島でのプライベートピクニックなど、海の上でしか味わえない体験をご用意しています。</p>
+    </div>
+    <div class="exp-card fade-in delay-2">
+      <svg class="exp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="24" cy="24" r="18"/><path d="M24 10v14l8 8"/>
+      </svg>
+      <h3>夜明けの瞑想</h3>
+      <p>日の出前のテラスで行うガイド付き瞑想。波音をBGMに、呼吸と向き合う静かな朝のひととき。瞑想後は、東洋医学に基づいたハーブティーとともに、ゆっくりと一日を始めます。</p>
+    </div>
+    <div class="exp-card fade-in delay-3">
+      <svg class="exp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M8 38c4-8 10-14 16-14s12 6 16 14"/><circle cx="24" cy="16" r="8"/>
+      </svg>
+      <h3>備前焼ワークショップ</h3>
+      <p>地元の陶芸家・河本五郎氏に師事する作陶体験。備前の土に触れ、自分だけの器を生み出す時間は、旅の記憶を形にする特別なひとときです。焼き上がった作品は後日ご自宅へお届けします。</p>
+    </div>
+    <div class="exp-card fade-in delay-4">
+      <svg class="exp-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2">
+        <path d="M6 24h36M6 16h36M6 32h36"/><path d="M24 6v36"/>
+      </svg>
+      <h3>瀬戸内サウナ</h3>
+      <p>海を望むアウトドアサウナ。白樺のヴィヒタで身体を整えた後、瀬戸内海へダイブする「水風呂」は究極の外気浴。季節ごとに変わるロウリュアロマには、地元の柑橘精油を使用しています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ACCESS ═══════════════ -->
+<section class="access section" id="access">
+  <div style="text-align:center;width:100%">
+    <div class="section-label fade-in">Access</div>
+    <h2 class="section-title fade-in delay-1"><em>瀬戸内</em>への道</h2>
+    <div class="section-divider fade-in delay-2"></div>
+  </div>
+  <div class="access-content" style="margin-top:clamp(2rem,4vw,3rem)">
+    <div class="access-map fade-in-left">
+      <svg class="map-illustration" viewBox="0 0 400 400" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1">
+        <path d="M50,200 Q100,150 150,180 T250,170 T350,200" fill="none" stroke-width="2" stroke="rgba(58,124,165,.4)"/>
+        <path d="M50,220 Q100,190 160,210 T260,195 T350,220" fill="none" stroke-width="1" stroke="rgba(58,124,165,.2)"/>
+        <circle cx="100" cy="170" r="15" fill="rgba(232,220,200,.08)"/>
+        <circle cx="200" cy="160" r="20" fill="rgba(232,220,200,.06)"/>
+        <circle cx="280" cy="175" r="12" fill="rgba(232,220,200,.08)"/>
+        <circle cx="250" cy="150" r="8" fill="rgba(232,220,200,.05)"/>
+        <text x="200" y="300" text-anchor="middle" fill="rgba(255,255,255,.12)" font-size="11" letter-spacing="8" font-family="serif">SETOUCHI</text>
+      </svg>
+      <div class="map-pin"></div>
+    </div>
+    <div class="access-info fade-in-right">
+      <h3>SETO 凪</h3>
+      <dl>
+        <dt>住所</dt>
+        <dd>〒706-0000<br>岡山県瀬戸内市牛窓町鹿忍 000-0</dd>
+        <dt>お車でお越しの場合</dt>
+        <dd>岡山ブルーライン「邑久IC」より約20分<br>無料駐車場完備（12台）</dd>
+        <dt>公共交通機関</dt>
+        <dd>JR赤穂線「邑久駅」よりタクシー約15分<br>※ 無料送迎あり（要予約）</dd>
+        <dt>空港から</dt>
+        <dd>岡山桃太郎空港よりお車で約60分<br>高松空港よりお車で約90分（瀬戸大橋経由）</dd>
+        <dt>お電話</dt>
+        <dd>0869-00-0000</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section section" id="booking">
+  <h2 class="cta-title endroll">波音と、<br>ただ在る時間。</h2>
+  <p class="cta-sub endroll delay-1">あなたの「凪」を、見つけに来てください。</p>
+  <div class="cta-buttons endroll delay-2">
+    <a href="#" class="btn btn-primary">空室を確認する</a>
+    <a href="#" class="btn">お電話で予約 — 0869-00-0000</a>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer" id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">SETO<span>凪</span></div>
+      <p>瀬戸内の静寂に抱かれる<br>わずか12室のブティックホテル。<br>波音だけが聴こえる場所で、<br>ただ在る時間を過ごす。</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#story">物語</a></li>
+        <li><a href="#rooms">客室</a></li>
+        <li><a href="#dining">ダイニング</a></li>
+        <li><a href="#experience">体験</a></li>
+        <li><a href="#access">アクセス</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Information</h4>
+      <ul>
+        <li><a href="#">宿泊約款</a></li>
+        <li><a href="#">プライバシーポリシー</a></li>
+        <li><a href="#">よくあるご質問</a></li>
+        <li><a href="#">お問い合わせ</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small>&copy; 2024 SETO 凪 All Rights Reserved.</small>
+    <small>Designed with silence in mind.</small>
+  </div>
+</footer>
+
+<!-- ═══════════════ WAVE SVG ═══════════════ -->
+<div class="wave-container" id="waveContainer">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="height:80px">
+    <path class="wave1" d="M0,60 C240,100 480,20 720,60 C960,100 1200,20 1440,60 L1440,120 L0,120Z" fill="rgba(26,26,62,.4)"/>
+    <path class="wave2" d="M0,75 C200,40 400,90 720,70 C1040,50 1240,95 1440,75 L1440,120 L0,120Z" fill="rgba(58,124,165,.2)"/>
+    <path class="wave3" d="M0,85 C360,110 720,60 1080,90 C1260,105 1380,80 1440,85 L1440,120 L0,120Z" fill="rgba(26,26,62,.6)"/>
+  </svg>
+</div>
+
+<script>
+(function(){
+  // ── Intersection Observer for fade-in ──
+  const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .endroll').forEach(el => {
+    observer.observe(el);
+  });
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  const progressBar = document.getElementById('progressBar');
+
+  // ── Time-of-day background shift ──
+  const timeBg = document.getElementById('timeBg');
+  const timeClasses = ['time-morning', 'time-noon', 'time-evening', 'time-night'];
+
+  function handleScroll() {
+    const scrollY = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollProgress = Math.min(scrollY / docHeight, 1);
+
+    // Progress bar
+    progressBar.style.transform = `scaleX(${scrollProgress})`;
+
+    // Nav
+    if (scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    // Time shift
+    const timeIndex = Math.min(Math.floor(scrollProgress * 4), 3);
+    timeClasses.forEach(c => timeBg.classList.remove(c));
+    timeBg.classList.add(timeClasses[timeIndex]);
+
+    // Wave opacity
+    const waveContainer = document.getElementById('waveContainer');
+    if (waveContainer) {
+      waveContainer.style.opacity = 0.15 + scrollProgress * 0.35;
+    }
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+  handleScroll();
+
+  // ── Hamburger menu ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ── Particles ──
+  const particlesEl = document.getElementById('particles');
+  function createParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 15) + 's';
+    p.style.animationDelay = Math.random() * 5 + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    particlesEl.appendChild(p);
+    setTimeout(() => p.remove(), 25000);
+  }
+  for (let i = 0; i < 25; i++) {
+    setTimeout(createParticle, i * 400);
+  }
+  setInterval(createParticle, 2000);
+
+  // ── Smooth anchor scroll ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

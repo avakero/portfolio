@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SONIC GARDEN 2026 | 音が咲く、夜が踊る。</title>
+<meta name="description" content="SONIC GARDEN 2026 - 都市型音楽フェスティバル。2026年8月15日・16日、東京・豊洲にて開催。音が咲く、夜が踊る。">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--pink:#ff2d78;--yellow:#f0ff00;--blue:#0066ff;--black:#0a0a0a;--white:#ffffff;
+--pink-g:rgba(255,45,120,.5);--yellow-g:rgba(240,255,0,.5);--blue-g:rgba(0,102,255,.5);
+--font-display:'Trebuchet MS',Impact,'Arial Black',sans-serif;
+--font-body:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;
+--section-pad:clamp(60px,10vw,120px) clamp(16px,5vw,80px);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.7}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:12px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;transition:background .4s,backdrop-filter .4s}
+.nav.scrolled{background:rgba(10,10,10,.85);backdrop-filter:blur(12px)}
+.nav-logo{font-family:var(--font-display);font-size:clamp(18px,2.5vw,24px);font-weight:900;letter-spacing:2px;color:var(--yellow)}
+.nav-links{display:flex;gap:clamp(12px,2vw,28px);font-size:clamp(11px,1.2vw,14px);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.nav-links a{position:relative;padding:4px 0;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--pink);transition:width .3s}
+.nav-links a:hover{color:var(--pink)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:28px;height:2px;background:var(--white);transition:.3s}
+
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;background:var(--black)}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg at 50% 50%,var(--pink-g),transparent 25%,var(--blue-g) 30%,transparent 55%,var(--yellow-g) 60%,transparent 85%,var(--pink-g));animation:rotateBg 20s linear infinite;opacity:.3}
+@keyframes rotateBg{to{transform:rotate(360deg)}}
+.hero-content{position:relative;z-index:2;padding:0 20px}
+.hero-sub{font-size:clamp(13px,1.8vw,20px);letter-spacing:clamp(4px,1vw,16px);text-transform:uppercase;font-weight:700;color:var(--yellow);margin-bottom:12px;opacity:0;transform:translateY(30px);animation:fadeUp .8s .3s forwards}
+.hero-title{font-family:var(--font-display);font-size:clamp(48px,12vw,160px);font-weight:900;line-height:.9;letter-spacing:clamp(-2px,-.5vw,-4px);text-transform:uppercase;margin-bottom:8px;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-title .line1{display:block;color:var(--white)}
+.hero-title .line2{display:block;color:var(--pink);text-shadow:0 0 40px var(--pink-g),0 0 80px var(--pink-g)}
+.hero-catch{font-size:clamp(20px,4vw,48px);font-weight:900;margin:clamp(12px,2vw,24px) 0;opacity:0;animation:fadeUp .8s .7s forwards}
+.hero-catch .char{display:inline-block;animation:neonFlicker 3s infinite alternate}
+.hero-catch .char:nth-child(odd){color:var(--yellow);text-shadow:0 0 20px var(--yellow-g),0 0 60px var(--yellow-g)}
+.hero-catch .char:nth-child(even){color:var(--white);text-shadow:0 0 20px rgba(255,255,255,.5)}
+@keyframes neonFlicker{0%,93%,95%,100%{opacity:1}94%{opacity:.7}96%{opacity:.9}}
+.hero-date{font-size:clamp(14px,2vw,22px);font-weight:700;letter-spacing:3px;color:var(--white);opacity:.9;margin-bottom:32px;opacity:0;animation:fadeUp .8s .9s forwards}
+.hero-date span{color:var(--yellow)}
+.countdown{display:flex;gap:clamp(12px,3vw,32px);justify-content:center;margin-bottom:40px;opacity:0;animation:fadeUp .8s 1.1s forwards}
+.cd-item{text-align:center}
+.cd-num{font-family:var(--font-display);font-size:clamp(36px,7vw,80px);font-weight:900;line-height:1;color:var(--white);text-shadow:0 0 30px var(--blue-g)}
+.cd-label{font-size:clamp(10px,1.2vw,14px);text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.6);margin-top:4px}
+.hero-cta{opacity:0;animation:fadeUp .8s 1.3s forwards}
+.btn{display:inline-block;padding:clamp(14px,2vw,20px) clamp(32px,5vw,56px);font-size:clamp(14px,1.5vw,18px);font-weight:900;text-transform:uppercase;letter-spacing:2px;border:none;cursor:pointer;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+.btn-primary{background:var(--pink);color:var(--white);clip-path:polygon(0 0,100% 0,96% 100%,4% 100%)}
+.btn-primary:hover{transform:scale(1.05);box-shadow:0 0 40px var(--pink-g)}
+.btn-secondary{background:transparent;color:var(--yellow);border:2px solid var(--yellow)}
+.btn-secondary:hover{background:var(--yellow);color:var(--black)}
+
+/* Sound Wave */
+.soundwave{position:absolute;bottom:0;left:0;width:100%;z-index:1;opacity:.4}
+.soundwave svg{width:100%;height:auto;display:block}
+
+/* Scroll Indicator */
+.scroll-ind{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .8s 1.5s forwards}
+.scroll-ind span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.scroll-arrow{width:24px;height:24px;border-right:2px solid var(--pink);border-bottom:2px solid var(--pink);transform:rotate(45deg);animation:scrollBounce 2s infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0);opacity:1}50%{transform:rotate(45deg) translate(6px,6px);opacity:.3}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* ===== MARQUEE ===== */
+.marquee{overflow:hidden;background:var(--pink);padding:14px 0;white-space:nowrap;position:relative;z-index:10}
+.marquee-inner{display:inline-flex;animation:marqueeScroll 25s linear infinite}
+.marquee-text{font-family:var(--font-display);font-size:clamp(16px,2.5vw,28px);font-weight:900;text-transform:uppercase;letter-spacing:4px;color:var(--black);padding:0 clamp(20px,4vw,60px)}
+.marquee-text .dot{display:inline-block;width:8px;height:8px;background:var(--yellow);border-radius:50%;margin:0 20px;vertical-align:middle}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== SECTION COMMON ===== */
+.section{padding:var(--section-pad);position:relative;overflow:hidden}
+.section-header{text-align:center;margin-bottom:clamp(40px,6vw,80px)}
+.section-label{display:inline-block;font-size:clamp(11px,1.2vw,14px);font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--pink);margin-bottom:12px;position:relative}
+.section-label::before,.section-label::after{content:'—';margin:0 8px;opacity:.5}
+.section-title{font-family:var(--font-display);font-size:clamp(32px,6vw,72px);font-weight:900;text-transform:uppercase;letter-spacing:clamp(-1px,-.3vw,-2px);line-height:1.1}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ===== CONCEPT ===== */
+.concept{background:var(--black);position:relative}
+.concept::before{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:linear-gradient(135deg,transparent 40%,rgba(0,102,255,.05) 100%);pointer-events:none}
+.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;max-width:1200px;margin:0 auto}
+.concept-visual{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.concept-circle{width:80%;aspect-ratio:1;border-radius:50%;border:2px solid var(--pink);position:relative;animation:pulse 4s ease-in-out infinite}
+.concept-circle::before{content:'';position:absolute;inset:15%;border-radius:50%;border:2px solid var(--yellow);animation:pulse 4s ease-in-out infinite reverse}
+.concept-circle::after{content:'';position:absolute;inset:30%;border-radius:50%;border:2px solid var(--blue);animation:pulse 4s ease-in-out 1s infinite}
+.concept-circle-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:clamp(20px,3vw,36px);font-weight:900;color:var(--yellow);text-shadow:0 0 30px var(--yellow-g)}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.7}}
+.concept-text h3{font-family:var(--font-display);font-size:clamp(24px,3.5vw,42px);font-weight:900;line-height:1.3;margin-bottom:24px}
+.concept-text h3 em{font-style:normal;color:var(--pink);text-shadow:0 0 20px var(--pink-g)}
+.concept-text p{font-size:clamp(14px,1.4vw,17px);line-height:2;color:rgba(255,255,255,.8);margin-bottom:16px}
+.concept-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.stat{text-align:center;padding:20px;border:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden}
+.stat::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:var(--pink);transform:scaleX(0);transition:transform .6s}
+.stat:hover::before{transform:scaleX(1)}
+.stat-num{font-family:var(--font-display);font-size:clamp(28px,4vw,48px);font-weight:900;color:var(--yellow)}
+.stat-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:4px}
+
+/* ===== ARTISTS ===== */
+.artists{background:var(--black)}
+.artists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:clamp(16px,2vw,24px);max-width:1400px;margin:0 auto}
+.artist-card{position:relative;aspect-ratio:.8;overflow:hidden;cursor:pointer;group:artist}
+.artist-card-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;font-weight:900;font-family:var(--font-display);opacity:.08;color:var(--white);transition:opacity .4s}
+.artist-card::before{content:'';position:absolute;inset:0;z-index:1;transition:background .4s}
+.artist-card:nth-child(4n+1)::before{background:linear-gradient(135deg,var(--pink-g) 0%,transparent 60%)}
+.artist-card:nth-child(4n+2)::before{background:linear-gradient(135deg,var(--blue-g) 0%,transparent 60%)}
+.artist-card:nth-child(4n+3)::before{background:linear-gradient(135deg,var(--yellow-g) 0%,transparent 60%)}
+.artist-card:nth-child(4n+4)::before{background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 60%)}
+.artist-card:hover::before{opacity:.8}
+.artist-card-inner{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(16px,2vw,28px);background:linear-gradient(to top,rgba(10,10,10,.95) 0%,transparent 60%)}
+.artist-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:var(--pink);color:var(--white);margin-bottom:8px;width:fit-content}
+.artist-name{font-family:var(--font-display);font-size:clamp(20px,2.5vw,30px);font-weight:900;text-transform:uppercase;line-height:1.1;margin-bottom:4px;transition:color .3s}
+.artist-card:hover .artist-name{color:var(--yellow)}
+.artist-genre{font-size:12px;color:rgba(255,255,255,.5);letter-spacing:1px}
+.artist-card:nth-child(1),.artist-card:nth-child(6){grid-column:span 2}
+.artist-eq{position:absolute;bottom:0;left:0;width:100%;height:60px;display:flex;align-items:flex-end;gap:3px;padding:0 28px;z-index:3;opacity:0;transition:opacity .4s}
+.artist-card:hover .artist-eq{opacity:1}
+.eq-bar{width:4px;background:var(--pink);animation:eqBounce .6s ease-in-out infinite alternate}
+.eq-bar:nth-child(2n){animation-delay:.1s;background:var(--yellow)}
+.eq-bar:nth-child(3n){animation-delay:.2s;background:var(--blue)}
+@keyframes eqBounce{0%{height:8px}100%{height:40px}}
+
+/* ===== TIMETABLE ===== */
+.timetable{background:linear-gradient(180deg,var(--black) 0%,#0d0028 100%)}
+.tt-tabs{display:flex;justify-content:center;gap:16px;margin-bottom:clamp(32px,5vw,60px)}
+.tt-tab{padding:12px 32px;font-weight:900;font-size:clamp(14px,1.5vw,18px);text-transform:uppercase;letter-spacing:2px;border:2px solid rgba(255,255,255,.2);background:transparent;color:var(--white);cursor:pointer;transition:all .3s;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%)}
+.tt-tab.active,.tt-tab:hover{background:var(--pink);border-color:var(--pink);color:var(--white)}
+.tt-day{display:none;max-width:1100px;margin:0 auto}
+.tt-day.active{display:block}
+.tt-stage{margin-bottom:clamp(24px,4vw,48px)}
+.tt-stage-name{font-family:var(--font-display);font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:16px;padding-left:16px;border-left:4px solid var(--pink)}
+.tt-stage-name.stage-b{border-color:var(--blue)}
+.tt-stage-name.stage-c{border-color:var(--yellow)}
+.tt-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.tt-slot{padding:clamp(14px,2vw,20px);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:all .3s;position:relative;overflow:hidden}
+.tt-slot::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--pink)}
+.tt-slot:hover{background:rgba(255,45,120,.08);border-color:var(--pink);transform:translateY(-2px)}
+.tt-time{font-size:clamp(11px,1.1vw,13px);color:var(--pink);font-weight:700;letter-spacing:1px}
+.tt-artist{font-family:var(--font-display);font-size:clamp(16px,1.8vw,22px);font-weight:900;margin-top:4px}
+.tt-genre-tag{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;margin-top:2px}
+
+/* ===== VENUE MAP ===== */
+.venue{background:#0d0028;position:relative}
+.venue::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,102,255,.15),transparent 70%);pointer-events:none}
+.venue-map{max-width:900px;margin:0 auto;position:relative}
+.venue-map svg{width:100%;height:auto}
+.venue-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:40px auto 0}
+.venue-info-card{padding:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);text-align:center;transition:border-color .3s}
+.venue-info-card:hover{border-color:var(--blue)}
+.venue-info-card .icon{font-size:28px;margin-bottom:8px}
+.venue-info-card h4{font-weight:700;font-size:14px;margin-bottom:4px}
+.venue-info-card p{font-size:13px;color:rgba(255,255,255,.6)}
+
+/* ===== TICKETS ===== */
+.tickets{background:var(--black);position:relative}
+.tickets::after{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--yellow),var(--blue),transparent)}
+.ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(16px,3vw,32px);max-width:1200px;margin:0 auto}
+.ticket-card{padding:clamp(28px,4vw,48px) clamp(20px,3vw,36px);border:1px solid rgba(255,255,255,.1);position:relative;overflow:hidden;transition:all .4s;text-align:center}
+.ticket-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+.ticket-card:nth-child(1)::before{background:var(--white)}
+.ticket-card:nth-child(2)::before{background:var(--pink)}
+.ticket-card:nth-child(3)::before{background:linear-gradient(90deg,var(--pink),var(--yellow))}
+.ticket-card:hover{transform:translateY(-8px);border-color:var(--pink);box-shadow:0 20px 60px rgba(255,45,120,.15)}
+.ticket-card.featured{border-color:var(--pink);background:rgba(255,45,120,.05)}
+.ticket-type{font-size:clamp(11px,1.1vw,13px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:16px}
+.ticket-price{font-family:var(--font-display);font-size:clamp(40px,6vw,64px);font-weight:900;line-height:1}
+.ticket-price small{font-size:.35em;color:rgba(255,255,255,.5);margin-left:4px}
+.ticket-desc{font-size:14px;color:rgba(255,255,255,.6);margin:20px 0;line-height:1.8}
+.ticket-features{list-style:none;text-align:left;margin-bottom:28px}
+.ticket-features li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px;color:rgba(255,255,255,.7)}
+.ticket-features li::before{content:'✦ ';color:var(--pink)}
+.ticket-badge{position:absolute;top:20px;right:-30px;background:var(--yellow);color:var(--black);font-size:11px;font-weight:900;padding:6px 40px;transform:rotate(45deg);letter-spacing:1px}
+
+/* ===== ACCESS ===== */
+.access{background:linear-gradient(180deg,var(--black),#0a0018)}
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);max-width:1100px;margin:0 auto;align-items:start}
+.access-map-placeholder{aspect-ratio:4/3;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.access-map-placeholder::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(255,255,255,.02) 30px,rgba(255,255,255,.02) 31px),repeating-linear-gradient(90deg,transparent,transparent 30px,rgba(255,255,255,.02) 30px,rgba(255,255,255,.02) 31px)}
+.map-pin{width:48px;height:48px;position:relative}
+.map-pin::before{content:'';position:absolute;inset:0;background:var(--pink);border-radius:50% 50% 50% 0;transform:rotate(-45deg);animation:pinBounce 2s infinite}
+.map-pin::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:30px;height:6px;background:rgba(255,45,120,.3);border-radius:50%;animation:pinShadow 2s infinite}
+@keyframes pinBounce{0%,100%{transform:rotate(-45deg) translateY(0)}50%{transform:rotate(-45deg) translateY(-10px)}}
+@keyframes pinShadow{0%,100%{transform:translateX(-50%) scale(1);opacity:.3}50%{transform:translateX(-50%) scale(.6);opacity:.1}}
+.access-info h3{font-family:var(--font-display);font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:24px}
+.access-detail{margin-bottom:24px}
+.access-detail dt{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:4px}
+.access-detail dd{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:16px}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--black);border-top:1px solid rgba(255,255,255,.08);padding:clamp(40px,6vw,80px) clamp(16px,5vw,80px) 24px}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(24px,4vw,60px);max-width:1200px;margin:0 auto 60px}
+.footer-brand{font-family:var(--font-display);font-size:clamp(24px,3vw,36px);font-weight:900;color:var(--yellow);margin-bottom:16px}
+.footer-tagline{font-size:14px;color:rgba(255,255,255,.5);line-height:1.8}
+.footer-col h4{font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pink);margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{font-size:14px;color:rgba(255,255,255,.6);transition:color .3s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{text-align:center;padding-top:32px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:1px}
+.footer-social{display:flex;justify-content:center;gap:16px;margin-bottom:16px}
+.footer-social a{width:40px;height:40px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s;border-radius:50%}
+.footer-social a:hover{border-color:var(--pink);color:var(--pink);transform:translateY(-3px)}
+
+/* ===== GLITCH ===== */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}
+.glitch::before{color:var(--pink);z-index:-1;animation:glitch1 3s infinite linear alternate-reverse}
+.glitch::after{color:var(--blue);z-index:-2;animation:glitch2 3s infinite linear alternate-reverse}
+@keyframes glitch1{0%,95%{clip-path:inset(0 0 0 0);transform:translate(0)}96%{clip-path:inset(20% 0 60% 0);transform:translate(-4px,2px)}97%{clip-path:inset(60% 0 10% 0);transform:translate(4px,-2px)}98%{clip-path:inset(40% 0 30% 0);transform:translate(-2px,4px)}100%{clip-path:inset(0 0 0 0);transform:translate(0)}}
+@keyframes glitch2{0%,95%{clip-path:inset(0 0 0 0);transform:translate(0)}96%{clip-path:inset(70% 0 5% 0);transform:translate(4px,-2px)}97%{clip-path:inset(10% 0 70% 0);transform:translate(-4px,2px)}98%{clip-path:inset(50% 0 20% 0);transform:translate(2px,-4px)}100%{clip-path:inset(0 0 0 0);transform:translate(0)}}
+
+/* ===== BG COLOR SECTIONS ===== */
+.bg-shift{transition:background .8s}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+.concept-grid,.access-grid{grid-template-columns:1fr}
+.concept-visual{max-width:320px;margin:0 auto}
+.artist-card:nth-child(1),.artist-card:nth-child(6){grid-column:span 1}
+.footer-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+.nav-links{display:none;position:fixed;inset:0;background:rgba(10,10,10,.97);flex-direction:column;align-items:center;justify-content:center;gap:32px;font-size:20px}
+.nav-links.open{display:flex}
+.hamburger{display:flex}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.countdown{gap:16px}
+.ticket-grid{grid-template-columns:1fr}
+.concept-stats{grid-template-columns:1fr}
+.footer-top{grid-template-columns:1fr}
+.tt-tabs{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#hero" class="nav-logo">SG2026</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#concept">Concept</a>
+    <a href="#artists">Artists</a>
+    <a href="#timetable">Timetable</a>
+    <a href="#venue">Venue</a>
+    <a href="#tickets">Tickets</a>
+    <a href="#access">Access</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="this.classList.toggle('open');document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <!-- Soundwave SVG -->
+  <div class="soundwave">
+    <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#ff2d78;stop-opacity:.6"/>
+          <stop offset="50%" style="stop-color:#f0ff00;stop-opacity:.4"/>
+          <stop offset="100%" style="stop-color:#0066ff;stop-opacity:.6"/>
+        </linearGradient>
+      </defs>
+      <path fill="none" stroke="url(#wg1)" stroke-width="2" opacity=".5">
+        <animate attributeName="d" dur="4s" repeatCount="indefinite"
+          values="M0,100 Q180,40 360,100 T720,100 T1080,100 T1440,100;
+                  M0,100 Q180,160 360,100 T720,100 T1080,100 T1440,100;
+                  M0,100 Q180,40 360,100 T720,100 T1080,100 T1440,100"/>
+      </path>
+      <path fill="none" stroke="url(#wg1)" stroke-width="1.5" opacity=".3">
+        <animate attributeName="d" dur="3s" repeatCount="indefinite"
+          values="M0,100 Q240,20 480,100 T960,100 T1440,100;
+                  M0,100 Q240,180 480,100 T960,100 T1440,100;
+                  M0,100 Q240,20 480,100 T960,100 T1440,100"/>
+      </path>
+      <path fill="none" stroke="#ff2d78" stroke-width="1" opacity=".2">
+        <animate attributeName="d" dur="5s" repeatCount="indefinite"
+          values="M0,100 Q360,50 720,100 T1440,100;
+                  M0,100 Q360,150 720,100 T1440,100;
+                  M0,100 Q360,50 720,100 T1440,100"/>
+      </path>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <p class="hero-sub">Urban Music Festival</p>
+    <h1 class="hero-title">
+      <span class="line1">SONIC</span>
+      <span class="line2 glitch" data-text="GARDEN">GARDEN</span>
+    </h1>
+    <p class="hero-catch" id="heroCatch">音が咲く、夜が踊る。</p>
+    <p class="hero-date"><span>2026.8.15</span> SAT — <span>8.16</span> SUN ／ 東京・豊洲</p>
+    <div class="countdown" id="countdown">
+      <div class="cd-item"><div class="cd-num" id="cdDays">000</div><div class="cd-label">Days</div></div>
+      <div class="cd-item"><div class="cd-num" id="cdHours">00</div><div class="cd-label">Hours</div></div>
+      <div class="cd-item"><div class="cd-num" id="cdMins">00</div><div class="cd-label">Min</div></div>
+      <div class="cd-item"><div class="cd-num" id="cdSecs">00</div><div class="cd-label">Sec</div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="#tickets" class="btn btn-primary">チケット購入</a>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-inner" id="marquee">
+    <span class="marquee-text">SONIC GARDEN 2026 <span class="dot"></span> 音が咲く、夜が踊る。 <span class="dot"></span> 2026.8.15-16 TOKYO TOYOSU <span class="dot"></span> EARLY BIRD TICKETS ON SALE <span class="dot"></span> 50+ ARTISTS <span class="dot"></span> 3 STAGES <span class="dot"></span></span>
+    <span class="marquee-text">SONIC GARDEN 2026 <span class="dot"></span> 音が咲く、夜が踊る。 <span class="dot"></span> 2026.8.15-16 TOKYO TOYOSU <span class="dot"></span> EARLY BIRD TICKETS ON SALE <span class="dot"></span> 50+ ARTISTS <span class="dot"></span> 3 STAGES <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- CONCEPT -->
+<section class="section concept bg-shift" id="concept" data-bg="#0a0a0a">
+  <div class="section-header reveal">
+    <span class="section-label">Concept</span>
+    <h2 class="section-title">都市に<em style="color:var(--pink)">花</em>を、<br>夜空に<em style="color:var(--yellow)">音</em>を。</h2>
+  </div>
+  <div class="concept-grid">
+    <div class="concept-visual reveal">
+      <div class="concept-circle">
+        <div class="concept-circle-text">SG<br>2026</div>
+      </div>
+    </div>
+    <div class="concept-text reveal reveal-delay-2">
+      <h3>音楽と都市が<em>共鳴</em>する<br>2日間のガーデンパーティー</h3>
+      <p>SONIC GARDENは、東京・豊洲のウォーターフロントに出現する都市型音楽フェスティバル。ジャンルの壁を超えた50組以上のアーティストが、3つのステージで繰り広げる音の饗宴。</p>
+      <p>コンクリートジャングルの真ん中に、音楽という名の花を咲かせる。ネオンが照らす夜空の下、あなたの身体が自然と踊り出す——そんな2日間を約束します。</p>
+      <div class="concept-stats">
+        <div class="stat reveal reveal-delay-1"><div class="stat-num">50+</div><div class="stat-label">Artists</div></div>
+        <div class="stat reveal reveal-delay-2"><div class="stat-num">3</div><div class="stat-label">Stages</div></div>
+        <div class="stat reveal reveal-delay-3"><div class="stat-num">2</div><div class="stat-label">Days</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE 2 -->
+<div class="marquee" style="background:var(--blue)">
+  <div class="marquee-inner" style="animation-direction:reverse;animation-duration:20s">
+    <span class="marquee-text">★ LINE UP ANNOUNCED ★ HEADLINERS CONFIRMED ★ DON'T MISS OUT ★ SUMMER 2026 ★ TOKYO WATERFRONT ★ LINE UP ANNOUNCED ★</span>
+    <span class="marquee-text">★ LINE UP ANNOUNCED ★ HEADLINERS CONFIRMED ★ DON'T MISS OUT ★ SUMMER 2026 ★ TOKYO WATERFRONT ★ LINE UP ANNOUNCED ★</span>
+  </div>
+</div>
+
+<!-- ARTISTS -->
+<section class="section artists bg-shift" id="artists" data-bg="#0a0a0a">
+  <div class="section-header reveal">
+    <span class="section-label">Line Up</span>
+    <h2 class="section-title glitch" data-text="ARTISTS">ARTISTS</h2>
+  </div>
+  <div class="artists-grid">
+    <div class="artist-card reveal">
+      <div class="artist-card-bg">01</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag">Headliner</span>
+        <h3 class="artist-name">Neon Vortex</h3>
+        <span class="artist-genre">Electronic / Synthwave</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-1">
+      <div class="artist-card-bg">02</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag">Headliner</span>
+        <h3 class="artist-name">夜光カナリア</h3>
+        <span class="artist-genre">J-Pop / Future Bass</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-2">
+      <div class="artist-card-bg">03</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag" style="background:var(--blue)">Day 1</span>
+        <h3 class="artist-name">PHANTOM GROOVE</h3>
+        <span class="artist-genre">House / Techno</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-3">
+      <div class="artist-card-bg">04</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag" style="background:var(--blue)">Day 1</span>
+        <h3 class="artist-name">花鳥風月</h3>
+        <span class="artist-genre">Hip Hop / Neo-Soul</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal">
+      <div class="artist-card-bg">05</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag" style="background:var(--blue)">Day 2</span>
+        <h3 class="artist-name">CRYSTAL MAZE</h3>
+        <span class="artist-genre">Drum & Bass / Breakbeat</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-1">
+      <div class="artist-card-bg">06</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag">Headliner</span>
+        <h3 class="artist-name">STELLA NOVA</h3>
+        <span class="artist-genre">Ambient / Electronica</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-2">
+      <div class="artist-card-bg">07</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag" style="background:var(--blue)">Day 2</span>
+        <h3 class="artist-name">渋谷サイレン</h3>
+        <span class="artist-genre">Rock / Post-Punk</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+    <div class="artist-card reveal reveal-delay-3">
+      <div class="artist-card-bg">08</div>
+      <div class="artist-card-inner">
+        <span class="artist-tag" style="background:var(--blue)">Day 1</span>
+        <h3 class="artist-name">DEEP CURRENT</h3>
+        <span class="artist-genre">Dub / Reggae</span>
+      </div>
+      <div class="artist-eq"></div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:40px;color:rgba(255,255,255,.4);font-size:14px;letter-spacing:2px" class="reveal">…and 40+ more artists to be announced</p>
+</section>
+
+<!-- TIMETABLE -->
+<section class="section timetable bg-shift" id="timetable" data-bg="#0d0028">
+  <div class="section-header reveal">
+    <span class="section-label">Timetable</span>
+    <h2 class="section-title">TIME<span style="color:var(--yellow)">TABLE</span></h2>
+  </div>
+  <div class="tt-tabs reveal">
+    <button class="tt-tab active" onclick="switchDay('day1',this)">8.15 SAT</button>
+    <button class="tt-tab" onclick="switchDay('day2',this)">8.16 SUN</button>
+  </div>
+  <!-- Day 1 -->
+  <div class="tt-day active" id="day1">
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name">🌸 GARDEN STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">12:00 – 13:00</div><div class="tt-artist">Opening Act</div><div class="tt-genre-tag">Various</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">13:30 – 14:30</div><div class="tt-artist">DEEP CURRENT</div><div class="tt-genre-tag">Dub / Reggae</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">15:00 – 16:00</div><div class="tt-artist">花鳥風月</div><div class="tt-genre-tag">Hip Hop / Neo-Soul</div></div>
+        <div class="tt-slot reveal reveal-delay-3"><div class="tt-time">17:00 – 18:30</div><div class="tt-artist">PHANTOM GROOVE</div><div class="tt-genre-tag">House / Techno</div></div>
+        <div class="tt-slot reveal reveal-delay-4"><div class="tt-time" style="color:var(--yellow)">19:30 – 21:00</div><div class="tt-artist" style="color:var(--yellow)">★ Neon Vortex</div><div class="tt-genre-tag">Electronic / Synthwave</div></div>
+      </div>
+    </div>
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name stage-b">🔊 SONIC STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">12:30 – 13:30</div><div class="tt-artist">DJ PULSE</div><div class="tt-genre-tag">Tech House</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">14:00 – 15:00</div><div class="tt-artist">夜光カナリア</div><div class="tt-genre-tag">J-Pop / Future Bass</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">16:00 – 17:00</div><div class="tt-artist">BASSLINE CREW</div><div class="tt-genre-tag">UK Garage</div></div>
+        <div class="tt-slot reveal reveal-delay-3"><div class="tt-time">18:00 – 19:30</div><div class="tt-artist">SILENT ECHO</div><div class="tt-genre-tag">Ambient Techno</div></div>
+      </div>
+    </div>
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name stage-c">🌙 MOON STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">13:00 – 14:00</div><div class="tt-artist">VINYL GHOSTS</div><div class="tt-genre-tag">Lo-Fi / Chillhop</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">15:00 – 16:00</div><div class="tt-artist">霧雨テレパシー</div><div class="tt-genre-tag">Shoegaze</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">17:30 – 19:00</div><div class="tt-artist">COSMIC DRIFT</div><div class="tt-genre-tag">Progressive</div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Day 2 -->
+  <div class="tt-day" id="day2">
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name">🌸 GARDEN STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">12:00 – 13:00</div><div class="tt-artist">AURORA WAVE</div><div class="tt-genre-tag">Indie Electronic</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">13:30 – 14:30</div><div class="tt-artist">渋谷サイレン</div><div class="tt-genre-tag">Rock / Post-Punk</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">15:30 – 17:00</div><div class="tt-artist">CRYSTAL MAZE</div><div class="tt-genre-tag">Drum & Bass</div></div>
+        <div class="tt-slot reveal reveal-delay-3"><div class="tt-time" style="color:var(--yellow)">18:00 – 19:30</div><div class="tt-artist" style="color:var(--yellow)">★ STELLA NOVA</div><div class="tt-genre-tag">Ambient / Electronica</div></div>
+        <div class="tt-slot reveal reveal-delay-4"><div class="tt-time" style="color:var(--pink)">20:00 – 21:30</div><div class="tt-artist" style="color:var(--pink)">★ GRAND FINALE</div><div class="tt-genre-tag">All Artists</div></div>
+      </div>
+    </div>
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name stage-b">🔊 SONIC STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">12:30 – 13:30</div><div class="tt-artist">NEON DISTRICT</div><div class="tt-genre-tag">Synthpop</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">14:30 – 15:30</div><div class="tt-artist">MONOCHROME</div><div class="tt-genre-tag">Minimal Techno</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">16:30 – 18:00</div><div class="tt-artist">夜光カナリア</div><div class="tt-genre-tag">J-Pop / Future Bass</div></div>
+        <div class="tt-slot reveal reveal-delay-3"><div class="tt-time">19:00 – 20:30</div><div class="tt-artist">PHANTOM GROOVE</div><div class="tt-genre-tag">House / Techno</div></div>
+      </div>
+    </div>
+    <div class="tt-stage reveal">
+      <h3 class="tt-stage-name stage-c">🌙 MOON STAGE</h3>
+      <div class="tt-slots">
+        <div class="tt-slot reveal"><div class="tt-time">13:00 – 14:00</div><div class="tt-artist">VELVET HAZE</div><div class="tt-genre-tag">Dream Pop</div></div>
+        <div class="tt-slot reveal reveal-delay-1"><div class="tt-time">15:00 – 16:30</div><div class="tt-artist">花鳥風月</div><div class="tt-genre-tag">Hip Hop / Neo-Soul</div></div>
+        <div class="tt-slot reveal reveal-delay-2"><div class="tt-time">17:30 – 19:00</div><div class="tt-artist">MIDNIGHT SUN</div><div class="tt-genre-tag">Jazz Fusion</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE MAP -->
+<section class="section venue bg-shift" id="venue" data-bg="#0d0028">
+  <div class="section-header reveal">
+    <span class="section-label">Venue Map</span>
+    <h2 class="section-title">会場<span style="color:var(--blue)">MAP</span></h2>
+  </div>
+  <div class="venue-map reveal">
+    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+      <rect width="800" height="400" fill="#0a0a14" rx="12"/>
+      <rect x="40" y="30" width="720" height="340" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1" rx="8" stroke-dasharray="4,4"/>
+      <!-- GARDEN STAGE -->
+      <rect x="80" y="60" width="200" height="120" rx="8" fill="rgba(255,45,120,.15)" stroke="#ff2d78" stroke-width="2"/>
+      <text x="180" y="110" text-anchor="middle" fill="#ff2d78" font-size="11" font-weight="bold" letter-spacing="2">🌸 GARDEN STAGE</text>
+      <text x="180" y="135" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="10">MAIN STAGE</text>
+      <!-- SONIC STAGE -->
+      <rect x="520" y="60" width="200" height="120" rx="8" fill="rgba(0,102,255,.15)" stroke="#0066ff" stroke-width="2"/>
+      <text x="620" y="110" text-anchor="middle" fill="#0066ff" font-size="11" font-weight="bold" letter-spacing="2">🔊 SONIC STAGE</text>
+      <text x="620" y="135" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="10">INDOOR STAGE</text>
+      <!-- MOON STAGE -->
+      <circle cx="400" cy="300" r="60" fill="rgba(240,255,0,.1)" stroke="#f0ff00" stroke-width="2"/>
+      <text x="400" y="295" text-anchor="middle" fill="#f0ff00" font-size="11" font-weight="bold" letter-spacing="2">🌙 MOON</text>
+      <text x="400" y="315" text-anchor="middle" fill="#f0ff00" font-size="10" letter-spacing="1">STAGE</text>
+      <!-- FOOD -->
+      <rect x="80" y="240" width="120" height="60" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="140" y="275" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10">🍔 FOOD AREA</text>
+      <!-- GOODS -->
+      <rect x="600" y="240" width="120" height="60" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="660" y="275" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10">🛍 GOODS SHOP</text>
+      <!-- REST -->
+      <rect x="320" y="180" width="80" height="50" rx="6" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+      <text x="360" y="210" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="10">🌿 REST</text>
+      <!-- ENTRANCE -->
+      <rect x="340" y="370" width="120" height="24" rx="12" fill="rgba(255,45,120,.3)" stroke="#ff2d78" stroke-width="1"/>
+      <text x="400" y="387" text-anchor="middle" fill="#ff2d78" font-size="11" font-weight="bold">ENTRANCE</text>
+      <!-- Paths -->
+      <line x1="280" y1="120" x2="340" y2="200" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="520" y1="120" x2="440" y2="200" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="360" y1="230" x2="380" y2="240" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="4,4"/>
+    </svg>
+  </div>
+  <div class="venue-info">
+    <div class="venue-info-card reveal"><div class="icon">🎵</div><h4>3ステージ</h4><p>屋外メイン、屋内、サブステージの3構成</p></div>
+    <div class="venue-info-card reveal reveal-delay-1"><div class="icon">🍔</div><h4>フードエリア</h4><p>厳選20店舗のグルメが集結</p></div>
+    <div class="venue-info-card reveal reveal-delay-2"><div class="icon">🛍</div><h4>グッズショップ</h4><p>限定コラボアイテム多数販売</p></div>
+    <div class="venue-info-card reveal reveal-delay-3"><div class="icon">🌿</div><h4>チルエリア</h4><p>緑に囲まれたリラックスゾーン</p></div>
+  </div>
+</section>
+
+<!-- TICKETS -->
+<section class="section tickets bg-shift" id="tickets" data-bg="#0a0a0a">
+  <div class="section-header reveal">
+    <span class="section-label">Tickets</span>
+    <h2 class="section-title">TICKET<span style="color:var(--pink)">S</span></h2>
+  </div>
+  <div class="ticket-grid">
+    <div class="ticket-card reveal">
+      <div class="ticket-type">1 Day Pass</div>
+      <div class="ticket-price">¥9,800<small>税込</small></div>
+      <p class="ticket-desc">1日分のフェスティバル入場券。好きな1日を選んで参加できます。</p>
+      <ul class="ticket-features">
+        <li>全3ステージ入場可</li>
+        <li>1日間有効（8/15 or 8/16）</li>
+        <li>リストバンド付</li>
+        <li>再入場可</li>
+      </ul>
+      <a href="#" class="btn btn-secondary" style="width:100%;text-align:center">購入する</a>
+    </div>
+    <div class="ticket-card featured reveal reveal-delay-1">
+      <div class="ticket-badge">BEST</div>
+      <div class="ticket-type">2 Day Pass</div>
+      <div class="ticket-price" style="color:var(--pink)">¥16,800<small>税込</small></div>
+      <p class="ticket-desc">2日間通し券。フェスの全プログラムを余すところなく体験。</p>
+      <ul class="ticket-features">
+        <li>全3ステージ入場可</li>
+        <li>2日間通し（8/15 & 8/16）</li>
+        <li>限定リストバンド付</li>
+        <li>再入場可</li>
+        <li>オリジナルステッカー付</li>
+      </ul>
+      <a href="#" class="btn btn-primary" style="width:100%;text-align:center">購入する</a>
+    </div>
+    <div class="ticket-card reveal reveal-delay-2">
+      <div class="ticket-type">VIP Pass</div>
+      <div class="ticket-price" style="color:var(--yellow)">¥35,000<small>税込</small></div>
+      <p class="ticket-desc">特別なフェス体験を。専用エリアとプレミアムサービスをご提供。</p>
+      <ul class="ticket-features">
+        <li>全3ステージ入場可</li>
+        <li>2日間通し（8/15 & 8/16）</li>
+        <li>VIP専用エリア利用可</li>
+        <li>フリードリンク付</li>
+        <li>限定グッズプレゼント</li>
+        <li>優先入場</li>
+      </ul>
+      <a href="#" class="btn btn-secondary" style="width:100%;text-align:center;border-color:var(--yellow);color:var(--yellow)">購入する</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA MARQUEE -->
+<div class="marquee" style="background:var(--yellow)">
+  <div class="marquee-inner" style="animation-duration:18s">
+    <span class="marquee-text" style="color:var(--black)">🎫 EARLY BIRD 販売中 — 数量限定 — 売切次第終了 — GET YOUR TICKET NOW — 🎫 EARLY BIRD 販売中 — 数量限定 — 売切次第終了 — GET YOUR TICKET NOW —</span>
+    <span class="marquee-text" style="color:var(--black)">🎫 EARLY BIRD 販売中 — 数量限定 — 売切次第終了 — GET YOUR TICKET NOW — 🎫 EARLY BIRD 販売中 — 数量限定 — 売切次第終了 — GET YOUR TICKET NOW —</span>
+  </div>
+</div>
+
+<!-- ACCESS -->
+<section class="section access bg-shift" id="access" data-bg="#0a0018">
+  <div class="section-header reveal">
+    <span class="section-label">Access</span>
+    <h2 class="section-title">ACCESS<span style="color:var(--blue)">情報</span></h2>
+  </div>
+  <div class="access-grid">
+    <div class="access-map-placeholder reveal">
+      <div class="map-pin"></div>
+    </div>
+    <div class="access-info reveal reveal-delay-2">
+      <h3>豊洲ウォーターフロントパーク<br><small style="font-size:.5em;color:rgba(255,255,255,.4)">TOYOSU WATERFRONT PARK</small></h3>
+      <dl class="access-detail">
+        <dt>住所</dt>
+        <dd>〒135-0061 東京都江東区豊洲6丁目</dd>
+        <dt>電車でお越しの場合</dt>
+        <dd>ゆりかもめ「市場前駅」徒歩3分<br>東京メトロ有楽町線「豊洲駅」徒歩15分</dd>
+        <dt>バスでお越しの場合</dt>
+        <dd>都営バス「豊洲市場前」停留所 徒歩1分</dd>
+        <dt>お車でお越しの場合</dt>
+        <dd>首都高速晴海線「豊洲出口」より約5分<br><em style="color:var(--pink);font-style:normal;font-size:13px">※ 会場に駐車場はございません。公共交通機関をご利用ください。</em></dd>
+        <dt>開場時間</dt>
+        <dd>11:00 開場 ／ 12:00 開演 ／ 21:30 終演予定</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">SONIC GARDEN<br>2026</div>
+      <p class="footer-tagline">音が咲く、夜が踊る。<br>2026年8月15日（土）・16日（日）<br>東京・豊洲ウォーターフロントパーク</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#concept">Concept</a></li>
+        <li><a href="#artists">Artists</a></li>
+        <li><a href="#timetable">Timetable</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+        <li><a href="#access">Access</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Information</h4>
+      <ul>
+        <li><a href="#">注意事項</a></li>
+        <li><a href="#">よくあるご質問</a></li>
+        <li><a href="#">お問い合わせ</a></li>
+        <li><a href="#">プレス関係者</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">利用規約</a></li>
+        <li><a href="#">プライバシーポリシー</a></li>
+        <li><a href="#">特定商取引法に基づく表記</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-social">
+      <a href="#" aria-label="X (Twitter)">𝕏</a>
+      <a href="#" aria-label="Instagram">IG</a>
+      <a href="#" aria-label="YouTube">YT</a>
+      <a href="#" aria-label="TikTok">TK</a>
+    </div>
+    <p>&copy; 2026 SONIC GARDEN Festival Committee. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script>
+// ===== Countdown Timer =====
+(function countdown(){
+  const target=new Date('2026-08-15T11:00:00+09:00').getTime();
+  function update(){
+    const now=Date.now(),diff=Math.max(0,target-now);
+    const d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);
+    document.getElementById('cdDays').textContent=String(d).padStart(3,'0');
+    document.getElementById('cdHours').textContent=String(h).padStart(2,'0');
+    document.getElementById('cdMins').textContent=String(m).padStart(2,'0');
+    document.getElementById('cdSecs').textContent=String(s).padStart(2,'0');
+  }
+  update();setInterval(update,1000);
+})();
+
+// ===== Scroll Reveal (Intersection Observer) =====
+const revealEls=document.querySelectorAll('.reveal');
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}});
+},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(el=>revealObs.observe(el));
+
+// ===== Nav scroll effect =====
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>60)},{passive:true});
+
+// ===== Smooth nav link close on mobile =====
+document.querySelectorAll('.nav-links a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  });
+});
+
+// ===== Timetable Tabs =====
+function switchDay(id,btn){
+  document.querySelectorAll('.tt-day').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.tt-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById(id).querySelectorAll('.reveal').forEach(el=>{
+    el.classList.remove('visible');
+    revealObs.observe(el);
+  });
+}
+
+// ===== Equalizer bars generation =====
+document.querySelectorAll('.artist-eq').forEach(eq=>{
+  for(let i=0;i<20;i++){const bar=document.createElement('div');bar.className='eq-bar';bar.style.animationDuration=(0.3+Math.random()*0.6)+'s';eq.appendChild(bar)}
+});
+
+// ===== Hero catch neon per char =====
+(function(){
+  const el=document.getElementById('heroCatch');
+  const text=el.textContent;
+  el.textContent='';
+  [...text].forEach((c,i)=>{
+    const span=document.createElement('span');
+    span.className='char';
+    span.textContent=c;
+    span.style.animationDelay=(i*0.15)+'s';
+    el.appendChild(span);
+  });
+})();
+
+// ===== Background color shift on scroll =====
+const bgSections=document.querySelectorAll('.bg-shift');
+const bgObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.body.style.transition='background .8s';
+      document.body.style.background=e.target.dataset.bg||'#0a0a0a';
+    }
+  });
+},{threshold:.3});
+bgSections.forEach(s=>bgObs.observe(s));
+</script>
+</body>
+</html>

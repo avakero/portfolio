@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LIVESTA（リベスタ）| 住まいの先に、暮らしがある。</title>
+<meta name="description" content="LIVESTAは都市型不動産デベロッパーとして、開発・仲介・管理を通じて新しい暮らしの価値を創造します。">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--navy:#1b2a4a;--white:#ffffff;--lgray:#f4f6f9;--blue:#2d7ff9;--gold:#d4a843;
+--navy-90:rgba(27,42,74,.9);--navy-70:rgba(27,42,74,.7);--navy-50:rgba(27,42,74,.5);
+--blue-10:rgba(45,127,249,.1);--gold-20:rgba(212,168,67,.2);
+--fs-hero:clamp(2rem,5vw,4rem);--fs-h2:clamp(1.5rem,3vw,2.5rem);--fs-h3:clamp(1.1rem,2vw,1.5rem);
+--fs-body:clamp(.875rem,1.2vw,1rem);--fs-small:clamp(.75rem,1vw,.875rem);
+--max-w:1200px;--section-py:clamp(60px,10vw,120px);
+--ease:cubic-bezier(.22,1,.36,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;color:var(--navy);background:var(--white);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.section-label{font-size:var(--fs-small);color:var(--blue);text-transform:uppercase;letter-spacing:.2em;font-weight:700;margin-bottom:8px}
+.section-title{font-size:var(--fs-h2);font-weight:800;line-height:1.3;margin-bottom:16px}
+.section-title span{color:var(--blue)}
+.section-desc{font-size:var(--fs-body);color:var(--navy-70);max-width:640px}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.reveal-scale{opacity:0;transform:scale(.9);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal-scale.visible{opacity:1;transform:scale(1)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:6px;font-weight:700;font-size:var(--fs-body);transition:all .3s var(--ease);cursor:pointer;border:none;position:relative;overflow:hidden}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:#1a6ae0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,127,249,.35)}
+.btn-gold{background:var(--gold);color:var(--white)}
+.btn-gold:hover{background:#c49a35;transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,168,67,.4)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.4)}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+.btn svg{width:18px;height:18px;transition:transform .3s}
+.btn:hover svg{transform:translateX(4px)}
+.geometric-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:.04}
+.geometric-bg svg{width:100%;height:100%}
+
+/* ---- NAV ---- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:all .4s var(--ease)}
+.nav.scrolled{background:var(--navy-90);backdrop-filter:blur(12px);padding:10px 0;box-shadow:0 2px 20px rgba(0,0,0,.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.4rem;font-weight:900;color:var(--white);letter-spacing:.08em}
+.nav-logo em{font-style:normal;color:var(--gold)}
+.nav-links{display:flex;gap:clamp(16px,2.5vw,32px);align-items:center}
+.nav-links a{color:rgba(255,255,255,.8);font-size:var(--fs-small);font-weight:600;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s var(--ease)}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--blue);color:var(--white)!important;padding:8px 20px;border-radius:5px;font-size:var(--fs-small)!important}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{background:#1a6ae0}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);transition:all .3s}
+.mobile-menu{display:none}
+@media(max-width:768px){
+.nav-links{display:none}
+.hamburger{display:flex}
+.mobile-menu{display:none;position:fixed;inset:0;background:var(--navy);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white);font-size:1.2rem;font-weight:600}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+}
+
+/* ---- HERO ---- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:linear-gradient(135deg,#0f1a30 0%,var(--navy) 40%,#1e3460 100%);overflow:hidden}
+.hero-bg-pattern{position:absolute;inset:0;opacity:.06}
+.hero-parallax{position:absolute;bottom:0;left:0;right:0;transition:transform .1s linear}
+.hero-parallax svg{width:100%;height:auto}
+.hero-particles{position:absolute;inset:0;pointer-events:none}
+.hero-particle{position:absolute;width:3px;height:3px;background:var(--gold);border-radius:50%;opacity:.4;animation:float-particle linear infinite}
+@keyframes float-particle{0%{transform:translateY(0) translateX(0);opacity:.4}50%{opacity:.8}100%{transform:translateY(-100vh) translateX(30px);opacity:0}}
+.hero-content{position:relative;z-index:10;padding-top:100px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(45,127,249,.15);border:1px solid rgba(45,127,249,.3);color:var(--blue);padding:6px 16px;border-radius:40px;font-size:var(--fs-small);font-weight:600;margin-bottom:24px;backdrop-filter:blur(4px)}
+.hero-badge .dot{width:8px;height:8px;background:var(--blue);border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.hero h1{font-size:var(--fs-hero);font-weight:900;color:var(--white);line-height:1.2;margin-bottom:16px}
+.hero h1 .accent{color:var(--gold);position:relative}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.25rem);color:rgba(255,255,255,.7);margin-bottom:40px;max-width:560px;line-height:1.8}
+.hero-cta-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px}
+.hero-search{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:24px;max-width:680px}
+.hero-search-title{color:rgba(255,255,255,.6);font-size:var(--fs-small);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.search-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.search-select{padding:10px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:var(--white);font-size:var(--fs-small);appearance:none;cursor:pointer;transition:border-color .3s}
+.search-select:focus{outline:none;border-color:var(--blue)}
+.search-select option{background:var(--navy);color:var(--white)}
+.search-btn{grid-column:1/-1;padding:12px;border-radius:6px;background:var(--blue);color:var(--white);border:none;font-weight:700;font-size:var(--fs-body);cursor:pointer;transition:all .3s}
+.search-btn:hover{background:#1a6ae0;transform:translateY(-1px)}
+.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:var(--fs-small);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:10}
+.scroll-arrow{width:24px;height:24px;border-right:2px solid rgba(255,255,255,.5);border-bottom:2px solid rgba(255,255,255,.5);transform:rotate(45deg);animation:bounce-arrow 2s infinite}
+@keyframes bounce-arrow{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.5}50%{transform:rotate(45deg) translate(5px,5px);opacity:1}}
+
+/* ---- STATS ---- */
+.stats{background:var(--white);padding:var(--section-py) 0;position:relative}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;margin-top:48px}
+.stat-card{background:var(--white);border:1px solid rgba(27,42,74,.08);border-radius:12px;padding:32px 24px;text-align:center;position:relative;transition:all .4s var(--ease);overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--gold));transform:scaleX(0);transition:transform .4s var(--ease)}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(27,42,74,.1)}
+.stat-ring{width:100px;height:100px;margin:0 auto 16px;position:relative}
+.stat-ring svg{transform:rotate(-90deg)}
+.stat-ring circle{fill:none;stroke-width:6}
+.stat-ring .bg{stroke:var(--lgray)}
+.stat-ring .fg{stroke:var(--blue);stroke-linecap:round;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 2s var(--ease)}
+.stat-ring.gold .fg{stroke:var(--gold)}
+.stat-ring .stat-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:900;color:var(--navy);font-variant-numeric:tabular-nums}
+.stat-label{font-size:var(--fs-body);color:var(--navy-70);font-weight:600}
+.stat-sub{font-size:var(--fs-small);color:var(--navy-50);margin-top:4px}
+
+/* KPI Row */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:32px}
+.kpi-card{background:var(--lgray);border-radius:10px;padding:20px;display:flex;align-items:center;gap:16px;transition:all .3s var(--ease)}
+.kpi-card:hover{background:var(--blue-10)}
+.kpi-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kpi-icon svg{width:22px;height:22px}
+.kpi-icon.blue{background:var(--blue-10);color:var(--blue)}
+.kpi-icon.gold{background:var(--gold-20);color:var(--gold)}
+.kpi-icon.navy{background:rgba(27,42,74,.08);color:var(--navy)}
+.kpi-text .kpi-num{font-size:1.3rem;font-weight:800;font-variant-numeric:tabular-nums}
+.kpi-text .kpi-label{font-size:var(--fs-small);color:var(--navy-70)}
+
+/* ---- SERVICES ---- */
+.services{background:var(--lgray);padding:var(--section-py) 0;position:relative}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;margin-top:48px}
+.service-card{background:var(--white);border-radius:14px;padding:36px 28px;position:relative;overflow:hidden;transition:all .4s var(--ease);border:1px solid transparent;cursor:default}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(27,42,74,.1);border-color:rgba(45,127,249,.15)}
+.service-icon{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:all .3s}
+.service-card:nth-child(1) .service-icon{background:linear-gradient(135deg,var(--blue),#5a9dfc)}
+.service-card:nth-child(2) .service-icon{background:linear-gradient(135deg,var(--gold),#e8c76a)}
+.service-card:nth-child(3) .service-icon{background:linear-gradient(135deg,var(--navy),#2d4a7a)}
+.service-icon svg{width:28px;height:28px;color:var(--white)}
+.service-card h3{font-size:var(--fs-h3);font-weight:800;margin-bottom:8px}
+.service-card .service-tag{font-size:.7rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.service-card p{font-size:var(--fs-body);color:var(--navy-70);line-height:1.8}
+.service-card .service-link{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:var(--fs-small);font-weight:700;color:var(--blue);transition:gap .3s}
+.service-card:hover .service-link{gap:10px}
+.service-card .card-num{position:absolute;top:20px;right:24px;font-size:3rem;font-weight:900;color:rgba(27,42,74,.04);line-height:1}
+
+/* ---- PROPERTIES ---- */
+.properties{background:var(--white);padding:var(--section-py) 0;position:relative}
+.properties-header{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px;margin-bottom:48px}
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.prop-card{background:var(--white);border-radius:12px;overflow:hidden;border:1px solid rgba(27,42,74,.08);transition:all .4s var(--ease);cursor:pointer}
+.prop-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(27,42,74,.12)}
+.prop-img{position:relative;height:200px;overflow:hidden}
+.prop-img-inner{width:100%;height:100%;transition:transform .6s var(--ease)}
+.prop-card:hover .prop-img-inner{transform:scale(1.08)}
+.prop-badge{position:absolute;top:12px;left:12px;background:var(--blue);color:var(--white);padding:4px 12px;border-radius:4px;font-size:.7rem;font-weight:700}
+.prop-badge.gold{background:var(--gold)}
+.prop-fav{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
+.prop-fav:hover{background:var(--white);transform:scale(1.1)}
+.prop-fav svg{width:18px;height:18px;color:var(--navy-50);transition:color .3s}
+.prop-fav:hover svg{color:#e74c3c}
+.prop-details{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(27,42,74,.85));padding:16px;transform:translateY(100%);transition:transform .4s var(--ease)}
+.prop-card:hover .prop-details{transform:translateY(0)}
+.prop-detail-row{display:flex;gap:16px;color:var(--white);font-size:.75rem;font-weight:600}
+.prop-detail-row span{display:flex;align-items:center;gap:4px}
+.prop-detail-row svg{width:14px;height:14px}
+.prop-body{padding:20px}
+.prop-title{font-size:1rem;font-weight:800;margin-bottom:4px}
+.prop-location{font-size:var(--fs-small);color:var(--navy-50);display:flex;align-items:center;gap:4px;margin-bottom:12px}
+.prop-location svg{width:14px;height:14px}
+.prop-specs{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.prop-spec{font-size:.72rem;color:var(--navy-70);background:var(--lgray);padding:3px 10px;border-radius:4px;font-weight:600}
+.prop-price{font-size:1.3rem;font-weight:900;color:var(--navy)}
+.prop-price small{font-size:.75rem;color:var(--navy-50);font-weight:600;margin-left:4px}
+
+/* ---- FLOW ---- */
+.flow{background:var(--navy);padding:var(--section-py) 0;position:relative;overflow:hidden}
+.flow .section-label{color:var(--gold)}
+.flow .section-title{color:var(--white)}
+.flow .section-desc{color:rgba(255,255,255,.6)}
+.flow-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;margin-top:56px;position:relative}
+.flow-step{text-align:center;padding:0 16px;position:relative}
+.flow-step-num{width:56px;height:56px;border-radius:50%;background:rgba(45,127,249,.15);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.1rem;font-weight:900;color:var(--blue);position:relative;z-index:2;transition:all .4s}
+.flow-step:hover .flow-step-num{background:var(--blue);color:var(--white);transform:scale(1.1)}
+.flow-step h4{color:var(--white);font-size:var(--fs-body);font-weight:700;margin-bottom:8px}
+.flow-step p{color:rgba(255,255,255,.5);font-size:var(--fs-small);line-height:1.6}
+.flow-connector{position:absolute;top:28px;left:calc(50% + 28px);width:calc(100% - 56px);height:2px;background:rgba(45,127,249,.2)}
+.flow-step:last-child .flow-connector{display:none}
+@media(max-width:768px){.flow-connector{display:none}}
+
+/* ---- TESTIMONIALS ---- */
+.testimonials{background:var(--lgray);padding:var(--section-py) 0;position:relative}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:48px}
+.test-card{background:var(--white);border-radius:14px;padding:32px;position:relative;transition:all .4s var(--ease)}
+.test-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(27,42,74,.08)}
+.test-quote{font-size:2rem;color:var(--blue);opacity:.3;line-height:1;margin-bottom:12px}
+.test-text{font-size:var(--fs-body);color:var(--navy-70);line-height:1.9;margin-bottom:20px}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:var(--white)}
+.test-name{font-weight:700;font-size:var(--fs-small)}
+.test-role{font-size:.72rem;color:var(--navy-50)}
+.test-stars{display:flex;gap:2px;margin-top:4px}
+.test-stars svg{width:14px;height:14px;fill:var(--gold)}
+
+/* ---- COMPANY ---- */
+.company{background:var(--white);padding:var(--section-py) 0;position:relative}
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+@media(max-width:768px){.company-grid{grid-template-columns:1fr}}
+.company-table{width:100%}
+.company-table tr{border-bottom:1px solid rgba(27,42,74,.08)}
+.company-table th,.company-table td{padding:14px 0;font-size:var(--fs-body);text-align:left;vertical-align:top}
+.company-table th{color:var(--navy);font-weight:700;width:120px;white-space:nowrap}
+.company-table td{color:var(--navy-70)}
+.company-map{background:var(--lgray);border-radius:14px;padding:24px;position:relative;overflow:hidden;min-height:320px}
+.map-svg-wrap{position:relative}
+.map-pin{position:absolute;transform:translate(-50%,-100%);animation:pin-drop .6s var(--ease) forwards;opacity:0}
+.map-pin:nth-child(2){animation-delay:.3s}
+.map-pin:nth-child(3){animation-delay:.6s}
+.map-pin:nth-child(4){animation-delay:.9s}
+@keyframes pin-drop{0%{opacity:0;transform:translate(-50%,-100%) translateY(-30px)}100%{opacity:1;transform:translate(-50%,-100%) translateY(0)}}
+.map-pin svg{width:28px;height:36px}
+.map-pin .pin-label{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:.65rem;font-weight:700;color:var(--navy);background:var(--white);padding:2px 8px;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+
+/* ---- CTA ---- */
+.cta-section{background:linear-gradient(135deg,var(--navy),#162240);padding:var(--section-py) 0;position:relative;overflow:hidden;text-align:center}
+.cta-section .section-title{color:var(--white)}
+.cta-section .section-desc{color:rgba(255,255,255,.6);margin:0 auto 32px}
+.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.cta-glow{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(100px);pointer-events:none}
+.cta-glow.g1{background:rgba(45,127,249,.15);top:-100px;right:-50px}
+.cta-glow.g2{background:rgba(212,168,67,.1);bottom:-100px;left:-50px}
+
+/* ---- FOOTER ---- */
+.footer{background:#0f1a2e;padding:48px 0 24px;color:rgba(255,255,255,.6)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;gap:24px}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand{font-size:1.3rem;font-weight:900;color:var(--white);margin-bottom:12px}
+.footer-brand em{font-style:normal;color:var(--gold)}
+.footer-desc{font-size:var(--fs-small);line-height:1.8;margin-bottom:16px}
+.footer h4{color:var(--white);font-size:var(--fs-small);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em}
+.footer ul li{margin-bottom:8px}
+.footer ul li a{font-size:var(--fs-small);transition:color .3s}
+.footer ul li a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:40px;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:.72rem}
+.footer-social{display:flex;gap:12px}
+.footer-social a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.footer-social a:hover{border-color:var(--blue);background:rgba(45,127,249,.15)}
+.footer-social svg{width:16px;height:16px}
+
+/* ---- UTILITY ---- */
+.text-center{text-align:center}
+.mx-auto{margin-left:auto;margin-right:auto}
+.delay-1{transition-delay:.1s!important}
+.delay-2{transition-delay:.2s!important}
+.delay-3{transition-delay:.3s!important}
+.delay-4{transition-delay:.4s!important}
+.delay-5{transition-delay:.5s!important}
+
+/* ---- PROP IMAGE PLACEHOLDERS ---- */
+.prop-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.prop-ph-1{background:linear-gradient(135deg,#2d4a7a 0%,#1b2a4a 100%)}
+.prop-ph-2{background:linear-gradient(135deg,#3a6b9f 0%,#1e3460 100%)}
+.prop-ph-3{background:linear-gradient(135deg,#d4a843 0%,#b8912e 100%)}
+.prop-ph-4{background:linear-gradient(135deg,#4a7ab5 0%,#2d5580 100%)}
+.prop-ph svg{width:60%;height:60%;opacity:.15}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+<div class="container nav-inner">
+<a href="#hero" class="nav-logo">LIVE<em>STA</em></a>
+<div class="nav-links">
+<a href="#stats">実績</a>
+<a href="#services">事業紹介</a>
+<a href="#properties">物件情報</a>
+<a href="#flow">ご購入の流れ</a>
+<a href="#company">企業情報</a>
+<a href="#contact" class="nav-cta">お問い合わせ</a>
+</div>
+<button class="hamburger" id="hamburger" aria-label="メニュー">
+<span></span><span></span><span></span>
+</button>
+</div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="#stats" onclick="closeMenu()">実績</a>
+<a href="#services" onclick="closeMenu()">事業紹介</a>
+<a href="#properties" onclick="closeMenu()">物件情報</a>
+<a href="#flow" onclick="closeMenu()">ご購入の流れ</a>
+<a href="#company" onclick="closeMenu()">企業情報</a>
+<a href="#contact" onclick="closeMenu()">お問い合わせ</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="hero-bg-pattern">
+<svg width="100%" height="100%"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,.4)" stroke-width=".5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+</div>
+<div class="hero-particles" id="particles"></div>
+<div class="hero-parallax" id="heroParallax">
+<svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="skyline1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(45,127,249,.12)"/><stop offset="100%" stop-color="rgba(27,42,74,.3)"/></linearGradient>
+<linearGradient id="skyline2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(45,127,249,.06)"/><stop offset="100%" stop-color="rgba(27,42,74,.15)"/></linearGradient>
+</defs>
+<!-- Back layer -->
+<g fill="url(#skyline2)" opacity=".5">
+<rect x="50" y="180" width="40" height="220"/><rect x="100" y="140" width="35" height="260"/><rect x="150" y="200" width="50" height="200"/>
+<rect x="250" y="120" width="45" height="280"/><rect x="310" y="160" width="30" height="240"/><rect x="360" y="100" width="55" height="300"/>
+<rect x="460" y="150" width="40" height="250"/><rect x="520" y="80" width="60" height="320"/><rect x="600" y="170" width="35" height="230"/>
+<rect x="700" y="110" width="50" height="290"/><rect x="770" y="190" width="30" height="210"/><rect x="820" y="60" width="65" height="340"/>
+<rect x="920" y="140" width="45" height="260"/><rect x="990" y="180" width="35" height="220"/><rect x="1050" y="90" width="55" height="310"/>
+<rect x="1140" y="160" width="40" height="240"/><rect x="1200" y="130" width="50" height="270"/><rect x="1280" y="170" width="45" height="230"/>
+<rect x="1360" y="100" width="40" height="300"/>
+</g>
+<!-- Front layer -->
+<g fill="url(#skyline1)">
+<rect x="20" y="250" width="60" height="150" rx="2"/><rect x="90" y="200" width="45" height="200" rx="2"/>
+<rect x="160" y="280" width="70" height="120" rx="2"/><rect x="260" y="220" width="50" height="180" rx="2"/>
+<rect x="340" y="180" width="65" height="220" rx="2"/><rect x="430" y="260" width="40" height="140" rx="2"/>
+<rect x="500" y="160" width="80" height="240" rx="2"/><rect x="610" y="240" width="45" height="160" rx="2"/>
+<rect x="680" y="200" width="55" height="200" rx="2"/><rect x="760" y="150" width="70" height="250" rx="2"/>
+<rect x="860" y="270" width="40" height="130" rx="2"/><rect x="920" y="190" width="60" height="210" rx="2"/>
+<rect x="1010" y="230" width="50" height="170" rx="2"/><rect x="1080" y="170" width="75" height="230" rx="2"/>
+<rect x="1180" y="250" width="45" height="150" rx="2"/><rect x="1250" y="210" width="55" height="190" rx="2"/>
+<rect x="1340" y="180" width="60" height="220" rx="2"/>
+</g>
+<!-- Window lights -->
+<g fill="rgba(212,168,67,.25)">
+<rect x="345" y="195" width="6" height="6" rx="1"/><rect x="355" y="195" width="6" height="6" rx="1"/><rect x="345" y="210" width="6" height="6" rx="1"/>
+<rect x="510" y="175" width="6" height="6" rx="1"/><rect x="525" y="175" width="6" height="6" rx="1"/><rect x="540" y="175" width="6" height="6" rx="1"/>
+<rect x="510" y="190" width="6" height="6" rx="1"/><rect x="540" y="190" width="6" height="6" rx="1"/><rect x="525" y="205" width="6" height="6" rx="1"/>
+<rect x="765" y="165" width="6" height="6" rx="1"/><rect x="780" y="165" width="6" height="6" rx="1"/><rect x="795" y="165" width="6" height="6" rx="1"/>
+<rect x="765" y="180" width="6" height="6" rx="1"/><rect x="795" y="180" width="6" height="6" rx="1"/>
+<rect x="1085" y="185" width="6" height="6" rx="1"/><rect x="1100" y="185" width="6" height="6" rx="1"/><rect x="1115" y="185" width="6" height="6" rx="1"/>
+<rect x="1085" y="200" width="6" height="6" rx="1"/><rect x="1115" y="200" width="6" height="6" rx="1"/>
+</g>
+</svg>
+</div>
+
+<div class="container hero-content">
+<div class="hero-badge reveal"><span class="dot"></span>2026年 注目物件公開中</div>
+<h1 class="reveal delay-1">住まいの先に、<br><span class="accent">暮らし</span>がある。</h1>
+<p class="hero-sub reveal delay-2">都市を知り尽くしたLIVESTAが、<br>開発・仲介・管理のすべてで、あなたの理想の住まいを実現します。</p>
+<div class="hero-cta-row reveal delay-3">
+<a href="#properties" class="btn btn-primary">物件を探す<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+<a href="#contact" class="btn btn-outline">資料請求</a>
+</div>
+<div class="hero-search reveal delay-4">
+<div class="hero-search-title">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+物件クイック検索
+</div>
+<div class="search-grid">
+<select class="search-select" aria-label="エリア">
+<option>エリアを選択</option><option>港区</option><option>渋谷区</option><option>新宿区</option><option>千代田区</option><option>目黒区</option><option>世田谷区</option>
+</select>
+<select class="search-select" aria-label="物件タイプ">
+<option>物件タイプ</option><option>新築マンション</option><option>中古マンション</option><option>戸建て</option><option>投資用</option>
+</select>
+<select class="search-select" aria-label="価格帯">
+<option>価格帯</option><option>〜3,000万円</option><option>3,000〜5,000万円</option><option>5,000〜8,000万円</option><option>8,000万円〜</option>
+</select>
+<select class="search-select" aria-label="間取り">
+<option>間取り</option><option>1LDK</option><option>2LDK</option><option>3LDK</option><option>4LDK〜</option>
+</select>
+<button class="search-btn" onclick="alert('検索機能はデモ版です。お気軽にお問い合わせください。')">この条件で検索する</button>
+</div>
+</div>
+</div>
+
+<div class="hero-scroll">
+<span>Scroll</span>
+<div class="scroll-arrow"></div>
+</div>
+</section>
+
+<!-- STATS -->
+<section class="stats" id="stats">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Performance Data</p>
+<h2 class="section-title">数字で見る<span>LIVESTA</span></h2>
+<p class="section-desc mx-auto">創業以来、多くのお客様にお選びいただいてきた実績。数字が信頼の証です。</p>
+</div>
+<div class="stats-grid">
+<div class="stat-card reveal delay-1">
+<div class="stat-ring" data-percent="92">
+<svg width="100" height="100" viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="45"/><circle class="fg" cx="50" cy="50" r="45"/></svg>
+<div class="stat-value"><span class="count-up" data-target="2850">0</span></div>
+</div>
+<p class="stat-label">累計取引件数</p>
+<p class="stat-sub">2024年12月時点</p>
+</div>
+<div class="stat-card reveal delay-2">
+<div class="stat-ring gold" data-percent="98">
+<svg width="100" height="100" viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="45"/><circle class="fg" cx="50" cy="50" r="45"/></svg>
+<div class="stat-value"><span class="count-up" data-target="98.2" data-decimal="1">0</span><small style="font-size:.8rem">%</small></div>
+</div>
+<p class="stat-label">入居率</p>
+<p class="stat-sub">管理物件の平均稼働率</p>
+</div>
+<div class="stat-card reveal delay-3">
+<div class="stat-ring" data-percent="95">
+<svg width="100" height="100" viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="45"/><circle class="fg" cx="50" cy="50" r="45"/></svg>
+<div class="stat-value"><span class="count-up" data-target="96.5" data-decimal="1">0</span><small style="font-size:.8rem">%</small></div>
+</div>
+<p class="stat-label">顧客満足度</p>
+<p class="stat-sub">アンケート調査より</p>
+</div>
+<div class="stat-card reveal delay-4">
+<div class="stat-ring gold" data-percent="85">
+<svg width="100" height="100" viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="45"/><circle class="fg" cx="50" cy="50" r="45"/></svg>
+<div class="stat-value"><span class="count-up" data-target="47">0</span></div>
+</div>
+<p class="stat-label">開発プロジェクト数</p>
+<p class="stat-sub">竣工済み・進行中</p>
+</div>
+</div>
+<div class="kpi-row reveal delay-2">
+<div class="kpi-card">
+<div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+<div class="kpi-text"><div class="kpi-num"><span class="count-up" data-target="1240">0</span>戸</div><div class="kpi-label">管理戸数</div></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+<div class="kpi-text"><div class="kpi-num"><span class="count-up" data-target="18">0</span>年</div><div class="kpi-label">業界実績</div></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+<div class="kpi-text"><div class="kpi-num"><span class="count-up" data-target="85">0</span>名</div><div class="kpi-label">専門スタッフ</div></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+<div class="kpi-text"><div class="kpi-num"><span class="count-up" data-target="132">0</span>%</div><div class="kpi-label">前年比成長率</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Our Business</p>
+<h2 class="section-title">3つの事業で、<span>住まいの全て</span>を</h2>
+<p class="section-desc mx-auto">開発から仲介、そして入居後の管理まで。LIVESTAはワンストップで最適な住まい体験を提供します。</p>
+</div>
+<div class="services-grid">
+<div class="service-card reveal delay-1">
+<div class="card-num">01</div>
+<div class="service-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4"/><path d="M1 16h15"/><path d="M8 16v5"/><path d="M5 21h6"/></svg>
+</div>
+<div class="service-tag">Development</div>
+<h3>不動産開発事業</h3>
+<p>用地取得から設計・施工・販売まで、一貫して手がけるプロジェクト開発。都市のポテンシャルを見極め、街の未来価値を最大化するレジデンスを創造します。デザイン性と資産性を両立した物件づくりが、LIVESTAの真骨頂です。</p>
+<a href="#contact" class="service-link">詳しく見る <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+<div class="service-card reveal delay-2">
+<div class="card-num">02</div>
+<div class="service-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+</div>
+<div class="service-tag">Brokerage</div>
+<h3>売買仲介事業</h3>
+<p>データ分析に基づく適正な価格査定と、きめ細やかなカウンセリング。購入希望者には理想の物件を、売却希望者には最適なタイミングを。双方にとって最良の取引を実現するマッチング力が強みです。</p>
+<a href="#contact" class="service-link">詳しく見る <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+<div class="service-card reveal delay-3">
+<div class="card-num">03</div>
+<div class="service-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+</div>
+<div class="service-tag">Management</div>
+<h3>賃貸管理事業</h3>
+<p>オーナー様の資産価値を守り、入居者様の快適な暮らしを支えるプロパティマネジメント。入居率98.2%を実現する集客力と、24時間対応のサポート体制。安心と収益性を高次元で両立します。</p>
+<a href="#contact" class="service-link">詳しく見る <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PROPERTIES -->
+<section class="properties" id="properties">
+<div class="container">
+<div class="properties-header">
+<div class="reveal">
+<p class="section-label">Featured Properties</p>
+<h2 class="section-title">注目の<span>ピックアップ物件</span></h2>
+<p class="section-desc">LIVESTAが自信を持ってお届けする、厳選された物件をご紹介します。</p>
+</div>
+<a href="#contact" class="btn btn-primary reveal">すべての物件を見る<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+<div class="prop-grid">
+<div class="prop-card reveal delay-1">
+<div class="prop-img">
+<div class="prop-img-inner prop-ph prop-ph-1">
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="30" width="40" height="80" rx="3" stroke="white" stroke-width="2"/><rect x="60" y="10" width="50" height="100" rx="3" stroke="white" stroke-width="2"/><rect x="18" y="40" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="32" y="40" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="18" y="56" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="32" y="56" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="68" y="22" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="85" y="22" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="68" y="40" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="85" y="40" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="68" y="58" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="85" y="58" width="10" height="10" rx="1" stroke="white" stroke-width="1.5"/></svg>
+</div>
+<span class="prop-badge">NEW</span>
+<div class="prop-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="prop-details">
+<div class="prop-detail-row">
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>3LDK</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="22" rx="2"/><path d="M1 12h22"/></svg>72.8㎡</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>12階</span>
+</div>
+</div>
+</div>
+<div class="prop-body">
+<h3 class="prop-title">LIVESTA TOWER 港南</h3>
+<div class="prop-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>港区港南 3丁目</div>
+<div class="prop-specs"><span class="prop-spec">3LDK</span><span class="prop-spec">72.8㎡</span><span class="prop-spec">築1年</span></div>
+<div class="prop-price">8,980<small>万円</small></div>
+</div>
+</div>
+
+<div class="prop-card reveal delay-2">
+<div class="prop-img">
+<div class="prop-img-inner prop-ph prop-ph-2">
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="15" width="80" height="95" rx="4" stroke="white" stroke-width="2"/><rect x="30" y="28" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="54" y="28" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="78" y="28" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="30" y="52" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="54" y="52" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="78" y="52" width="12" height="14" rx="2" stroke="white" stroke-width="1.5"/><rect x="48" y="86" width="24" height="24" rx="2" stroke="white" stroke-width="2"/></svg>
+</div>
+<span class="prop-badge gold">人気</span>
+<div class="prop-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="prop-details">
+<div class="prop-detail-row">
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>2LDK</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="22" rx="2"/><path d="M1 12h22"/></svg>58.3㎡</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>8階</span>
+</div>
+</div>
+</div>
+<div class="prop-body">
+<h3 class="prop-title">LIVESTA RESIDENCE 青山</h3>
+<div class="prop-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>港区南青山 5丁目</div>
+<div class="prop-specs"><span class="prop-spec">2LDK</span><span class="prop-spec">58.3㎡</span><span class="prop-spec">新築</span></div>
+<div class="prop-price">12,500<small>万円</small></div>
+</div>
+</div>
+
+<div class="prop-card reveal delay-3">
+<div class="prop-img">
+<div class="prop-img-inner prop-ph prop-ph-3">
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="25" width="90" height="85" rx="3" stroke="white" stroke-width="2"/><path d="M60 5 L15 25 L105 25 Z" stroke="white" stroke-width="2" fill="none"/><rect x="25" y="40" width="14" height="18" rx="2" stroke="white" stroke-width="1.5"/><rect x="53" y="40" width="14" height="18" rx="2" stroke="white" stroke-width="1.5"/><rect x="81" y="40" width="14" height="18" rx="2" stroke="white" stroke-width="1.5"/><rect x="45" y="78" width="30" height="32" rx="2" stroke="white" stroke-width="2"/></svg>
+</div>
+<span class="prop-badge">おすすめ</span>
+<div class="prop-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="prop-details">
+<div class="prop-detail-row">
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>4LDK</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="22" rx="2"/><path d="M1 12h22"/></svg>105.2㎡</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>2階</span>
+</div>
+</div>
+</div>
+<div class="prop-body">
+<h3 class="prop-title">LIVESTA COURT 世田谷</h3>
+<div class="prop-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>世田谷区成城 6丁目</div>
+<div class="prop-specs"><span class="prop-spec">4LDK</span><span class="prop-spec">105.2㎡</span><span class="prop-spec">築2年</span></div>
+<div class="prop-price">15,800<small>万円</small></div>
+</div>
+</div>
+
+<div class="prop-card reveal delay-4">
+<div class="prop-img">
+<div class="prop-img-inner prop-ph prop-ph-4">
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="20" width="70" height="90" rx="3" stroke="white" stroke-width="2"/><rect x="35" y="32" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="50" y="32" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="65" y="32" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="80" y="32" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="35" y="50" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="50" y="50" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="65" y="50" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="80" y="50" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="35" y="68" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="50" y="68" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="65" y="68" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/><rect x="80" y="68" width="8" height="10" rx="1" stroke="white" stroke-width="1.5"/></svg>
+</div>
+<span class="prop-badge">投資向け</span>
+<div class="prop-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+<div class="prop-details">
+<div class="prop-detail-row">
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>1LDK</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="22" height="22" rx="2"/><path d="M1 12h22"/></svg>42.5㎡</span>
+<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>15階</span>
+</div>
+</div>
+</div>
+<div class="prop-body">
+<h3 class="prop-title">LIVESTA PRIME 渋谷</h3>
+<div class="prop-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>渋谷区神宮前 2丁目</div>
+<div class="prop-specs"><span class="prop-spec">1LDK</span><span class="prop-spec">42.5㎡</span><span class="prop-spec">新築</span></div>
+<div class="prop-price">5,480<small>万円</small></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FLOW -->
+<section class="flow" id="flow">
+<div class="geometric-bg">
+<svg width="100%" height="100%"><defs><pattern id="bldg-pat" width="80" height="80" patternUnits="userSpaceOnUse"><rect x="10" y="20" width="20" height="60" fill="white" opacity=".3"/><rect x="40" y="10" width="15" height="70" fill="white" opacity=".2"/><rect x="62" y="30" width="12" height="50" fill="white" opacity=".25"/></pattern></defs><rect width="100%" height="100%" fill="url(#bldg-pat)"/></svg>
+</div>
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Purchase Flow</p>
+<h2 class="section-title">ご購入までの<span style="color:var(--gold)">5つのステップ</span></h2>
+<p class="section-desc mx-auto">はじめての不動産購入でも安心。専任アドバイザーが、最初のご相談から鍵のお渡しまで一貫してサポートします。</p>
+</div>
+<div class="flow-steps">
+<div class="flow-step reveal delay-1">
+<div class="flow-connector"></div>
+<div class="flow-step-num">1</div>
+<h4>無料相談</h4>
+<p>ライフプランや資金計画を含め、お客様のご要望をじっくりヒアリングします。</p>
+</div>
+<div class="flow-step reveal delay-2">
+<div class="flow-connector"></div>
+<div class="flow-step-num">2</div>
+<h4>物件ご提案</h4>
+<p>ご希望条件に合致する物件を厳選し、データと現地のリアルな情報をお届けします。</p>
+</div>
+<div class="flow-step reveal delay-3">
+<div class="flow-connector"></div>
+<div class="flow-step-num">3</div>
+<h4>内覧・ご見学</h4>
+<p>候補物件をご案内。周辺環境や日当たりなど、図面では分からない点も丁寧にご説明します。</p>
+</div>
+<div class="flow-step reveal delay-4">
+<div class="flow-connector"></div>
+<div class="flow-step-num">4</div>
+<h4>ご契約</h4>
+<p>重要事項説明から契約締結まで、法的な手続きを専門スタッフがしっかりサポートします。</p>
+</div>
+<div class="flow-step reveal delay-5">
+<div class="flow-step-num" style="border-color:var(--gold)">5</div>
+<h4>お引き渡し</h4>
+<p>鍵のお渡しと最終確認。入居後のアフターサポートも万全の体制を整えています。</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+<div class="container">
+<div class="text-center reveal">
+<p class="section-label">Voice</p>
+<h2 class="section-title"><span>お客様</span>の声</h2>
+<p class="section-desc mx-auto">LIVESTAでお住まいを見つけられた方々の、リアルなお声をお届けします。</p>
+</div>
+<div class="test-grid">
+<div class="test-card reveal delay-1">
+<div class="test-quote">"</div>
+<p class="test-text">初めてのマンション購入で不安ばかりでしたが、資金計画から物件選びまで本当に親身に相談に乗っていただきました。結果的に、想像以上に素敵な住まいに出会えて感謝しています。</p>
+<div class="test-author">
+<div class="test-avatar" style="background:linear-gradient(135deg,var(--blue),#5a9dfc)">T.S</div>
+<div>
+<div class="test-name">T.S 様（30代・ご夫婦）</div>
+<div class="test-role">港区 3LDK購入</div>
+<div class="test-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+</div>
+</div>
+</div>
+<div class="test-card reveal delay-2">
+<div class="test-quote">"</div>
+<p class="test-text">投資用物件の購入でしたが、利回りだけでなく将来の資産価値まで見据えた提案をしてくれました。管理もお任せしていますが、入居率が高く安心して運用できています。</p>
+<div class="test-author">
+<div class="test-avatar" style="background:linear-gradient(135deg,var(--gold),#e8c76a)">M.K</div>
+<div>
+<div class="test-name">M.K 様（40代・会社経営）</div>
+<div class="test-role">渋谷区 投資用1LDK購入</div>
+<div class="test-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+</div>
+</div>
+</div>
+<div class="test-card reveal delay-3">
+<div class="test-quote">"</div>
+<p class="test-text">子どもの進学に合わせた住み替えで、売却と購入を同時に進めていただきました。タイミングの調整が難しいと聞いていましたが、スムーズに新居に移ることができました。</p>
+<div class="test-author">
+<div class="test-avatar" style="background:linear-gradient(135deg,var(--navy),#2d4a7a)">A.Y</div>
+<div>
+<div class="test-name">A.Y 様（40代・ご家族4人）</div>
+<div class="test-role">世田谷区 4LDK住み替え</div>
+<div class="test-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- COMPANY -->
+<section class="company" id="company">
+<div class="container">
+<div class="reveal">
+<p class="section-label">Company</p>
+<h2 class="section-title"><span>企業</span>情報</h2>
+</div>
+<div class="company-grid">
+<div class="reveal delay-1">
+<table class="company-table">
+<tr><th>社名</th><td>株式会社LIVESTA（リベスタ）</td></tr>
+<tr><th>設立</th><td>2008年4月</td></tr>
+<tr><th>代表</th><td>代表取締役 田中 誠一郎</td></tr>
+<tr><th>資本金</th><td>3億5,000万円</td></tr>
+<tr><th>従業員数</th><td>85名（2025年1月現在）</td></tr>
+<tr><th>所在地</th><td>〒107-0062 東京都港区南青山2-11-16<br>LIVESTA青山ビル 8F</td></tr>
+<tr><th>事業内容</th><td>不動産開発事業、売買仲介事業、賃貸管理事業、不動産コンサルティング</td></tr>
+<tr><th>免許</th><td>宅地建物取引業 東京都知事(4)第XXXXX号</td></tr>
+<tr><th>加盟団体</th><td>公益社団法人 全日本不動産協会<br>一般社団法人 不動産流通経営協会</td></tr>
+</table>
+</div>
+<div class="company-map reveal delay-2">
+<div class="map-svg-wrap" id="mapArea">
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+<rect width="400" height="300" fill="#e8edf3" rx="8"/>
+<!-- Roads -->
+<line x1="0" y1="100" x2="400" y2="100" stroke="#cdd5e0" stroke-width="8"/>
+<line x1="0" y1="200" x2="400" y2="200" stroke="#cdd5e0" stroke-width="6"/>
+<line x1="140" y1="0" x2="140" y2="300" stroke="#cdd5e0" stroke-width="8"/>
+<line x1="280" y1="0" x2="280" y2="300" stroke="#cdd5e0" stroke-width="6"/>
+<line x1="60" y1="0" x2="60" y2="300" stroke="#dde3eb" stroke-width="3"/>
+<line x1="200" y1="0" x2="200" y2="300" stroke="#dde3eb" stroke-width="3"/>
+<line x1="340" y1="0" x2="340" y2="300" stroke="#dde3eb" stroke-width="3"/>
+<line x1="0" y1="50" x2="400" y2="50" stroke="#dde3eb" stroke-width="3"/>
+<line x1="0" y1="150" x2="400" y2="150" stroke="#dde3eb" stroke-width="3"/>
+<line x1="0" y1="250" x2="400" y2="250" stroke="#dde3eb" stroke-width="3"/>
+<!-- Areas -->
+<rect x="10" y="10" width="120" height="80" rx="6" fill="#d4dbe8" opacity=".5"/>
+<rect x="150" y="110" width="120" height="80" rx="6" fill="#d4dbe8" opacity=".5"/>
+<rect x="290" y="210" width="100" height="80" rx="6" fill="#d4dbe8" opacity=".5"/>
+<!-- Labels -->
+<text x="70" y="55" text-anchor="middle" font-size="11" fill="#7a8ba8" font-weight="600">渋谷区</text>
+<text x="210" y="155" text-anchor="middle" font-size="12" fill="#4a6080" font-weight="700">港区</text>
+<text x="340" y="255" text-anchor="middle" font-size="11" fill="#7a8ba8" font-weight="600">千代田区</text>
+<text x="50" y="230" text-anchor="middle" font-size="10" fill="#9aa8bc" font-weight="500">世田谷区</text>
+<text x="330" y="55" text-anchor="middle" font-size="10" fill="#9aa8bc" font-weight="500">新宿区</text>
+</svg>
+<!-- Map Pins -->
+<div class="map-pin" style="top:42%;left:52%">
+<svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="var(--blue)"/><circle cx="12" cy="11" r="5" fill="white"/></svg>
+<div class="pin-label">本社（南青山）</div>
+</div>
+<div class="map-pin" style="top:28%;left:18%">
+<svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="var(--gold)"/><circle cx="12" cy="11" r="5" fill="white"/></svg>
+<div class="pin-label">渋谷支店</div>
+</div>
+<div class="map-pin" style="top:72%;left:82%">
+<svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="var(--gold)"/><circle cx="12" cy="11" r="5" fill="white"/></svg>
+<div class="pin-label">丸の内支店</div>
+</div>
+<div class="map-pin" style="top:60%;left:35%">
+<svg viewBox="0 0 24 32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="var(--navy)"/><circle cx="12" cy="11" r="5" fill="white"/></svg>
+<div class="pin-label">港南営業所</div>
+</div>
+</div>
+<p style="font-size:.75rem;color:var(--navy-50);margin-top:12px;text-align:center">※ イメージマップです</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+<div class="cta-glow g1"></div>
+<div class="cta-glow g2"></div>
+<div class="container" style="position:relative;z-index:2">
+<div class="reveal">
+<p class="section-label" style="color:var(--gold)">Contact Us</p>
+<h2 class="section-title">理想の住まい探し、<br>まずは<span style="color:var(--gold)">無料相談</span>から。</h2>
+<p class="section-desc">オンラインでもご来店でも。経験豊富なアドバイザーが、<br>お客様の「こうしたい」を形にするお手伝いをいたします。</p>
+</div>
+<div class="cta-buttons reveal delay-1">
+<a href="#" class="btn btn-gold">無料相談を予約する<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+<a href="#" class="btn btn-outline">資料をダウンロード<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
+</div>
+<p class="reveal delay-2" style="color:rgba(255,255,255,.4);font-size:var(--fs-small);margin-top:24px">お電話でのお問い合わせ：0120-XXX-XXX（平日 9:00〜19:00）</p>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+<div class="footer-grid">
+<div>
+<div class="footer-brand">LIVE<em>STA</em></div>
+<p class="footer-desc">住まいの先に、暮らしがある。<br>都市型不動産デベロッパーとして、開発・仲介・管理のすべてで、新しい暮らしの価値を創造します。</p>
+<div class="footer-social">
+<a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+<a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></a>
+<a href="#" aria-label="LINE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.82 2 10.5c0 3.28 2.16 6.15 5.4 7.65-.08.55-.5 3.35-.52 3.55 0 0-.01.11.05.15a.18.18 0 0 0 .16.02c.21-.03 2.46-1.62 3.48-2.34.46.06.94.1 1.43.1 5.52 0 10-3.82 10-8.5S17.52 2 12 2z"/></svg></a>
+</div>
+</div>
+<div>
+<h4>事業内容</h4>
+<ul>
+<li><a href="#services">不動産開発</a></li>
+<li><a href="#services">売買仲介</a></li>
+<li><a href="#services">賃貸管理</a></li>
+<li><a href="#">コンサルティング</a></li>
+</ul>
+</div>
+<div>
+<h4>物件情報</h4>
+<ul>
+<li><a href="#properties">新着物件</a></li>
+<li><a href="#">エリアから探す</a></li>
+<li><a href="#">価格帯から探す</a></li>
+<li><a href="#">投資用物件</a></li>
+</ul>
+</div>
+<div>
+<h4>企業情報</h4>
+<ul>
+<li><a href="#company">会社概要</a></li>
+<li><a href="#">採用情報</a></li>
+<li><a href="#">ニュース</a></li>
+<li><a href="#contact">お問い合わせ</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© 2026 LIVESTA Inc. All rights reserved.</span>
+<span><a href="#">プライバシーポリシー</a> ｜ <a href="#">利用規約</a> ｜ <a href="#">特定商取引法に基づく表記</a></span>
+</div>
+</div>
+</footer>
+
+<script>
+// Mobile menu
+const hamburger=document.getElementById('hamburger');
+const mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{hamburger.classList.toggle('active');mobileMenu.classList.toggle('open')});
+function closeMenu(){hamburger.classList.remove('active');mobileMenu.classList.remove('open')}
+
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Parallax
+const heroParallax=document.getElementById('heroParallax');
+window.addEventListener('scroll',()=>{
+const s=window.scrollY;
+if(s<window.innerHeight){heroParallax.style.transform=`translateY(${s*0.3}px)`}
+},{passive:true});
+
+// Particles
+const particlesEl=document.getElementById('particles');
+for(let i=0;i<20;i++){
+const p=document.createElement('div');
+p.className='hero-particle';
+p.style.left=Math.random()*100+'%';
+p.style.top=(60+Math.random()*40)+'%';
+p.style.animationDuration=(4+Math.random()*6)+'s';
+p.style.animationDelay=Math.random()*6+'s';
+p.style.width=(2+Math.random()*2)+'px';
+p.style.height=p.style.width;
+particlesEl.appendChild(p);
+}
+
+// Intersection Observer for reveals
+const revealEls=document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
+const revealObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target)}})
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(el=>revealObs.observe(el));
+
+// Count up animation
+const countEls=document.querySelectorAll('.count-up');
+const countObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+const el=e.target;
+const target=parseFloat(el.dataset.target);
+const decimal=parseInt(el.dataset.decimal)||0;
+const duration=2000;
+const start=performance.now();
+function animate(now){
+const elapsed=now-start;
+const progress=Math.min(elapsed/duration,1);
+const eased=1-Math.pow(1-progress,3);
+const current=eased*target;
+el.textContent=decimal>0?current.toFixed(decimal):Math.floor(current).toLocaleString();
+if(progress<1)requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+countObs.unobserve(el);
+}
+})
+},{threshold:0.5});
+countEls.forEach(el=>countObs.observe(el));
+
+// Progress rings
+const rings=document.querySelectorAll('.stat-ring');
+const ringObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+const ring=e.target;
+const pct=parseInt(ring.dataset.percent)/100;
+const fg=ring.querySelector('.fg');
+const circumference=2*Math.PI*45;
+fg.style.strokeDasharray=circumference;
+fg.style.strokeDashoffset=circumference*(1-pct);
+ringObs.unobserve(ring);
+}
+})
+},{threshold:0.5});
+rings.forEach(r=>ringObs.observe(r));
+
+// Map pin animation
+const mapArea=document.getElementById('mapArea');
+const mapObs=new IntersectionObserver((entries)=>{
+entries.forEach(e=>{
+if(e.isIntersecting){
+const pins=mapArea.querySelectorAll('.map-pin');
+pins.forEach((pin,i)=>{
+pin.style.animationDelay=(i*0.3)+'s';
+pin.style.animationPlayState='running';
+});
+mapObs.unobserve(mapArea);
+}
+})
+},{threshold:0.3});
+mapObs.observe(mapArea);
+
+// Active nav link
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a:not(.nav-cta)');
+window.addEventListener('scroll',()=>{
+let current='';
+sections.forEach(sec=>{
+const top=sec.offsetTop-120;
+if(window.scrollY>=top)current=sec.getAttribute('id');
+});
+navLinks.forEach(a=>{
+a.style.color=a.getAttribute('href')==='#'+current?'var(--gold)':'';
+});
+},{passive:true});
+</script>
+</body>
+</html>

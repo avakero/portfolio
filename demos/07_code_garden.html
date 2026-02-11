@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CODE GARDEN｜子ども向けプログラミングスクール。つくる楽しさが、未来をひらく。小学1年生から始められるプログラミング教室。">
+<title>CODE GARDEN｜子ども向けプログラミングスクール</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#fff8e7;--sky:#4fc3f7;--coral:#ff8a65;--mint:#81c784;--navy:#1a237e;
+  --sky-light:#e1f5fe;--coral-light:#fbe9e7;--mint-light:#e8f5e9;--navy-light:#e8eaf6;
+  --text:#333;--text-light:#666;--radius:16px;--radius-sm:10px;
+  --font-main:'Rounded Mplus 1c','Hiragino Maru Gothic Pro','BIZ UDPGothic',sans-serif;
+  --shadow:0 4px 24px rgba(26,35,126,.08);--shadow-lg:0 8px 40px rgba(26,35,126,.12);
+}
+@import url('https://fonts.googleapis.com/css2?family=Rounded+Mplus+1c:wght@400;500;700;800&display=swap');
+html{scroll-behavior:smooth;font-size:clamp(14px,1.2vw,18px)}
+body{font-family:var(--font-main);color:var(--text);background:var(--cream);overflow-x:hidden;line-height:1.8}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{width:min(92%,1200px);margin:0 auto}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;width:100%;z-index:1000;padding:.8rem 0;transition:all .4s}
+nav.scrolled{background:rgba(255,248,231,.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(26,35,126,.08)}
+nav .nav-inner{display:flex;align-items:center;justify-content:space-between;width:min(92%,1200px);margin:0 auto}
+.logo{font-weight:800;font-size:1.4rem;color:var(--navy);display:flex;align-items:center;gap:.5rem}
+.logo span{color:var(--coral)}
+.logo .bracket{color:var(--sky);font-weight:400}
+.nav-links{display:flex;gap:1.8rem;align-items:center;font-size:.85rem;font-weight:500}
+.nav-links a{color:var(--navy);position:relative;transition:color .3s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--coral);transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--coral);color:#fff!important;padding:.5rem 1.2rem;border-radius:50px;font-weight:700;transition:all .3s;box-shadow:0 2px 12px rgba(255,138,101,.3)}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(255,138,101,.4)}
+.nav-cta::after{display:none!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.hamburger span{width:28px;height:3px;background:var(--navy);border-radius:3px;transition:all .3s}
+.hamburger.active span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* MOBILE NAV */
+.mobile-nav{position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100vh;background:var(--cream);z-index:999;padding:5rem 2rem;transition:right .4s;box-shadow:-4px 0 30px rgba(0,0,0,.1)}
+.mobile-nav.active{right:0}
+.mobile-nav a{display:block;padding:.8rem 0;font-size:1.1rem;font-weight:500;color:var(--navy);border-bottom:1px solid rgba(26,35,126,.08)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:998;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.active{opacity:1;pointer-events:auto}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:6rem 0 4rem}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.floating-code{position:absolute;font-family:'Courier New',monospace;font-weight:700;opacity:.07;color:var(--navy);font-size:clamp(1rem,3vw,2.5rem);animation:floatCode 20s linear infinite;pointer-events:none}
+@keyframes floatCode{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-100vh) rotate(360deg)}}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;z-index:1}
+.hero-text h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:1rem}
+.hero-text h1 .highlight{background:linear-gradient(transparent 60%,rgba(79,195,247,.3) 60%);display:inline}
+.hero-text .catchcopy{font-size:clamp(1rem,2.5vw,1.5rem);color:var(--coral);font-weight:700;margin-bottom:.5rem}
+.hero-text p{color:var(--text-light);font-size:1rem;margin-bottom:2rem;max-width:500px}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--coral);color:#fff;padding:.9rem 2.2rem;border-radius:50px;font-weight:700;font-size:1rem;border:none;cursor:pointer;transition:all .3s;box-shadow:0 4px 20px rgba(255,138,101,.3);display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-main)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 6px 30px rgba(255,138,101,.4)}
+.btn-secondary{background:transparent;color:var(--navy);padding:.9rem 2.2rem;border-radius:50px;font-weight:700;font-size:1rem;border:2px solid var(--navy);cursor:pointer;transition:all .3s;font-family:var(--font-main)}
+.btn-secondary:hover{background:var(--navy);color:#fff;transform:translateY(-3px)}
+
+/* SVG ROBOT */
+.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.robot-container{position:relative;width:100%;max-width:420px}
+.robot-container svg{width:100%;height:auto;filter:drop-shadow(0 10px 30px rgba(26,35,126,.1))}
+.hero-visual .floating-block{position:absolute;border-radius:8px;animation:floatBlock 3s ease-in-out infinite}
+@keyframes floatBlock{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(5deg)}}
+.fb1{width:40px;height:40px;background:var(--sky);top:10%;left:5%;animation-delay:0s}
+.fb2{width:30px;height:30px;background:var(--coral);top:20%;right:0;animation-delay:.5s;border-radius:50%}
+.fb3{width:35px;height:35px;background:var(--mint);bottom:20%;left:0;animation-delay:1s}
+.fb4{width:25px;height:25px;background:var(--navy);bottom:10%;right:10%;animation-delay:1.5s;border-radius:50%}
+
+/* SCROLL DOWN */
+.scroll-down{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;z-index:2;color:var(--navy);font-size:.75rem;font-weight:500;cursor:pointer}
+.scroll-arrow{width:24px;height:24px;border-right:2.5px solid var(--navy);border-bottom:2.5px solid var(--navy);transform:rotate(45deg);animation:scrollBounce 2s infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0);opacity:1}50%{transform:rotate(45deg) translate(5px,5px);opacity:.5}}
+
+/* SECTION COMMON */
+section{padding:clamp(4rem,8vw,7rem) 0;position:relative}
+.section-label{display:inline-flex;align-items:center;gap:.5rem;background:var(--sky-light);color:var(--sky);font-weight:700;font-size:.8rem;padding:.4rem 1rem;border-radius:50px;margin-bottom:1rem}
+.section-label .code-tag{font-family:'Courier New',monospace}
+.section-title{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:800;color:var(--navy);margin-bottom:.8rem}
+.section-subtitle{color:var(--text-light);font-size:1rem;max-width:600px;margin-bottom:3rem}
+.text-center{text-align:center}
+.text-center .section-subtitle{margin-left:auto;margin-right:auto}
+
+/* FADE ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-left.visible{opacity:1;transform:translateX(0)}
+.fade-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.fade-right.visible{opacity:1;transform:translateX(0)}
+.stagger>*{opacity:0;transform:translateY(30px);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.stagger.visible>*{opacity:1;transform:translateY(0)}
+.stagger.visible>*:nth-child(1){transition-delay:.1s}
+.stagger.visible>*:nth-child(2){transition-delay:.2s}
+.stagger.visible>*:nth-child(3){transition-delay:.3s}
+.stagger.visible>*:nth-child(4){transition-delay:.4s}
+.stagger.visible>*:nth-child(5){transition-delay:.5s}
+.stagger.visible>*:nth-child(6){transition-delay:.6s}
+
+/* LEARN SECTION */
+.learn{background:#fff}
+.learn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.learn-card{background:var(--cream);border-radius:var(--radius);padding:2rem;transition:all .4s;position:relative;overflow:hidden}
+.learn-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.learn-card .icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin-bottom:1rem;color:#fff}
+.learn-card:nth-child(1) .icon{background:var(--sky)}
+.learn-card:nth-child(2) .icon{background:var(--coral)}
+.learn-card:nth-child(3) .icon{background:var(--mint)}
+.learn-card:nth-child(4) .icon{background:var(--navy)}
+.learn-card h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
+.learn-card p{font-size:.88rem;color:var(--text-light);line-height:1.7}
+.learn-card .code-deco{position:absolute;top:1rem;right:1rem;font-family:'Courier New',monospace;color:rgba(26,35,126,.08);font-size:2rem;font-weight:700}
+
+/* CURRICULUM */
+.curriculum{background:var(--cream)}
+.curriculum-steps{max-width:800px;margin:0 auto;position:relative}
+.curriculum-steps::before{content:'';position:absolute;left:28px;top:0;bottom:0;width:3px;background:linear-gradient(var(--sky),var(--mint),var(--coral))}
+.step{display:flex;gap:2rem;margin-bottom:2.5rem;position:relative}
+.step-num{width:58px;height:58px;min-width:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:#fff;z-index:1;transition:transform .4s}
+.step:nth-child(1) .step-num{background:var(--sky)}
+.step:nth-child(2) .step-num{background:var(--mint)}
+.step:nth-child(3) .step-num{background:var(--coral)}
+.step:nth-child(4) .step-num{background:var(--navy)}
+.step-content{flex:1}
+.step-code{background:var(--navy);color:#fff;border-radius:var(--radius-sm);padding:1.2rem 1.5rem;font-family:'Courier New',monospace;font-size:.82rem;line-height:1.8;margin-bottom:.8rem;position:relative;overflow:hidden}
+.step-code .line-num{color:rgba(255,255,255,.3);margin-right:1rem;user-select:none}
+.step-code .keyword{color:var(--sky)}
+.step-code .string{color:var(--coral)}
+.step-code .func{color:var(--mint)}
+.step-code .cursor{display:inline-block;width:8px;height:1em;background:var(--sky);animation:blink 1s infinite;vertical-align:text-bottom}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.step-code.typing .typed-line{opacity:0;transform:translateX(-10px);transition:all .5s}
+.step-code.typing.visible .typed-line:nth-child(1){opacity:1;transform:translateX(0);transition-delay:.2s}
+.step-code.typing.visible .typed-line:nth-child(2){opacity:1;transform:translateX(0);transition-delay:.6s}
+.step-code.typing.visible .typed-line:nth-child(3){opacity:1;transform:translateX(0);transition-delay:1s}
+.step h3{font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:.3rem}
+.step p{font-size:.9rem;color:var(--text-light)}
+
+/* TEACHERS */
+.teachers{background:#fff}
+.teachers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+.teacher-card{background:var(--cream);border-radius:var(--radius);overflow:hidden;transition:all .4s}
+.teacher-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.teacher-avatar{height:200px;display:flex;align-items:center;justify-content:center;position:relative}
+.teacher-card:nth-child(1) .teacher-avatar{background:linear-gradient(135deg,var(--sky-light),var(--sky))}
+.teacher-card:nth-child(2) .teacher-avatar{background:linear-gradient(135deg,var(--coral-light),var(--coral))}
+.teacher-card:nth-child(3) .teacher-avatar{background:linear-gradient(135deg,var(--mint-light),var(--mint))}
+.teacher-avatar svg{width:120px;height:120px}
+.teacher-info{padding:1.5rem}
+.teacher-info h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.2rem}
+.teacher-info .role{font-size:.8rem;color:var(--sky);font-weight:600;margin-bottom:.6rem}
+.teacher-info p{font-size:.85rem;color:var(--text-light);line-height:1.7}
+
+/* WORKS GALLERY */
+.works{background:var(--cream)}
+.works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
+.work-card{border-radius:var(--radius);overflow:hidden;transition:all .4s;background:#fff;box-shadow:var(--shadow)}
+.work-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:var(--shadow-lg)}
+.work-thumb{height:180px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.work-card:nth-child(1) .work-thumb{background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+.work-card:nth-child(2) .work-thumb{background:linear-gradient(135deg,#fce4ec,#f8bbd0)}
+.work-card:nth-child(3) .work-thumb{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.work-card:nth-child(4) .work-thumb{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.work-card:nth-child(5) .work-thumb{background:linear-gradient(135deg,#f3e5f5,#ce93d8)}
+.work-card:nth-child(6) .work-thumb{background:linear-gradient(135deg,#e0f7fa,#80deea)}
+.work-thumb svg{width:80%;height:80%;max-width:160px}
+.work-info{padding:1.2rem}
+.work-info h3{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.3rem}
+.work-info .work-meta{font-size:.78rem;color:var(--sky);font-weight:600;margin-bottom:.3rem}
+.work-info p{font-size:.82rem;color:var(--text-light)}
+.work-tag{display:inline-block;padding:.15rem .6rem;border-radius:50px;font-size:.7rem;font-weight:600;margin-top:.5rem}
+
+/* TESTIMONIALS */
+.testimonials{background:#fff}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+.testimonial-card{position:relative;padding:2rem;background:var(--cream);border-radius:var(--radius);transition:all .4s}
+.testimonial-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.testimonial-card::after{content:'';position:absolute;bottom:-12px;left:2rem;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-top:12px solid var(--cream)}
+.testimonial-card .stars{color:#ffc107;font-size:1rem;margin-bottom:.8rem;letter-spacing:2px}
+.testimonial-card blockquote{font-size:.92rem;color:var(--text);line-height:1.8;margin-bottom:1rem;font-style:normal}
+.testimonial-card .parent-name{font-size:.82rem;color:var(--text-light);font-weight:600}
+.testimonial-card .parent-name span{color:var(--sky);font-weight:700}
+
+/* PRICING */
+.pricing{background:var(--cream)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-bottom:3rem}
+.price-card{background:#fff;border-radius:var(--radius);overflow:hidden;transition:all .4s;box-shadow:var(--shadow)}
+.price-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg)}
+.price-card.popular{border:3px solid var(--coral);position:relative}
+.price-card.popular::before{content:'人気No.1';position:absolute;top:1rem;right:-2rem;background:var(--coral);color:#fff;padding:.2rem 2.5rem;font-size:.75rem;font-weight:700;transform:rotate(45deg)}
+.price-header{padding:1.5rem;text-align:center}
+.price-card:nth-child(1) .price-header{background:linear-gradient(135deg,var(--sky-light),#b3e5fc)}
+.price-card:nth-child(2) .price-header{background:linear-gradient(135deg,var(--coral-light),#ffccbc)}
+.price-card:nth-child(3) .price-header{background:linear-gradient(135deg,var(--mint-light),#a5d6a7)}
+.price-header h3{font-size:1.2rem;font-weight:700;color:var(--navy)}
+.price-header .age{font-size:.8rem;color:var(--text-light);margin-top:.2rem}
+.price-body{padding:1.5rem}
+.price-amount{text-align:center;margin-bottom:1rem}
+.price-amount .yen{font-size:1rem;color:var(--navy);font-weight:700}
+.price-amount .num{font-size:2.5rem;color:var(--navy);font-weight:800}
+.price-amount .period{font-size:.8rem;color:var(--text-light)}
+.price-features{list-style:none;margin-bottom:1.5rem}
+.price-features li{padding:.4rem 0;font-size:.85rem;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.price-features li::before{content:'✓';color:var(--mint);font-weight:700;font-size:.9rem}
+.price-btn{display:block;width:100%;padding:.8rem;border:none;border-radius:50px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .3s;font-family:var(--font-main)}
+.price-card:nth-child(1) .price-btn{background:var(--sky);color:#fff}
+.price-card:nth-child(2) .price-btn{background:var(--coral);color:#fff}
+.price-card:nth-child(3) .price-btn{background:var(--mint);color:#fff}
+.price-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.15)}
+
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+.info-card{background:#fff;border-radius:var(--radius-sm);padding:1.5rem;box-shadow:var(--shadow)}
+.info-card h4{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.info-card p{font-size:.85rem;color:var(--text-light);line-height:1.7}
+
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,var(--navy) 0%,#283593 50%,#1565c0 100%);color:#fff;text-align:center;padding:clamp(4rem,10vw,8rem) 0;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.cta-section h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:1rem;position:relative}
+.cta-section p{font-size:1.05rem;opacity:.9;margin-bottom:2.5rem;max-width:550px;margin-left:auto;margin-right:auto;position:relative}
+.cta-section .btn-primary{background:var(--coral);font-size:1.1rem;padding:1rem 3rem;position:relative}
+.cta-particles{position:absolute;inset:0;pointer-events:none}
+.cta-particle{position:absolute;border-radius:50%;opacity:.15}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.8);padding:3rem 0 1.5rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.footer-brand .logo{color:#fff;font-size:1.3rem;margin-bottom:.8rem}
+.footer-brand p{font-size:.82rem;line-height:1.8;opacity:.7}
+.footer-col h4{font-size:.9rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.footer-col a{display:block;font-size:.82rem;padding:.3rem 0;opacity:.7;transition:opacity .3s}
+.footer-col a:hover{opacity:1}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;text-align:center;font-size:.75rem;opacity:.5}
+
+/* BLOCKS ANIMATION */
+.blocks-container{position:fixed;bottom:0;left:0;width:100%;height:4px;z-index:99;display:flex}
+.blocks-container div{flex:1;transition:height .6s cubic-bezier(.16,1,.3,1);height:4px}
+.blocks-container div:nth-child(1){background:var(--sky)}
+.blocks-container div:nth-child(2){background:var(--coral)}
+.blocks-container div:nth-child(3){background:var(--mint)}
+.blocks-container div:nth-child(4){background:var(--sky)}
+.blocks-container div:nth-child(5){background:var(--coral)}
+
+/* CODE DECORATION */
+.code-float{position:absolute;font-family:'Courier New',monospace;font-weight:700;opacity:.06;color:var(--navy);pointer-events:none;font-size:clamp(2rem,6vw,5rem)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero-text p{margin-left:auto;margin-right:auto}
+  .hero-buttons{justify-content:center}
+  .hero-visual{order:-1;margin-bottom:1rem}
+  .robot-container{max-width:280px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .step{gap:1rem}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr}
+  .hero-buttons{flex-direction:column;align-items:center}
+  .curriculum-steps::before{left:24px}
+  .step-num{width:50px;height:50px;min-width:50px;font-size:.9rem}
+}
+
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--sky);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--navy)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="logo"><span class="bracket">&lt;</span>CODE <span>GARDEN</span><span class="bracket">/&gt;</span></a>
+    <div class="nav-links">
+      <a href="#learn">学べること</a>
+      <a href="#curriculum">カリキュラム</a>
+      <a href="#teachers">先生紹介</a>
+      <a href="#works">生徒の作品</a>
+      <a href="#pricing">料金</a>
+      <a href="#cta" class="nav-cta">無料体験に申し込む</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a href="#learn" onclick="closeMobile()">学べること</a>
+  <a href="#curriculum" onclick="closeMobile()">カリキュラム</a>
+  <a href="#teachers" onclick="closeMobile()">先生紹介</a>
+  <a href="#works" onclick="closeMobile()">生徒の作品</a>
+  <a href="#testimonials" onclick="closeMobile()">保護者の声</a>
+  <a href="#pricing" onclick="closeMobile()">料金</a>
+  <a href="#cta" onclick="closeMobile()" style="color:var(--coral);font-weight:700;border:none;margin-top:1rem">▶ 無料体験に申し込む</a>
+</div>
+<div class="overlay" id="overlay" onclick="closeMobile()"></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="floating-code" style="left:5%;animation-delay:0s">&lt;code&gt;</div>
+    <div class="floating-code" style="left:20%;animation-delay:3s">{ fun }</div>
+    <div class="floating-code" style="left:40%;animation-delay:6s">&lt;/learn&gt;</div>
+    <div class="floating-code" style="left:60%;animation-delay:9s">[ create ]</div>
+    <div class="floating-code" style="left:80%;animation-delay:12s">( play )</div>
+    <div class="floating-code" style="left:90%;animation-delay:15s">&lt;dream/&gt;</div>
+  </div>
+  <div class="container hero-grid">
+    <div class="hero-text fade-up">
+      <p class="catchcopy">&lt; つくる楽しさが、未来をひらく。 /&gt;</p>
+      <h1>遊びながら学ぶ<br><span class="highlight">プログラミング教室</span></h1>
+      <p>CODE GARDENは、小学1年生から中学3年生を対象とした子ども向けプログラミングスクールです。ゲームやアプリを自分の手でつくりながら、論理的思考力と創造力を楽しく育てます。</p>
+      <div class="hero-buttons">
+        <a href="#cta" class="btn-primary">🎮 無料体験授業を予約する</a>
+        <a href="#learn" class="btn-secondary">くわしく見る ↓</a>
+      </div>
+    </div>
+    <div class="hero-visual fade-right">
+      <div class="robot-container">
+        <div class="floating-block fb1"></div>
+        <div class="floating-block fb2"></div>
+        <div class="floating-block fb3"></div>
+        <div class="floating-block fb4"></div>
+        <!-- ROBOT SVG -->
+        <svg viewBox="0 0 300 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- Antenna -->
+          <line x1="150" y1="30" x2="150" y2="55" stroke="#4fc3f7" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="150" cy="24" r="8" fill="#ff8a65">
+            <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Head -->
+          <rect x="90" y="55" width="120" height="90" rx="20" fill="#4fc3f7"/>
+          <rect x="95" y="60" width="110" height="80" rx="17" fill="#e1f5fe"/>
+          <!-- Eyes -->
+          <circle cx="125" cy="95" r="14" fill="#1a237e"/>
+          <circle cx="175" cy="95" r="14" fill="#1a237e"/>
+          <circle cx="129" cy="90" r="5" fill="#fff"/>
+          <circle cx="179" cy="90" r="5" fill="#fff"/>
+          <!-- Smile -->
+          <path d="M125 115 Q150 135 175 115" stroke="#1a237e" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Body -->
+          <rect x="80" y="150" width="140" height="100" rx="16" fill="#4fc3f7"/>
+          <rect x="90" y="160" width="120" height="80" rx="12" fill="#e1f5fe"/>
+          <!-- Screen on body -->
+          <rect x="105" y="172" width="90" height="50" rx="8" fill="#1a237e"/>
+          <text x="150" y="195" text-anchor="middle" fill="#81c784" font-family="Courier New" font-size="11" font-weight="bold">Hello!</text>
+          <text x="150" y="212" text-anchor="middle" fill="#4fc3f7" font-family="Courier New" font-size="10">World!</text>
+          <!-- Heart on body -->
+          <circle cx="150" cy="240" r="4" fill="#ff8a65">
+            <animate attributeName="r" values="3;5;3" dur="1.5s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Arms -->
+          <rect x="45" y="160" width="30" height="70" rx="15" fill="#ff8a65"/>
+          <rect x="225" y="160" width="30" height="70" rx="15" fill="#ff8a65">
+            <animateTransform attributeName="transform" type="rotate" values="0 240 160;-15 240 160;0 240 160" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Hands -->
+          <circle cx="60" cy="235" r="12" fill="#ff8a65"/>
+          <circle cx="240" cy="235" r="12" fill="#ff8a65">
+            <animate attributeName="cy" values="235;225;235" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Legs -->
+          <rect x="105" y="252" width="28" height="45" rx="14" fill="#81c784"/>
+          <rect x="167" y="252" width="28" height="45" rx="14" fill="#81c784"/>
+          <!-- Feet -->
+          <rect x="95" y="290" width="48" height="20" rx="10" fill="#81c784"/>
+          <rect x="157" y="290" width="48" height="20" rx="10" fill="#81c784"/>
+          <!-- Decorative Gear -->
+          <circle cx="235" cy="55" r="12" fill="none" stroke="#ff8a65" stroke-width="2" opacity=".3">
+            <animateTransform attributeName="transform" type="rotate" values="0 235 55;360 235 55" dur="8s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="70" cy="145" r="8" fill="none" stroke="#81c784" stroke-width="2" opacity=".3">
+            <animateTransform attributeName="transform" type="rotate" values="360 70 145;0 70 145" dur="6s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <a href="#learn" class="scroll-down">
+    <span>SCROLL</span>
+    <div class="scroll-arrow"></div>
+  </a>
+</section>
+
+<!-- LEARN -->
+<section class="learn" id="learn">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">&lt;</span> Learn <span class="code-tag">/&gt;</span></div>
+      <h2 class="section-title">CODE GARDENで学べること</h2>
+      <p class="section-subtitle">プログラミングを通じて「考える力」「つくる力」「伝える力」を育みます。楽しみながら将来に役立つスキルが身につきます。</p>
+    </div>
+    <div class="learn-grid stagger">
+      <div class="learn-card">
+        <div class="code-deco">&lt;/&gt;</div>
+        <div class="icon">💻</div>
+        <h3>プログラミング的思考</h3>
+        <p>順序立てて物事を考え、問題を分解して解決する力を養います。Scratch・Python・JavaScriptなど段階的に学べます。</p>
+      </div>
+      <div class="learn-card">
+        <div class="code-deco">{ }</div>
+        <div class="icon">🎨</div>
+        <h3>クリエイティブ制作</h3>
+        <p>ゲーム、アニメーション、Webサイトなど、自分だけのオリジナル作品を制作。アイデアを形にする力が育ちます。</p>
+      </div>
+      <div class="learn-card">
+        <div class="code-deco">[ ]</div>
+        <div class="icon">🤝</div>
+        <h3>チームワーク</h3>
+        <p>グループプロジェクトで仲間と協力しながら開発を進めます。コミュニケーション力やリーダーシップも自然と身につきます。</p>
+      </div>
+      <div class="learn-card">
+        <div class="code-deco">( )</div>
+        <div class="icon">🚀</div>
+        <h3>プレゼンテーション</h3>
+        <p>つくった作品を発表する機会を定期的に設けています。自分の考えを言葉にして伝える力を磨きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="curriculum" id="curriculum">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">function</span> Curriculum() {}</div>
+      <h2 class="section-title">ステップアップ式カリキュラム</h2>
+      <p class="section-subtitle">お子さまの成長に合わせた4段階のカリキュラム。無理なく楽しみながらレベルアップできる仕組みです。</p>
+    </div>
+    <div class="curriculum-steps">
+      <div class="step fade-left">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-code typing">
+            <div class="typed-line"><span class="line-num">1</span><span class="keyword">import</span> { Scratch } <span class="keyword">from</span> <span class="string">'programming'</span>;</div>
+            <div class="typed-line"><span class="line-num">2</span><span class="func">start</span>(<span class="string">'はじめてのプログラミング'</span>);</div>
+            <div class="typed-line"><span class="line-num">3</span><span class="comment">// ブロックを組み合わせて動かそう！</span><span class="cursor"></span></div>
+          </div>
+          <h3>🌱 ビギナーコース（小1〜小3）</h3>
+          <p>Scratchを使ったビジュアルプログラミング。ブロックをつなげてキャラクターを動かし、プログラミングの基礎概念を楽しく学びます。</p>
+        </div>
+      </div>
+      <div class="step fade-left">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-code typing">
+            <div class="typed-line"><span class="line-num">1</span><span class="keyword">const</span> game = <span class="keyword">new</span> <span class="func">Game</span>();</div>
+            <div class="typed-line"><span class="line-num">2</span>game.<span class="func">addCharacter</span>(<span class="string">'hero'</span>);</div>
+            <div class="typed-line"><span class="line-num">3</span>game.<span class="func">run</span>();<span class="cursor"></span></div>
+          </div>
+          <h3>🌿 ベーシックコース（小3〜小5）</h3>
+          <p>Scratchの応用とJavaScriptの入門。オリジナルゲームを制作しながら変数・条件分岐・繰り返しの概念を深く理解します。</p>
+        </div>
+      </div>
+      <div class="step fade-left">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-code typing">
+            <div class="typed-line"><span class="line-num">1</span><span class="keyword">def</span> <span class="func">create_app</span>(idea):</div>
+            <div class="typed-line"><span class="line-num">2</span>&nbsp;&nbsp;app = <span class="func">design</span>(idea) + <span class="func">code</span>(idea)</div>
+            <div class="typed-line"><span class="line-num">3</span>&nbsp;&nbsp;<span class="keyword">return</span> app.<span class="func">launch</span>()<span class="cursor"></span></div>
+          </div>
+          <h3>🌳 アドバンスコース（小5〜中2）</h3>
+          <p>PythonとHTML/CSSでWebアプリケーションを開発。データベースやAPIの仕組みも学び、実践的なプログラミングスキルを身につけます。</p>
+        </div>
+      </div>
+      <div class="step fade-left">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-code typing">
+            <div class="typed-line"><span class="line-num">1</span><span class="keyword">class</span> <span class="func">Future</span> <span class="keyword">extends</span> <span class="func">Dream</span> {</div>
+            <div class="typed-line"><span class="line-num">2</span>&nbsp;&nbsp;<span class="func">build</span>() { <span class="keyword">return</span> <span class="string">'∞ 可能性'</span>; }</div>
+            <div class="typed-line"><span class="line-num">3</span>}<span class="cursor"></span></div>
+          </div>
+          <h3>🏆 エキスパートコース（中1〜中3）</h3>
+          <p>React・Unityなど本格的な開発環境を使い、チームでプロジェクトに取り組みます。コンテスト出場やポートフォリオ制作もサポート。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section class="teachers" id="teachers">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">const</span> teachers = []</div>
+      <h2 class="section-title">頼れる先生たち</h2>
+      <p class="section-subtitle">IT業界の経験豊富なプロフェッショナルが、お子さま一人ひとりのペースに寄り添います。</p>
+    </div>
+    <div class="teachers-grid stagger">
+      <div class="teacher-card">
+        <div class="teacher-avatar">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="45" r="28" fill="#1a237e"/>
+            <circle cx="60" cy="45" r="25" fill="#fff8e7"/>
+            <circle cx="50" cy="42" r="3" fill="#1a237e"/>
+            <circle cx="70" cy="42" r="3" fill="#1a237e"/>
+            <path d="M50 55 Q60 63 70 55" stroke="#1a237e" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="35" y="25" width="50" height="5" rx="2" fill="#1a237e"/>
+            <rect x="30" y="20" width="60" height="10" rx="4" fill="#4fc3f7"/>
+            <rect x="35" y="75" width="50" height="40" rx="8" fill="#4fc3f7"/>
+          </svg>
+        </div>
+        <div class="teacher-info">
+          <h3>田中 ゆうき 先生</h3>
+          <p class="role">リードインストラクター / Scratch・Python担当</p>
+          <p>元ゲーム開発者。子どもたちが「できた！」と笑顔になる瞬間がなによりの喜び。わかりやすさには自信あり！</p>
+        </div>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-avatar">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="45" r="28" fill="#1a237e"/>
+            <circle cx="60" cy="45" r="25" fill="#fff8e7"/>
+            <circle cx="50" cy="42" r="3" fill="#1a237e"/>
+            <circle cx="70" cy="42" r="3" fill="#1a237e"/>
+            <path d="M50 55 Q60 63 70 55" stroke="#1a237e" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M30 30 Q60 10 90 30" fill="#ff8a65"/>
+            <path d="M28 30 Q35 50 28 60" fill="#ff8a65"/>
+            <path d="M92 30 Q85 50 92 60" fill="#ff8a65"/>
+            <rect x="35" y="75" width="50" height="40" rx="8" fill="#ff8a65"/>
+          </svg>
+        </div>
+        <div class="teacher-info">
+          <h3>佐藤 あかり 先生</h3>
+          <p class="role">クリエイティブ講師 / Web・デザイン担当</p>
+          <p>Webデザイナー歴10年。「つくるって楽しい！」を伝えることがモットー。デザインとコードの両方を教えます。</p>
+        </div>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-avatar">
+          <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="45" r="28" fill="#1a237e"/>
+            <circle cx="60" cy="45" r="25" fill="#fff8e7"/>
+            <rect x="42" y="36" width="14" height="9" rx="2" fill="none" stroke="#1a237e" stroke-width="2"/>
+            <rect x="64" y="36" width="14" height="9" rx="2" fill="none" stroke="#1a237e" stroke-width="2"/>
+            <circle cx="49" cy="41" r="2" fill="#1a237e"/>
+            <circle cx="71" cy="41" r="2" fill="#1a237e"/>
+            <path d="M50 55 Q60 63 70 55" stroke="#1a237e" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <rect x="33" y="22" width="54" height="8" rx="3" fill="#81c784"/>
+            <rect x="35" y="75" width="50" height="40" rx="8" fill="#81c784"/>
+          </svg>
+        </div>
+        <div class="teacher-info">
+          <h3>鈴木 けんた 先生</h3>
+          <p class="role">テクニカル講師 / Unity・JavaScript担当</p>
+          <p>現役エンジニア。プログラミングコンテストの審査員も務める実力派。エキスパートコースの生徒を全力サポート！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section class="works" id="works">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">render</span>(&lt;Works /&gt;)</div>
+      <h2 class="section-title">生徒の作品ギャラリー</h2>
+      <p class="section-subtitle">CODE GARDENの生徒たちが実際につくった作品をご紹介。一人ひとりの個性があふれています。</p>
+    </div>
+    <div class="works-grid stagger">
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="30" height="30" rx="4" fill="#4fc3f7" opacity=".8"/>
+            <rect x="60" y="40" width="30" height="30" rx="4" fill="#ff8a65" opacity=".8"/>
+            <rect x="100" y="20" width="30" height="30" rx="4" fill="#81c784" opacity=".8"/>
+            <circle cx="45" cy="90" r="12" fill="#1a237e" opacity=".3"/>
+            <polygon points="110,70 125,95 95,95" fill="#ff8a65" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>宇宙アドベンチャーゲーム</h3>
+          <p class="work-meta">小4 ゆうとくん ｜ Scratch</p>
+          <p>ロケットを操作して惑星を探検するオリジナルゲーム。ステージ設計にこだわりました。</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="25" y="25" width="110" height="70" rx="8" fill="#fff" opacity=".9"/>
+            <rect x="30" y="30" width="100" height="15" rx="3" fill="#4fc3f7" opacity=".4"/>
+            <rect x="30" y="50" width="60" height="8" rx="2" fill="#ccc"/>
+            <rect x="30" y="62" width="80" height="8" rx="2" fill="#eee"/>
+            <rect x="30" y="74" width="45" height="16" rx="8" fill="#ff8a65"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>わたしのペットずかん</h3>
+          <p class="work-meta">小5 さくらさん ｜ HTML/CSS</p>
+          <p>大好きな動物たちの情報をまとめたWebサイト。かわいいデザインにこだわりました。</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="80" width="16" height="25" fill="#4fc3f7"/>
+            <rect x="52" y="60" width="16" height="45" fill="#81c784"/>
+            <rect x="74" y="40" width="16" height="65" fill="#ff8a65"/>
+            <rect x="96" y="50" width="16" height="55" fill="#4fc3f7"/>
+            <rect x="118" y="30" width="16" height="75" fill="#1a237e" opacity=".6"/>
+            <line x1="25" y1="105" x2="140" y2="105" stroke="#333" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>クラスのアンケート集計アプリ</h3>
+          <p class="work-meta">小6 たくみくん ｜ Python</p>
+          <p>クラスメイトの好きな食べ物を集計してグラフで表示するアプリをつくりました。</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="30" width="80" height="60" rx="6" fill="#1a237e" opacity=".1"/>
+            <circle cx="60" cy="55" r="8" fill="#ff8a65" opacity=".8"/>
+            <circle cx="100" cy="55" r="8" fill="#4fc3f7" opacity=".8"/>
+            <rect x="55" y="70" width="50" height="10" rx="5" fill="#81c784" opacity=".6"/>
+            <text x="80" y="105" text-anchor="middle" fill="#1a237e" font-size="10" font-weight="bold" font-family="Courier New">Quiz App</text>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>漢字クイズアプリ</h3>
+          <p class="work-meta">中1 あおいさん ｜ JavaScript</p>
+          <p>漢字の読みをクイズ形式で学べるアプリ。ランキング機能も実装しました。</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="20" width="120" height="80" rx="8" fill="#1a237e" opacity=".08"/>
+            <circle cx="50" cy="50" r="15" fill="none" stroke="#81c784" stroke-width="3"/>
+            <circle cx="50" cy="50" r="8" fill="#81c784" opacity=".5"/>
+            <rect x="80" y="40" width="45" height="6" rx="3" fill="#ccc"/>
+            <rect x="80" y="52" width="35" height="6" rx="3" fill="#eee"/>
+            <rect x="80" y="64" width="40" height="6" rx="3" fill="#ccc"/>
+            <circle cx="120" cy="85" r="8" fill="#ff8a65" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>エコ活動トラッカー</h3>
+          <p class="work-meta">中2 りくくん ｜ React</p>
+          <p>毎日のエコ活動を記録して可視化するWebアプリ。環境問題への思いを形にしました。</p>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-thumb">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="15" width="100" height="90" rx="10" fill="#fff" opacity=".9"/>
+            <circle cx="80" cy="35" r="12" fill="#4fc3f7" opacity=".5"/>
+            <rect x="50" y="55" width="60" height="5" rx="2" fill="#ccc"/>
+            <rect x="55" y="65" width="50" height="5" rx="2" fill="#eee"/>
+            <rect x="45" y="80" width="30" height="12" rx="6" fill="#ff8a65" opacity=".8"/>
+            <rect x="85" y="80" width="30" height="12" rx="6" fill="#81c784" opacity=".8"/>
+          </svg>
+        </div>
+        <div class="work-info">
+          <h3>おてつだいポイントアプリ</h3>
+          <p class="work-meta">小3 ひなたさん ｜ Scratch</p>
+          <p>お手伝いをするとポイントがたまるアプリ。家族にも大好評です！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">console.log</span>('Voice')</div>
+      <h2 class="section-title">保護者さまの声</h2>
+      <p class="section-subtitle">CODE GARDENに通うお子さまの保護者さまからいただいたリアルな感想をご紹介します。</p>
+    </div>
+    <div class="testimonial-grid stagger">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>「ゲームばかりしていた息子が、今では自分でゲームをつくる側に。『もっとこうしたい！』と自分で考えて試行錯誤する姿に成長を感じます。毎週の授業が本当に楽しみなようです。」</blockquote>
+        <p class="parent-name"><span>小4男子</span>のお母さま</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>「引っ込み思案だった娘が、作品発表会で堂々とプレゼンしている姿に感動しました。プログラミングだけでなく、自信やコミュニケーション力も身についたと実感しています。」</blockquote>
+        <p class="parent-name"><span>小5女子</span>のお父さま</p>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>「先生方がとても温かく、子どものペースに合わせて丁寧に教えてくださいます。算数の成績が上がったのは、論理的思考力が養われたおかげだと思います。」</blockquote>
+        <p class="parent-name"><span>小3男子</span>のお母さま</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="text-center fade-up">
+      <div class="section-label"><span class="code-tag">const</span> plans = {}</div>
+      <h2 class="section-title">教室情報・料金プラン</h2>
+      <p class="section-subtitle">すべてのコースに教材費込み。入会金は無料体験当日のお申し込みで50%OFF！</p>
+    </div>
+    <div class="pricing-grid stagger">
+      <div class="price-card">
+        <div class="price-header">
+          <h3>🌱 ビギナーコース</h3>
+          <p class="age">小学1年生〜小学3年生</p>
+        </div>
+        <div class="price-body">
+          <div class="price-amount"><span class="yen">¥</span><span class="num">9,800</span><span class="period">/月（税込）</span></div>
+          <ul class="price-features">
+            <li>月4回（各60分）の授業</li>
+            <li>Scratchプログラミング</li>
+            <li>少人数制（定員6名）</li>
+            <li>オリジナル教材つき</li>
+            <li>年2回の作品発表会</li>
+          </ul>
+          <button class="price-btn" onclick="location.href='#cta'">このコースで体験する</button>
+        </div>
+      </div>
+      <div class="price-card popular">
+        <div class="price-header">
+          <h3>🌿 ベーシック / 🌳 アドバンス</h3>
+          <p class="age">小学3年生〜中学2年生</p>
+        </div>
+        <div class="price-body">
+          <div class="price-amount"><span class="yen">¥</span><span class="num">14,800</span><span class="period">/月（税込）</span></div>
+          <ul class="price-features">
+            <li>月4回（各90分）の授業</li>
+            <li>JavaScript / Python</li>
+            <li>少人数制（定員6名）</li>
+            <li>個別カリキュラム対応</li>
+            <li>チームプロジェクト参加</li>
+            <li>年2回の作品発表会</li>
+          </ul>
+          <button class="price-btn" onclick="location.href='#cta'">このコースで体験する</button>
+        </div>
+      </div>
+      <div class="price-card">
+        <div class="price-header">
+          <h3>🏆 エキスパートコース</h3>
+          <p class="age">中学1年生〜中学3年生</p>
+        </div>
+        <div class="price-body">
+          <div class="price-amount"><span class="yen">¥</span><span class="num">19,800</span><span class="period">/月（税込）</span></div>
+          <ul class="price-features">
+            <li>月4回（各120分）の授業</li>
+            <li>React / Unity など本格開発</li>
+            <li>少人数制（定員4名）</li>
+            <li>メンター付き個人開発</li>
+            <li>コンテスト出場サポート</li>
+            <li>ポートフォリオ制作</li>
+          </ul>
+          <button class="price-btn" onclick="location.href='#cta'">このコースで体験する</button>
+        </div>
+      </div>
+    </div>
+    <div class="info-grid stagger">
+      <div class="info-card">
+        <h4>📍 教室アクセス</h4>
+        <p>〒150-0001<br>東京都渋谷区神宮前3-15-8<br>CODE GARDENビル 2F<br>（表参道駅A2出口 徒歩5分）</p>
+      </div>
+      <div class="info-card">
+        <h4>🕐 開講スケジュール</h4>
+        <p>平日クラス：16:00〜 / 17:30〜<br>土曜クラス：10:00〜 / 13:00〜 / 15:00〜<br>日曜クラス：10:00〜 / 13:00〜</p>
+      </div>
+      <div class="info-card">
+        <h4>🎁 入会特典</h4>
+        <p>入会金 ¥11,000 → 体験当日のお申し込みで<strong style="color:var(--coral)">¥5,500</strong>に！<br>さらに、お友達紹介でAmazonギフト券¥3,000分プレゼント🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-particles">
+    <div class="cta-particle" style="width:60px;height:60px;background:var(--sky);top:10%;left:10%;border-radius:12px;animation:floatBlock 4s ease-in-out infinite"></div>
+    <div class="cta-particle" style="width:40px;height:40px;background:var(--coral);top:20%;right:15%;border-radius:50%;animation:floatBlock 3s ease-in-out infinite;animation-delay:.5s"></div>
+    <div class="cta-particle" style="width:50px;height:50px;background:var(--mint);bottom:15%;left:20%;border-radius:8px;animation:floatBlock 5s ease-in-out infinite;animation-delay:1s"></div>
+    <div class="cta-particle" style="width:35px;height:35px;background:var(--sky);bottom:20%;right:10%;border-radius:50%;animation:floatBlock 3.5s ease-in-out infinite;animation-delay:1.5s"></div>
+  </div>
+  <div class="container fade-up">
+    <h2>&lt; まずは、無料体験から。 /&gt;</h2>
+    <p>60分の無料体験授業で、お子さまがプログラミングを楽しめるか確かめてみませんか？<br>パソコン未経験でも大丈夫。先生がやさしくサポートします。</p>
+    <a href="#" class="btn-primary" style="font-size:1.15rem;padding:1.1rem 3rem">🚀 無料体験授業を予約する（毎週土曜開催）</a>
+    <p style="margin-top:1.2rem;font-size:.82rem;opacity:.6">※ 保護者さまの見学も歓迎です ｜ オンライン体験もご用意しています</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><span class="bracket" style="color:var(--sky)">&lt;</span>CODE <span>GARDEN</span><span class="bracket" style="color:var(--sky)">/&gt;</span></div>
+        <p>つくる楽しさが、未来をひらく。<br>子どもたちの創造力を育むプログラミングスクール。</p>
+      </div>
+      <div class="footer-col">
+        <h4>スクール情報</h4>
+        <a href="#learn">学べること</a>
+        <a href="#curriculum">カリキュラム</a>
+        <a href="#teachers">先生紹介</a>
+        <a href="#works">生徒の作品</a>
+      </div>
+      <div class="footer-col">
+        <h4>ご案内</h4>
+        <a href="#pricing">料金プラン</a>
+        <a href="#cta">無料体験</a>
+        <a href="#">よくあるご質問</a>
+        <a href="#">お問い合わせ</a>
+      </div>
+      <div class="footer-col">
+        <h4>SNS</h4>
+        <a href="#">Instagram</a>
+        <a href="#">X（Twitter）</a>
+        <a href="#">YouTube</a>
+        <a href="#">LINE公式</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CODE GARDEN All Rights Reserved. ｜ Powered by Next.js × WordPress</p>
+    </div>
+  </div>
+</footer>
+
+<!-- COLOR BLOCKS PROGRESS BAR -->
+<div class="blocks-container" id="blocksBar">
+  <div></div><div></div><div></div><div></div><div></div>
+</div>
+
+<script>
+// Navbar scroll
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Mobile menu
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const overlay = document.getElementById('overlay');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileNav.classList.toggle('active');
+  overlay.classList.toggle('active');
+});
+function closeMobile() {
+  hamburger.classList.remove('active');
+  mobileNav.classList.remove('active');
+  overlay.classList.remove('active');
+}
+
+// Intersection Observer for animations
+const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.fade-up, .fade-left, .fade-right, .stagger, .typing').forEach(el => {
+  observer.observe(el);
+});
+
+// Progress bar (color blocks)
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPercent = scrollTop / docHeight;
+  const maxHeight = 6;
+  const blocks = document.querySelectorAll('#blocksBar div');
+  blocks.forEach((block, i) => {
+    const offset = i * 0.1;
+    const progress = Math.max(0, Math.min(1, (scrollPercent - offset) / 0.2));
+    block.style.height = (4 + progress * maxHeight) + 'px';
+    block.style.opacity = 0.5 + progress * 0.5;
+  });
+});
+
+// Smooth scroll for anchors
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href === '#') return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      const navHeight = nav.offsetHeight;
+      const targetPos = target.getBoundingClientRect().top + window.scrollY - navHeight;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

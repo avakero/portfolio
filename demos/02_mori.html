@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>MORI | オーガニックスキンケアD2Cブランド | ヘッドレスCMS × Next.js デモ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="MORI（もり）は、森が教えてくれた知恵をスキンケアにとけこませたオーガニックD2Cブランド。自然由来成分98％以上、サステナブルなパッケージ。Next.jsとWordPressヘッドレスCMSによる高速なブランドサイトのデモページです。" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&display=swap');
+
+    :root {
+      --color-bg: #faf8f5;
+      --color-primary: #8fa98f;
+      --color-primary-soft: #b7c9b7;
+      --color-accent: #e8c4a8;
+      --color-brown: #6b5b4b;
+      --color-charcoal: #2d2d2d;
+      --color-white: #ffffff;
+      --font-sans: 'Noto Sans JP', system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", sans-serif;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 18px 45px rgba(0,0,0,0.08);
+      --space-section: clamp(4rem, 8vw, 6.5rem);
+      --max-width: 1120px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at 0% 0%, rgba(232,196,168,0.32), transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(143,169,143,0.3), transparent 55%),
+                  var(--color-bg);
+      color: var(--color-charcoal);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    .page-wrapper { min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Header ── */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(250,248,245,0.94), rgba(250,248,245,0.7));
+      border-bottom: 1px solid rgba(107,91,75,0.06);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width); margin: 0 auto;
+      padding: 0.75rem clamp(1.25rem,4vw,2.5rem);
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 999px;
+      background: conic-gradient(from 210deg, #8fa98f, #e8c4a8, #faf8f5, #8fa98f);
+      position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .brand-mark::after {
+      content: ""; position: absolute; inset: 4px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 10%, rgba(255,255,255,0.9), transparent 60%),
+                  linear-gradient(145deg, rgba(143,169,143,0.9), rgba(107,91,75,0.9));
+    }
+
+    .brand-text-main { font-size: 1.15rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; }
+    .brand-text-sub { font-size: 0.65rem; color: rgba(45,45,45,0.55); letter-spacing: 0.06em; }
+
+    nav { display: flex; align-items: center; gap: 1.25rem; font-size: 0.85rem; }
+
+    .nav-link {
+      position: relative; padding: 0.15rem 0; cursor: pointer;
+      color: rgba(45,45,45,0.7); transition: color 0.2s ease;
+    }
+    .nav-link::after {
+      content: ""; position: absolute; left: 0; bottom: -0.15rem;
+      width: 0%; height: 2px;
+      background: linear-gradient(90deg, var(--color-primary-soft), var(--color-accent));
+      border-radius: 999px; transition: width 0.22s ease;
+    }
+    .nav-link:hover { color: var(--color-charcoal); }
+    .nav-link:hover::after { width: 100%; }
+
+    .nav-cta {
+      padding: 0.45rem 1rem; border-radius: 999px;
+      border: 1px solid rgba(107,91,75,0.32);
+      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9), rgba(250,248,245,0.98));
+      font-size: 0.82rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.18s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04); font-family: var(--font-sans);
+    }
+    .nav-cta:hover { transform: translateY(-1px); border-color: rgba(107,91,75,0.6); box-shadow: 0 12px 26px rgba(0,0,0,0.09); }
+
+    .nav-toggle {
+      display: none; width: 36px; height: 36px; border-radius: 999px;
+      border: 1px solid rgba(107,91,75,0.25); align-items: center; justify-content: center;
+      background: rgba(250,248,245,0.9); cursor: pointer;
+    }
+    .nav-toggle-line {
+      width: 16px; height: 2px; background: var(--color-charcoal); border-radius: 99px;
+      position: relative; transition: transform 0.18s ease, background 0.18s ease;
+    }
+    .nav-toggle-line::before, .nav-toggle-line::after {
+      content: ""; position: absolute; left: 0; width: 16px; height: 2px;
+      background: var(--color-charcoal); border-radius: 99px;
+      transition: transform 0.18s ease, top 0.18s ease;
+    }
+    .nav-toggle-line::before { top: -5px; }
+    .nav-toggle-line::after { top: 5px; }
+    .nav-toggle.is-open .nav-toggle-line { background: transparent; }
+    .nav-toggle.is-open .nav-toggle-line::before { top: 0; transform: rotate(45deg); }
+    .nav-toggle.is-open .nav-toggle-line::after { top: 0; transform: rotate(-45deg); }
+
+    .nav-links-wrapper { display: flex; align-items: center; gap: 1.25rem; }
+
+    main { flex: 1; }
+    section { padding: var(--space-section) clamp(1.25rem,4vw,2.5rem); }
+    .section-inner { max-width: var(--max-width); margin: 0 auto; }
+    .section-label { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(45,45,45,0.55); margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.5rem,3vw,2.1rem); letter-spacing: 0.04em; margin-bottom: 1.1rem; line-height: 1.5; }
+    .section-lead { font-size: clamp(0.92rem,1.3vw,1.02rem); color: rgba(45,45,45,0.75); max-width: 46rem; }
+
+    /* ── Hero ── */
+    .hero { padding-top: clamp(3.5rem,7vw,5rem); padding-bottom: clamp(4rem,8vw,6rem); position: relative; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(255,255,255,0.9), transparent 55%),
+                  radial-gradient(circle at 80% 120%, rgba(143,169,143,0.32), transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative; z-index: 1; max-width: var(--max-width); margin: 0 auto;
+      padding: 0 clamp(1.25rem,4vw,2.5rem);
+      display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.5fr);
+      align-items: center; gap: clamp(2.5rem,5vw,3rem);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.3rem 0.9rem; border-radius: 999px;
+      background: rgba(255,255,255,0.9); border: 1px solid rgba(143,169,143,0.45);
+      font-size: 0.72rem; color: rgba(45,45,45,0.7); margin-bottom: 1.1rem;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.05);
+    }
+    .hero-badge-dot { width: 9px; height: 9px; border-radius: 999px; background: radial-gradient(circle at 30% 20%, #fff, #8fa98f); }
+
+    .hero-eyebrow { font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(45,45,45,0.55); margin-bottom: 0.75rem; }
+
+    h1.hero-title { font-size: clamp(2rem,4vw,2.8rem); line-height: 1.35; letter-spacing: 0.08em; margin: 0 0 0.6rem; }
+    .hero-kana { font-size: 0.88rem; letter-spacing: 0.16em; color: rgba(45,45,45,0.5); margin-bottom: 1rem; }
+
+    .hero-copy { font-size: clamp(0.95rem,1.4vw,1.05rem); color: rgba(45,45,45,0.85); max-width: 28rem; margin-bottom: 1.4rem; }
+    .hero-sub { font-size: 0.86rem; color: rgba(45,45,45,0.65); margin-bottom: 1.8rem; max-width: 30rem; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
+
+    .btn-primary {
+      position: relative; padding: 0.85rem 1.7rem; border-radius: 999px; border: none; cursor: pointer;
+      font-size: 0.92rem; font-weight: 600; letter-spacing: 0.09em;
+      color: var(--color-charcoal); font-family: var(--font-sans);
+      background: linear-gradient(135deg, #ffffff 0%, #e8c4a8 100%);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.16); overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .btn-primary::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.4), transparent 40%);
+      transform: translateX(-120%); transition: transform 0.5s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .btn-primary:hover::after { transform: translateX(80%); }
+
+    .btn-outline {
+      padding: 0.78rem 1.4rem; border-radius: 999px;
+      border: 1px solid rgba(107,91,75,0.35); background: rgba(250,248,245,0.9);
+      font-size: 0.88rem; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;
+      transition: background 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+      font-family: var(--font-sans);
+    }
+    .btn-outline:hover { transform: translateY(-2px); border-color: rgba(107,91,75,0.7); background: #fff; box-shadow: 0 12px 28px rgba(0,0,0,0.08); }
+
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.75rem; font-size: 0.78rem; color: rgba(45,45,45,0.6); }
+    .hero-meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .hero-meta-label { text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.68rem; }
+    .hero-meta-value { font-size: 0.84rem; color: rgba(45,45,45,0.8); }
+
+    /* Hero visual */
+    .hero-visual { position: relative; }
+    .hero-card {
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(143,169,143,0.08), rgba(250,248,245,0.95));
+      padding: 1.2rem 1.4rem; box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px); position: relative; overflow: hidden;
+    }
+    .hero-card::before {
+      content: ""; position: absolute; inset: -40%;
+      background: radial-gradient(circle at 10% 0%, rgba(255,255,255,0.6), transparent 55%),
+                  radial-gradient(circle at 70% 120%, rgba(143,169,143,0.28), transparent 55%);
+      pointer-events: none;
+    }
+    .hero-card-inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 0.8rem; align-items: center; }
+    .hero-card-label { font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(45,45,45,0.5); margin-bottom: 0.4rem; }
+    .hero-card-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.35rem; }
+    .hero-card-copy { font-size: 0.82rem; color: rgba(45,45,45,0.75); }
+    .hero-card-meta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.72rem; color: rgba(45,45,45,0.65); }
+    .hero-card-meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .hero-card-meta span::before { content: "•"; color: var(--color-primary); }
+
+    .hero-card-visual {
+      position: relative; width: 100%; aspect-ratio: 4/5; border-radius: 999px; overflow: hidden;
+      background: radial-gradient(circle at 30% 0%, #fff, #e8c4a8, #8fa98f);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .bottle {
+      position: relative; width: 52%; height: 68%; border-radius: 99px;
+      background: linear-gradient(180deg, #fefefe, #faf0e6);
+      box-shadow: 0 25px 45px rgba(0,0,0,0.22);
+      display: flex; flex-direction: column; align-items: center; overflow: hidden;
+    }
+    .bottle-cap { position: absolute; top: -10%; width: 52%; height: 22%; border-radius: 90px; background: linear-gradient(180deg, #6b5b4b, #4a3f35); box-shadow: 0 8px 12px rgba(0,0,0,0.25); }
+    .bottle-label {
+      position: absolute; bottom: 15%; width: 72%; height: 50%; border-radius: 17px;
+      background: rgba(250,248,245,0.96); border: 1px solid rgba(143,169,143,0.35);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 0.5rem; font-size: 0.6rem; color: rgba(45,45,45,0.78);
+    }
+    .bottle-label .bl-brand { letter-spacing: 0.25em; font-size: 0.55rem; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .bottle-label .bl-line { font-size: 0.58rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .bottle-label .bl-tag { font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(45,45,45,0.5); }
+
+    .leaf-orbit { position: absolute; inset: 8%; pointer-events: none; }
+    .leaf-orbit svg { width: 100%; height: 100%; transform: rotate(-4deg); }
+
+    .scroll-indicator {
+      position: absolute; left: 50%; bottom: clamp(1rem,4vw,1.8rem); transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(45,45,45,0.55);
+    }
+    .scroll-indicator-arrow {
+      width: 16px; height: 28px; border-radius: 999px; border: 1px solid rgba(45,45,45,0.3);
+      position: relative; overflow: hidden;
+    }
+    .scroll-indicator-arrow::after {
+      content: ""; position: absolute; left: 50%; top: 12%; width: 2px; height: 8px;
+      background: rgba(45,45,45,0.7); border-radius: 999px; transform: translateX(-50%);
+      animation: scrollCue 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollCue {
+      0% { transform: translate(-50%,0); opacity: 0; }
+      20% { opacity: 1; }
+      80% { transform: translate(-50%,160%); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* ── Story ── */
+    .story-grid { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.5fr); gap: clamp(2rem,4vw,3rem); align-items: center; }
+    .story-text p { margin: 0 0 0.9rem; color: rgba(45,45,45,0.8); font-size: 0.95rem; }
+    .story-highlight {
+      display: inline-block; padding: 0.45rem 1rem; border-radius: 999px;
+      background: rgba(232,196,168,0.18); color: rgba(45,45,45,0.78); font-size: 0.8rem; margin-top: 0.3rem;
+    }
+    .story-visual {
+      position: relative; aspect-ratio: 4/3; border-radius: var(--radius-lg); overflow: hidden;
+      background: radial-gradient(circle at 20% 0%, rgba(232,196,168,0.65), transparent 55%),
+                  radial-gradient(circle at 90% 90%, rgba(143,169,143,0.7), transparent 55%),
+                  linear-gradient(145deg, #f9f3ea, #f5efe7);
+      display: grid; place-items: center;
+    }
+    .story-forest { width: 80%; height: 60%; display: flex; align-items: flex-end; justify-content: space-between; gap: 0.4rem; }
+    .tree { flex: 1; max-width: 80px; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+    .tree-trunk { width: 14px; height: 45px; border-radius: 999px; background: linear-gradient(180deg, #6b5b4b, #4a3f35); box-shadow: 0 6px 14px rgba(0,0,0,0.25); }
+    .tree-crown { width: 70%; padding-bottom: 70%; border-radius: 60% 55% 65% 50%; background: radial-gradient(circle at 30% 10%, #f5f8f5, #8fa98f); box-shadow: 0 12px 30px rgba(0,0,0,0.16); }
+    .story-caption {
+      position: absolute; inset: auto 1.2rem 1.2rem auto;
+      padding: 0.6rem 0.9rem; border-radius: 14px;
+      background: rgba(250,248,245,0.9); border: 1px solid rgba(107,91,75,0.2);
+      font-size: 0.72rem; max-width: 200px; color: rgba(45,45,45,0.75); backdrop-filter: blur(12px);
+    }
+
+    /* ── Ingredients ── */
+    .ingredients-grid { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.5fr); gap: clamp(2rem,4vw,3rem); align-items: center; }
+    .ingredients-text p { margin: 0 0 0.9rem; font-size: 0.93rem; color: rgba(45,45,45,0.8); }
+    .pill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .pill { padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid rgba(143,169,143,0.5); background: rgba(250,248,245,0.9); font-size: 0.78rem; color: rgba(45,45,45,0.75); }
+
+    .stats-row { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 1.3rem; }
+    .stat-card {
+      flex: 1; min-width: 130px; padding: 0.85rem 1rem; border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.95); border: 1px solid rgba(143,169,143,0.4);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.06);
+    }
+    .stat-label { font-size: 0.72rem; color: rgba(45,45,45,0.55); margin-bottom: 0.25rem; }
+    .stat-value { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.08em; color: var(--color-brown); }
+    .stat-suffix { font-size: 1rem; margin-left: 0.1rem; }
+    .stat-note { font-size: 0.72rem; color: rgba(45,45,45,0.55); margin-top: 0.25rem; }
+
+    .ingredients-visual {
+      position: relative; border-radius: var(--radius-lg); overflow: hidden; padding: 1.5rem;
+      background: radial-gradient(circle at 10% 0%, rgba(232,196,168,0.8), transparent 55%),
+                  radial-gradient(circle at 100% 80%, rgba(143,169,143,0.85), transparent 55%),
+                  linear-gradient(135deg, #f8f2ea, #f3ede6);
+      box-shadow: var(--shadow-soft);
+    }
+    .ingredients-tag { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 999px; background: rgba(250,248,245,0.9); font-size: 0.72rem; color: rgba(45,45,45,0.7); margin-bottom: 0.7rem; }
+    .ingredients-tag-dot { width: 8px; height: 8px; border-radius: 999px; background: radial-gradient(circle at 30% 10%, #fff, #8fa98f); }
+    .ingredients-illustration { margin-top: 0.5rem; display: flex; gap: 0.8rem; align-items: flex-end; }
+    .ingredient-card { flex: 1; padding: 0.75rem; border-radius: 14px; background: rgba(250,248,245,0.95); border: 1px solid rgba(107,91,75,0.15); font-size: 0.76rem; color: rgba(45,45,45,0.8); }
+    .ingredient-name { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.8rem; }
+    .ingredient-note { font-size: 0.7rem; color: rgba(45,45,45,0.6); }
+    .leaf-grow-wrapper { width: 30%; max-width: 110px; align-self: center; }
+    .leaf-svg {
+      width: 100%; height: auto; transform-origin: bottom center;
+      transform: scale(0.5); opacity: 0;
+      transition: transform 0.9s cubic-bezier(0.25,0.9,0.3,1.4), opacity 0.7s ease-out;
+    }
+    .leaf-svg.is-visible { transform: scale(1); opacity: 1; }
+
+    /* ── Products ── */
+    .products-header { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; }
+    .products-note { font-size: 0.8rem; color: rgba(45,45,45,0.65); max-width: 20rem; }
+    .carousel-wrapper { position: relative; margin: 0 -1.25rem; padding: 0 1.25rem 0.4rem; }
+    .carousel {
+      display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px,260px);
+      gap: 1rem; overflow-x: auto; padding-bottom: 0.75rem;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .carousel::-webkit-scrollbar { height: 5px; }
+    .carousel::-webkit-scrollbar-track { background: rgba(250,248,245,0.7); }
+    .carousel::-webkit-scrollbar-thumb { background: rgba(143,169,143,0.7); border-radius: 999px; }
+
+    .product-card {
+      scroll-snap-align: start; border-radius: var(--radius-lg);
+      background: rgba(255,255,255,0.96); border: 1px solid rgba(143,169,143,0.3);
+      padding: 1rem; box-shadow: 0 12px 28px rgba(0,0,0,0.06);
+      display: flex; flex-direction: column; gap: 0.7rem; min-height: 260px;
+      position: relative; overflow: hidden; cursor: grab;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .product-card::before {
+      content: ""; position: absolute; inset: -30%;
+      background: radial-gradient(circle at 0% 0%, rgba(232,196,168,0.4), transparent 50%);
+      opacity: 0; transition: opacity 0.22s ease; pointer-events: none;
+    }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.12); border-color: rgba(143,169,143,0.7); }
+    .product-card:hover::before { opacity: 1; }
+
+    .product-tag { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(45,45,45,0.5); }
+    .product-name { font-size: 0.95rem; font-weight: 600; }
+    .product-desc { font-size: 0.82rem; color: rgba(45,45,45,0.72); }
+    .product-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: auto; font-size: 0.78rem; color: rgba(45,45,45,0.65); }
+    .product-price { font-weight: 600; }
+    .product-badge { padding: 0.2rem 0.55rem; border-radius: 99px; background: rgba(143,169,143,0.14); color: rgba(45,45,45,0.78); font-size: 0.72rem; }
+
+    .product-visual { width: 100%; display: flex; align-items: flex-end; justify-content: center; gap: 0.7rem; margin-top: 0.2rem; min-height: 60px; }
+    .mini-bottle { display: flex; flex-direction: column; align-items: center; }
+    .mini-bottle-shape {
+      width: 36px; height: 62px; border-radius: 999px;
+      background: linear-gradient(180deg, #fdfdfd, #f3e7da);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.2); position: relative; overflow: hidden;
+    }
+    .mini-bottle-label { position: absolute; inset: 35% 18% 18%; border-radius: 8px; background: rgba(250,248,245,0.98); border: 1px solid rgba(143,169,143,0.5); }
+    .mini-jar { display: flex; flex-direction: column; align-items: center; }
+    .mini-jar-body {
+      width: 44px; height: 36px; border-radius: 999px 999px 20px 20px;
+      background: linear-gradient(180deg, #fefefe, #f3e7da);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.2); position: relative;
+    }
+    .mini-jar-lid { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 74%; height: 14px; border-radius: 99px; background: linear-gradient(180deg, #6b5b4b, #4a3f35); }
+
+    .carousel-hint { margin-top: 0.6rem; font-size: 0.72rem; color: rgba(45,45,45,0.5); display: flex; align-items: center; gap: 0.4rem; }
+    .carousel-hint-icon { width: 22px; height: 14px; border-radius: 999px; border: 1px solid rgba(45,45,45,0.3); position: relative; overflow: hidden; }
+    .carousel-hint-icon::before {
+      content: ""; position: absolute; inset: 3px; border-radius: 999px; border: 1px solid rgba(45,45,45,0.5);
+      animation: swipeHint 1.4s ease-in-out infinite;
+    }
+    @keyframes swipeHint { 0% { transform: translateX(0); opacity: 1; } 60% { transform: translateX(60%); opacity: 0; } 100% { transform: translateX(0); opacity: 0; } }
+
+    /* ── Voices ── */
+    .testimonials-grid { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.4fr); gap: clamp(2rem,4vw,3rem); align-items: center; }
+    .testimonial-list { display: grid; gap: 0.9rem; }
+    .testimonial-card {
+      padding: 0.9rem 1.1rem; border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.96); border: 1px solid rgba(143,169,143,0.35);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.06); font-size: 0.84rem; color: rgba(45,45,45,0.82);
+      position: relative; overflow: hidden;
+    }
+    .testimonial-card::before { content: "\201C"; position: absolute; top: -1.5rem; right: 0.5rem; font-size: 3.5rem; color: rgba(232,196,168,0.35); font-family: Georgia, serif; }
+    .testimonial-meta { margin-top: 0.5rem; font-size: 0.72rem; color: rgba(45,45,45,0.55); display: flex; justify-content: space-between; gap: 0.5rem; }
+    .stars { color: #e5b35a; font-size: 0.78rem; }
+
+    .voice-summary { margin-bottom: 1rem; font-size: 0.93rem; color: rgba(45,45,45,0.78); }
+    .voice-points { display: grid; gap: 0.35rem; font-size: 0.84rem; color: rgba(45,45,45,0.72); list-style: none; }
+    .voice-points li { display: flex; gap: 0.4rem; }
+    .voice-points li::before { content: "❋"; color: var(--color-primary); font-size: 0.75rem; transform: translateY(3px); flex-shrink: 0; }
+    .voice-note { margin-top: 0.9rem; font-size: 0.78rem; color: rgba(45,45,45,0.55); }
+
+    /* ── Sustainability ── */
+    .sustainability-section {
+      background: radial-gradient(circle at 0% 20%, rgba(143,169,143,0.2), transparent 60%),
+                  radial-gradient(circle at 100% 80%, rgba(232,196,168,0.22), transparent 60%);
+    }
+    .sust-grid { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.4fr); gap: clamp(2rem,4vw,3rem); align-items: center; }
+    .sust-list { display: grid; gap: 0.8rem; margin-top: 0.8rem; font-size: 0.88rem; color: rgba(45,45,45,0.78); }
+    .sust-item { display: grid; gap: 0.2rem; }
+    .sust-label { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(45,45,45,0.55); }
+    .sust-title { font-weight: 600; }
+
+    .sust-visual {
+      border-radius: var(--radius-lg);
+      background: linear-gradient(145deg, rgba(143,169,143,0.44), rgba(107,91,75,0.72));
+      padding: 1.2rem; box-shadow: var(--shadow-soft); color: rgba(250,248,245,0.94); display: grid; gap: 0.8rem;
+    }
+    .footprint-row { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: 0.84rem; }
+    .footprint-tag { padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid rgba(250,248,245,0.45); font-size: 0.72rem; }
+    .footnote { font-size: 0.72rem; color: rgba(250,248,245,0.75); }
+
+    /* ── CTA ── */
+    .cta-section { position: relative; overflow: hidden; }
+    .cta-section::before {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 10% 0%, rgba(255,255,255,0.9), transparent 60%),
+                  radial-gradient(circle at 90% 120%, rgba(143,169,143,0.32), transparent 60%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative; z-index: 1; border-radius: 28px;
+      padding: clamp(1.8rem,4vw,2.4rem);
+      background: linear-gradient(135deg, rgba(250,248,245,0.97), rgba(232,196,168,0.76));
+      box-shadow: 0 24px 52px rgba(0,0,0,0.18);
+      display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2.2fr);
+      gap: clamp(2rem,4vw,3rem); align-items: center;
+    }
+    .cta-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 999px; background: rgba(250,248,245,0.95); font-size: 0.75rem; color: rgba(45,45,45,0.7); margin-bottom: 0.7rem; }
+    .cta-badge-dot { width: 8px; height: 8px; border-radius: 999px; background: radial-gradient(circle at 30% 10%, #fff, #8fa98f); }
+    .cta-title { font-size: clamp(1.5rem,2.6vw,1.9rem); margin-bottom: 0.8rem; letter-spacing: 0.08em; line-height: 1.4; }
+    .cta-lead { font-size: 0.93rem; color: rgba(45,45,45,0.82); margin-bottom: 1.4rem; }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+    .cta-note { font-size: 0.78rem; color: rgba(45,45,45,0.65); margin-top: 0.9rem; }
+
+    .cta-stack { display: flex; align-items: stretch; gap: 0.8rem; }
+    .cta-box {
+      flex: 1; border-radius: 22px; background: linear-gradient(145deg, #f7f3ee, #f0e4d8);
+      padding: 0.8rem; box-shadow: 0 16px 36px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .cta-box-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(45,45,45,0.55); }
+    .cta-box-title { font-size: 0.88rem; font-weight: 600; }
+    .cta-box-meta { font-size: 0.76rem; color: rgba(45,45,45,0.65); }
+    .cta-mini-stats { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.35rem; font-size: 0.7rem; color: rgba(45,45,45,0.65); }
+    .cta-mini-stats span { padding: 0.18rem 0.45rem; border-radius: 999px; border: 1px solid rgba(143,169,143,0.6); background: rgba(250,248,245,0.9); }
+
+    /* ── Footer ── */
+    footer { padding: 2.4rem clamp(1.25rem,4vw,2.5rem) 2.6rem; background: #2d2d2d; color: rgba(250,248,245,0.94); }
+    .footer-inner { max-width: var(--max-width); margin: 0 auto; display: grid; grid-template-columns: minmax(0,2.5fr) minmax(0,3fr); gap: 2.4rem; }
+    .footer-brand-name { font-size: 1.1rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.4rem; font-weight: 700; }
+    .footer-copy { font-size: 0.84rem; color: rgba(250,248,245,0.75); margin-bottom: 1rem; }
+    .footer-meta { font-size: 0.76rem; color: rgba(250,248,245,0.55); }
+    .footer-cols { display: flex; flex-wrap: wrap; gap: 1.8rem; font-size: 0.8rem; }
+    .footer-col-title { font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.7rem; color: rgba(250,248,245,0.65); }
+    .footer-link { display: block; color: rgba(250,248,245,0.78); margin-bottom: 0.35rem; transition: color 0.15s ease, transform 0.15s ease; cursor: pointer; }
+    .footer-link:hover { color: #fff; transform: translateX(2px); }
+    .footer-bottom {
+      max-width: var(--max-width); margin: 1.8rem auto 0; padding-top: 1rem;
+      border-top: 1px solid rgba(250,248,245,0.14); font-size: 0.72rem; color: rgba(250,248,245,0.55);
+      display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: space-between; align-items: center;
+    }
+    .footer-tag { padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(250,248,245,0.35); }
+
+    /* ── Reveal animation ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.32s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: minmax(0,1fr); }
+      .hero-visual { order: -1; }
+      .story-grid, .ingredients-grid, .testimonials-grid, .sust-grid, .cta-inner, .footer-inner {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      nav { display: none; }
+      .nav-toggle { display: inline-flex; }
+      .nav-links-wrapper {
+        position: absolute; inset: 100% 0 auto;
+        background: rgba(250,248,245,0.96); border-bottom: 1px solid rgba(107,91,75,0.12);
+        padding: 0.5rem 1.25rem 0.9rem; flex-direction: column; gap: 0.4rem; display: none;
+      }
+      .nav-links-wrapper.is-open { display: flex; }
+      .carousel { grid-auto-columns: minmax(75%,290px); }
+      .footer-bottom { flex-direction: column-reverse; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+      .hero-card-inner { grid-template-columns: minmax(0,1fr); }
+      .hero-card-visual { max-width: 160px; margin: 0 auto; }
+      .cta-stack { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="nav-inner">
+      <a href="#hero" class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-text-main">MORI</div>
+          <div class="brand-text-sub">Organic Skincare</div>
+        </div>
+      </a>
+      <button class="nav-toggle" aria-label="メニューを開閉">
+        <div class="nav-toggle-line"></div>
+      </button>
+      <div class="nav-links-wrapper" id="nav-links">
+        <nav aria-label="メインナビゲーション">
+          <a class="nav-link" data-scroll-to="#story">ストーリー</a>
+          <a class="nav-link" data-scroll-to="#ingredients">成分</a>
+          <a class="nav-link" data-scroll-to="#products">商品</a>
+          <a class="nav-link" data-scroll-to="#voices">お客様の声</a>
+          <a class="nav-link" data-scroll-to="#sustainability">サステナビリティ</a>
+        </nav>
+        <button class="nav-cta" data-scroll-to="#purchase">オンラインストアへ ↗</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Hero ── -->
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div>
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            Next.js × Headless WordPress デモサイト
+          </div>
+          <div class="hero-eyebrow">Organic Skincare D2C Brand</div>
+          <h1 id="hero-title" class="hero-title">森が教えてくれた、<br/>肌のこと。</h1>
+          <div class="hero-kana">オーガニックスキンケアブランド「MORI（もり）」</div>
+          <p class="hero-copy">
+            森を歩くと、肌がふっと緩む。その感覚をご自宅のスキンケア時間にも届けたくて。「MORI」は、国産の森の恵みをぎゅっと閉じ込めた、オーガニックスキンケアD2Cブランドです。
+          </p>
+          <p class="hero-sub">
+            このサイトは、Next.jsとWordPress（ヘッドレスCMS）を組み合わせた、ブランドサイト制作のデモページです。
+          </p>
+          <div class="hero-actions">
+            <button class="btn-primary" data-scroll-to="#purchase">今すぐ「MORI」を体験する</button>
+            <button class="btn-outline" data-scroll-to="#story">ブランドストーリーを見る ↓</button>
+          </div>
+          <div class="hero-meta">
+            <div class="hero-meta-item">
+              <div class="hero-meta-label">Natural Origin</div>
+              <div class="hero-meta-value">98% 自然由来成分</div>
+            </div>
+            <div class="hero-meta-item">
+              <div class="hero-meta-label">Performance</div>
+              <div class="hero-meta-value">LCP 1秒台の高速表示</div>
+            </div>
+            <div class="hero-meta-item">
+              <div class="hero-meta-label">Content</div>
+              <div class="hero-meta-value">WordPressで柔軟に更新</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card reveal">
+            <div class="hero-card-inner">
+              <div>
+                <div class="hero-card-label">Headless CMS × Next.js</div>
+                <div class="hero-card-title">森の呼吸まで届ける、軽やかな体験。</div>
+                <p class="hero-card-copy">ヘッドレスWordPressでブランドの世界観を一元管理しつつ、Next.jsでストレスのないページ読み込みを実現。</p>
+                <div class="hero-card-meta">
+                  <span>Jamstack構成</span>
+                  <span>SEO最適化</span>
+                  <span>Gutenberg対応</span>
+                </div>
+              </div>
+              <div class="hero-card-visual">
+                <div class="bottle">
+                  <div class="bottle-cap"></div>
+                  <div class="bottle-label">
+                    <span class="bl-brand">MORI</span>
+                    <span class="bl-line">Forest Serum</span>
+                    <span class="bl-tag">98% Natural</span>
+                  </div>
+                </div>
+                <div class="leaf-orbit" aria-hidden="true">
+                  <svg viewBox="0 0 140 180">
+                    <defs>
+                      <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#d8e5d8"/>
+                        <stop offset="100%" stop-color="#8fa98f"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M10 170 C 20 90 60 40 120 10" stroke="rgba(107,91,75,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-dasharray="4 6"/>
+                    <path d="M40 125 C 35 90 50 60 78 45 C 98 35 115 32 130 30 C 120 45 112 63 100 78 C 82 100 63 118 40 125 Z" fill="url(#leafGrad)" opacity="0.9"/>
+                    <path d="M52 120 C 55 110 65 100 79 93" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                    <circle cx="94" cy="52" r="5" fill="rgba(250,248,245,0.9)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <div>scroll</div>
+        <div class="scroll-indicator-arrow"></div>
+      </div>
+    </section>
+
+    <!-- ── Brand Story ── -->
+    <section id="story" aria-labelledby="story-title">
+      <div class="section-inner">
+        <div class="story-grid">
+          <div class="story-text reveal">
+            <div class="section-label">Brand Story</div>
+            <h2 id="story-title" class="section-title">森と、肌と。<br/>一人ひとりの呼吸に寄りそうブランド。</h2>
+            <p>MORIが生まれたのは、とある冬の朝。ディレクター自身が、肌トラブルをきっかけに森へ通うようになったことから始まりました。季節によって表情を変える森の空気に触れるたび、肌だけでなく心までほどけていくのを感じたのです。</p>
+            <p>「この感覚を、日々のスキンケアにも重ねられたら。」<br/>そんな想いから、MORIは「森の時間を、肌で深呼吸する」というコンセプトで設計されました。香り・テクスチャー・肌なじみ――何度も試作を重ね、使うたびに呼吸が深くなるような処方にたどり着きました。</p>
+            <p>サイト制作においても同じ姿勢で。コンテンツ更新のしやすさとパフォーマンスを両立するために、Next.js × ヘッドレスWordPressという構成を選んでいます。</p>
+            <span class="story-highlight">「森の静けさ」を、Webの中にも。</span>
+          </div>
+          <div class="story-visual reveal reveal-delay-1" aria-hidden="true">
+            <div class="story-forest">
+              <div class="tree"><div class="tree-crown"></div><div class="tree-trunk"></div></div>
+              <div class="tree"><div class="tree-crown" style="transform:scale(1.1);border-radius:55% 65% 60% 70%"></div><div class="tree-trunk" style="height:52px"></div></div>
+              <div class="tree"><div class="tree-crown" style="transform:scale(0.95);border-radius:60% 60% 55% 65%;background:radial-gradient(circle at 20% 0%,#f9faf9,#b2c5b2)"></div><div class="tree-trunk" style="height:40px"></div></div>
+            </div>
+            <div class="story-caption">CSSとSVGのみで表現した「森の断片」。ビジュアルもコードからしなやかにデザインできます。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Ingredients ── -->
+    <section id="ingredients" aria-labelledby="ingredients-title">
+      <div class="section-inner">
+        <div class="ingredients-grid">
+          <div class="ingredients-text reveal">
+            <div class="section-label">Ingredients</div>
+            <h2 id="ingredients-title" class="section-title">98%が自然由来。<br/>「森の処方箋」をそのまま、肌へ。</h2>
+            <p>MORIの全プロダクトは、平均して<strong>98%が自然由来成分</strong>。肌へのやさしさと実感のバランスを見極め、必要最低限の合成成分にとどめています。</p>
+            <p>キーとなるのは、北日本のブナ林で採れる若芽エキスと、ヒノキの枝葉から抽出した精油。どちらも乾燥ダメージに傾きがちな現代の肌バリアを、穏やかに支える力を持っています。</p>
+            <p>成分情報やストーリーは、WordPress上のカスタム投稿から動的に配信。新しいラインナップも管理画面から柔軟に追加できます。</p>
+            <div class="pill-list">
+              <span class="pill">合成着色料フリー</span>
+              <span class="pill">パラベンフリー</span>
+              <span class="pill">動物実験なし</span>
+              <span class="pill">石油系界面活性剤不使用</span>
+            </div>
+            <div class="stats-row">
+              <article class="stat-card reveal reveal-delay-1">
+                <div class="stat-label">自然由来成分比率</div>
+                <div class="stat-value"><span class="count-up" data-target="98">0</span><span class="stat-suffix">%</span></div>
+                <div class="stat-note">*水を含む。主要アイテムの平均値。</div>
+              </article>
+              <article class="stat-card reveal reveal-delay-2">
+                <div class="stat-label">リピート率</div>
+                <div class="stat-value"><span class="count-up" data-target="82">0</span><span class="stat-suffix">%</span></div>
+                <div class="stat-note">定期購入ユーザーの継続率。</div>
+              </article>
+            </div>
+          </div>
+          <div class="ingredients-visual reveal reveal-delay-1">
+            <div class="ingredients-tag"><span class="ingredients-tag-dot"></span> 森の恵みを、科学的にときほぐす。</div>
+            <div class="ingredients-illustration">
+              <div class="leaf-grow-wrapper">
+                <svg class="leaf-svg" data-leaf-grow viewBox="0 0 120 180" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="leafGM" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#edf4ed"/><stop offset="35%" stop-color="#c3d4c3"/><stop offset="100%" stop-color="#8fa98f"/>
+                    </linearGradient>
+                    <linearGradient id="stemG" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#6b5b4b"/><stop offset="100%" stop-color="#3f352b"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M60 175 C 58 140 55 110 54 82 C 53 54 55 30 60 10" stroke="url(#stemG)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <path d="M20 120 C 30 105 42 95 56 88 C 70 82 82 80 100 80 C 93 94 86 107 76 118 C 64 132 49 141 32 145 C 26 136 22 128 20 120 Z" fill="url(#leafGM)"/>
+                  <path d="M36 128 C 44 122 52 116 61 113 C 71 110 80 110 89 110" stroke="rgba(255,255,255,0.8)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+                  <circle cx="64" cy="35" r="6" fill="rgba(250,248,245,0.95)" stroke="rgba(143,169,143,0.7)" stroke-width="1.2"/>
+                </svg>
+              </div>
+              <div class="ingredient-card">
+                <div class="ingredient-name">ブナ芽エキス（保湿）</div>
+                <div class="ingredient-note">雪解け直後の生命力あふれるブナの若芽から抽出。うるおいを抱え込み、キメの整った肌へ。</div>
+              </div>
+              <div class="ingredient-card">
+                <div class="ingredient-name">ヒノキ葉油（香り・保護）</div>
+                <div class="ingredient-note">森を歩いた後のような、深く澄んだ香り。敏感肌の方でも使いやすい処方に。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Products ── -->
+    <section id="products" aria-labelledby="products-title">
+      <div class="section-inner">
+        <div class="products-header">
+          <div>
+            <div class="section-label">Lineup</div>
+            <h2 id="products-title" class="section-title">森の時間を連れてくる、3つのラインナップ。</h2>
+            <p class="section-lead">「落とす」「満たす」「守る」という、シンプルだけれどブレない3ステップ。</p>
+          </div>
+          <div class="products-note">商品情報はWordPressのカスタム投稿から取得。Next.jsで静的生成し、高速表示と更新性を両立します。</div>
+        </div>
+        <div class="carousel-wrapper">
+          <div class="carousel">
+            <article class="product-card reveal">
+              <header>
+                <div class="product-tag">Step 1 — Cleanse</div>
+                <h3 class="product-name">ディープブレス クレンジングオイル</h3>
+              </header>
+              <div class="product-visual" aria-hidden="true">
+                <div class="mini-bottle"><div class="mini-bottle-shape" style="background:linear-gradient(180deg,#fef7ee,#f0d7b8)"><div class="mini-bottle-label"></div></div></div>
+              </div>
+              <p class="product-desc">メイクや皮脂はするりとオフしつつ、肌のうるおいは抱きしめたまま。森をぬける風のようなやさしい洗い上がり。</p>
+              <footer class="product-meta">
+                <div><div class="product-price">¥3,960（税込）</div><div>150mL / 約1.5ヶ月分</div></div>
+                <span class="product-badge">W洗顔不要</span>
+              </footer>
+            </article>
+
+            <article class="product-card reveal reveal-delay-1">
+              <header>
+                <div class="product-tag">Step 2 — Boost</div>
+                <h3 class="product-name">フォレストインフュージョン セラム</h3>
+              </header>
+              <div class="product-visual" aria-hidden="true">
+                <div class="mini-bottle"><div class="mini-bottle-shape"><div class="mini-bottle-label"></div></div></div>
+              </div>
+              <p class="product-desc">ブナ芽エキスやヒノキ葉油を贅沢に配合した美容液。乾燥やくすみ感が気になる肌も、ふっくらとしたツヤ肌へ。</p>
+              <footer class="product-meta">
+                <div><div class="product-price">¥5,940（税込）</div><div>50mL / 約2ヶ月分</div></div>
+                <span class="product-badge">98%自然由来</span>
+              </footer>
+            </article>
+
+            <article class="product-card reveal reveal-delay-2">
+              <header>
+                <div class="product-tag">Step 3 — Protect</div>
+                <h3 class="product-name">カームシェイド モイスチャライザー</h3>
+              </header>
+              <div class="product-visual" aria-hidden="true">
+                <div class="mini-jar"><div class="mini-jar-body"><div class="mini-jar-lid"></div></div></div>
+              </div>
+              <p class="product-desc">森の木陰のように外的ストレスから肌を守るクリーム。ベタつかずに膜をつくり、心地よい保湿感が続きます。</p>
+              <footer class="product-meta">
+                <div><div class="product-price">¥4,620（税込）</div><div>40g / 約1.5ヶ月分</div></div>
+                <span class="product-badge">敏感肌テスト済</span>
+              </footer>
+            </article>
+
+            <article class="product-card reveal reveal-delay-3">
+              <header>
+                <div class="product-tag">Set — Full Line</div>
+                <h3 class="product-name">フルライン 3ステップセット</h3>
+              </header>
+              <div class="product-visual" aria-hidden="true">
+                <div class="mini-bottle"><div class="mini-bottle-shape" style="height:50px;background:linear-gradient(180deg,#fef7ee,#f0d7b8)"><div class="mini-bottle-label"></div></div></div>
+                <div class="mini-bottle"><div class="mini-bottle-shape" style="height:56px"><div class="mini-bottle-label"></div></div></div>
+                <div class="mini-jar"><div class="mini-jar-body"><div class="mini-jar-lid"></div></div></div>
+              </div>
+              <p class="product-desc">まずはトータルで試したい方に。ライン使いすることで肌リズムを整え、しなやかでツヤのある印象へ。</p>
+              <footer class="product-meta">
+                <div><div class="product-price">¥13,970 → ¥12,760</div><div>初回限定・送料無料</div></div>
+                <span class="product-badge">10日間返金保証</span>
+              </footer>
+            </article>
+          </div>
+          <div class="carousel-hint"><div class="carousel-hint-icon"></div> 左右にスワイプしてご覧いただけます</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Voices ── -->
+    <section id="voices" aria-labelledby="voices-title">
+      <div class="section-inner">
+        <div class="testimonials-grid">
+          <div class="reveal">
+            <div class="section-label">Voices</div>
+            <h2 id="voices-title" class="section-title">「ただのスキンケア時間が、<br/>深呼吸の時間に変わった。」</h2>
+            <p class="voice-summary">MORIを選んでくださった方の多くが、「香りとテクスチャーに癒やされる」「朝のメイク前が楽しみになった」と話してくださいます。</p>
+            <ul class="voice-points">
+              <li>敏感肌でもしみずに使えるのに、しっかりうるおう。</li>
+              <li>ヒノキの香りが強すぎず、「森の朝」のようなやさしさ。</li>
+              <li>定期便でもペース変更やスキップがしやすい設計で安心。</li>
+            </ul>
+            <p class="voice-note">レビューコンテンツもWordPress上で投稿・承認フローを設計可能。Next.js側では必要な件数のみ静的取得し、表示速度を保ちます。</p>
+          </div>
+          <div class="testimonial-list">
+            <article class="testimonial-card reveal reveal-delay-1">
+              <p>季節の変わり目になると必ず頬に赤みが出ていたのですが、MORIをライン使いしはじめてからは「あ、今年はゆらいでいない」とふと気づきました。特に美容液のとろみ感が好きで、手のひらで温めてから顔全体を包み込むのが毎晩のルーティンです。</p>
+              <div class="testimonial-meta"><span>30代前半・混合肌</span><span class="stars">★★★★★</span></div>
+            </article>
+            <article class="testimonial-card reveal reveal-delay-2">
+              <p>在宅ワークで一日中PC前にいる生活になり、肌の乾燥とくすみが気になっていました。MORIの香りは、まさに森を散歩しているような深い落ち着き。スキンケアをしながら深呼吸する時間が、新しいリセットタイムになっています。</p>
+              <div class="testimonial-meta"><span>20代後半・乾燥肌</span><span class="stars">★★★★☆</span></div>
+            </article>
+            <article class="testimonial-card reveal reveal-delay-3">
+              <p>敏感肌なので新しいコスメには慎重なのですが、全成分やブランドの姿勢がしっかり開示されている点に信頼感をもちました。パッケージやサイトデザインも含めて、暮らしの中でずっとそばに置きたくなる世界観です。</p>
+              <div class="testimonial-meta"><span>40代前半・敏感肌</span><span class="stars">★★★★★</span></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Sustainability ── -->
+    <section id="sustainability" class="sustainability-section" aria-labelledby="sust-title">
+      <div class="section-inner">
+        <div class="sust-grid">
+          <div class="reveal">
+            <div class="section-label">Sustainability</div>
+            <h2 id="sust-title" class="section-title">森を借りて、森に返す。<br/>サステナブルな設計を、プロダクトにもWebにも。</h2>
+            <p class="section-lead">原料調達・容器・物流・サイトのインフラ——あらゆるタッチポイントで、未来の森に負担をかけない選択を続けます。</p>
+            <div class="sust-list">
+              <div class="sust-item">
+                <div class="sust-label">Packaging</div>
+                <div class="sust-title">リサイクルガラス＆FSC認証紙</div>
+                <div>ボトルにはリサイクルガラスを採用し、外箱はFSC認証紙を使用。過剰な装飾をなくし、活版印刷風にレイアウト。</div>
+              </div>
+              <div class="sust-item">
+                <div class="sust-label">Refill</div>
+                <div class="sust-title">詰め替えパウチでプラスチック削減</div>
+                <div>人気アイテムは詰め替えパウチをご用意。プラスチック使用量を最大60%削減します。</div>
+              </div>
+              <div class="sust-item">
+                <div class="sust-label">Web</div>
+                <div class="sust-title">グリーンホスティング × 軽量フロントエンド</div>
+                <div>Next.jsによる静的配信とキャッシュ活用で、サーバー負荷とCO₂排出量を最小限に。</div>
+              </div>
+            </div>
+          </div>
+          <aside class="sust-visual reveal reveal-delay-1">
+            <div>
+              <strong style="font-size:0.95rem">Estimated Footprint</strong>
+              <p style="margin:0.3rem 0 0.8rem;font-size:0.84rem;opacity:0.9">1サイトあたりの推定CO₂排出量を可視化し、改善の余地を常にチェック。</p>
+            </div>
+            <div class="footprint-row">
+              <div>
+                <div style="font-size:0.75rem;opacity:0.8">Page Weight</div>
+                <div style="font-size:1.3rem;font-weight:600">0.53<span style="font-size:0.9rem">MB</span></div>
+              </div>
+              <div>
+                <div style="font-size:0.75rem;opacity:0.8">Est. CO₂ / view</div>
+                <div style="font-size:1.3rem;font-weight:600">0.21<span style="font-size:0.9rem">g</span></div>
+              </div>
+              <div>
+                <div style="font-size:0.75rem;opacity:0.8">Hosting</div>
+                <div style="font-size:0.9rem">再生可能エネルギー</div>
+              </div>
+            </div>
+            <div style="margin:0.8rem 0 0.5rem;font-size:0.84rem;opacity:0.9">「削ぎ落とす」デザインが環境配慮につながります。コードの無駄を省き、必要なアニメーションだけを丁寧に残す。</div>
+            <div class="footnote">* 数値はデモサイト想定のモデルケースです。</div>
+            <div style="margin-top:0.7rem;display:flex;flex-wrap:wrap;gap:0.4rem">
+              <span class="footprint-tag">静的サイト生成（SSG）</span>
+              <span class="footprint-tag">CDNキャッシュ</span>
+              <span class="footprint-tag">画像の遅延読み込み</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Purchase CTA ── -->
+    <section id="purchase" class="cta-section" aria-labelledby="cta-title">
+      <div class="section-inner">
+        <div class="cta-inner reveal">
+          <div>
+            <div class="cta-badge"><span class="cta-badge-dot"></span> Online Store</div>
+            <h2 id="cta-title" class="cta-title">森の時間を、<br/>ご自宅の洗面台にも。</h2>
+            <p class="cta-lead">はじめての方には、3ステップがまるごと試せる「フルライン 3ステップセット」がおすすめです。今なら公式オンラインストア限定で送料無料。</p>
+            <div class="cta-actions">
+              <button class="btn-primary">公式オンラインストアで購入する</button>
+              <button class="btn-outline" data-scroll-to="#products">ラインナップを見る ↳</button>
+            </div>
+            <p class="cta-note">本ページはデモのため、実際の購入は行えません。実装時にはカートシステムや外部ECとの連携も柔軟に設計可能です。</p>
+          </div>
+          <div aria-hidden="true">
+            <div class="cta-stack">
+              <div class="cta-box">
+                <div class="cta-box-label">Subscription</div>
+                <div class="cta-box-title">やめやすい定期便設計</div>
+                <div class="cta-box-meta">マイページからお届け頻度の変更・スキップが簡単にできる仕様を想定。</div>
+                <div class="cta-mini-stats"><span>スキップ無制限</span><span>次回日変更OK</span></div>
+              </div>
+              <div class="cta-box" style="max-width:120px;background:linear-gradient(145deg,#f6f1ea,#f2e1d0)">
+                <div class="cta-box-label">Bonus</div>
+                <div class="cta-box-title">初回特典</div>
+                <div class="cta-box-meta">森のしおり付き<br/>ブナ林ポストカード</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">MORI</div>
+        <div class="footer-copy">「森が教えてくれた、肌のこと。」を起点に、成分・パッケージ・コミュニケーションのすべてをデザインするオーガニックスキンケアD2Cブランドです。</div>
+        <div class="footer-meta">本サイトは、Next.js ＋ ヘッドレスWordPress構成のデモページです。</div>
+      </div>
+      <div class="footer-cols">
+        <div>
+          <div class="footer-col-title">Contents</div>
+          <a href="#story" class="footer-link">ブランドストーリー</a>
+          <a href="#ingredients" class="footer-link">成分へのこだわり</a>
+          <a href="#products" class="footer-link">商品ラインナップ</a>
+          <a href="#voices" class="footer-link">お客様の声</a>
+        </div>
+        <div>
+          <div class="footer-col-title">For Business</div>
+          <span class="footer-link">ヘッドレスCMS構築</span>
+          <span class="footer-link">Next.jsサイト制作</span>
+          <span class="footer-link">ブランドサイト設計</span>
+        </div>
+        <div>
+          <div class="footer-col-title">Etc.</div>
+          <span class="footer-link">プライバシーポリシー</span>
+          <span class="footer-link">特定商取引法に基づく表記</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 MORI — Demo site for Next.js × Headless WordPress.</div>
+      <div class="footer-tag">Designed with whitespace &amp; calm interactions.</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var links = document.querySelectorAll("[data-scroll-to]");
+  var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function scrollTo(sel){
+    var t = document.querySelector(sel);
+    if(!t) return;
+    var top = t.getBoundingClientRect().top + window.pageYOffset - 72;
+    if(prefersReduced) window.scrollTo(0, top);
+    else window.scrollTo({top:top, behavior:"smooth"});
+  }
+  links.forEach(function(l){
+    l.addEventListener("click", function(e){
+      var s = l.getAttribute("data-scroll-to");
+      if(!s) return;
+      e.preventDefault();
+      scrollTo(s);
+      var nw = document.getElementById("nav-links");
+      var nt = document.querySelector(".nav-toggle");
+      if(nw && nt && nw.classList.contains("is-open")){
+        nw.classList.remove("is-open");
+        nt.classList.remove("is-open");
+      }
+    });
+  });
+
+  var navToggle = document.querySelector(".nav-toggle");
+  var navWrapper = document.getElementById("nav-links");
+  if(navToggle && navWrapper){
+    navToggle.addEventListener("click", function(){
+      navWrapper.classList.toggle("is-open");
+      navToggle.classList.toggle("is-open");
+    });
+  }
+
+  if(!("IntersectionObserver" in window)){
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("is-visible"); });
+    document.querySelectorAll("[data-leaf-grow]").forEach(function(el){ el.classList.add("is-visible"); });
+    document.querySelectorAll(".count-up").forEach(function(el){ el.textContent = el.getAttribute("data-target")||"0"; });
+    return;
+  }
+
+  var revealObs = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("is-visible"); obs.unobserve(e.target); }
+    });
+  }, {rootMargin:"0px 0px -8% 0px", threshold:0.08});
+  document.querySelectorAll(".reveal").forEach(function(el){ revealObs.observe(el); });
+
+  var leafObs = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("is-visible"); obs.unobserve(e.target); }
+    });
+  }, {rootMargin:"0px 0px -5% 0px", threshold:0.15});
+  document.querySelectorAll("[data-leaf-grow]").forEach(function(el){ leafObs.observe(el); });
+
+  function easeOut(t){ return t*(2-t); }
+  var countObs = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(entry){
+      if(!entry.isIntersecting) return;
+      var el = entry.target;
+      var target = parseInt(el.getAttribute("data-target")||"0",10);
+      if(!target){ el.textContent="0"; obs.unobserve(el); return; }
+      var dur=1100, start=performance.now();
+      function tick(now){
+        var p = Math.min((now-start)/dur, 1);
+        el.textContent = Math.round(target * easeOut(p));
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      obs.unobserve(el);
+    });
+  }, {rootMargin:"0px 0px -10% 0px", threshold:0.25});
+  document.querySelectorAll(".count-up").forEach(function(el){ countObs.observe(el); });
+})();
+</script>
+</body>
+</html>

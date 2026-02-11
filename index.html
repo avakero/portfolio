@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRAFT — Next.js × WordPress ウェブ制作サービス</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@200;400;700;900&family=Inter:wght@200;400;600;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #08080c;
+      --bg-card: #111118;
+      --bg-card-hover: #1a1a24;
+      --text: #f0eff4;
+      --text-sub: #8a8a9a;
+      --accent: #6c5ce7;
+      --accent2: #00cec9;
+      --accent3: #fd79a8;
+      --gradient: linear-gradient(135deg, #6c5ce7, #00cec9);
+      --radius: 16px;
+      --transition: .4s cubic-bezier(.25, .8, .25, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- CURSOR GLOW ---- */
+    .cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(108, 92, 231, .08) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      transition: transform .1s ease-out;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: rgba(8, 8, 12, .7);
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+      transition: var(--transition);
+    }
+
+    nav.scrolled {
+      background: rgba(8, 8, 12, .95);
+    }
+
+    .nav-logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: .08em;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 400;
+      letter-spacing: .05em;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      padding: .6rem 1.6rem;
+      background: var(--gradient);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(108, 92, 231, .4);
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .5rem 1.2rem;
+      border: 1px solid rgba(108, 92, 231, .3);
+      border-radius: 100px;
+      font-size: .8rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+      background: rgba(108, 92, 231, .05);
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .5;
+        transform: scale(1.5);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -.02em;
+    }
+
+    .hero h1 .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--text-sub);
+      max-width: 600px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      padding: .9rem 2.4rem;
+      background: var(--gradient);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(108, 92, 231, .3);
+    }
+
+    .btn-secondary {
+      padding: .9rem 2.4rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 100px;
+      color: var(--text);
+      font-weight: 400;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      color: var(--text-sub);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    .hero-scroll .arrow {
+      font-size: 1.2rem;
+    }
+
+    /* ---- GRID LINES (decorative bg) ---- */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    /* ---- STATS ---- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: -2rem auto 0;
+      padding: 0 2rem 6rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 2rem 1rem;
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .02);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-number {
+      font-family: 'Inter';
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: .85rem;
+      color: var(--text-sub);
+      margin-top: .5rem;
+    }
+
+    /* ---- SECTION COMMON ---- */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-label {
+      font-family: 'Inter';
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .section-desc {
+      color: var(--text-sub);
+      max-width: 600px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    /* ---- FILTER TABS ---- */
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
+    .filter-tab {
+      padding: .5rem 1.2rem;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 100px;
+      background: transparent;
+      color: var(--text-sub);
+      font-size: .8rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(108, 92, 231, .1);
+    }
+
+    /* ---- PORTFOLIO GRID ---- */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .portfolio-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, .06);
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .portfolio-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(108, 92, 231, .3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .4), 0 0 40px rgba(108, 92, 231, .1);
+    }
+
+    .card-preview {
+      width: 100%;
+      aspect-ratio: 16/10;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      transition: var(--transition);
+    }
+
+    .portfolio-card:hover .card-preview-inner {
+      transform: scale(1.05);
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 12, .9) 0%, transparent 60%);
+      opacity: 0;
+      transition: var(--transition);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+
+    .portfolio-card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .card-overlay .preview-btn {
+      padding: .6rem 1.4rem;
+      background: var(--gradient);
+      border: none;
+      border-radius: 100px;
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transform: translateY(10px);
+      transition: var(--transition);
+    }
+
+    .portfolio-card:hover .card-overlay .preview-btn {
+      transform: translateY(0);
+    }
+
+    .card-info {
+      padding: 1.2rem 1.5rem 1.5rem;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+      margin-bottom: .8rem;
+    }
+
+    .card-tag {
+      padding: .2rem .6rem;
+      font-size: .65rem;
+      border-radius: 4px;
+      letter-spacing: .03em;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .3rem;
+    }
+
+    .card-subtitle {
+      font-size: .8rem;
+      color: var(--text-sub);
+      margin-bottom: .8rem;
+    }
+
+    .card-desc {
+      font-size: .78rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    /* tag colors */
+    .tag-luxury {
+      background: rgba(201, 168, 76, .15);
+      color: #c9a84c;
+    }
+
+    .tag-natural {
+      background: rgba(143, 169, 143, .15);
+      color: #8fa98f;
+    }
+
+    .tag-tech {
+      background: rgba(108, 92, 231, .15);
+      color: #6c5ce7;
+    }
+
+    .tag-art {
+      background: rgba(232, 255, 0, .1);
+      color: #e8ff00;
+    }
+
+    .tag-pop {
+      background: rgba(255, 45, 120, .15);
+      color: #ff2d78;
+    }
+
+    .tag-medical {
+      background: rgba(43, 124, 202, .15);
+      color: #2b7cca;
+    }
+
+    .tag-education {
+      background: rgba(79, 195, 247, .15);
+      color: #4fc3f7;
+    }
+
+    .tag-cinema {
+      background: rgba(232, 112, 64, .15);
+      color: #e87040;
+    }
+
+    .tag-dynamic {
+      background: rgba(255, 26, 26, .15);
+      color: #ff1a1a;
+    }
+
+    .tag-elegant {
+      background: rgba(212, 160, 160, .15);
+      color: #d4a0a0;
+    }
+
+    .tag-trust {
+      background: rgba(45, 127, 249, .15);
+      color: #2d7ff9;
+    }
+
+    .tag-classic {
+      background: rgba(184, 150, 46, .15);
+      color: #b8962e;
+    }
+
+    .tag-minimal {
+      background: rgba(200, 200, 200, .15);
+      color: #ccc;
+    }
+
+    .tag-human {
+      background: rgba(255, 213, 79, .15);
+      color: #ffd54f;
+    }
+
+    .tag-editorial {
+      background: rgba(139, 0, 255, .15);
+      color: #8b00ff;
+    }
+
+    /* ---- FEATURES ---- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      transition: var(--transition);
+    }
+
+    .feature-card:hover {
+      border-color: rgba(108, 92, 231, .2);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(108, 92, 231, .1);
+      border-radius: 14px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: .6rem;
+    }
+
+    .feature-card p {
+      font-size: .85rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+
+    /* ---- PROCESS ---- */
+    .process-flow {
+      display: flex;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .process-step {
+      flex: 1;
+      min-width: 220px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .process-step::after {
+      content: '→';
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--accent);
+      opacity: .5;
+    }
+
+    .process-step:last-child::after {
+      display: none;
+    }
+
+    .step-number {
+      font-family: 'Inter';
+      font-weight: 800;
+      font-size: 3rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      opacity: .3;
+      margin-bottom: .5rem;
+    }
+
+    .process-step h3 {
+      font-size: 1rem;
+      margin-bottom: .4rem;
+    }
+
+    .process-step p {
+      font-size: .8rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 2rem;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(108, 92, 231, .08) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .cta-section p {
+      color: var(--text-sub);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+      position: relative;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer .footer-logo {
+      font-family: 'Inter';
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    footer p {
+      font-size: .75rem;
+      color: var(--text-sub);
+    }
+
+    /* ---- MODAL ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: var(--radius);
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+      animation: modalIn .4s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(.95) translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .modal-header h3 {
+      font-size: 1rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, .1);
+      color: var(--text);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-preview-area {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .modal-info-item h4 {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      color: var(--accent);
+      margin-bottom: .4rem;
+      text-transform: uppercase;
+    }
+
+    .modal-info-item p {
+      font-size: .85rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+
+    .modal-colors {
+      display: flex;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+
+    .modal-color-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .1);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-step::after {
+        display: none;
+      }
+
+      .process-flow {
+        flex-direction: column;
+      }
+    }
+
+    /* ---- ANIMATIONS ---- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger */
+    .portfolio-card:nth-child(1) {
+      transition-delay: .05s;
+    }
+
+    .portfolio-card:nth-child(2) {
+      transition-delay: .1s;
+    }
+
+    .portfolio-card:nth-child(3) {
+      transition-delay: .15s;
+    }
+
+    .portfolio-card:nth-child(4) {
+      transition-delay: .2s;
+    }
+
+    .portfolio-card:nth-child(5) {
+      transition-delay: .25s;
+    }
+
+    .portfolio-card:nth-child(6) {
+      transition-delay: .3s;
+    }
+
+    /* Marquee */
+    .marquee-container {
+      overflow: hidden;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .04);
+      margin: 4rem 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 30s linear infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .marquee-track span {
+      font-family: 'Inter';
+      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-weight: 200;
+      color: rgba(255, 255, 255, .15);
+      letter-spacing: .1em;
+      padding: 0 2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-logo">CRAFT</div>
+    <ul class="nav-links">
+      <li><a href="#works">WORKS</a></li>
+      <li><a href="#features">FEATURES</a></li>
+      <li><a href="#process">PROCESS</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">無料相談</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">Next.js × WordPress 制作サービス</div>
+    <h1>
+      Webサイトを、<br>
+      <span class="gradient-text">作品にする。</span>
+    </h1>
+    <p>Next.jsの圧倒的パフォーマンスと、WordPressの運用しやすさ。<br>テクノロジーとデザインの融合で、ビジネスを次のステージへ。</p>
+    <div class="hero-buttons">
+      <a href="#works" class="btn-primary">制作実績を見る ↓</a>
+      <a href="#contact" class="btn-secondary">お問い合わせ</a>
+    </div>
+    <div class="hero-scroll">
+      <span>SCROLL</span>
+      <span class="arrow">↓</span>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-item fade-in">
+      <div class="stat-number" data-count="15">0</div>
+      <div class="stat-label">デザインテンプレート</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number" data-count="100" data-suffix="%">0</div>
+      <div class="stat-label">レスポンシブ対応</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number" data-count="98" data-suffix="/100">0</div>
+      <div class="stat-label">Lighthouse スコア</div>
+    </div>
+    <div class="stat-item fade-in">
+      <div class="stat-number" data-count="0.5" data-suffix="s" data-decimal="1">0</div>
+      <div class="stat-label">平均読み込み時間</div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-container">
+    <div class="marquee-track">
+      <span>RESTAURANT</span><span>•</span>
+      <span>D2C BRAND</span><span>•</span>
+      <span>SaaS</span><span>•</span>
+      <span>ARCHITECTURE</span><span>•</span>
+      <span>MUSIC FESTIVAL</span><span>•</span>
+      <span>CLINIC</span><span>•</span>
+      <span>EDUCATION</span><span>•</span>
+      <span>HOTEL</span><span>•</span>
+      <span>FITNESS</span><span>•</span>
+      <span>CAFE</span><span>•</span>
+      <span>REAL ESTATE</span><span>•</span>
+      <span>LAW FIRM</span><span>•</span>
+      <span>PHOTO STUDIO</span><span>•</span>
+      <span>NPO</span><span>•</span>
+      <span>FASHION</span><span>•</span>
+      <span>RESTAURANT</span><span>•</span>
+      <span>D2C BRAND</span><span>•</span>
+      <span>SaaS</span><span>•</span>
+      <span>ARCHITECTURE</span><span>•</span>
+      <span>MUSIC FESTIVAL</span><span>•</span>
+      <span>CLINIC</span><span>•</span>
+      <span>EDUCATION</span><span>•</span>
+      <span>HOTEL</span><span>•</span>
+      <span>FITNESS</span><span>•</span>
+      <span>CAFE</span><span>•</span>
+      <span>REAL ESTATE</span><span>•</span>
+      <span>LAW FIRM</span><span>•</span>
+      <span>PHOTO STUDIO</span><span>•</span>
+      <span>NPO</span><span>•</span>
+      <span>FASHION</span><span>•</span>
+    </div>
+  </div>
+
+  <!-- WORKS -->
+  <section id="works" style="max-width:1500px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:3rem;" class="fade-in">
+      <div class="section-label">Works</div>
+      <h2 class="section-title">制作実績</h2>
+      <p class="section-desc" style="margin:0 auto 2rem;">あらゆる業種に対応する15のデザインパターン。<br>すべてNext.js × WordPressで構築可能です。</p>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">すべて</button>
+      <button class="filter-tab" data-filter="luxury">ラグジュアリー</button>
+      <button class="filter-tab" data-filter="tech">テック</button>
+      <button class="filter-tab" data-filter="creative">クリエイティブ</button>
+      <button class="filter-tab" data-filter="service">サービス</button>
+      <button class="filter-tab" data-filter="lifestyle">ライフスタイル</button>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+      <!-- Cards will be injected by JS -->
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" style="max-width:1200px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:3rem;" class="fade-in">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">選ばれる理由</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">⚡</div>
+        <h3>圧倒的な表示速度</h3>
+        <p>Next.jsのSSG/ISRにより、Lighthouseスコア98以上を実現。ユーザー離脱を防ぎ、SEOにも貢献します。</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">✏️</div>
+        <h3>かんたん運用</h3>
+        <p>WordPressの管理画面から記事・ページを更新。技術知識がなくても、日々のコンテンツ更新がスムーズに行えます。</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🎨</div>
+        <h3>唯一無二のデザイン</h3>
+        <p>テンプレートの流用ではなく、ブランドの世界観に合わせた完全カスタムデザインを制作します。</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🔒</div>
+        <h3>堅牢なセキュリティ</h3>
+        <p>ヘッドレス構成により、WordPressの管理画面を公開しません。攻撃対象を最小化し、安全なサイトを運用できます。</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📱</div>
+        <h3>完全レスポンシブ</h3>
+        <p>モバイルファーストで設計。あらゆるデバイスで最高の体験を提供し、モバイルユーザーの離脱を防ぎます。</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📈</div>
+        <h3>SEO最適化</h3>
+        <p>構造化データ、OGP、Core Web Vitals最適化まで。検索エンジンに愛されるサイト構造を標準搭載しています。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" style="max-width:1200px; margin:0 auto; padding:6rem 2rem;">
+    <div style="text-align:center; margin-bottom:3rem;" class="fade-in">
+      <div class="section-label">Process</div>
+      <h2 class="section-title">制作の流れ</h2>
+    </div>
+    <div class="process-flow fade-in">
+      <div class="process-step">
+        <div class="step-number">01</div>
+        <h3>ヒアリング</h3>
+        <p>ビジネスの目標、ターゲット、ブランドイメージを丁寧にお伺いします</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">02</div>
+        <h3>デザイン設計</h3>
+        <p>ワイヤーフレーム→デザインカンプを作成。ご納得いただくまで調整します</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">03</div>
+        <h3>開発・実装</h3>
+        <p>Next.js + WordPress環境を構築。アニメーション・インタラクションを実装</p>
+      </div>
+      <div class="process-step">
+        <div class="step-number">04</div>
+        <h3>テスト・公開</h3>
+        <p>全デバイスでの動作確認後、本番環境へデプロイ。運用サポートも開始</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <h2 class="fade-in">まずは<span class="gradient-text">無料相談</span>から</h2>
+    <p class="fade-in">あなたのビジネスに最適なウェブ体験を、一緒に考えましょう。<br>お見積もり・ご相談は無料です。</p>
+    <div class="hero-buttons fade-in" style="position:relative;">
+      <a href="mailto:hello@craft-web.jp" class="btn-primary">無料相談を予約する</a>
+      <a href="#works" class="btn-secondary">もう一度実績を見る</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">CRAFT</div>
+    <p>© 2026 CRAFT Web Design Service. All rights reserved.</p>
+    <p style="margin-top:.5rem;">Next.js × WordPress Headless CMS</p>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">—</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-preview-area" id="modalPreview"></div>
+        <div class="modal-info-grid" id="modalInfo"></div>
+        <div class="modal-actions">
+          <a class="btn-primary" id="modalLink" href="#" target="_blank">デモページを見る →</a>
+          <a class="btn-secondary" href="#contact">このデザインで相談</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---- DATA ----
+    const projects = [
+      {
+        id: 1, title: "懐石 月白", subtitle: "京都の高級日本料理店",
+        category: "luxury", tags: [{ t: "和モダン", c: "tag-luxury" }, { t: "ラグジュアリー", c: "tag-luxury" }],
+        emoji: "🍽️",
+        bg: "linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #0a0a0a 100%)",
+        desc: "金箔パーティクルと縦書きを融合した和モダンデザイン。季節が移ろうスクロール演出。",
+        colors: ["#0a0a0a", "#c9a84c", "#f5f0eb", "#8b2500"],
+        copy: "一期一会の、味わいを。",
+        file: "01_kaiseki_tsukishiro.html"
+      },
+      {
+        id: 2, title: "MORI", subtitle: "オーガニックスキンケアD2C",
+        category: "lifestyle", tags: [{ t: "ナチュラル", c: "tag-natural" }, { t: "ミニマル", c: "tag-minimal" }],
+        emoji: "🌿",
+        bg: "linear-gradient(135deg, #faf8f5 0%, #e8c4a8 100%)",
+        desc: "余白の美学と植物の成長アニメーション。北欧テイストのナチュラルデザイン。",
+        colors: ["#faf8f5", "#8fa98f", "#6b5b4b", "#e8c4a8"],
+        copy: "森が教えてくれた、肌のこと。",
+        file: "02_mori.html",
+        textDark: true
+      },
+      {
+        id: 3, title: "FlowTalk", subtitle: "AIチャットボットSaaS",
+        category: "tech", tags: [{ t: "テック", c: "tag-tech" }, { t: "グラスモーフィズム", c: "tag-tech" }],
+        emoji: "🚀",
+        bg: "linear-gradient(135deg, #0f0c29 0%, #6c3ce0 50%, #00d4ff 100%)",
+        desc: "動くメッシュグラデーションとグラスモーフィズム。チャットUIのタイピングアニメーション。",
+        colors: ["#0f0c29", "#6c3ce0", "#00d4ff", "#ffffff"],
+        copy: "会話が、ビジネスを加速する。",
+        file: "03_flowtalk.html"
+      },
+      {
+        id: 4, title: "FRAME architects", subtitle: "建築設計事務所",
+        category: "creative", tags: [{ t: "ブルータリズム", c: "tag-art" }, { t: "アート", c: "tag-art" }],
+        emoji: "🏗️",
+        bg: "linear-gradient(135deg, #111 0%, #333 50%, #111 100%)",
+        desc: "大胆なタイポグラフィと方眼紙風グリッド。カスタムカーソルとマソンリーレイアウト。",
+        colors: ["#111111", "#ffffff", "#c4c4c4", "#e8ff00"],
+        copy: "構造に、意志を。",
+        file: "04_frame_architects.html"
+      },
+      {
+        id: 5, title: "SONIC GARDEN 2026", subtitle: "都市型音楽フェス",
+        category: "creative", tags: [{ t: "ポップ", c: "tag-pop" }, { t: "エネルギッシュ", c: "tag-pop" }],
+        emoji: "🎵",
+        bg: "linear-gradient(135deg, #0a0a0a 0%, #ff2d78 50%, #f0ff00 100%)",
+        desc: "グリッチエフェクトとサウンドウェーブアニメーション。カウントダウンタイマー搭載。",
+        colors: ["#0a0a0a", "#ff2d78", "#f0ff00", "#0066ff"],
+        copy: "音が咲く、夜が踊る。",
+        file: "05_sonic_garden.html"
+      },
+      {
+        id: 6, title: "CLARITY SKIN CLINIC", subtitle: "美容皮膚科クリニック",
+        category: "service", tags: [{ t: "清潔感", c: "tag-medical" }, { t: "安心感", c: "tag-medical" }],
+        emoji: "🏥",
+        bg: "linear-gradient(135deg, #ffffff 0%, #e8f4fd 50%, #ffffff 100%)",
+        desc: "ブロブ背景アニメーションと丸みカード。施術タイムラインと固定予約ボタン。",
+        colors: ["#ffffff", "#e8f4fd", "#2b7cca", "#ff7f6e"],
+        copy: "あなたらしい肌へ、確かな一歩を。",
+        file: "06_clarity_clinic.html",
+        textDark: true
+      },
+      {
+        id: 7, title: "CODE GARDEN", subtitle: "子どもプログラミングスクール",
+        category: "service", tags: [{ t: "プレイフル", c: "tag-education" }, { t: "温かみ", c: "tag-education" }],
+        emoji: "📚",
+        bg: "linear-gradient(135deg, #fff8e7 0%, #4fc3f7 50%, #ff8a65 100%)",
+        desc: "コードブロック風装飾とSVGロボット。ブロックが組み上がるアニメーション。",
+        colors: ["#fff8e7", "#4fc3f7", "#ff8a65", "#1a237e"],
+        copy: "つくる楽しさが、未来をひらく。",
+        file: "07_code_garden.html",
+        textDark: true
+      },
+      {
+        id: 8, title: "SETO 凪", subtitle: "瀬戸内ブティックホテル",
+        category: "luxury", tags: [{ t: "シネマティック", c: "tag-cinema" }, { t: "イマーシブ", c: "tag-cinema" }],
+        emoji: "🏨",
+        bg: "linear-gradient(135deg, #1a1a3e 0%, #e87040 50%, #3a7ca5 100%)",
+        desc: "フルスクリーン×パララックス。朝→夜へ時間が変わるスクロール演出。波のSVGアニメーション。",
+        colors: ["#1a1a3e", "#e87040", "#e8dcc8", "#3a7ca5"],
+        copy: "波音と、ただ在る時間。",
+        file: "08_seto_nagi.html"
+      },
+      {
+        id: 9, title: "IGNITE GYM", subtitle: "パーソナルジム",
+        category: "lifestyle", tags: [{ t: "ダイナミック", c: "tag-dynamic" }, { t: "パワフル", c: "tag-dynamic" }],
+        emoji: "💪",
+        bg: "linear-gradient(135deg, #0d0d0d 0%, #ff1a1a 50%, #0d0d0d 100%)",
+        desc: "衝撃スライドインとノイズテクスチャ。「戦闘力」風ステータスと斜めクリッピング。",
+        colors: ["#0d0d0d", "#ff1a1a", "#ffffff", "#2a2a2a"],
+        copy: "限界は、まだ先だ。",
+        file: "09_ignite_gym.html"
+      },
+      {
+        id: 10, title: "Petite Lune", subtitle: "パティスリー＆カフェ",
+        category: "lifestyle", tags: [{ t: "エレガント", c: "tag-elegant" }, { t: "フレンチ", c: "tag-elegant" }],
+        emoji: "🍰",
+        bg: "linear-gradient(135deg, #fdf6ec 0%, #d4a0a0 50%, #f5e1e1 100%)",
+        desc: "CSS artスイーツとリボン装飾。フローティングパーティクルとカードめくりアニメーション。",
+        colors: ["#fdf6ec", "#d4a0a0", "#3c2415", "#c9a84c"],
+        copy: "小さな月が灯す、甘い幸福。",
+        file: "10_petite_lune.html",
+        textDark: true
+      },
+      {
+        id: 11, title: "LIVESTA", subtitle: "都市型不動産デベロッパー",
+        category: "service", tags: [{ t: "信頼感", c: "tag-trust" }, { t: "ダッシュボード", c: "tag-trust" }],
+        emoji: "🏢",
+        bg: "linear-gradient(135deg, #1b2a4a 0%, #2d7ff9 50%, #1b2a4a 100%)",
+        desc: "都市シルエットパララックスとダッシュボード風UI。統計データのプログレスリング。",
+        colors: ["#1b2a4a", "#2d7ff9", "#f4f6f9", "#d4a843"],
+        copy: "住まいの先に、暮らしがある。",
+        file: "11_livesta.html"
+      },
+      {
+        id: 17, title: "黒澤・白石法律事務所", subtitle: "総合法律事務所",
+        category: "service", tags: [{ t: "権威", c: "tag-classic" }, { t: "クラシック", c: "tag-classic" }],
+        emoji: "⚖️",
+        bg: "linear-gradient(135deg, #0c1220 0%, #1e2330 50%, #0c1220 100%)",
+        desc: "ゴールドオーナメントとクラシカル装飾。天秤バランスアニメーションと紙テクスチャ。",
+        colors: ["#0c1220", "#b8962e", "#f2ece0", "#6b1d2a"],
+        copy: "揺るがぬ信念で、あなたの正義を守る。",
+        file: "17_law_firm.html"
+      },
+      {
+        id: 13, title: "LIGHT & GRAIN", subtitle: "フォトグラファー / 写真スタジオ",
+        category: "creative", tags: [{ t: "ミニマル", c: "tag-minimal" }, { t: "ギャラリー", c: "tag-minimal" }],
+        emoji: "📸",
+        bg: "linear-gradient(135deg, #ffffff 0%, #e8e0d4 50%, #ffffff 100%)",
+        desc: "フルブリード不規則グリッドとカーテンリビール。マウス追従スポットライトとフィルムグレイン。",
+        colors: ["#ffffff", "#111111", "#888888", "#e8e0d4"],
+        copy: "光と粒子の、あいだに。",
+        file: "13_light_grain.html",
+        textDark: true
+      },
+      {
+        id: 14, title: "みらいの種", subtitle: "子どもの教育支援NPO",
+        category: "service", tags: [{ t: "ヒューマン", c: "tag-human" }, { t: "温かみ", c: "tag-human" }],
+        emoji: "🌍",
+        bg: "linear-gradient(135deg, #fefcf8 0%, #ffd54f 50%, #ff8a50 100%)",
+        desc: "種→花の成長アニメーションとポラロイド風カード。便箋テクスチャの手紙デザイン。",
+        colors: ["#fefcf8", "#ffd54f", "#64b5f6", "#ff8a50"],
+        copy: "小さな種が、大きな未来になる。",
+        file: "14_mirai_no_tane.html",
+        textDark: true
+      },
+      {
+        id: 15, title: "VOID", subtitle: "ジェンダーレスファッションブランド",
+        category: "creative", tags: [{ t: "エディトリアル", c: "tag-editorial" }, { t: "アヴァンギャルド", c: "tag-editorial" }],
+        emoji: "👗",
+        bg: "linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)",
+        desc: "超巨大タイポとスプリットアニメーション。完全二値デザインにバイオレットの一閃。",
+        colors: ["#000000", "#ffffff", "#8b00ff", "#000000"],
+        copy: "何者でもない、すべてである。",
+        file: "15_void.html"
+      },
+    ];
+
+    // ---- RENDER CARDS ----
+    const grid = document.getElementById('portfolioGrid');
+    projects.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'portfolio-card';
+      card.dataset.category = p.category;
+      card.onclick = () => openModal(p);
+      card.innerHTML = `
+    <div class="card-preview">
+      <div class="card-preview-inner" style="background:${p.bg}; color:${p.textDark ? '#333' : '#fff'}">
+        ${p.emoji}
+      </div>
+      <div class="card-overlay">
+        <button class="preview-btn">詳細を見る</button>
+      </div>
+    </div>
+    <div class="card-info">
+      <div class="card-tags">
+        ${p.tags.map(t => `<span class="card-tag ${t.c}">${t.t}</span>`).join('')}
+      </div>
+      <div class="card-title">${p.title}</div>
+      <div class="card-subtitle">${p.subtitle}</div>
+      <div class="card-desc">${p.desc}</div>
+    </div>
+  `;
+      grid.appendChild(card);
+    });
+
+    // ---- FILTER ----
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.dataset.filter;
+        document.querySelectorAll('.portfolio-card').forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // ---- MODAL ----
+    function openModal(p) {
+      document.getElementById('modalTitle').textContent = `${p.title} — ${p.subtitle}`;
+      document.getElementById('modalPreview').style.background = p.bg;
+      document.getElementById('modalPreview').style.color = p.textDark ? '#333' : '#fff';
+      document.getElementById('modalPreview').innerHTML = `<span style="font-size:6rem">${p.emoji}</span>`;
+      document.getElementById('modalLink').href = `./demos/${p.file}`;
+      document.getElementById('modalInfo').innerHTML = `
+    <div class="modal-info-item">
+      <h4>Concept</h4>
+      <p>${p.desc}</p>
+    </div>
+    <div class="modal-info-item">
+      <h4>Catchcopy</h4>
+      <p style="font-size:1.1rem; color:var(--text); font-weight:600;">「${p.copy}」</p>
+    </div>
+    <div class="modal-info-item">
+      <h4>Color Palette</h4>
+      <div class="modal-colors">
+        ${p.colors.map(c => `<div class="modal-color-dot" style="background:${c}"></div>`).join('')}
+      </div>
+    </div>
+    <div class="modal-info-item">
+      <h4>Category</h4>
+      <p>${p.tags.map(t => t.t).join(' / ')}</p>
+    </div>
+  `;
+      document.getElementById('modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('modal')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ---- INTERSECTION OBSERVER ----
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.fade-in, .portfolio-card').forEach(el => observer.observe(el));
+
+    // ---- COUNT UP ----
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.count);
+          const suffix = el.dataset.suffix || '';
+          const decimal = parseInt(el.dataset.decimal) || 0;
+          const duration = 2000;
+          const start = performance.now();
+          const animate = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = (target * eased).toFixed(decimal);
+            el.textContent = current + suffix;
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-number').forEach(el => countObserver.observe(el));
+
+    // ---- CURSOR GLOW ----
+    const glow = document.getElementById('cursorGlow');
+    document.addEventListener('mousemove', e => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+
+    // ---- NAV SCROLL ----
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+
+</html>

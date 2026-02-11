@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIGHT & GRAIN — 光と粒子の、あいだに。| フォトスタジオ</title>
+<meta name="description" content="LIGHT & GRAIN — 東京のフォトスタジオ。ポートレート、ウェディング、商業写真。光と粒子のあいだに生まれる一瞬を閉じ込めます。">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;200;300;400&family=Inter:wght@100;200;300;400&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --white:#ffffff;--black:#111111;--gray:#888888;--beige:#e8e0d4;
+  --font:'Inter','Noto Sans JP','Helvetica Neue',Arial,sans-serif;
+  --font-jp:'Noto Sans JP','Hiragino Kaku Gothic ProN',sans-serif;
+  --gap:clamp(100px,15vw,220px);
+  --px:clamp(20px,5vw,80px);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font);font-weight:200;color:var(--black);background:var(--white);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--black);color:var(--white)}
+
+/* Grain */
+#grain{position:fixed;inset:0;pointer-events:none;z-index:10000;opacity:0.035;background-repeat:repeat;background-size:150px 150px;mix-blend-mode:multiply}
+
+/* Spotlight */
+#spot{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0;transition:opacity .5s;background:radial-gradient(circle 350px at var(--mx,50%) var(--my,50%),rgba(255,248,235,0.07) 0%,transparent 100%)}
+body:hover #spot{opacity:1}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px var(--px);display:flex;justify-content:space-between;align-items:center;transition:all .5s}
+nav.scrolled{background:rgba(255,255,255,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 1px 0 rgba(0,0,0,0.04)}
+.logo{font-size:clamp(13px,1.4vw,16px);font-weight:300;letter-spacing:.35em;text-transform:uppercase;color:var(--white);text-decoration:none;transition:color .4s}
+nav.scrolled .logo{color:var(--black)}
+.nav-links{display:flex;gap:clamp(18px,3vw,40px);list-style:none}
+.nav-links a{font-size:10px;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,0.65);text-decoration:none;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:currentColor;transition:width .3s}
+.nav-links a:hover::after{width:100%}
+nav.scrolled .nav-links a{color:var(--gray)}
+nav.scrolled .nav-links a:hover{color:var(--black)}
+.menu-btn{display:none;flex-direction:column;gap:6px;background:none;border:none;cursor:pointer;padding:6px;z-index:1002}
+.menu-btn span{display:block;width:26px;height:1px;background:var(--white);transition:all .4s}
+nav.scrolled .menu-btn span{background:var(--black)}
+.menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);background:var(--black)}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--black)}
+
+/* Mobile menu overlay */
+.mobile-menu{position:fixed;inset:0;background:rgba(255,255,255,0.98);z-index:1001;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;opacity:0;visibility:hidden;transition:all .4s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--black);text-decoration:none;font-weight:300}
+
+/* Hero */
+.hero{position:relative;height:100vh;height:100dvh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:clamp(80px,12vh,140px);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 35% 25%,rgba(220,195,165,0.3) 0%,transparent 55%),radial-gradient(ellipse at 70% 55%,rgba(180,155,130,0.18) 0%,transparent 45%),radial-gradient(ellipse at 50% 85%,rgba(90,70,50,0.35) 0%,transparent 55%),linear-gradient(175deg,#3d3830 0%,#2a2520 20%,#1e1a15 45%,#15120e 70%,#0d0b09 100%);will-change:transform}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(17,17,17,0.1) 0%,transparent 30%,transparent 50%,rgba(17,17,17,0.5) 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;color:var(--white)}
+.hero-content h1{font-size:clamp(28px,5vw,60px);font-weight:100;letter-spacing:.45em;text-transform:uppercase;margin-bottom:16px;opacity:0;transform:translateY(24px);animation:fadeUp 1.5s .6s forwards}
+.hero-content .tagline{font-family:var(--font-jp);font-size:clamp(12px,1.3vw,15px);font-weight:200;letter-spacing:.2em;color:rgba(255,255,255,0.55);opacity:0;transform:translateY(16px);animation:fadeUp 1.5s 1.1s forwards}
+.scroll-ind{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:fadeUp 1s 2s forwards}
+.scroll-ind span{font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.scroll-ind .ln{width:1px;height:45px;position:relative;overflow:hidden}
+.scroll-ind .ln::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:rgba(255,255,255,0.4);animation:scrollLn 2.2s ease-in-out infinite 2.5s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+@keyframes scrollLn{0%{top:-100%}50%{top:0}100%{top:100%}}
+
+/* Statement */
+.stmt{padding:var(--gap) var(--px);text-align:center;max-width:800px;margin:0 auto}
+.stmt p{font-family:var(--font-jp);font-size:clamp(14px,1.8vw,19px);font-weight:200;line-height:2.4;letter-spacing:.1em;color:var(--black)}
+.stmt .stmt-en{font-family:var(--font);font-size:clamp(9px,0.9vw,11px);letter-spacing:.3em;text-transform:uppercase;color:var(--gray);margin-top:40px;line-height:2}
+
+/* Section titles */
+.sec-title{font-size:clamp(10px,1vw,12px);font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:var(--gray);text-align:center;margin-bottom:clamp(40px,6vw,80px)}
+
+/* Gallery */
+.gallery{padding:0}
+.gallery-head{padding:0 var(--px) clamp(40px,6vw,80px)}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(180px,26vw);gap:3px}
+.gal-item{position:relative;overflow:hidden;cursor:pointer;display:block;text-decoration:none;color:inherit}
+.gal-item .ph{width:100%;height:100%;transition:transform 1.4s cubic-bezier(.25,.46,.45,.94)}
+.gal-item:hover .ph{transform:scale(1.08)}
+.gal-item .cap{position:absolute;bottom:0;left:0;right:0;padding:30px 20px 18px;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);color:var(--white);opacity:0;transform:translateY(8px);transition:all .6s}
+.gal-item:hover .cap{opacity:1;transform:translateY(0)}
+.cap-t{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:300}
+.cap-s{font-size:9px;color:rgba(255,255,255,0.55);margin-top:3px;letter-spacing:.1em}
+
+/* Grid placement */
+.gal-item:nth-child(1){grid-column:1/3;grid-row:1/3}
+.gal-item:nth-child(3){grid-column:4;grid-row:1/3}
+.gal-item:nth-child(5){grid-column:1/3;grid-row:3}
+.gal-item:nth-child(8){grid-column:1;grid-row:4/6}
+.gal-item:nth-child(9){grid-column:2/4;grid-row:4}
+.gal-item:nth-child(10){grid-column:4;grid-row:4/6}
+
+/* Placeholder gradients */
+.gal-item:nth-child(1) .ph{background:radial-gradient(ellipse at 45% 35%,#c4a882,#8a7260 45%,#3d2e22)}
+.gal-item:nth-child(2) .ph{background:linear-gradient(160deg,#6b8f9e,#4a6670 55%,#2c3e44)}
+.gal-item:nth-child(3) .ph{background:radial-gradient(circle at 50% 30%,#f0e0d0,#d4bca8 45%,#9e8878)}
+.gal-item:nth-child(4) .ph{background:linear-gradient(135deg,#2a2a2a,#4a4a4a 50%,#1a1a1a)}
+.gal-item:nth-child(5) .ph{background:linear-gradient(90deg,#d4c4a8,#baa888 30%,#8a7a60 70%,#5a4a30)}
+.gal-item:nth-child(6) .ph{background:radial-gradient(ellipse at 60% 40%,#b8d0c4,#7a9a8c 50%,#3a5a4c)}
+.gal-item:nth-child(7) .ph{background:linear-gradient(180deg,#e8c8a0,#c8a070 50%,#886040)}
+.gal-item:nth-child(8) .ph{background:radial-gradient(circle at 40% 55%,#1e1e3e,#0e0e24 55%,#060612)}
+.gal-item:nth-child(9) .ph{background:linear-gradient(120deg,#e0d4c8,#c4b4a4 45%,#a09484)}
+.gal-item:nth-child(10) .ph{background:radial-gradient(ellipse at 50% 45%,#d4a070,#b08050 45%,#6a4020)}
+.gal-item:nth-child(11) .ph{background:linear-gradient(200deg,#8899aa,#556677 55%,#334455)}
+.gal-item:nth-child(12) .ph{background:radial-gradient(ellipse at 35% 65%,#c0c0c0,#808080 50%,#404040)}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .45s}
+.lb:target{opacity:1;visibility:visible}
+.lb-bg{position:absolute;inset:0;background:rgba(8,8,8,0.94);z-index:0}
+.lb-close{position:absolute;top:28px;right:28px;font-size:24px;color:rgba(255,255,255,0.5);text-decoration:none;z-index:3;width:44px;height:44px;display:flex;align-items:center;justify-content:center;transition:color .3s;font-weight:100}
+.lb-close:hover{color:var(--white)}
+.lb-img{position:relative;z-index:1;width:min(82vw,1100px);height:min(72vh,750px);transform:scale(0.92);opacity:0;transition:all .6s cubic-bezier(.25,.46,.45,.94)}
+.lb:target .lb-img{transform:scale(1);opacity:1}
+.lb-info{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,0.45);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-align:center;white-space:nowrap}
+
+/* Genres */
+.genres{padding:var(--gap) var(--px);max-width:1200px;margin:0 auto}
+.gen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,32px)}
+.gen-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer}
+.gen-card .gen-bg{width:100%;height:100%;transition:transform .9s cubic-bezier(.25,.46,.45,.94)}
+.gen-card:hover .gen-bg{transform:scale(1.06)}
+.gen-card .sh-l,.gen-card .sh-r{position:absolute;top:0;width:50%;height:100%;background:var(--black);z-index:2;transition:transform .7s cubic-bezier(.77,0,.175,1)}
+.gen-card .sh-l{left:0}
+.gen-card .sh-r{right:0}
+.gen-card.revealed .sh-l{transform:translateX(-101%)}
+.gen-card.revealed .sh-r{transform:translateX(101%)}
+.gen-card .gen-lbl{position:absolute;bottom:0;left:0;right:0;padding:28px 20px;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);z-index:3}
+.gen-lbl .g-t{font-size:clamp(10px,1.1vw,13px);font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:var(--white)}
+.gen-lbl .g-s{font-family:var(--font-jp);font-size:11px;color:rgba(255,255,255,0.45);margin-top:4px;letter-spacing:.05em;font-weight:200}
+
+.gen-card:nth-child(1) .gen-bg{background:radial-gradient(ellipse at 50% 30%,#c8a880,#8a7260 50%,#3d2e22)}
+.gen-card:nth-child(2) .gen-bg{background:radial-gradient(ellipse at 50% 40%,#f4e4d4,#d8c0a8 50%,#a08868)}
+.gen-card:nth-child(3) .gen-bg{background:linear-gradient(160deg,#e0d4c4,#b8a898 50%,#706050)}
+.gen-card:nth-child(4) .gen-bg{background:linear-gradient(135deg,#c8b8a0,#988870 50%,#584830)}
+.gen-card:nth-child(5) .gen-bg{background:radial-gradient(circle at 50% 50%,#b0a090,#706050 50%,#302820)}
+.gen-card:nth-child(6) .gen-bg{background:linear-gradient(180deg,#d0c0b0,#a09080 50%,#504030)}
+
+/* Photographer */
+.photog{padding:var(--gap) var(--px);max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(40px,7vw,100px);align-items:center}
+.photog-img{aspect-ratio:3/4;background:radial-gradient(ellipse at 50% 35%,#c0b0a0,#908070 45%,#504030);position:relative;overflow:hidden}
+.reveal-l{clip-path:inset(0 100% 0 0);transition:clip-path 1.1s cubic-bezier(.25,.46,.45,.94)}
+.reveal-l.visible{clip-path:inset(0 0 0 0)}
+.reveal-r{clip-path:inset(0 0 0 100%);transition:clip-path 1.1s cubic-bezier(.25,.46,.45,.94)}
+.reveal-r.visible{clip-path:inset(0 0 0 0)}
+.photog-txt h2{font-size:clamp(10px,1vw,12px);font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:var(--gray);margin-bottom:20px}
+.photog-txt .name{font-size:clamp(22px,2.8vw,34px);font-weight:100;letter-spacing:.2em;margin-bottom:28px}
+.photog-txt .bio{font-family:var(--font-jp);font-size:clamp(12px,1.15vw,14px);font-weight:200;line-height:2.2;color:#555;margin-bottom:18px}
+.photog-txt .bio-en{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);line-height:2}
+
+/* Plans */
+.plans{padding:var(--gap) var(--px);max-width:1100px;margin:0 auto}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,36px)}
+.plan-card{border:1px solid #e4e4e4;padding:clamp(28px,3.5vw,48px) clamp(20px,2.5vw,36px);text-align:center;transition:all .4s}
+.plan-card:hover{border-color:var(--black)}
+.p-name{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gray);margin-bottom:20px}
+.p-price{font-size:clamp(26px,3.2vw,38px);font-weight:100;letter-spacing:.04em;margin-bottom:6px}
+.p-yen{font-size:.5em;font-weight:300}
+.p-tax{font-size:9px;color:var(--gray);margin-bottom:28px;letter-spacing:.05em}
+.p-list{list-style:none;margin-bottom:28px}
+.p-list li{font-family:var(--font-jp);font-size:clamp(11px,1.05vw,13px);font-weight:200;padding:9px 0;border-bottom:1px solid #f0f0f0;color:#555}
+.p-list li:last-child{border:none}
+.p-btn{display:inline-block;padding:13px 36px;border:1px solid var(--black);color:var(--black);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:all .3s;font-weight:300}
+.p-btn:hover{background:var(--black);color:var(--white)}
+.plan-card.feat{border-color:var(--black);background:var(--black);color:var(--white)}
+.plan-card.feat .p-name,.plan-card.feat .p-tax{color:rgba(255,255,255,0.45)}
+.plan-card.feat .p-list li{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.08)}
+.plan-card.feat .p-btn{border-color:var(--white);color:var(--white)}
+.plan-card.feat .p-btn:hover{background:var(--white);color:var(--black)}
+
+/* Contact */
+.contact{padding:var(--gap) var(--px);max-width:680px;margin:0 auto;text-align:center}
+.contact .c-lead{font-family:var(--font-jp);font-size:clamp(13px,1.4vw,16px);font-weight:200;line-height:2.2;margin-bottom:clamp(36px,5vw,60px);color:#555}
+.c-form{text-align:left}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.f-group{margin-bottom:28px}
+.f-group label{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;font-weight:300}
+.f-group input,.f-group textarea,.f-group select{width:100%;padding:11px 0;border:none;border-bottom:1px solid #ddd;font-family:var(--font-jp);font-size:14px;font-weight:200;color:var(--black);background:transparent;outline:none;transition:border-color .3s;-webkit-appearance:none;border-radius:0}
+.f-group input:focus,.f-group textarea:focus,.f-group select:focus{border-color:var(--black)}
+.f-group textarea{resize:vertical;min-height:90px}
+.f-group select{cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E") no-repeat right center}
+.sub-btn{display:inline-block;padding:16px 56px;background:var(--black);color:var(--white);border:1px solid var(--black);font-family:var(--font);font-size:11px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .3s;font-weight:300;margin-top:12px}
+.sub-btn:hover{background:transparent;color:var(--black)}
+.c-form-wrap{text-align:center}
+
+/* Footer */
+footer{padding:clamp(40px,6vw,70px) var(--px);text-align:center;margin-top:var(--gap)}
+.ft-logo{font-size:clamp(11px,1.2vw,14px);font-weight:300;letter-spacing:.4em;text-transform:uppercase;margin-bottom:24px}
+.ft-links{display:flex;justify-content:center;gap:28px;list-style:none;margin-bottom:28px;flex-wrap:wrap}
+.ft-links a{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .3s}
+.ft-links a:hover{color:var(--black)}
+.ft-copy{font-size:9px;color:#c0c0c0;letter-spacing:.1em}
+
+/* Animations */
+.fade-up{opacity:0;transform:translateY(36px);transition:opacity .9s,transform .9s;transition-timing-function:cubic-bezier(.25,.46,.45,.94)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+.d4{transition-delay:.32s}.d5{transition-delay:.40s}.d6{transition-delay:.48s}
+.d7{transition-delay:.56s}.d8{transition-delay:.64s}.d9{transition-delay:.72s}
+.d10{transition-delay:.80s}.d11{transition-delay:.88s}.d12{transition-delay:.96s}
+
+/* Responsive */
+@media(max-width:900px){
+  .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:minmax(160px,42vw)}
+  .gal-item:nth-child(1){grid-column:1/3;grid-row:auto}
+  .gal-item:nth-child(3),.gal-item:nth-child(5),.gal-item:nth-child(8),.gal-item:nth-child(9),.gal-item:nth-child(10){grid-column:auto;grid-row:auto}
+  .gal-item:nth-child(5){grid-column:1/3}
+  .gal-item:nth-child(9){grid-column:1/3}
+  .gen-grid{grid-template-columns:repeat(2,1fr)}
+  .photog{grid-template-columns:1fr;max-width:520px}
+  .plans-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+  .f-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .menu-btn{display:flex}
+  .gal-grid{grid-template-columns:1fr 1fr;grid-auto-rows:minmax(130px,48vw)}
+  .gal-item:nth-child(1),.gal-item:nth-child(5),.gal-item:nth-child(9){grid-column:1/3}
+  .gen-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .gen-card{aspect-ratio:2/3}
+}
+</style>
+</head>
+<body>
+
+<div id="grain"></div>
+<div id="spot"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="#" class="logo">Light &amp; Grain</a>
+  <ul class="nav-links">
+    <li><a href="#gallery">Works</a></li>
+    <li><a href="#genres">Genre</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#plans">Plan</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="menu-btn" id="menuBtn" aria-label="メニュー"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu">
+  <a href="#gallery" class="mob-link">Works</a>
+  <a href="#genres" class="mob-link">Genre</a>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#plans" class="mob-link">Plan</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <h1>Light &amp; Grain</h1>
+    <p class="tagline">光と粒子の、あいだに。</p>
+  </div>
+  <div class="scroll-ind"><span>Scroll</span><div class="ln"></div></div>
+</section>
+
+<!-- Statement -->
+<section class="stmt">
+  <div class="fade-up">
+    <p>
+      目に見えるものだけが、すべてではない。<br>
+      光の行き先と、粒子のゆらぎ。<br>
+      そのあいだにある名もない感情を、<br>
+      私たちは一枚に閉じ込める。
+    </p>
+    <p class="stmt-en">Between light and grain,<br>we find what words cannot hold.</p>
+  </div>
+</section>
+
+<!-- Gallery -->
+<section class="gallery" id="gallery">
+  <div class="gallery-head"><h2 class="sec-title fade-up">Selected Works</h2></div>
+  <div class="gal-grid">
+    <a href="#lb1" class="gal-item fade-up d1"><div class="ph"></div><div class="cap"><p class="cap-t">Silence of Morning</p><p class="cap-s">Portrait — 2025</p></div></a>
+    <a href="#lb2" class="gal-item fade-up d2"><div class="ph"></div><div class="cap"><p class="cap-t">Coastal Haze</p><p class="cap-s">Landscape — 2025</p></div></a>
+    <a href="#lb3" class="gal-item fade-up d3"><div class="ph"></div><div class="cap"><p class="cap-t">First Promise</p><p class="cap-s">Wedding — 2024</p></div></a>
+    <a href="#lb4" class="gal-item fade-up d4"><div class="ph"></div><div class="cap"><p class="cap-t">Structure No.7</p><p class="cap-s">Architecture — 2024</p></div></a>
+    <a href="#lb5" class="gal-item fade-up d5"><div class="ph"></div><div class="cap"><p class="cap-t">Golden Thread</p><p class="cap-s">Fashion — 2025</p></div></a>
+    <a href="#lb6" class="gal-item fade-up d6"><div class="ph"></div><div class="cap"><p class="cap-t">Still, Life</p><p class="cap-s">Still Life — 2024</p></div></a>
+    <a href="#lb7" class="gal-item fade-up d7"><div class="ph"></div><div class="cap"><p class="cap-t">Sunday Light</p><p class="cap-s">Family — 2025</p></div></a>
+    <a href="#lb8" class="gal-item fade-up d8"><div class="ph"></div><div class="cap"><p class="cap-t">Neon Solitude</p><p class="cap-s">Night — 2024</p></div></a>
+    <a href="#lb9" class="gal-item fade-up d9"><div class="ph"></div><div class="cap"><p class="cap-t">Linen &amp; Clay</p><p class="cap-s">Product — 2025</p></div></a>
+    <a href="#lb10" class="gal-item fade-up d10"><div class="ph"></div><div class="cap"><p class="cap-t">Hour of Amber</p><p class="cap-s">Portrait — 2024</p></div></a>
+    <a href="#lb11" class="gal-item fade-up d11"><div class="ph"></div><div class="cap"><p class="cap-t">Harbor Song</p><p class="cap-s">Travel — 2025</p></div></a>
+    <a href="#lb12" class="gal-item fade-up d12"><div class="ph"></div><div class="cap"><p class="cap-t">Mono</p><p class="cap-s">Art — 2025</p></div></a>
+  </div>
+</section>
+
+<!-- Lightboxes -->
+<div id="lb1" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(ellipse at 45% 35%,#c4a882,#8a7260 45%,#3d2e22)"></div><p class="lb-info">Silence of Morning — Portrait, 2025</p></div>
+<div id="lb2" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(160deg,#6b8f9e,#4a6670 55%,#2c3e44)"></div><p class="lb-info">Coastal Haze — Landscape, 2025</p></div>
+<div id="lb3" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(circle at 50% 30%,#f0e0d0,#d4bca8 45%,#9e8878)"></div><p class="lb-info">First Promise — Wedding, 2024</p></div>
+<div id="lb4" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(135deg,#2a2a2a,#4a4a4a 50%,#1a1a1a)"></div><p class="lb-info">Structure No.7 — Architecture, 2024</p></div>
+<div id="lb5" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(90deg,#d4c4a8,#baa888 30%,#8a7a60 70%,#5a4a30)"></div><p class="lb-info">Golden Thread — Fashion, 2025</p></div>
+<div id="lb6" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(ellipse at 60% 40%,#b8d0c4,#7a9a8c 50%,#3a5a4c)"></div><p class="lb-info">Still, Life — Still Life, 2024</p></div>
+<div id="lb7" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(180deg,#e8c8a0,#c8a070 50%,#886040)"></div><p class="lb-info">Sunday Light — Family, 2025</p></div>
+<div id="lb8" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(circle at 40% 55%,#1e1e3e,#0e0e24 55%,#060612)"></div><p class="lb-info">Neon Solitude — Night, 2024</p></div>
+<div id="lb9" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(120deg,#e0d4c8,#c4b4a4 45%,#a09484)"></div><p class="lb-info">Linen & Clay — Product, 2025</p></div>
+<div id="lb10" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(ellipse at 50% 45%,#d4a070,#b08050 45%,#6a4020)"></div><p class="lb-info">Hour of Amber — Portrait, 2024</p></div>
+<div id="lb11" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:linear-gradient(200deg,#8899aa,#556677 55%,#334455)"></div><p class="lb-info">Harbor Song — Travel, 2025</p></div>
+<div id="lb12" class="lb"><a href="#gallery" class="lb-bg"></a><a href="#gallery" class="lb-close">&times;</a><div class="lb-img" style="background:radial-gradient(ellipse at 35% 65%,#c0c0c0,#808080 50%,#404040)"></div><p class="lb-info">Mono — Art, 2025</p></div>
+
+<!-- Genres -->
+<section class="genres" id="genres">
+  <h2 class="sec-title fade-up">Genre</h2>
+  <div class="gen-grid">
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Portrait</p><p class="g-s">ポートレート撮影</p></div>
+    </div>
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Wedding</p><p class="g-s">ウェディング撮影</p></div>
+    </div>
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Commercial</p><p class="g-s">商業・プロダクト撮影</p></div>
+    </div>
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Family</p><p class="g-s">ファミリーフォト</p></div>
+    </div>
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Fine Art</p><p class="g-s">アート・作品撮影</p></div>
+    </div>
+    <div class="gen-card">
+      <div class="gen-bg"></div>
+      <div class="sh-l"></div><div class="sh-r"></div>
+      <div class="gen-lbl"><p class="g-t">Event</p><p class="g-s">イベント・ライブ撮影</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Photographer -->
+<section class="photog" id="about">
+  <div class="photog-img reveal-l"></div>
+  <div class="photog-txt fade-up">
+    <h2>Photographer</h2>
+    <p class="name">Kaito Hayashi</p>
+    <p class="bio">
+      1990年東京生まれ。武蔵野美術大学映像学科を卒業後、ロンドンにてドキュメンタリー写真を学ぶ。帰国後、フリーランスとして雑誌・広告を中心に活動。2020年に自身のスタジオ「LIGHT & GRAIN」を設立。
+    </p>
+    <p class="bio">
+      フィルムとデジタルの境界を行き来しながら、光の質感と空気の温度を一枚に封じ込めることを信条としている。被写体の内側にある静かな感情に寄り添い、その人だけが持つ物語を引き出す撮影スタイルに定評がある。
+    </p>
+    <p class="bio-en">Based in Tokyo — Available worldwide<br>Awards: IPA 2023 Honorable Mention / APAアワード 2024 入選</p>
+  </div>
+</section>
+
+<!-- Plans -->
+<section class="plans" id="plans">
+  <h2 class="sec-title fade-up">Plan &amp; Price</h2>
+  <div class="plans-grid">
+    <div class="plan-card fade-up d1">
+      <p class="p-name">Light</p>
+      <p class="p-price"><span class="p-yen">¥</span>38,000</p>
+      <p class="p-tax">税込 ¥41,800</p>
+      <ul class="p-list">
+        <li>撮影時間 60分</li>
+        <li>撮影カット数 50枚〜</li>
+        <li>納品データ 20枚（セレクト）</li>
+        <li>レタッチ 基本補正</li>
+        <li>撮影場所 スタジオ内</li>
+      </ul>
+      <a href="#contact" class="p-btn">Reserve</a>
+    </div>
+    <div class="plan-card feat fade-up d2">
+      <p class="p-name">Standard</p>
+      <p class="p-price"><span class="p-yen">¥</span>68,000</p>
+      <p class="p-tax">税込 ¥74,800</p>
+      <ul class="p-list">
+        <li>撮影時間 120分</li>
+        <li>撮影カット数 150枚〜</li>
+        <li>納品データ 50枚（セレクト）</li>
+        <li>レタッチ 丁寧な個別補正</li>
+        <li>撮影場所 スタジオ or ロケ</li>
+        <li>衣装チェンジ 2回まで</li>
+      </ul>
+      <a href="#contact" class="p-btn">Reserve</a>
+    </div>
+    <div class="plan-card fade-up d3">
+      <p class="p-name">Premium</p>
+      <p class="p-price"><span class="p-yen">¥</span>128,000</p>
+      <p class="p-tax">税込 ¥140,800</p>
+      <ul class="p-list">
+        <li>撮影時間 半日（4時間）</li>
+        <li>撮影カット数 300枚〜</li>
+        <li>納品データ 全カット</li>
+        <li>レタッチ フルレタッチ</li>
+        <li>撮影場所 ロケーション自由</li>
+        <li>アシスタント同行</li>
+        <li>フォトブック1冊</li>
+      </ul>
+      <a href="#contact" class="p-btn">Reserve</a>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <h2 class="sec-title fade-up">Contact</h2>
+  <p class="c-lead fade-up">
+    撮影のご依頼・ご相談は、下記フォームよりお気軽にお問い合わせください。<br>
+    内容を確認のうえ、通常2営業日以内にご返信いたします。
+  </p>
+  <form class="c-form fade-up" onsubmit="return false">
+    <div class="f-row">
+      <div class="f-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="お名前" required>
+      </div>
+      <div class="f-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="メールアドレス" required>
+      </div>
+    </div>
+    <div class="f-row">
+      <div class="f-group">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" placeholder="電話番号（任意）">
+      </div>
+      <div class="f-group">
+        <label for="genre">Genre</label>
+        <select id="genre">
+          <option value="">撮影ジャンルを選択</option>
+          <option>ポートレート撮影</option>
+          <option>ウェディング撮影</option>
+          <option>商業・プロダクト撮影</option>
+          <option>ファミリーフォト</option>
+          <option>イベント撮影</option>
+          <option>その他</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-group">
+      <label for="msg">Message</label>
+      <textarea id="msg" placeholder="ご希望の撮影内容、日時、場所などをお聞かせください。"></textarea>
+    </div>
+    <div class="c-form-wrap">
+      <button type="submit" class="sub-btn">Send Message</button>
+    </div>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p class="ft-logo">Light &amp; Grain</p>
+  <ul class="ft-links">
+    <li><a href="#gallery">Works</a></li>
+    <li><a href="#genres">Genre</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#plans">Plan</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#">Instagram</a></li>
+  </ul>
+  <p class="ft-copy">&copy; 2025 Light &amp; Grain. All rights reserved.</p>
+</footer>
+
+<script>
+(function(){
+  /* Film Grain */
+  const gc=document.createElement('canvas'),sz=150;
+  gc.width=sz;gc.height=sz;
+  const gx=gc.getContext('2d'),gd=gx.createImageData(sz,sz),dd=gd.data;
+  for(let i=0;i<dd.length;i+=4){const v=Math.random()*255|0;dd[i]=dd[i+1]=dd[i+2]=v;dd[i+3]=22}
+  gx.putImageData(gd,0,0);
+  document.getElementById('grain').style.backgroundImage='url('+gc.toDataURL()+')';
+
+  /* Spotlight */
+  const sp=document.getElementById('spot');
+  let raf;
+  document.addEventListener('mousemove',function(e){
+    if(raf)cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(function(){
+      sp.style.setProperty('--mx',e.clientX+'px');
+      sp.style.setProperty('--my',e.clientY+'px');
+    });
+  });
+
+  /* Nav scroll */
+  const nv=document.getElementById('nav');
+  const hb=document.getElementById('heroBg');
+  window.addEventListener('scroll',function(){
+    const y=window.scrollY;
+    nv.classList.toggle('scrolled',y>80);
+    if(hb&&y<window.innerHeight){hb.style.transform='translateY('+y*0.25+'px)'}
+  },{passive:true});
+
+  /* Mobile menu */
+  const mb=document.getElementById('menuBtn'),mm=document.getElementById('mobMenu');
+  mb.addEventListener('click',function(){
+    mb.classList.toggle('open');
+    mm.classList.toggle('open');
+    document.body.style.overflow=mm.classList.contains('open')?'hidden':'';
+  });
+  document.querySelectorAll('.mob-link').forEach(function(a){
+    a.addEventListener('click',function(){
+      mb.classList.remove('open');mm.classList.remove('open');
+      document.body.style.overflow='';
+    });
+  });
+
+  /* Intersection Observer — fade up + reveal */
+  const io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up,.reveal-l,.reveal-r').forEach(function(el){io.observe(el)});
+
+  /* Shutter reveal for genre cards */
+  const sio=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        setTimeout(function(){e.target.classList.add('revealed')},
+          parseInt(e.target.dataset.delay||0));
+      }
+    });
+  },{threshold:0.2});
+  document.querySelectorAll('.gen-card').forEach(function(el,i){
+    el.dataset.delay=i*120;
+    sio.observe(el);
+  });
+
+})();
+</script>
+</body>
+</html>
