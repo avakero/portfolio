@@ -772,7 +772,8 @@
       border-radius: var(--radius);
       max-width: 900px;
       width: 100%;
-      overflow: hidden;
+      max-height: 90vh;
+      overflow-y: auto;
       animation: modalIn .4s ease;
     }
 
@@ -997,6 +998,23 @@
       gap: 1.5rem;
       margin-top: 1.5rem;
       justify-content: center;
+    }
+
+    @media (max-width: 480px) {
+
+      .btn-primary,
+      .btn-secondary {
+        padding: .7rem 1.5rem;
+        font-size: .85rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 1rem;
+      }
     }
 
     .footer-social a {
