@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STELLAR VOYAGE | 宇宙旅行コンシェルジュ</title>
+    <meta name="description" content="地球を思い出の一つに。STELLAR VOYAGEは、あなたに最高の宇宙体験を提供するラグジュアリー・コンシェルジュです。">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;800&family=Noto+Sans+JP:wght@100;400;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #020111;
+            --accent: #7678ed;
+            --accent-glow: #3d348b;
+            --orange: #f18701;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- BACKGROUND --- */
+        .space-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, #191621 0%, #020111 100%);
+            z-index: -2;
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 20px 30px, #fff, rgba(0, 0, 0, 0)),
+                radial-gradient(1.5px 1.5px at 100px 150px, #fff, rgba(0, 0, 0, 0)),
+                radial-gradient(1px 1px at 200px 300px, #fff, rgba(0, 0, 0, 0));
+            background-size: 300px 300px;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 200;
+            letter-spacing: 0.4em;
+            color: var(--orange);
+            margin-bottom: 3rem;
+        }
+
+        .btn-voyage {
+            padding: 1.2rem 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            backdrop-filter: blur(10px);
+            background: rgba(118, 120, 237, 0.1);
+            transition: 0.4s;
+        }
+
+        .btn-voyage:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        /* --- CONTENT --- */
+        section {
+            padding: 10rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            letter-spacing: 0.5em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .heading {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 2rem;
+        }
+
+        .desc {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--text-dim);
+            font-weight: 200;
+        }
+
+        /* --- SCROLL ANIMATION --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="space-bg"></div>
+    <div class="stars" id="stars"></div>
+
+    <main>
+        <section class="hero">
+            <h1 class="reveal">STELLAR<br>VOYAGE</h1>
+            <p class="reveal">COSMOS CONCIERGE</p>
+            <a href="#" class="btn-voyage reveal">START JOURNEY</a>
+        </section>
+
+        <section id="concept">
+            <div class="section-title reveal">The Concept</div>
+            <h2 class="heading reveal">地球を、<br>思い出の一つにしよう。</h2>
+            <p class="desc reveal">
+                空を見上げるだけの時代は終わりました。STELLAR
+                VOYAGEは、選ばれたあなたを宇宙の深淵へと誘う、世界初のラグジュアリー宇宙旅行コンシェルジュです。土星の環を眺めながらのディナー、火星の赤い砂漠での瞑想。私たちが提供するのは「旅行」ではなく、生命としての新しい「視点」です。
+            </p>
+        </section>
+    </main>
+
+    <script>
+        // --- Reveal Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- Multi-layer stars parallax ---
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            document.getElementById('stars').style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+    </script>
+</body>
+
+</html>
