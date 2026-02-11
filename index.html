@@ -991,6 +991,22 @@
     .modal-preview-iframe.loaded {
       opacity: 1;
     }
+
+    .footer-social {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+
+    .footer-social a {
+      color: var(--text-sub);
+      transition: color 0.3s;
+    }
+
+    .footer-social a:hover {
+      color: var(--text);
+    }
   </style>
 </head>
 
@@ -1182,7 +1198,7 @@
     <h2 class="fade-in">まずは<span class="gradient-text">無料相談</span>から</h2>
     <p class="fade-in">あなたのビジネスに最適なウェブ体験を、一緒に考えましょう。<br>お見積もり・ご相談は無料です。</p>
     <div class="hero-buttons fade-in" style="position:relative;">
-      <a href="mailto:hello@craft-web.jp" class="btn-primary">無料相談を予約する</a>
+      <a href="https://lin.ee/PmclBGJ" class="btn-primary" target="_blank" rel="noopener noreferrer">無料相談を予約する</a>
       <a href="#works" class="btn-secondary">もう一度イメージを見る</a>
     </div>
   </section>
@@ -1191,6 +1207,28 @@
   <footer>
     <div class="footer-logo">CRAFT</div>
     <p>© 2026 CRAFT Web Design Service. All rights reserved.</p>
+    <div class="footer-social">
+      <a href="https://discord.gg/8VeH9daenT" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-discord">
+          <path d="M9 12h.01" />
+          <path d="M15 12h.01" />
+          <path
+            d="M7.5 22h9c3.33 0 4.5-1.17 4.5-4.5V6.5c0-3.33-1.17-4.5-4.5-4.5h-9C4.17 2 3 3.17 3 6.5v11c0 3.33 1.17 4.5 4.5 4.5z" />
+          <path d="M16 16c0-2-2-3-4-3s-4 1-4 3" />
+          <path d="M7.5 16s1.5-3.5 4.5-3.5 4.5 3.5 4.5 3.5" />
+        </svg>
+      </a>
+      <a href="https://www.threads.com/@kyosuke_web_ai" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-at-sign">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94" />
+        </svg>
+      </a>
+    </div>
     <p style="margin-top:.5rem;">Next.js × WordPress Headless CMS</p>
   </footer>
 
