@@ -966,6 +966,26 @@
       letter-spacing: .1em;
       padding: 0 2rem;
     }
+
+    /* Modal Preview Iframe */
+    .modal-preview-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      border: none;
+      transform: scale(0.5);
+      transform-origin: top left;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .modal-preview-iframe.loaded {
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -1408,7 +1428,10 @@
       document.getElementById('modalTitle').textContent = `${p.title} — ${p.subtitle}`;
       document.getElementById('modalPreview').style.background = p.bg;
       document.getElementById('modalPreview').style.color = p.textDark ? '#333' : '#fff';
-      document.getElementById('modalPreview').innerHTML = `<span style="font-size:6rem">${p.emoji}</span>`;
+      document.getElementById('modalPreview').innerHTML = `
+        <span style="font-size:6rem; position:absolute; z-index:0; opacity:0.5">${p.emoji}</span>
+        <iframe src="demos/${p.file}" class="modal-preview-iframe" loading="lazy" onload="this.classList.add('loaded')"></iframe>
+      `;
       document.getElementById('modalLink').href = `./demos/${p.file}`;
       document.getElementById('modalInfo').innerHTML = `
     <div class="modal-info-item">
