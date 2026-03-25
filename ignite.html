@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IGNITE — 燃やせ、限界を。最先端のトレーニングプログラムで代謝を最大化し、理想のカラダへ。">
+    <meta property="og:title" content="IGNITE — BURN YOUR LIMITS">
+    <meta property="og:description" content="最先端トレーニングで代謝を最大化。理想のカラダへ駆け上がれ。">
+    <meta property="og:type" content="website">
+    <title>IGNITE — BURN YOUR LIMITS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --color-primary: #FF6B00;
+            --color-secondary: #E63946;
+            --color-accent: #FFD600;
+            --color-bg: #0a0a0a;
+            --color-bg-alt: #111111;
+            --color-text: #f5f5f5;
+            --color-text-light: #999;
+            --color-border: rgba(255,107,0,.15);
+            --gradient-fire: linear-gradient(135deg, #E63946, #FF6B00, #FFD600);
+            --gradient-dark: linear-gradient(135deg, #E63946 0%, #FF6B00 50%, #FFD600 100%);
+            --font-heading: 'Outfit', 'Noto Sans JP', sans-serif;
+            --font-body: 'Noto Sans JP', 'Outfit', sans-serif;
+            --section-padding: 100px 0;
+            --container-width: 1200px;
+            --radius: 16px;
+            --transition: .4s cubic-bezier(.25,.8,.25,1);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* ===== 背景パーティクル ===== */
+        #particles-canvas { position: fixed; inset:0; z-index:0; pointer-events:none; }
+
+        /* ===== グラデーション背景アニメーション ===== */
+        .gradient-orb {
+            position: fixed; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: .12; pointer-events: none; z-index: 0;
+        }
+        .orb-1 { background: var(--color-secondary); top: -200px; right: -200px; animation: orbFloat1 8s ease-in-out infinite; }
+        .orb-2 { background: var(--color-primary); bottom: -200px; left: -200px; animation: orbFloat2 10s ease-in-out infinite; }
+        @keyframes orbFloat1 { 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(-80px,80px); } }
+        @keyframes orbFloat2 { 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(80px,-60px); } }
+
+        /* ===== ナビゲーション ===== */
+        .nav {
+            position: fixed; top:0; left:0; right:0; z-index:1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10,10,10,.6); backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,107,0,.05); transition: var(--transition);
+        }
+        .nav.scrolled { background: rgba(10,10,10,.95); box-shadow: 0 4px 30px rgba(255,107,0,.1); }
+        .nav__logo { font-family: var(--font-heading); font-weight: 900; font-size: 1.6rem; letter-spacing: .1em; background: var(--gradient-fire); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .nav__menu { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav__menu a { color: var(--color-text-light); text-decoration: none; font-size: .85rem; font-weight: 500; letter-spacing: .05em; transition: var(--transition); font-family: var(--font-heading); }
+        .nav__menu a:hover { color: var(--color-primary); }
+        .nav__cta { padding: .7rem 1.8rem; background: var(--gradient-fire); border: none; border-radius: 100px; color: #fff; font-weight: 700; font-size: .85rem; cursor: pointer; text-decoration: none; transition: var(--transition); font-family: var(--font-heading); letter-spacing: .05em; }
+        .nav__cta:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,107,0,.4); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; z-index: 1001; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--color-text); transition: all .3s ease; }
+        .nav__hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .nav__hamburger.active span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* ===== Hero ===== */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8rem 2rem 4rem; position: relative; z-index: 1; }
+        .hero__badge { display: inline-flex; align-items: center; gap: .6rem; padding: .5rem 1.4rem; border: 1px solid rgba(255,107,0,.3); border-radius: 100px; font-size: .8rem; color: var(--color-primary); margin-bottom: 2rem; background: rgba(255,107,0,.05); font-family: var(--font-heading); letter-spacing: .1em; }
+        .hero__badge::before { content: ''; width: 8px; height: 8px; background: var(--color-accent); border-radius: 50%; animation: pulseDot 1.5s infinite; }
+        @keyframes pulseDot { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.4; transform:scale(1.8); } }
+        .hero__title { font-family: var(--font-heading); font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; line-height: 1.05; margin-bottom: 1.5rem; letter-spacing: -.02em; }
+        .hero__title .fire-text { background: var(--gradient-fire); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% 200%; animation: fireShift 3s ease infinite; }
+        @keyframes fireShift { 0%{ background-position: 0% 50%; } 50%{ background-position: 100% 50%; } 100%{ background-position: 0% 50%; } }
+        .hero__sub { font-size: clamp(1rem, 1.8vw, 1.3rem); color: var(--color-text-light); max-width: 600px; line-height: 1.8; margin-bottom: 3rem; }
+        .hero__buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .btn-fire { padding: 1rem 2.8rem; background: var(--gradient-fire); border: none; border-radius: 100px; color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: .6rem; font-family: var(--font-heading); letter-spacing: .05em; background-size: 200% 200%; animation: fireShift 3s ease infinite; }
+        .btn-fire:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 50px rgba(255,107,0,.4); }
+        .btn-ghost { padding: 1rem 2.8rem; background: transparent; border: 1px solid rgba(255,255,255,.15); border-radius: 100px; color: var(--color-text); font-weight: 500; font-size: 1rem; cursor: pointer; text-decoration: none; transition: var(--transition); font-family: var(--font-heading); }
+        .btn-ghost:hover { border-color: var(--color-primary); color: var(--color-primary); }
+        .hero__scroll { position: absolute; bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: .5rem; color: var(--color-text-light); font-size: .7rem; letter-spacing: .15em; animation: float 3s ease-in-out infinite; font-family: var(--font-heading); }
+        @keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(10px); } }
+
+        /* ===== 共通セクション ===== */
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+        section { padding: var(--section-padding); position: relative; z-index: 1; }
+        .section-label { font-family: var(--font-heading); font-size: .75rem; letter-spacing: .25em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1rem; }
+        .section-title { font-family: var(--font-heading); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.3; }
+        .section-desc { color: var(--color-text-light); max-width: 600px; line-height: 1.8; margin-bottom: 3rem; }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ===== SVGウェーブ区切り ===== */
+        .wave-divider { position: relative; width: 100%; overflow: hidden; line-height: 0; }
+        .wave-divider svg { position: relative; display: block; width: calc(100% + 1.3px); height: 80px; }
+        .wave-divider .shape-fill { fill: var(--color-bg-alt); }
+        .wave-divider-flip { transform: rotate(180deg); }
+
+        /* ===== Stats ===== */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: -3rem; position: relative; z-index: 2; }
+        .stat-card { text-align: center; padding: 2rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: rgba(17,17,17,.8); backdrop-filter: blur(10px); }
+        .stat-number { font-family: var(--font-heading); font-size: 2.8rem; font-weight: 900; background: var(--gradient-fire); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: .85rem; color: var(--color-text-light); margin-top: .4rem; }
+
+        /* ===== Features ===== */
+        .features { background: var(--color-bg-alt); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .feature-card { padding: 2.5rem 2rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: rgba(10,10,10,.6); transition: var(--transition); position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient-fire); transform: scaleX(0); transition: var(--transition); transform-origin: left; }
+        .feature-card:hover::before { transform: scaleX(1); }
+        .feature-card:hover { border-color: rgba(255,107,0,.3); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(255,107,0,.08); }
+        .feature-icon { font-size: 2rem; margin-bottom: 1.2rem; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: rgba(255,107,0,.1); border-radius: 14px; }
+        .feature-card h3 { font-family: var(--font-heading); font-size: 1.15rem; margin-bottom: .6rem; font-weight: 700; }
+        .feature-card p { font-size: .85rem; color: var(--color-text-light); line-height: 1.7; }
+
+        /* ===== Programs ===== */
+        .programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .program-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-bg-alt); transition: var(--transition); }
+        .program-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(255,107,0,.12); border-color: rgba(255,107,0,.3); }
+        .program-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+        .program-body { padding: 1.8rem; }
+        .program-tag { display: inline-block; padding: .3rem .8rem; background: rgba(255,107,0,.15); color: var(--color-primary); font-size: .7rem; font-weight: 700; border-radius: 100px; margin-bottom: .8rem; font-family: var(--font-heading); letter-spacing: .05em; }
+        .program-card h3 { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; margin-bottom: .5rem; }
+        .program-card p { font-size: .85rem; color: var(--color-text-light); line-height: 1.7; }
+
+        /* ===== Testimonials ===== */
+        .testimonials { background: var(--color-bg-alt); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .testimonial-card { padding: 2rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: rgba(10,10,10,.6); position: relative; }
+        .testimonial-card::before { content: '"'; position: absolute; top: 1rem; right: 1.5rem; font-size: 4rem; font-family: var(--font-heading); color: rgba(255,107,0,.15); line-height: 1; }
+        .testimonial-stars { color: var(--color-accent); font-size: .9rem; margin-bottom: 1rem; }
+        .testimonial-card blockquote { font-size: .9rem; color: var(--color-text-light); line-height: 1.8; margin-bottom: 1.2rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: .8rem; }
+        .testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--color-primary); object-fit: cover; }
+        .testimonial-name { font-weight: 700; font-size: .9rem; }
+        .testimonial-role { font-size: .75rem; color: var(--color-text-light); }
+
+        /* ===== Pricing ===== */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: start; }
+        .pricing-card { padding: 2.5rem 2rem; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg-alt); text-align: center; transition: var(--transition); position: relative; }
+        .pricing-card--featured { border-color: var(--color-primary); background: linear-gradient(180deg, rgba(255,107,0,.08), rgba(10,10,10,.9)); transform: scale(1.03); }
+        .pricing-card--featured::before { content: 'MOST POPULAR'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: .3rem 1.2rem; background: var(--gradient-fire); border-radius: 100px; font-size: .7rem; font-weight: 700; color: #fff; font-family: var(--font-heading); letter-spacing: .08em; }
+        .pricing-card:hover { transform: translateY(-4px); }
+        .pricing-card--featured:hover { transform: scale(1.03) translateY(-4px); }
+        .pricing-name { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: .5rem; color: var(--color-primary); letter-spacing: .1em; }
+        .pricing-price { font-family: var(--font-heading); font-size: 3rem; font-weight: 900; margin-bottom: .3rem; }
+        .pricing-price span { font-size: 1rem; font-weight: 400; color: var(--color-text-light); }
+        .pricing-desc { font-size: .8rem; color: var(--color-text-light); margin-bottom: 1.5rem; }
+        .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; }
+        .pricing-features li { padding: .5rem 0; font-size: .85rem; color: var(--color-text-light); border-bottom: 1px solid rgba(255,255,255,.04); display: flex; align-items: center; gap: .5rem; }
+        .pricing-features li i { color: var(--color-primary); font-size: .8rem; }
+
+        /* ===== CTA ===== */
+        .cta { text-align: center; padding: 8rem 2rem; position: relative; overflow: hidden; }
+        .cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,107,0,.1) 0%, transparent 70%); }
+        .cta h2 { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 1.5rem; position: relative; }
+        .cta p { color: var(--color-text-light); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.8; position: relative; }
+
+        /* ===== Footer ===== */
+        footer { border-top: 1px solid var(--color-border); padding: 3rem 2rem 2rem; }
+        .footer-inner { max-width: var(--container-width); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+        .footer-logo { font-family: var(--font-heading); font-weight: 900; font-size: 1.3rem; background: var(--gradient-fire); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+        .footer-links a { color: var(--color-text-light); text-decoration: none; font-size: .8rem; transition: var(--transition); }
+        .footer-links a:hover { color: var(--color-primary); }
+        .footer-social { display: flex; gap: 1rem; }
+        .footer-social a { color: var(--color-text-light); font-size: 1.1rem; transition: var(--transition); }
+        .footer-social a:hover { color: var(--color-primary); transform: translateY(-2px); }
+        .footer-copy { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.04); font-size: .75rem; color: var(--color-text-light); }
+
+        /* ===== レスポンシブ ===== */
+        @media (max-width: 768px) {
+            .nav__hamburger { display: flex; }
+            .nav__menu { position: fixed; top:0; right:-100%; width:75%; height:100vh; background: var(--color-bg); flex-direction: column; padding: 5rem 2rem; transition: right .3s ease; z-index: 999; border-left: 1px solid var(--color-border); }
+            .nav__menu.active { right: 0; }
+            .stats { grid-template-columns: repeat(2, 1fr); margin-top: -1rem; }
+            .pricing-card--featured { transform: none; }
+            .pricing-card--featured:hover { transform: translateY(-4px); }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .hero__title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 背景装飾 -->
+<canvas id="particles-canvas"></canvas>
+<div class="gradient-orb orb-1"></div>
+<div class="gradient-orb orb-2"></div>
+
+<!-- ===== ナビゲーション ===== -->
+<nav class="nav" id="navbar">
+    <a href="#" class="nav__logo">IGNITE</a>
+    <ul class="nav__menu" id="navMenu">
+        <li><a href="#features">特徴</a></li>
+        <li><a href="#programs">プログラム</a></li>
+        <li><a href="#testimonials">お客様の声</a></li>
+        <li><a href="#pricing">料金</a></li>
+    </ul>
+    <a href="#contact" class="nav__cta">無料体験 →</a>
+    <button class="nav__hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="hero">
+    <div class="hero__badge" data-aos="fade-down" data-aos-delay="200">NEW SEASON 2026</div>
+    <h1 class="hero__title" data-aos="fade-up" data-aos-delay="400">
+        BURN YOUR<br><span class="fire-text">LIMITS.</span>
+    </h1>
+    <p class="hero__sub" data-aos="fade-up" data-aos-delay="600">燃やせ、限界を。最先端のトレーニングと科学的メソッドで<br>あなたの代謝を最大化し、最速で理想のカラダへ。</p>
+    <div class="hero__buttons" data-aos="fade-up" data-aos-delay="800">
+        <a href="#contact" class="btn-fire"><i class="fas fa-fire"></i> 無料体験を予約</a>
+        <a href="#programs" class="btn-ghost">プログラムを見る</a>
+    </div>
+    <div class="hero__scroll"><span>SCROLL</span><span style="font-size:1.2rem">↓</span></div>
+</section>
+
+<!-- Stats -->
+<div class="container">
+    <div class="stats">
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="stat-number"><span class="count-up" data-target="3500">0</span>+</div>
+            <div class="stat-label">累計メンバー数</div>
+        </div>
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-number"><span class="count-up" data-target="98">0</span>%</div>
+            <div class="stat-label">目標達成率</div>
+        </div>
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-number"><span class="count-up" data-target="12">0</span></div>
+            <div class="stat-label">認定トレーナー</div>
+        </div>
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-number"><span class="count-up" data-target="4.9">0</span>★</div>
+            <div class="stat-label">平均評価</div>
+        </div>
+    </div>
+</div>
+
+<!-- Wave -->
+<div class="wave-divider" style="margin-top:4rem">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-36.69,206.8-37.69C438.64,35.59,512.34,73.67,602,79.13c90.56,5.51,179.07-30.41,263.75-46.42C949.37,17.52,1029.93,45.36,1102,60.71c30.23,6.44,61.16,11.43,98,11.43V0Z" class="shape-fill"></path></svg>
+</div>
+
+<!-- ===== Features ===== -->
+<section class="features" id="features">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-label">WHY IGNITE</div>
+            <h2 class="section-title" style="max-width:600px;margin:0 auto 1rem">なぜ<span style="color:var(--color-primary)">IGNITE</span>が選ばれるのか</h2>
+            <p class="section-desc mx-auto">科学とテクノロジーを融合した独自メソッドで、最短最速の結果を約束します。</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature-icon">🔥</div>
+                <h3>HIIT燃焼メソッド</h3>
+                <p>高強度インターバルトレーニングで最大限のカロリー消費。トレーニング後も燃焼が24時間続く「アフターバーン効果」を最大化。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">📊</div>
+                <h3>AIパーソナライズ</h3>
+                <p>体組成・運動データをAIが分析し、あなただけの最適プランを自動生成。常に進化し続けるトレーニングメニュー。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">⚡</div>
+                <h3>代謝ブーストプログラム</h3>
+                <p>基礎代謝を根本から引き上げる独自の筋力トレーニング。食べても太りにくいカラダへと体質改善を実現。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">🏋️</div>
+                <h3>プロトレーナー常駐</h3>
+                <p>国際資格保持者のトレーナーがマンツーマンで指導。正しいフォームと最大効率のトレーニングをサポート。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">🥗</div>
+                <h3>栄養サポート完備</h3>
+                <p>管理栄養士監修の食事プランを毎週更新。トレーニングとの相乗効果で結果を加速させます。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">📱</div>
+                <h3>24時間トラッキング</h3>
+                <p>専用アプリで進捗を可視化。体重・体脂肪率・筋肉量の変化をリアルタイムに確認できます。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wave-divider wave-divider-flip">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-36.69,206.8-37.69C438.64,35.59,512.34,73.67,602,79.13c90.56,5.51,179.07-30.41,263.75-46.42C949.37,17.52,1029.93,45.36,1102,60.71c30.23,6.44,61.16,11.43,98,11.43V0Z" class="shape-fill" style="fill:var(--color-bg)"></path></svg>
+</div>
+
+<!-- ===== Programs ===== -->
+<section id="programs" style="background:var(--color-bg-alt);padding-top:2rem">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-label">PROGRAMS</div>
+            <h2 class="section-title">あなたに合った<span style="color:var(--color-accent)">燃焼</span>プラン</h2>
+            <p class="section-desc mx-auto">目的・レベルに応じた3つのプログラムをご用意。全てのプランにパーソナルサポートが含まれます。</p>
+        </div>
+        <div class="programs-grid">
+            <div class="program-card" data-aos="fade-up" data-aos-delay="0">
+                <img src="https://placehold.co/640x360/1a0a00/FF6B00?text=SPARK+SESSION" alt="Spark Session" class="program-img">
+                <div class="program-body">
+                    <span class="program-tag">初心者向け</span>
+                    <h3>SPARK SESSION</h3>
+                    <p>運動未経験でも安心。基礎体力と正しいフォームを身につけながら、着実に代謝アップを実現する入門プログラム。</p>
+                </div>
+            </div>
+            <div class="program-card" data-aos="fade-up" data-aos-delay="150">
+                <img src="https://placehold.co/640x360/1a0500/E63946?text=BLAZE+CORE" alt="Blaze Core" class="program-img">
+                <div class="program-body">
+                    <span class="program-tag" style="background:rgba(230,57,70,.15);color:var(--color-secondary)">中級者向け</span>
+                    <h3>BLAZE CORE</h3>
+                    <p>HIITと筋力トレーニングを組み合わせた本格プログラム。体脂肪率の大幅減少と筋力アップを同時に実現。</p>
+                </div>
+            </div>
+            <div class="program-card" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://placehold.co/640x360/0a0a00/FFD600?text=INFERNO+ELITE" alt="Inferno Elite" class="program-img">
+                <div class="program-body">
+                    <span class="program-tag" style="background:rgba(255,214,0,.15);color:var(--color-accent)">上級者向け</span>
+                    <h3>INFERNO ELITE</h3>
+                    <p>限界を突破するハイエンドプログラム。競技レベルのトレーニングで究極のパフォーマンスを追求します。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Wave -->
+<div class="wave-divider">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-36.69,206.8-37.69C438.64,35.59,512.34,73.67,602,79.13c90.56,5.51,179.07-30.41,263.75-46.42C949.37,17.52,1029.93,45.36,1102,60.71c30.23,6.44,61.16,11.43,98,11.43V0Z" class="shape-fill" style="fill:var(--color-bg-alt)"></path></svg>
+</div>
+
+<!-- ===== Testimonials ===== -->
+<section class="testimonials" id="testimonials" style="background:var(--color-bg)">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-label">TESTIMONIALS</div>
+            <h2 class="section-title">メンバーの<span style="color:var(--color-secondary)">リアルな声</span></h2>
+            <p class="section-desc mx-auto">IGNITEで変わった3,500人以上の実体験をご紹介。</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="testimonial-stars">★★★★★</div>
+                <blockquote>3ヶ月で体脂肪率が28%から18%に。毎回トレーナーが追い込んでくれるので、一人では絶対に出せなかった結果が出ました。</blockquote>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/88x88/1a1a1a/FF6B00?text=K" alt="avatar" class="testimonial-avatar">
+                    <div><div class="testimonial-name">田中 健太</div><div class="testimonial-role">32歳・会社員</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="150">
+                <div class="testimonial-stars">★★★★★</div>
+                <blockquote>運動嫌いだった私が、週4回通うように。スタッフの雰囲気が最高で、ここに来ると自然とスイッチが入ります。</blockquote>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/88x88/1a1a1a/E63946?text=M" alt="avatar" class="testimonial-avatar">
+                    <div><div class="testimonial-name">佐藤 美咲</div><div class="testimonial-role">27歳・デザイナー</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="testimonial-stars">★★★★★</div>
+                <blockquote>アプリでの進捗管理と食事指導が素晴らしい。科学的アプローチで無駄なく結果に繋がります。コスパ最強です。</blockquote>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/88x88/1a1a1a/FFD600?text=R" alt="avatar" class="testimonial-avatar">
+                    <div><div class="testimonial-name">鈴木 亮太</div><div class="testimonial-role">41歳・経営者</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Pricing ===== -->
+<section id="pricing" style="background:var(--color-bg-alt)">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <div class="section-label">PRICING</div>
+            <h2 class="section-title">シンプルな<span style="color:var(--color-primary)">料金</span>プラン</h2>
+            <p class="section-desc mx-auto">全プランにパーソナルトレーニング・栄養指導・アプリ利用が含まれます。</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="pricing-name">SPARK</div>
+                <div class="pricing-price">¥14,800<span>/月</span></div>
+                <div class="pricing-desc">まずは始めたい方に</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>月8回のセッション</li>
+                    <li><i class="fas fa-check"></i>パーソナルトレーニング</li>
+                    <li><i class="fas fa-check"></i>基本食事プラン</li>
+                    <li><i class="fas fa-check"></i>アプリ利用</li>
+                    <li><i class="fas fa-check"></i>体組成測定（月1回）</li>
+                </ul>
+                <a href="#contact" class="btn-ghost" style="width:100%;text-align:center;display:block">体験してみる</a>
+            </div>
+            <div class="pricing-card pricing-card--featured" data-aos="fade-up" data-aos-delay="150">
+                <div class="pricing-name">BLAZE</div>
+                <div class="pricing-price">¥29,800<span>/月</span></div>
+                <div class="pricing-desc">本気で変わりたい方に</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>月16回のセッション</li>
+                    <li><i class="fas fa-check"></i>専属トレーナー</li>
+                    <li><i class="fas fa-check"></i>カスタム食事プラン</li>
+                    <li><i class="fas fa-check"></i>アプリ全機能</li>
+                    <li><i class="fas fa-check"></i>体組成測定（月2回）</li>
+                    <li><i class="fas fa-check"></i>サプリメント割引</li>
+                </ul>
+                <a href="#contact" class="btn-fire" style="width:100%;text-align:center;justify-content:center"><i class="fas fa-fire"></i>今すぐ始める</a>
+            </div>
+            <div class="pricing-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="pricing-name">INFERNO</div>
+                <div class="pricing-price">¥49,800<span>/月</span></div>
+                <div class="pricing-desc">限界を超えたい方に</div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>回数無制限</li>
+                    <li><i class="fas fa-check"></i>VIP専属トレーナー</li>
+                    <li><i class="fas fa-check"></i>完全オーダーメイドプラン</li>
+                    <li><i class="fas fa-check"></i>24時間チャットサポート</li>
+                    <li><i class="fas fa-check"></i>週次体組成測定</li>
+                    <li><i class="fas fa-check"></i>プロテイン飲み放題</li>
+                </ul>
+                <a href="#contact" class="btn-ghost" style="width:100%;text-align:center;display:block">詳しく聞く</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="contact">
+    <h2 data-aos="fade-up">さあ、<span class="fire-text">点火</span>しよう。</h2>
+    <p data-aos="fade-up" data-aos-delay="200">まずは無料体験セッションから。<br>あなたの変化は、ここから始まる。</p>
+    <a href="#" class="btn-fire" data-aos="fade-up" data-aos-delay="400" style="position:relative"><i class="fas fa-fire"></i> 無料体験を申し込む</a>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">IGNITE</div>
+        <ul class="footer-links">
+            <li><a href="#features">特徴</a></li>
+            <li><a href="#programs">プログラム</a></li>
+            <li><a href="#pricing">料金</a></li>
+            <li><a href="#contact">お問い合わせ</a></li>
+        </ul>
+        <div class="footer-social">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </div>
+    <div class="footer-copy">© 2026 IGNITE. All rights reserved.</div>
+</footer>
+
+<!-- AOS + JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+AOS.init({ duration: 800, once: true, offset: 80 });
+
+// ハンバーガーメニュー
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+});
+navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => { hamburger.classList.remove('active'); navMenu.classList.remove('active'); });
+});
+
+// ナビスクロール
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// カウントアップ
+const countEls = document.querySelectorAll('.count-up');
+const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseFloat(el.dataset.target);
+            const isFloat = target % 1 !== 0;
+            const duration = 2000;
+            const start = performance.now();
+            const animate = (now) => {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = isFloat ? (target * eased).toFixed(1) : Math.floor(target * eased);
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+            countObserver.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+countEls.forEach(el => countObserver.observe(el));
+
+// パーティクルアニメーション（火の粉・残り火のような演出）
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+    constructor() { this.reset(); }
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 10;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = -(Math.random() * 1.5 + 0.5);
+        this.speedX = (Math.random() - 0.5) * 0.8;
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.life = Math.random() * 200 + 100;
+        this.age = 0;
+        const colors = ['255,107,0','230,57,70','255,214,0','255,160,0'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+    }
+    update() {
+        this.x += this.speedX + Math.sin(this.age * 0.02) * 0.3;
+        this.y += this.speedY;
+        this.age++;
+        this.opacity = (1 - this.age / this.life) * 0.5;
+        if (this.age >= this.life || this.y < -10) this.reset();
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+        ctx.fill();
+    }
+}
+for (let i = 0; i < 60; i++) { const p = new Particle(); p.y = Math.random() * canvas.height; p.age = Math.random() * 100; particles.push(p); }
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// スムーススクロール（アンカーリンク）
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+});
+</script>
+</body>
+</html>

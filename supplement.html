@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VitaCore マルチビタミン — 科学的根拠に基づく高品質サプリメント。毎日の健康をサポート。">
+    <meta property="og:title" content="VitaCore | 科学が証明する、確かな栄養">
+    <meta property="og:description" content="医薬品レベルの品質管理で作られたマルチビタミンサプリメント">
+    <meta property="og:type" content="website">
+    <title>VitaCore — 科学が証明する、確かな栄養</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            --color-primary: #0a1f44;
+            --color-secondary: #1a3a6b;
+            --color-accent: #2d7ff9;
+            --color-accent-light: #5a9cff;
+            --color-bg: #ffffff;
+            --color-bg-alt: #f4f7fb;
+            --color-bg-dark: #0a1f44;
+            --color-text: #1a2a3a;
+            --color-text-light: #5a6a7a;
+            --color-text-on-dark: #e8edf4;
+            --color-border: #d4dce8;
+            --color-success: #10b981;
+            --color-gold: #d4a843;
+            --font-heading: 'Inter', 'Noto Sans JP', sans-serif;
+            --font-body: 'Noto Sans JP', 'Inter', sans-serif;
+            --section-padding: 100px 0;
+            --container-width: 1200px;
+            --radius: 12px;
+            --transition: 0.35s cubic-bezier(.25,.8,.25,1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+
+        /* ===== ナビゲーション ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,.06);
+            transition: var(--transition);
+        }
+        .nav.scrolled { background: rgba(255,255,255,.97); box-shadow: 0 2px 20px rgba(10,31,68,.08); }
+        .nav__logo {
+            font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem;
+            color: var(--color-primary); text-decoration: none; letter-spacing: -.01em;
+        }
+        .nav__logo span { color: var(--color-accent); }
+        .nav__menu { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav__menu a {
+            color: var(--color-text-light); text-decoration: none; font-size: .85rem;
+            font-weight: 500; transition: var(--transition); letter-spacing: .02em;
+        }
+        .nav__menu a:hover { color: var(--color-primary); }
+        .nav__cta {
+            padding: .6rem 1.6rem; background: var(--color-accent); border: none;
+            border-radius: 100px; color: #fff !important; font-weight: 700; font-size: .85rem;
+            cursor: pointer; text-decoration: none; transition: var(--transition);
+            -webkit-text-fill-color: #fff;
+        }
+        .nav__cta:hover { background: var(--color-accent-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(45,127,249,.3); }
+        .nav__hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 5px;
+        }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--color-primary); transition: all .3s ease; }
+        .nav__hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .nav__hamburger.active span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        /* ===== ヒーロー ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            background: linear-gradient(160deg, var(--color-bg-dark) 0%, var(--color-secondary) 50%, #1e4d8f 100%);
+            position: relative; overflow: hidden; padding-top: 5rem;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(45,127,249,.15) 0%, transparent 60%),
+                        radial-gradient(circle at 20% 80%, rgba(90,156,255,.1) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 120px;
+            background: linear-gradient(to top, var(--color-bg), transparent);
+        }
+        .hero__grid {
+            position: absolute; inset: 0; opacity: .04;
+            background-image: linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .hero__content { position: relative; z-index: 2; max-width: 680px; }
+        .hero__badge {
+            display: inline-flex; align-items: center; gap: .6rem;
+            padding: .5rem 1.2rem; border: 1px solid rgba(255,255,255,.15);
+            border-radius: 100px; font-size: .78rem; color: rgba(255,255,255,.8);
+            margin-bottom: 2rem; backdrop-filter: blur(10px); background: rgba(255,255,255,.05);
+        }
+        .hero__badge i { color: var(--color-success); font-size: .65rem; }
+        .hero h1 {
+            font-family: var(--font-heading); font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800; line-height: 1.2; color: #fff; margin-bottom: 1.5rem; letter-spacing: -.02em;
+        }
+        .hero h1 .accent { color: var(--color-accent-light); }
+        .hero__desc { font-size: 1.05rem; color: rgba(255,255,255,.7); line-height: 1.9; margin-bottom: 2.5rem; }
+        .hero__actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            padding: .9rem 2.2rem; background: var(--color-accent); border: none;
+            border-radius: 100px; color: #fff; font-weight: 600; font-size: .95rem;
+            cursor: pointer; text-decoration: none; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: .5rem;
+        }
+        .btn-primary:hover { background: var(--color-accent-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(45,127,249,.35); }
+        .btn-outline {
+            padding: .9rem 2.2rem; background: transparent; border: 1px solid rgba(255,255,255,.25);
+            border-radius: 100px; color: #fff; font-weight: 500; font-size: .95rem;
+            cursor: pointer; text-decoration: none; transition: var(--transition);
+        }
+        .btn-outline:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.05); }
+        .hero__visual {
+            position: absolute; right: -5%; top: 50%; transform: translateY(-50%);
+            width: 500px; height: 500px; z-index: 1;
+        }
+        .hero__pill {
+            width: 260px; height: 340px; border-radius: 130px;
+            background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03));
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,.1);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-15deg);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,.3);
+        }
+        .hero__pill-label {
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.8rem;
+            color: rgba(255,255,255,.9); letter-spacing: .05em; transform: rotate(15deg);
+        }
+        .hero__float-badge {
+            position: absolute; padding: .6rem 1rem; background: rgba(255,255,255,.1);
+            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,.1);
+            border-radius: 10px; font-size: .75rem; color: rgba(255,255,255,.85);
+            display: flex; align-items: center; gap: .5rem;
+        }
+        .hero__float-badge.b1 { top: 15%; right: 10%; animation: floatBadge 4s ease-in-out infinite; }
+        .hero__float-badge.b2 { bottom: 25%; right: 5%; animation: floatBadge 5s ease-in-out infinite .5s; }
+        .hero__float-badge.b3 { top: 40%; right: 45%; animation: floatBadge 4.5s ease-in-out infinite 1s; }
+        @keyframes floatBadge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+        /* ===== トラスト バー ===== */
+        .trust-bar {
+            padding: 3rem 0; background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .trust-bar__inner {
+            display: flex; justify-content: center; align-items: center;
+            gap: 3rem; flex-wrap: wrap; opacity: .5;
+        }
+        .trust-bar__item { font-family: var(--font-heading); font-weight: 700; font-size: 1rem; color: var(--color-text-light); letter-spacing: .05em; }
+
+        /* ===== 数字で見る実績 ===== */
+        .stats { padding: 5rem 0; background: var(--color-bg); }
+        .stats__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
+        .stats__number {
+            font-family: var(--font-heading); font-size: 2.8rem; font-weight: 800;
+            color: var(--color-accent); margin-bottom: .3rem;
+        }
+        .stats__label { font-size: .85rem; color: var(--color-text-light); }
+
+        /* ===== セクション共通 ===== */
+        .section-label {
+            font-family: var(--font-heading); font-size: .7rem; letter-spacing: .2em;
+            text-transform: uppercase; color: var(--color-accent); margin-bottom: .8rem; font-weight: 600;
+        }
+        .section-title { font-size: clamp(1.6rem,3.5vw,2.4rem); font-weight: 700; margin-bottom: 1rem; line-height: 1.35; color: var(--color-primary); }
+        .section-desc { color: var(--color-text-light); max-width: 600px; line-height: 1.85; margin-bottom: 3rem; font-size: .95rem; }
+        .section-center { text-align: center; }
+        .section-center .section-desc { margin-left: auto; margin-right: auto; }
+
+        /* ===== 特徴セクション ===== */
+        .features { padding: var(--section-padding); background: var(--color-bg-alt); }
+        .features__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .feature-card {
+            padding: 2.5rem 2rem; background: #fff; border: 1px solid var(--color-border);
+            border-radius: var(--radius); transition: var(--transition);
+        }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(10,31,68,.08); border-color: var(--color-accent); }
+        .feature-card__icon {
+            width: 52px; height: 52px; border-radius: 12px;
+            background: linear-gradient(135deg, rgba(45,127,249,.1), rgba(90,156,255,.05));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: var(--color-accent); margin-bottom: 1.2rem;
+        }
+        .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; color: var(--color-primary); }
+        .feature-card p { font-size: .85rem; color: var(--color-text-light); line-height: 1.75; }
+
+        /* ===== 成分セクション ===== */
+        .ingredients { padding: var(--section-padding); background: var(--color-bg); }
+        .ingredients__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 3rem; align-items: center; }
+        .ingredients__visual {
+            background: linear-gradient(135deg, var(--color-bg-alt), #e8edf4);
+            border-radius: var(--radius); height: 400px; display: flex;
+            align-items: center; justify-content: center; position: relative; overflow: hidden;
+        }
+        .ingredients__visual-inner {
+            display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; padding: 2rem;
+        }
+        .ingredient-pill {
+            padding: .6rem 1rem; background: #fff; border-radius: 100px;
+            font-size: .75rem; font-weight: 500; color: var(--color-primary);
+            border: 1px solid var(--color-border); text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        }
+        .ingredients__list { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .ingredients__list li {
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1rem; background: var(--color-bg-alt); border-radius: 10px;
+        }
+        .ingredients__list li i { color: var(--color-accent); margin-top: .2rem; font-size: .9rem; }
+        .ingredients__list li strong { display: block; font-size: .9rem; color: var(--color-primary); margin-bottom: .2rem; }
+        .ingredients__list li span { font-size: .8rem; color: var(--color-text-light); line-height: 1.6; }
+
+        /* ===== 品質管理 ===== */
+        .quality { padding: var(--section-padding); background: var(--color-bg-dark); color: #fff; }
+        .quality .section-title { color: #fff; }
+        .quality .section-desc { color: rgba(255,255,255,.6); }
+        .quality__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .quality-card {
+            padding: 2rem; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+            border-radius: var(--radius); text-align: center; transition: var(--transition);
+        }
+        .quality-card:hover { background: rgba(255,255,255,.08); transform: translateY(-3px); }
+        .quality-card__icon { font-size: 2rem; margin-bottom: 1rem; }
+        .quality-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .5rem; }
+        .quality-card p { font-size: .82rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+
+        /* ===== お客様の声 ===== */
+        .testimonials { padding: var(--section-padding); background: var(--color-bg-alt); }
+        .testimonials__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+        .testimonial-card {
+            padding: 2rem; background: #fff; border: 1px solid var(--color-border);
+            border-radius: var(--radius); transition: var(--transition);
+        }
+        .testimonial-card:hover { box-shadow: 0 8px 30px rgba(10,31,68,.06); }
+        .testimonial-card__stars { color: var(--color-gold); font-size: .85rem; margin-bottom: 1rem; }
+        .testimonial-card__text { font-size: .88rem; color: var(--color-text); line-height: 1.8; margin-bottom: 1.2rem; }
+        .testimonial-card__author { display: flex; align-items: center; gap: .8rem; }
+        .testimonial-card__avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--color-bg-alt); display: flex; align-items: center;
+            justify-content: center; font-size: .85rem; color: var(--color-accent); font-weight: 600;
+        }
+        .testimonial-card__name { font-size: .82rem; font-weight: 600; color: var(--color-primary); }
+        .testimonial-card__detail { font-size: .72rem; color: var(--color-text-light); }
+
+        /* ===== FAQ ===== */
+        .faq { padding: var(--section-padding); background: var(--color-bg); }
+        .faq__list { max-width: 750px; margin: 0 auto; display: flex; flex-direction: column; gap: .8rem; }
+        .faq__item { border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+        .faq__question {
+            width: 100%; padding: 1.2rem 1.5rem; background: none; border: none;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-size: .92rem; font-weight: 600; color: var(--color-primary);
+            font-family: var(--font-body); text-align: left;
+        }
+        .faq__question i { transition: transform .3s ease; color: var(--color-accent); font-size: .8rem; }
+        .faq__item.active .faq__question i { transform: rotate(180deg); }
+        .faq__answer { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+        .faq__answer-inner { padding: 0 1.5rem 1.2rem; font-size: .85rem; color: var(--color-text-light); line-height: 1.8; }
+
+        /* ===== CTA ===== */
+        .cta {
+            padding: 6rem 2rem; text-align: center; position: relative;
+            background: linear-gradient(160deg, var(--color-bg-dark), var(--color-secondary));
+            overflow: hidden;
+        }
+        .cta::before {
+            content:''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(45,127,249,.12) 0%, transparent 60%);
+        }
+        .cta h2 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; color: #fff; margin-bottom: 1rem; position: relative; }
+        .cta p { color: rgba(255,255,255,.6); max-width: 500px; margin: 0 auto 2rem; line-height: 1.8; position: relative; font-size: .95rem; }
+        .cta .btn-primary { position: relative; font-size: 1rem; padding: 1rem 2.5rem; }
+
+        /* ===== フッター ===== */
+        footer { background: var(--color-bg-dark); padding: 4rem 2rem 2rem; color: rgba(255,255,255,.5); }
+        .footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .footer__brand { font-family: var(--font-heading); font-weight: 800; font-size: 1.2rem; color: #fff; margin-bottom: .8rem; }
+        .footer__brand span { color: var(--color-accent); }
+        .footer__desc { font-size: .8rem; line-height: 1.7; }
+        .footer__title { font-size: .75rem; font-weight: 600; color: rgba(255,255,255,.8); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+        .footer__links { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .82rem; transition: var(--transition); }
+        .footer__links a:hover { color: var(--color-accent-light); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; text-align: center; font-size: .72rem; }
+
+        /* ===== レスポンシブ ===== */
+        @media (max-width: 1024px) {
+            .hero__visual { display: none; }
+            .footer__grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__hamburger { display: flex; }
+            .nav__menu {
+                position: fixed; top: 0; right: -100%; width: 75%; height: 100vh;
+                background: #fff; flex-direction: column; padding: 5rem 2rem;
+                transition: right .3s ease; z-index: 999; box-shadow: -5px 0 30px rgba(0,0,0,.1);
+            }
+            .nav__menu.active { right: 0; }
+            .nav__menu a { color: var(--color-text); font-size: 1rem; }
+            .features__grid, .quality__grid, .testimonials__grid { grid-template-columns: 1fr; }
+            .stats__grid { grid-template-columns: repeat(2,1fr); }
+            .ingredients__grid { grid-template-columns: 1fr; }
+            .footer__grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== ナビゲーション ===== -->
+<nav class="nav">
+    <a href="#" class="nav__logo">Vita<span>Core</span></a>
+    <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__menu">
+        <li><a href="#features">特徴</a></li>
+        <li><a href="#ingredients">成分</a></li>
+        <li><a href="#quality">品質管理</a></li>
+        <li><a href="#testimonials">お客様の声</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#cta" class="nav__cta">購入する</a></li>
+    </ul>
+</nav>
+
+<!-- ===== ヒーロー ===== -->
+<section class="hero">
+    <div class="hero__grid"></div>
+    <div class="container hero__content" data-aos="fade-up" data-aos-duration="1000">
+        <div class="hero__badge"><i class="fas fa-circle"></i> 医薬品レベルの品質管理</div>
+        <h1>科学が証明する、<br><span class="accent">確かな栄養。</span></h1>
+        <p class="hero__desc">VitaCoreは、最新の栄養科学に基づいて配合されたマルチビタミンサプリメント。<br>GMP認定工場で製造し、第三者機関による厳格な品質試験をクリアしています。</p>
+        <div class="hero__actions">
+            <a href="#cta" class="btn-primary"><i class="fas fa-shopping-cart"></i> 今すぐ購入</a>
+            <a href="#features" class="btn-outline">詳しく見る</a>
+        </div>
+    </div>
+    <div class="hero__visual">
+        <div class="hero__pill"><span class="hero__pill-label">VC</span></div>
+        <div class="hero__float-badge b1"><i class="fas fa-shield-halved"></i> GMP認定</div>
+        <div class="hero__float-badge b2"><i class="fas fa-flask"></i> 第三者試験済</div>
+        <div class="hero__float-badge b3"><i class="fas fa-leaf"></i> 無添加処方</div>
+    </div>
+</section>
+
+<!-- ===== トラストバー ===== -->
+<div class="trust-bar">
+    <div class="trust-bar__inner container">
+        <span class="trust-bar__item">厚生労働省 栄養機能食品</span>
+        <span class="trust-bar__item">GMP認定工場</span>
+        <span class="trust-bar__item">ISO 22000取得</span>
+        <span class="trust-bar__item">HACCP対応</span>
+        <span class="trust-bar__item">第三者機関認証</span>
+    </div>
+</div>
+
+<!-- ===== 数字で見る実績 ===== -->
+<div class="stats" data-aos="fade-up">
+    <div class="stats__grid container">
+        <div><div class="stats__number" data-count="150000">0</div><div class="stats__label">累計販売数</div></div>
+        <div><div class="stats__number" data-count="98">0</div><div class="stats__label">リピート率 %</div></div>
+        <div><div class="stats__number" data-count="13">0</div><div class="stats__label">配合ビタミン種</div></div>
+        <div><div class="stats__number" data-count="8">0</div><div class="stats__label">配合ミネラル種</div></div>
+    </div>
+</div>
+
+<!-- ===== 特徴 ===== -->
+<section class="features" id="features">
+    <div class="container section-center">
+        <div class="section-label" data-aos="fade-up">Features</div>
+        <h2 class="section-title" data-aos="fade-up">選ばれる理由</h2>
+        <p class="section-desc" data-aos="fade-up">VitaCoreが健康を意識する多くの方から支持されている理由をご紹介します。</p>
+        <div class="features__grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature-card__icon"><i class="fas fa-microscope"></i></div>
+                <h3>科学的根拠に基づく配合</h3>
+                <p>各成分の配合量は、査読付き学術論文に基づいて最適化。エビデンスのない成分は一切使用しません。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card__icon"><i class="fas fa-capsules"></i></div>
+                <h3>高い吸収率を実現</h3>
+                <p>キレート化ミネラルと活性型ビタミンを採用。体内での利用効率を最大限に高めています。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card__icon"><i class="fas fa-shield-halved"></i></div>
+                <h3>医薬品レベルの品質管理</h3>
+                <p>国内GMP認定工場で製造。原料の受入検査から出荷まで200以上のチェック項目をクリアしています。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="feature-card__icon"><i class="fas fa-ban"></i></div>
+                <h3>8つの無添加</h3>
+                <p>合成着色料・香料・保存料・甘味料・増粘剤・発色剤・漂白剤・防カビ剤を一切不使用です。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-card__icon"><i class="fas fa-recycle"></i></div>
+                <h3>環境にも配慮</h3>
+                <p>パッケージには再生可能素材を使用。サステナブルな原料調達と環境負荷の低い製造プロセスを実現しています。</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-card__icon"><i class="fas fa-truck-fast"></i></div>
+                <h3>定期便でお得に</h3>
+                <p>定期お届けコースなら毎回15%OFF。解約・休止はいつでも自由。送料も無料でお届けします。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 成分 ===== -->
+<section class="ingredients" id="ingredients">
+    <div class="container">
+        <div class="ingredients__grid">
+            <div class="ingredients__visual" data-aos="fade-right">
+                <div class="ingredients__visual-inner">
+                    <div class="ingredient-pill">ビタミンA</div>
+                    <div class="ingredient-pill">ビタミンB1</div>
+                    <div class="ingredient-pill">ビタミンB2</div>
+                    <div class="ingredient-pill">ビタミンB6</div>
+                    <div class="ingredient-pill">ビタミンB12</div>
+                    <div class="ingredient-pill">ビタミンC</div>
+                    <div class="ingredient-pill">ビタミンD</div>
+                    <div class="ingredient-pill">ビタミンE</div>
+                    <div class="ingredient-pill">ビタミンK</div>
+                    <div class="ingredient-pill">葉酸</div>
+                    <div class="ingredient-pill">ナイアシン</div>
+                    <div class="ingredient-pill">パントテン酸</div>
+                    <div class="ingredient-pill">ビオチン</div>
+                    <div class="ingredient-pill">亜鉛</div>
+                    <div class="ingredient-pill">鉄</div>
+                    <div class="ingredient-pill">マグネシウム</div>
+                    <div class="ingredient-pill">カルシウム</div>
+                    <div class="ingredient-pill">セレン</div>
+                </div>
+            </div>
+            <div data-aos="fade-left">
+                <div class="section-label">Ingredients</div>
+                <h2 class="section-title">厳選された<br>21種の栄養素</h2>
+                <p class="section-desc">1日2粒で、現代人に不足しがちなビタミン・ミネラルをバランスよく摂取できます。</p>
+                <ul class="ingredients__list">
+                    <li><i class="fas fa-check-circle"></i><div><strong>活性型ビタミンB群</strong><span>体内で変換不要な活性型を採用し、効率的なエネルギー代謝をサポート</span></div></li>
+                    <li><i class="fas fa-check-circle"></i><div><strong>ビタミンD3 2000IU</strong><span>免疫機能の維持と骨の健康に不可欠。日本人の多くが不足している栄養素</span></div></li>
+                    <li><i class="fas fa-check-circle"></i><div><strong>キレート化ミネラル</strong><span>アミノ酸でキレート化した亜鉛・鉄・マグネシウムで吸収率を大幅に向上</span></div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 品質管理 ===== -->
+<section class="quality" id="quality">
+    <div class="container section-center">
+        <div class="section-label" data-aos="fade-up" style="color:var(--color-accent-light)">Quality</div>
+        <h2 class="section-title" data-aos="fade-up">妥協なき品質管理</h2>
+        <p class="section-desc" data-aos="fade-up">VitaCoreは、サプリメントの安全性と有効性を最も重要視しています。</p>
+        <div class="quality__grid">
+            <div class="quality-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="quality-card__icon">🏭</div>
+                <h3>GMP認定工場</h3>
+                <p>医薬品と同等の品質管理基準で運営されるGMP認定工場で、すべての工程を管理しています。</p>
+            </div>
+            <div class="quality-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="quality-card__icon">🔬</div>
+                <h3>第三者機関試験</h3>
+                <p>独立した第三者機関による成分分析・重金属検査・微生物試験を全ロットで実施しています。</p>
+            </div>
+            <div class="quality-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="quality-card__icon">📋</div>
+                <h3>完全トレーサビリティ</h3>
+                <p>原料の産地から製造ロット、出荷先まで完全に追跡可能。万一の際にも迅速に対応できます。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== お客様の声 ===== -->
+<section class="testimonials" id="testimonials">
+    <div class="container section-center">
+        <div class="section-label" data-aos="fade-up">Testimonials</div>
+        <h2 class="section-title" data-aos="fade-up">お客様の声</h2>
+        <p class="section-desc" data-aos="fade-up">VitaCoreをご愛用いただいているお客様からの声をご紹介します。</p>
+        <div class="testimonials__grid">
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="0">
+                <div class="testimonial-card__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-card__text">「以前は午後になると集中力が落ちていましたが、VitaCoreを飲み始めてから一日中エネルギッシュに過ごせるようになりました。」</p>
+                <div class="testimonial-card__author"><div class="testimonial-card__avatar">T.S</div><div><div class="testimonial-card__name">田中 聡太さん</div><div class="testimonial-card__detail">40代男性・会社員</div></div></div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-card__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-card__text">「成分の根拠がしっかり公開されているので安心して続けられます。無添加なのも嬉しいポイントです。」</p>
+                <div class="testimonial-card__author"><div class="testimonial-card__avatar">M.K</div><div><div class="testimonial-card__name">宮本 花さん</div><div class="testimonial-card__detail">30代女性・看護師</div></div></div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="testimonial-card__text">「定期便で届くので買い忘れがなく便利。パッケージもシンプルで清潔感があり、品質の高さを感じます。」</p>
+                <div class="testimonial-card__author"><div class="testimonial-card__avatar">R.Y</div><div><div class="testimonial-card__name">山田 涼介さん</div><div class="testimonial-card__detail">50代男性・経営者</div></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq" id="faq">
+    <div class="container section-center">
+        <div class="section-label" data-aos="fade-up">FAQ</div>
+        <h2 class="section-title" data-aos="fade-up">よくあるご質問</h2>
+        <p class="section-desc" data-aos="fade-up">お客様からよくいただくご質問にお答えします。</p>
+        <div class="faq__list" data-aos="fade-up">
+            <div class="faq__item">
+                <button class="faq__question">1日の摂取目安量はどのくらいですか？<i class="fas fa-chevron-down"></i></button>
+                <div class="faq__answer"><div class="faq__answer-inner">1日2粒を目安に、水またはぬるま湯でお召し上がりください。食後にお飲みいただくと吸収率が高まります。</div></div>
+            </div>
+            <div class="faq__item">
+                <button class="faq__question">副作用はありますか？<i class="fas fa-chevron-down"></i></button>
+                <div class="faq__answer"><div class="faq__answer-inner">VitaCoreは食品ですので、通常の食事と同様にお召し上がりいただけます。ただし、妊娠中・授乳中の方や服薬中の方は、事前にかかりつけ医にご相談ください。</div></div>
+            </div>
+            <div class="faq__item">
+                <button class="faq__question">定期コースの解約はいつでもできますか？<i class="fas fa-chevron-down"></i></button>
+                <div class="faq__answer"><div class="faq__answer-inner">はい、定期コースはいつでも解約・休止が可能です。次回お届け日の7日前までにマイページまたはお電話でお手続きください。解約金も一切かかりません。</div></div>
+            </div>
+            <div class="faq__item">
+                <button class="faq__question">他のサプリメントと一緒に飲んでも大丈夫？<i class="fas fa-chevron-down"></i></button>
+                <div class="faq__answer"><div class="faq__answer-inner">基本的には問題ございませんが、ビタミンAやビタミンDなどの脂溶性ビタミンは過剰摂取にならないようご注意ください。不安な場合は薬剤師にご相談ください。</div></div>
+            </div>
+            <div class="faq__item">
+                <button class="faq__question">返品・返金には対応していますか？<i class="fas fa-chevron-down"></i></button>
+                <div class="faq__answer"><div class="faq__answer-inner">ご購入後30日以内であれば全額返金保証をご利用いただけます。万が一ご満足いただけなかった場合も、お気軽にお問い合わせください。</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="cta">
+    <h2 data-aos="fade-up">まずは30日間、<br>確かな変化を体感してください。</h2>
+    <p data-aos="fade-up">初回限定30%OFF＋30日間全額返金保証。<br>リスクなくお試しいただけます。</p>
+    <a href="#" class="btn-primary" data-aos="fade-up"><i class="fas fa-shopping-cart"></i> 初回限定で購入する</a>
+</section>
+
+<!-- ===== フッター ===== -->
+<footer>
+    <div class="container">
+        <div class="footer__grid">
+            <div>
+                <div class="footer__brand">Vita<span>Core</span></div>
+                <p class="footer__desc">科学的根拠に基づいた高品質マルチビタミンサプリメント。あなたの毎日の健康を、確かな栄養でサポートします。</p>
+            </div>
+            <div>
+                <div class="footer__title">製品</div>
+                <ul class="footer__links">
+                    <li><a href="#">マルチビタミン</a></li>
+                    <li><a href="#">成分一覧</a></li>
+                    <li><a href="#">品質管理</a></li>
+                    <li><a href="#">定期購入</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__title">サポート</div>
+                <ul class="footer__links">
+                    <li><a href="#">よくある質問</a></li>
+                    <li><a href="#">お問い合わせ</a></li>
+                    <li><a href="#">返品・交換</a></li>
+                    <li><a href="#">配送について</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer__title">会社情報</div>
+                <ul class="footer__links">
+                    <li><a href="#">会社概要</a></li>
+                    <li><a href="#">プライバシーポリシー</a></li>
+                    <li><a href="#">特定商取引法に基づく表記</a></li>
+                    <li><a href="#">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">&copy; 2026 VitaCore Inc. All rights reserved.</div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true, offset: 50 });
+
+    // ナビスクロール
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 50); });
+
+    // ハンバーガーメニュー
+    const hamburger = document.querySelector('.nav__hamburger');
+    const navMenu = document.querySelector('.nav__menu');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+    });
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => { hamburger.classList.remove('active'); navMenu.classList.remove('active'); });
+    });
+
+    // カウントアップ
+    const counters = document.querySelectorAll('.stats__number');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const target = parseInt(el.dataset.count);
+                const duration = 2000;
+                const start = performance.now();
+                const animate = (now) => {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(target * eased).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(animate);
+                    else el.textContent = target.toLocaleString();
+                };
+                requestAnimationFrame(animate);
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(c => observer.observe(c));
+
+    // FAQ アコーディオン
+    document.querySelectorAll('.faq__question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.parentElement;
+            const answer = item.querySelector('.faq__answer');
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq__item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.faq__answer').style.maxHeight = '0';
+            });
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        });
+    });
+</script>
+</body>
+</html>

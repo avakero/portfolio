@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BOTANICA — 植物の恵みから生まれたサプリメント。自然由来の成分で、あなたの毎日をやさしく支えます。">
+    <meta property="og:title" content="BOTANICA | 植物由来サプリメント">
+    <meta property="og:description" content="自然の力を、あなたのからだに。植物由来100%のやさしいサプリメント。">
+    <meta property="og:type" content="website">
+    <title>BOTANICA | 植物由来サプリメント</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-primary: #8B9F7B;
+            --color-primary-light: #A8B89A;
+            --color-primary-dark: #6B7F5B;
+            --color-secondary: #D4C5A9;
+            --color-accent: #8B6F47;
+            --color-accent-light: #A68B63;
+            --color-bg: #FDFBF7;
+            --color-bg-alt: #F4F0EA;
+            --color-bg-sage: #EEF2E9;
+            --color-text: #3D3229;
+            --color-text-light: #7A6E62;
+            --color-text-lighter: #A69D93;
+            --color-border: #E2DCD4;
+            --color-white: #FFFFFF;
+            --font-heading: 'Quicksand', 'Noto Sans JP', sans-serif;
+            --font-body: 'Noto Sans JP', 'Quicksand', sans-serif;
+            --section-padding: 100px 0;
+            --container-width: 1140px;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: 0.3s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 300;
+            background: var(--color-bg);
+            color: var(--color-text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.8;
+        }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 2rem; }
+
+        /* ===== ナビゲーション ===== */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1.2rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+        }
+        .nav.scrolled { background: rgba(253, 251, 247, 0.98); box-shadow: 0 1px 20px rgba(61, 50, 41, 0.06); }
+        .nav__logo {
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem;
+            color: var(--color-primary-dark); letter-spacing: 0.15em; text-decoration: none;
+        }
+        .nav__logo span { color: var(--color-accent); }
+        .nav__menu { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav__menu a {
+            color: var(--color-text-light); text-decoration: none; font-size: 0.85rem;
+            font-weight: 400; letter-spacing: 0.04em; transition: var(--transition);
+        }
+        .nav__menu a:hover { color: var(--color-primary-dark); }
+        .nav__cta {
+            padding: 0.6rem 1.6rem; background: var(--color-primary); border: none;
+            border-radius: 100px; color: var(--color-white); font-weight: 500;
+            font-size: 0.85rem; cursor: pointer; text-decoration: none; transition: var(--transition);
+            font-family: var(--font-body);
+        }
+        .nav__cta:hover { background: var(--color-primary-dark); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(139, 159, 123, 0.3); }
+        .nav__hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer; padding: 5px;
+        }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--color-text); transition: all 0.3s ease; }
+        .nav__hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav__hamburger.active span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== ヒーロー ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; padding: 8rem 2rem 4rem;
+        }
+        .hero__bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: linear-gradient(160deg, var(--color-bg) 0%, var(--color-bg-sage) 40%, var(--color-bg-alt) 100%);
+        }
+        .hero__leaf {
+            position: absolute; opacity: 0.06; font-size: 20rem; color: var(--color-primary);
+            z-index: 0; pointer-events: none;
+        }
+        .hero__leaf--1 { top: -5%; right: -5%; transform: rotate(25deg); }
+        .hero__leaf--2 { bottom: -10%; left: -8%; transform: rotate(-15deg); font-size: 16rem; }
+        .hero__content { position: relative; z-index: 1; text-align: center; max-width: 780px; }
+        .hero__badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.45rem 1.2rem; border: 1px solid rgba(139, 159, 123, 0.3);
+            border-radius: 100px; font-size: 0.78rem; color: var(--color-primary-dark);
+            margin-bottom: 2rem; background: rgba(139, 159, 123, 0.08);
+        }
+        .hero__badge i { font-size: 0.7rem; color: var(--color-primary); }
+        .hero__title {
+            font-family: var(--font-heading); font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 700; line-height: 1.3; margin-bottom: 1.5rem; color: var(--color-text);
+            letter-spacing: 0.02em;
+        }
+        .hero__title em { font-style: normal; color: var(--color-primary-dark); }
+        .hero__desc {
+            font-size: clamp(0.95rem, 1.4vw, 1.1rem); color: var(--color-text-light);
+            line-height: 2; margin-bottom: 2.5rem;
+        }
+        .hero__buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 0.95rem 2.6rem; background: var(--color-primary); border: none;
+            border-radius: 100px; color: var(--color-white); font-weight: 500;
+            font-size: 0.95rem; cursor: pointer; text-decoration: none; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-body);
+        }
+        .btn-primary:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(139, 159, 123, 0.3); }
+        .btn-outline {
+            padding: 0.95rem 2.6rem; background: transparent; border: 1.5px solid var(--color-border);
+            border-radius: 100px; color: var(--color-text); font-weight: 400;
+            font-size: 0.95rem; cursor: pointer; text-decoration: none; transition: var(--transition);
+            font-family: var(--font-body);
+        }
+        .btn-outline:hover { border-color: var(--color-primary); color: var(--color-primary-dark); }
+        .hero__scroll {
+            position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: var(--color-text-lighter); font-size: 0.7rem; letter-spacing: 0.15em;
+            animation: floatY 3s ease-in-out infinite;
+        }
+        @keyframes floatY { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+        /* ===== セクション共通 ===== */
+        .section-label {
+            font-family: var(--font-heading); font-size: 0.75rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.8rem; font-weight: 600;
+        }
+        .section-title {
+            font-family: var(--font-heading); font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 700; margin-bottom: 1rem; line-height: 1.4; color: var(--color-text);
+        }
+        .section-desc { color: var(--color-text-light); max-width: 580px; line-height: 1.9; margin-bottom: 3rem; font-size: 0.92rem; }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ===== フィロソフィー ===== */
+        .philosophy { padding: var(--section-padding); background: var(--color-bg); }
+        .philosophy__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .philosophy__card {
+            padding: 2.5rem 2rem; background: var(--color-white); border: 1px solid var(--color-border);
+            border-radius: var(--radius); transition: var(--transition); text-align: center;
+        }
+        .philosophy__card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(139, 159, 123, 0.12); border-color: var(--color-primary-light); }
+        .philosophy__icon {
+            width: 64px; height: 64px; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;
+            background: var(--color-bg-sage); border-radius: 50%; font-size: 1.5rem; color: var(--color-primary-dark);
+        }
+        .philosophy__card h3 { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.8rem; }
+        .philosophy__card p { font-size: 0.85rem; color: var(--color-text-light); line-height: 1.8; }
+
+        /* ===== 商品紹介 ===== */
+        .products { padding: var(--section-padding); background: var(--color-bg-sage); }
+        .products__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .product__card {
+            background: var(--color-white); border-radius: var(--radius); overflow: hidden;
+            transition: var(--transition); border: 1px solid transparent;
+        }
+        .product__card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(61, 50, 41, 0.08); border-color: var(--color-primary-light); }
+        .product__image {
+            width: 100%; aspect-ratio: 4/3; object-fit: cover;
+            background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg-sage));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; color: var(--color-primary-light);
+        }
+        .product__info { padding: 1.8rem; }
+        .product__tag {
+            display: inline-block; padding: 0.2rem 0.8rem; background: rgba(139, 159, 123, 0.12);
+            color: var(--color-primary-dark); font-size: 0.7rem; border-radius: 100px;
+            margin-bottom: 0.8rem; font-weight: 500;
+        }
+        .product__info h3 { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .product__info p { font-size: 0.83rem; color: var(--color-text-light); line-height: 1.7; margin-bottom: 1.2rem; }
+        .product__price { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; color: var(--color-accent); }
+        .product__price small { font-size: 0.75rem; font-weight: 400; color: var(--color-text-light); }
+
+        /* ===== 成分・品質 ===== */
+        .quality { padding: var(--section-padding); background: var(--color-bg); }
+        .quality__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .quality__visual {
+            background: linear-gradient(135deg, var(--color-bg-sage), var(--color-bg-alt));
+            border-radius: var(--radius); aspect-ratio: 1; display: flex;
+            align-items: center; justify-content: center; position: relative; overflow: hidden;
+        }
+        .quality__visual-icon { font-size: 8rem; color: var(--color-primary-light); opacity: 0.4; }
+        .quality__visual-badge {
+            position: absolute; bottom: 2rem; left: 2rem; background: var(--color-white);
+            padding: 0.8rem 1.4rem; border-radius: var(--radius-sm); box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; font-weight: 500; color: var(--color-primary-dark);
+        }
+        .quality__list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+        .quality__item { display: flex; gap: 1rem; align-items: flex-start; }
+        .quality__item-icon {
+            width: 44px; height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center;
+            background: var(--color-bg-sage); border-radius: 12px; color: var(--color-primary-dark); font-size: 1rem;
+        }
+        .quality__item h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; }
+        .quality__item p { font-size: 0.82rem; color: var(--color-text-light); line-height: 1.7; }
+
+        /* ===== お客様の声 ===== */
+        .testimonials { padding: var(--section-padding); background: var(--color-bg-alt); }
+        .testimonials__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .testimonial__card {
+            background: var(--color-white); padding: 2rem; border-radius: var(--radius);
+            border: 1px solid var(--color-border); transition: var(--transition);
+        }
+        .testimonial__card:hover { box-shadow: 0 8px 32px rgba(139, 159, 123, 0.1); }
+        .testimonial__stars { color: var(--color-secondary); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+        .testimonial__text { font-size: 0.88rem; color: var(--color-text-light); line-height: 1.8; margin-bottom: 1.5rem; font-style: italic; }
+        .testimonial__author { display: flex; align-items: center; gap: 0.8rem; }
+        .testimonial__avatar {
+            width: 44px; height: 44px; border-radius: 50%; background: var(--color-bg-sage);
+            display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--color-primary);
+        }
+        .testimonial__name { font-size: 0.85rem; font-weight: 500; }
+        .testimonial__detail { font-size: 0.72rem; color: var(--color-text-lighter); }
+
+        /* ===== FAQ ===== */
+        .faq { padding: var(--section-padding); background: var(--color-bg); }
+        .faq__list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.8rem; }
+        .faq__item { border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; background: var(--color-white); }
+        .faq__question {
+            width: 100%; padding: 1.3rem 1.5rem; background: none; border: none;
+            font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+            color: var(--color-text); text-align: left; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; transition: var(--transition);
+        }
+        .faq__question:hover { color: var(--color-primary-dark); }
+        .faq__question i { transition: transform 0.3s ease; color: var(--color-primary); font-size: 0.8rem; }
+        .faq__item.active .faq__question i { transform: rotate(180deg); }
+        .faq__answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .faq__answer p { padding: 0 1.5rem 1.3rem; font-size: 0.85rem; color: var(--color-text-light); line-height: 1.8; }
+
+        /* ===== CTA ===== */
+        .cta {
+            padding: 6rem 2rem; text-align: center; position: relative;
+            background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary), var(--color-primary-light));
+            color: var(--color-white); overflow: hidden;
+        }
+        .cta::before {
+            content: '🌿'; position: absolute; top: -2rem; right: 5%; font-size: 12rem;
+            opacity: 0.08; pointer-events: none;
+        }
+        .cta h2 { font-family: var(--font-heading); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 1rem; position: relative; }
+        .cta p { max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.9; opacity: 0.9; position: relative; font-size: 0.95rem; }
+        .btn-white {
+            padding: 0.95rem 2.6rem; background: var(--color-white); border: none;
+            border-radius: 100px; color: var(--color-primary-dark); font-weight: 600;
+            font-size: 0.95rem; cursor: pointer; text-decoration: none; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); position: relative;
+        }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); }
+
+        /* ===== フッター ===== */
+        .footer { background: var(--color-text); color: rgba(255,255,255,0.7); padding: 4rem 2rem 2rem; }
+        .footer__inner { max-width: var(--container-width); margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+        .footer__brand { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: var(--color-white); margin-bottom: 1rem; letter-spacing: 0.1em; }
+        .footer__desc { font-size: 0.82rem; line-height: 1.8; max-width: 300px; }
+        .footer h4 { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 600; color: var(--color-white); margin-bottom: 1rem; letter-spacing: 0.08em; }
+        .footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .footer ul a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; transition: var(--transition); }
+        .footer ul a:hover { color: var(--color-primary-light); }
+        .footer__social { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .footer__social a {
+            width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6);
+            font-size: 0.85rem; transition: var(--transition); text-decoration: none;
+        }
+        .footer__social a:hover { border-color: var(--color-primary-light); color: var(--color-primary-light); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem; text-align: center; font-size: 0.72rem; }
+
+        /* ===== レスポンシブ ===== */
+        @media (max-width: 768px) {
+            .nav__hamburger { display: flex; }
+            .nav__menu {
+                position: fixed; top: 0; right: -100%; width: 75%; height: 100vh;
+                background: var(--color-bg); flex-direction: column; padding: 5rem 2rem;
+                transition: right 0.3s ease; z-index: 999; box-shadow: -4px 0 30px rgba(0,0,0,0.1);
+            }
+            .nav__menu.active { right: 0; }
+            .philosophy__grid, .products__grid, .testimonials__grid { grid-template-columns: 1fr; }
+            .quality__grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer__inner { grid-template-columns: 1fr; gap: 2rem; }
+            .hero__title { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .philosophy__grid, .products__grid, .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== ナビゲーション ===== -->
+    <nav class="nav" id="navbar">
+        <a href="#" class="nav__logo">BOTANICA</a>
+        <ul class="nav__menu" id="navMenu">
+            <li><a href="#philosophy">わたしたちのこだわり</a></li>
+            <li><a href="#products">商品</a></li>
+            <li><a href="#quality">品質</a></li>
+            <li><a href="#testimonials">お客様の声</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a href="#cta" class="nav__cta">はじめてみる</a>
+        <button class="nav__hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ===== ヒーロー ===== -->
+    <section class="hero" id="hero">
+        <div class="hero__bg"></div>
+        <div class="hero__leaf hero__leaf--1">🌿</div>
+        <div class="hero__leaf hero__leaf--2">🍃</div>
+        <div class="hero__content" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="hero__title">自然の恵みを、<br><em>毎日のちからに。</em></h1>
+            <p class="hero__desc">忙しい毎日のなかでも、からだにやさしい選択を。<br>BOTANICAは、植物の力だけでつくられたサプリメントです。</p>
+            <div class="hero__buttons">
+                <a href="#products" class="btn-primary"><i class="fa-solid fa-leaf"></i> 商品を見る</a>
+                <a href="#philosophy" class="btn-outline">こだわりを知る</a>
+            </div>
+        </div>
+        <div class="hero__scroll">SCROLL<span style="font-size:1.2rem">↓</span></div>
+    </section>
+
+    <!-- ===== フィロソフィー ===== -->
+    <section class="philosophy" id="philosophy">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <p class="section-label">Philosophy</p>
+                <h2 class="section-title">植物のやさしさを、<br>そのままあなたへ。</h2>
+                <p class="section-desc mx-auto">わたしたちは、自然の力を信じています。化学合成に頼らず、植物が持つ本来のちからを最大限に引き出すことで、からだにやさしく寄り添うサプリメントをお届けします。</p>
+            </div>
+            <div class="philosophy__grid">
+                <div class="philosophy__card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="philosophy__icon"><i class="fa-solid fa-seedling"></i></div>
+                    <h3>100% 植物由来</h3>
+                    <p>すべての成分を厳選された植物から抽出。合成着色料・保存料は一切使用していません。</p>
+                </div>
+                <div class="philosophy__card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="philosophy__icon"><i class="fa-solid fa-heart"></i></div>
+                    <h3>からだへのやさしさ</h3>
+                    <p>胃腸への負担を最小限にする独自の処方設計。毎日安心して続けられるやさしさを追求しました。</p>
+                </div>
+                <div class="philosophy__card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="philosophy__icon"><i class="fa-solid fa-earth-americas"></i></div>
+                    <h3>地球にもやさしく</h3>
+                    <p>有機栽培の原料調達からリサイクル可能なパッケージまで、サステナブルなものづくりを大切にしています。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 商品紹介 ===== -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <p class="section-label">Products</p>
+                <h2 class="section-title">あなたの毎日に寄り添う、<br>3つのサプリメント。</h2>
+                <p class="section-desc mx-auto">それぞれの悩みに合わせた、植物由来の栄養設計。まずは気になるものから、はじめてみませんか。</p>
+            </div>
+            <div class="products__grid">
+                <div class="product__card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="product__image"><i class="fa-solid fa-sun"></i></div>
+                    <div class="product__info">
+                        <span class="product__tag">美容</span>
+                        <h3>BOTANICA Glow</h3>
+                        <p>ローズヒップ、カムカム、アサイーなど、美容に嬉しい植物成分をぎゅっと凝縮。内側からの輝きをサポートします。</p>
+                        <p class="product__price">¥3,980 <small>(税込 / 30日分)</small></p>
+                    </div>
+                </div>
+                <div class="product__card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product__image"><i class="fa-solid fa-moon"></i></div>
+                    <div class="product__info">
+                        <span class="product__tag">リラックス</span>
+                        <h3>BOTANICA Rest</h3>
+                        <p>カモミール、バレリアン、パッションフラワー配合。一日の終わりに、心とからだをやさしくほどくブレンドです。</p>
+                        <p class="product__price">¥3,680 <small>(税込 / 30日分)</small></p>
+                    </div>
+                </div>
+                <div class="product__card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product__image"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="product__info">
+                        <span class="product__tag">活力</span>
+                        <h3>BOTANICA Vital</h3>
+                        <p>マカ、モリンガ、スピルリナなど、生命力あふれるスーパーフード由来の栄養素で忙しい毎日をサポートします。</p>
+                        <p class="product__price">¥4,280 <small>(税込 / 30日分)</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 成分・品質 ===== -->
+    <section class="quality" id="quality">
+        <div class="container">
+            <div class="quality__grid">
+                <div class="quality__visual" data-aos="fade-right">
+                    <div class="quality__visual-icon">🌱</div>
+                    <div class="quality__visual-badge"><i class="fa-solid fa-shield-halved"></i> GMP認定工場で製造</div>
+                </div>
+                <div data-aos="fade-left">
+                    <p class="section-label">Quality</p>
+                    <h2 class="section-title">安心できる品質を、<br>すべての方に。</h2>
+                    <p class="section-desc">原料の選定から製造、お届けまで。わたしたちは、すべての工程で品質にこだわり抜いています。</p>
+                    <ul class="quality__list">
+                        <li class="quality__item">
+                            <div class="quality__item-icon"><i class="fa-solid fa-microscope"></i></div>
+                            <div><h4>第三者機関による成分検査</h4><p>すべての製品ロットで残留農薬・重金属検査を実施し、安全性を確認しています。</p></div>
+                        </li>
+                        <li class="quality__item">
+                            <div class="quality__item-icon"><i class="fa-solid fa-leaf"></i></div>
+                            <div><h4>有機栽培の原料を優先調達</h4><p>提携農園から直接仕入れた、トレーサビリティの取れた原料のみを使用しています。</p></div>
+                        </li>
+                        <li class="quality__item">
+                            <div class="quality__item-icon"><i class="fa-solid fa-ban"></i></div>
+                            <div><h4>7つのフリー処方</h4><p>合成着色料・香料・保存料・甘味料・グルテン・乳製品・遺伝子組換え原料不使用。</p></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== お客様の声 ===== -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <p class="section-label">Voice</p>
+                <h2 class="section-title">お客様の声</h2>
+                <p class="section-desc mx-auto">BOTANICAを選んでくださった方々の、リアルな声をご紹介します。</p>
+            </div>
+            <div class="testimonials__grid">
+                <div class="testimonial__card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="testimonial__stars">★★★★★</div>
+                    <p class="testimonial__text">「植物由来なので安心して飲めます。Glowを飲み始めてから、朝の鏡を見るのが楽しくなりました。」</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar"><i class="fa-solid fa-user"></i></div>
+                        <div><p class="testimonial__name">M.Sさん</p><p class="testimonial__detail">32歳 / Glow愛用</p></div>
+                    </div>
+                </div>
+                <div class="testimonial__card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="testimonial__stars">★★★★★</div>
+                    <p class="testimonial__text">「Restのおかげで、寝つきがぐんとよくなりました。自然な眠気が来る感じがとても気に入っています。」</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar"><i class="fa-solid fa-user"></i></div>
+                        <div><p class="testimonial__name">A.Kさん</p><p class="testimonial__detail">35歳 / Rest愛用</p></div>
+                    </div>
+                </div>
+                <div class="testimonial__card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial__stars">★★★★☆</div>
+                    <p class="testimonial__text">「パッケージもかわいくて、デスクに置いておいても違和感なし。飲みやすさも◎です！」</p>
+                    <div class="testimonial__author">
+                        <div class="testimonial__avatar"><i class="fa-solid fa-user"></i></div>
+                        <div><p class="testimonial__name">Y.Tさん</p><p class="testimonial__detail">29歳 / Vital愛用</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="text-center" data-aos="fade-up">
+                <p class="section-label">FAQ</p>
+                <h2 class="section-title">よくあるご質問</h2>
+                <p class="section-desc mx-auto">はじめての方からよくいただくご質問をまとめました。</p>
+            </div>
+            <div class="faq__list">
+                <div class="faq__item" data-aos="fade-up">
+                    <button class="faq__question">植物由来のサプリメントは効果があるのですか？<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq__answer"><p>はい。BOTANICAでは、科学的なエビデンスに基づいた原料を厳選し、有効成分が十分に摂取できる配合量で設計しています。植物のちからをしっかりお届けできるよう、吸収効率にもこだわっています。</p></div>
+                </div>
+                <div class="faq__item" data-aos="fade-up" data-aos-delay="50">
+                    <button class="faq__question">アレルギーがあっても飲めますか？<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq__answer"><p>BOTANICAの製品はグルテンフリー・乳製品フリーです。ただし、特定の植物アレルギーをお持ちの方は、各商品の原材料一覧をご確認ください。ご不明な点はお気軽にお問い合わせください。</p></div>
+                </div>
+                <div class="faq__item" data-aos="fade-up" data-aos-delay="100">
+                    <button class="faq__question">どのくらい続ければ実感できますか？<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq__answer"><p>個人差はございますが、多くのお客様から「2〜3ヶ月ほどで変化を感じた」というお声をいただいています。毎日の習慣として無理なく続けていただくことが大切です。</p></div>
+                </div>
+                <div class="faq__item" data-aos="fade-up" data-aos-delay="150">
+                    <button class="faq__question">定期購入の解約はいつでもできますか？<i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="faq__answer"><p>はい、定期購入はいつでも解約・休止が可能です。次回お届け予定日の7日前までにマイページまたはお問い合わせフォームからご連絡ください。回数の縛りはございません。</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta" id="cta">
+        <div class="container" data-aos="fade-up">
+            <h2>自然のちからを、<br>あなたの毎日に。</h2>
+            <p>はじめての方には、送料無料のトライアルセットをご用意しています。まずは、植物のやさしさを体験してみてください。</p>
+            <a href="#" class="btn-white"><i class="fa-solid fa-leaf"></i> トライアルセットを試す</a>
+        </div>
+    </section>
+
+    <!-- ===== フッター ===== -->
+    <footer class="footer">
+        <div class="footer__inner">
+            <div>
+                <p class="footer__brand">BOTANICA</p>
+                <p class="footer__desc">植物の恵みから生まれたサプリメント。自然由来100%の成分で、あなたの毎日をやさしく支えます。</p>
+                <div class="footer__social">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" aria-label="LINE"><i class="fa-brands fa-line"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4>メニュー</h4>
+                <ul>
+                    <li><a href="#philosophy">こだわり</a></li>
+                    <li><a href="#products">商品一覧</a></li>
+                    <li><a href="#quality">品質管理</a></li>
+                    <li><a href="#faq">よくある質問</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>サポート</h4>
+                <ul>
+                    <li><a href="#">お問い合わせ</a></li>
+                    <li><a href="#">特定商取引法</a></li>
+                    <li><a href="#">プライバシーポリシー</a></li>
+                    <li><a href="#">利用規約</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2026 BOTANICA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // AOS初期化
+        AOS.init({ duration: 800, once: true, offset: 80 });
+
+        // ナビゲーション スクロール時の背景変化
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // ハンバーガーメニュー
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // FAQ アコーディオン
+        document.querySelectorAll('.faq__question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const answer = item.querySelector('.faq__answer');
+                const isOpen = item.classList.contains('active');
+                // 他を閉じる
+                document.querySelectorAll('.faq__item').forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.faq__answer').style.maxHeight = null;
+                });
+                if (!isOpen) {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
