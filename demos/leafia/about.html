@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIAのブランドストーリー。自然由来の成分にこだわった健康サプリメントの理念、こだわり、そして歩みをご紹介します。">
+
+    <!-- OG Tags -->
+    <meta property="og:title" content="ブランドストーリー | LEAFIA">
+    <meta property="og:description" content="自然と科学の、やさしい出会い。LEAFIAのブランドストーリーをご紹介します。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://placehold.co/1200x630/f0f5f3/5fa8a0?text=LEAFIA">
+    <meta property="og:url" content="https://leafia.jp/about.html">
+
+    <title>ブランドストーリー | LEAFIA</title>
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <style>
+        /* ===== Page About Specific Styles ===== */
+
+        /* Hero Section */
+        .page-about__hero {
+            height: 40vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.1) 0%, rgba(232, 200, 122, 0.05) 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: var(--header-height);
+            text-align: center;
+        }
+
+        .page-about__hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(129, 202, 190, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-about__hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(232, 200, 122, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .page-about__hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+
+        .page-about__hero-subtitle {
+            font-family: var(--font-accent);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-about__hero-title {
+            font-size: var(--font-size-hero);
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: var(--line-height-tight);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-about__hero-description {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-base);
+        }
+
+        /* Mission Section */
+        .page-about__mission {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-2xl);
+        }
+
+        .page-about__mission-image {
+            flex: 0 0 45%;
+        }
+
+        .page-about__mission-image img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-about__mission-content {
+            flex: 1;
+        }
+
+        .page-about__mission-content h2 {
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-about__mission-content p {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-about__mission-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-md);
+            margin-top: var(--gap-lg);
+        }
+
+        .page-about__mission-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--gap-md);
+        }
+
+        .page-about__mission-item-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-primary-light);
+            border-radius: var(--radius-full);
+            color: var(--color-primary);
+            font-size: var(--font-size-lg);
+        }
+
+        .page-about__mission-item-text h4 {
+            margin-bottom: var(--gap-xs);
+            font-size: var(--font-size-md);
+        }
+
+        .page-about__mission-item-text p {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            margin: 0;
+        }
+
+        /* Points Section */
+        .page-about__points-layout {
+            display: flex;
+            align-items: center;
+            gap: var(--gap-2xl);
+            margin-bottom: var(--gap-2xl);
+        }
+
+        .page-about__points-layout:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .page-about__points-image {
+            flex: 0 0 45%;
+        }
+
+        .page-about__points-image img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-about__points-content {
+            flex: 1;
+        }
+
+        .page-about__points-number {
+            font-family: var(--font-accent);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+            opacity: 0.3;
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-about__points-content h3 {
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-about__points-content p {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-base);
+        }
+
+        .page-about__points-content ul {
+            margin-top: var(--gap-md);
+            padding-left: 2em;
+        }
+
+        .page-about__points-content li {
+            margin-bottom: var(--gap-sm);
+            color: var(--color-text-light);
+        }
+
+        /* Timeline Section */
+        .page-about__timeline {
+            position: relative;
+            padding: var(--gap-xl) 0;
+        }
+
+        .page-about__timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            transform: translateX(-50%);
+        }
+
+        .page-about__timeline-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-xl);
+        }
+
+        .page-about__timeline-item {
+            display: flex;
+            gap: var(--gap-lg);
+            position: relative;
+        }
+
+        .page-about__timeline-item:nth-child(odd) .page-about__timeline-content {
+            margin-left: auto;
+            padding-right: var(--gap-md);
+            text-align: right;
+            width: calc(50% - 30px);
+        }
+
+        .page-about__timeline-item:nth-child(even) .page-about__timeline-content {
+            padding-left: var(--gap-md);
+            width: calc(50% - 30px);
+        }
+
+        .page-about__timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--color-bg);
+            border: 3px solid var(--color-primary);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+
+        .page-about__timeline-year {
+            font-family: var(--font-accent);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--gap-xs);
+        }
+
+        .page-about__timeline-title {
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-xs);
+        }
+
+        .page-about__timeline-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        /* Team Section */
+        .page-about__team-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+        }
+
+        .page-about__team-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .page-about__team-image {
+            width: 200px;
+            height: 200px;
+            margin-bottom: var(--gap-md);
+            overflow: hidden;
+            border-radius: 50%;
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-about__team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .page-about__team-name {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-xs);
+        }
+
+        .page-about__team-role {
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            font-weight: 600;
+            margin-bottom: var(--gap-md);
+            display: block;
+        }
+
+        .page-about__team-bio {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-base);
+        }
+
+        /* CTA Section */
+        .page-about__cta {
+            text-align: center;
+            padding: var(--gap-2xl);
+            background: linear-gradient(135deg, var(--color-primary-light) 0%, rgba(232, 200, 122, 0.05) 100%);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .page-about__cta h2 {
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-about__cta p {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-lg);
+        }
+
+        .page-about__cta-buttons {
+            display: flex;
+            gap: var(--gap-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-about__hero-title {
+                font-size: var(--font-size-4xl);
+            }
+
+            .page-about__mission {
+                gap: var(--gap-lg);
+            }
+
+            .page-about__mission-image {
+                flex: 0 0 50%;
+            }
+
+            .page-about__points-layout {
+                gap: var(--gap-lg);
+            }
+
+            .page-about__points-image {
+                flex: 0 0 50%;
+            }
+
+            .page-about__team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-about__timeline::before {
+                left: 30px;
+            }
+
+            .page-about__timeline-item:nth-child(odd) .page-about__timeline-content,
+            .page-about__timeline-item:nth-child(even) .page-about__timeline-content {
+                width: 100%;
+                text-align: left;
+                padding-left: var(--gap-lg);
+                padding-right: 0;
+                margin-left: 0;
+            }
+
+            .page-about__timeline-dot {
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-about__hero {
+                height: 35vh;
+                min-height: 300px;
+            }
+
+            .page-about__hero-title {
+                font-size: var(--font-size-3xl);
+            }
+
+            .page-about__hero-subtitle,
+            .page-about__hero-description {
+                font-size: var(--font-size-base);
+            }
+
+            .page-about__mission {
+                flex-direction: column;
+                gap: var(--gap-lg);
+            }
+
+            .page-about__mission-image {
+                flex: 0 0 100%;
+            }
+
+            .page-about__points-layout,
+            .page-about__points-layout:nth-child(odd) {
+                flex-direction: column;
+                gap: var(--gap-lg);
+            }
+
+            .page-about__points-image {
+                flex: 0 0 100%;
+            }
+
+            .page-about__team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-about__team-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .page-about__cta {
+                padding: var(--gap-lg);
+            }
+
+            .page-about__cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link nav__link--active">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== Main Content ===== -->
+    <main>
+        <!-- ===== Hero Section ===== -->
+        <section class="page-about__hero">
+            <div class="page-about__hero-content" data-aos="fade-up" data-aos-duration="800">
+                <p class="page-about__hero-subtitle">Our Story</p>
+                <h1 class="page-about__hero-title">自然と科学の、やさしい出会い。</h1>
+                <p class="page-about__hero-description">LEAFIAは、自然の力と科学的知見を融合させ、毎日をより健やかに過ごすためのサプリメントをお届けします。</p>
+            </div>
+        </section>
+
+        <!-- ===== Mission Section ===== -->
+        <section class="section">
+            <div class="container">
+                <div class="page-about__mission" data-aos="fade-up" data-aos-duration="800">
+                    <div class="page-about__mission-image">
+                        <img src="https://placehold.co/500x400/f0f5f3/5fa8a0?text=Natural+Ingredients" alt="自然由来の成分">
+                    </div>
+                    <div class="page-about__mission-content">
+                        <h2>LEAFIAの想い</h2>
+                        <p>私たちLEAFIAは「葉から始まる、いきいきとした毎日」をテーマに、自然由来の成分にこだわったサプリメントを開発・販売しています。</p>
+                        <p>健康は、人生の基盤。毎日を輝かせるために、自然の恵みと最新の科学を組み合わせたサプリメントで、あなたの健康をやさしくサポートします。</p>
+
+                        <ul class="page-about__mission-list">
+                            <li class="page-about__mission-item">
+                                <div class="page-about__mission-item-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div class="page-about__mission-item-text">
+                                    <h4>自然由来にこだわる</h4>
+                                    <p>化学合成品ではなく、自然の力を最大限に活かした成分選びを心がけています。</p>
+                                </div>
+                            </li>
+                            <li class="page-about__mission-item">
+                                <div class="page-about__mission-item-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="page-about__mission-item-text">
+                                    <h4>健康寿命を延ばす</h4>
+                                    <p>単なる栄養補給ではなく、生涯を通じた健やかさを応援することが私たちのミッションです。</p>
+                                </div>
+                            </li>
+                            <li class="page-about__mission-item">
+                                <div class="page-about__mission-item-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="page-about__mission-item-text">
+                                    <h4>科学的根拠を大切に</h4>
+                                    <p>自然と科学を融合。お客様の信頼に応えるため、常に最新の研究を取り入れています。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Points Section ===== -->
+        <section class="section section--alt">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">こだわりの3つのポイント</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">LEAFIAが品質にこだわる理由</p>
+
+                <!-- Point 1 -->
+                <div class="page-about__points-layout" data-aos="fade-up" data-aos-delay="200">
+                    <div class="page-about__points-image">
+                        <img src="https://placehold.co/450x350/f0f5f3/5fa8a0?text=Premium+Ingredients" alt="厳選された原材料">
+                    </div>
+                    <div class="page-about__points-content">
+                        <div class="page-about__points-number">01</div>
+                        <h3>原材料の厳選</h3>
+                        <p>世界中から厳選した高品質な原材料のみを使用しています。毎一つの成分について安全性と有効性を検証し、最高水準の原材料だけをセレクトしています。</p>
+                        <ul>
+                            <li>契約農家からの直仕入れ</li>
+                            <li>農薬・化学肥料不使用</li>
+                            <li>第三者機関による品質検査</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="page-about__points-layout" data-aos="fade-up" data-aos-delay="300">
+                    <div class="page-about__points-image">
+                        <img src="https://placehold.co/450x350/f0f5f3/5fa8a0?text=Manufacturing" alt="GMP認定工場">
+                    </div>
+                    <div class="page-about__points-content">
+                        <div class="page-about__points-number">02</div>
+                        <h3>GMP認定工場での製造</h3>
+                        <p>すべてのサプリメントはGMP（医薬品及び医薬部外品の製造管理及び品質管理の基準）認定工場で製造されています。徹底した品質管理と衛生管理のもと、一粒一粒丁寧に作られています。</p>
+                        <ul>
+                            <li>ISO 9001認証取得</li>
+                            <li>温度・湿度管理の厳格化</li>
+                            <li>トレーサビリティシステム完備</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="page-about__points-layout" data-aos="fade-up" data-aos-delay="400">
+                    <div class="page-about__points-image">
+                        <img src="https://placehold.co/450x350/f0f5f3/5fa8a0?text=Development+Team" alt="開発チーム">
+                    </div>
+                    <div class="page-about__points-content">
+                        <div class="page-about__points-number">03</div>
+                        <h3>管理栄養士チームによる開発</h3>
+                        <p>複数の管理栄養士と医学博士で構成される開発チームが、科学的根拠に基づいた最適な配合を検討しています。各製品は栄養学的な有用性を追求して開発されています。</p>
+                        <ul>
+                            <li>管理栄養士による栄養設計</li>
+                            <li>臨床試験データに基づく配合</li>
+                            <li>定期的な処方更新と改善</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Timeline Section ===== -->
+        <section class="section">
+            <div class="container container--narrow">
+                <h2 class="section-title" data-aos="fade-up">LEAFIAの歩み</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">ブランドの成長と進化</p>
+
+                <div class="page-about__timeline" data-aos="fade-up" data-aos-delay="200">
+                    <div class="page-about__timeline-items">
+                        <div class="page-about__timeline-item">
+                            <div class="page-about__timeline-dot"></div>
+                            <div class="page-about__timeline-content">
+                                <div class="page-about__timeline-year">2019</div>
+                                <div class="page-about__timeline-title">LEAFIA 創業</div>
+                                <div class="page-about__timeline-description">自然由来の成分にこだわったサプリメントメーカーとして、東京で創業。健康寿命を伸ばすというミッションを掲げ、スタートしました。</div>
+                            </div>
+                        </div>
+
+                        <div class="page-about__timeline-item">
+                            <div class="page-about__timeline-dot"></div>
+                            <div class="page-about__timeline-content">
+                                <div class="page-about__timeline-year">2020</div>
+                                <div class="page-about__timeline-title">初商品「グリーンビューティ」発売</div>
+                                <div class="page-about__timeline-description">ハーブ由来の美容サプリメント「グリーンビューティ」を発売。自然の力と科学を融合させた第一弾商品として、多くのお客様にご愛用いただきました。</div>
+                            </div>
+                        </div>
+
+                        <div class="page-about__timeline-item">
+                            <div class="page-about__timeline-dot"></div>
+                            <div class="page-about__timeline-content">
+                                <div class="page-about__timeline-year">2022</div>
+                                <div class="page-about__timeline-title">累計10万個突破</div>
+                                <div class="page-about__timeline-description">お客様の信頼と支持のおかげで、累計販売個数が10万個を超過。さらに商品ラインアップを拡充し、複数のシリーズを展開開始。</div>
+                            </div>
+                        </div>
+
+                        <div class="page-about__timeline-item">
+                            <div class="page-about__timeline-dot"></div>
+                            <div class="page-about__timeline-content">
+                                <div class="page-about__timeline-year">2024</div>
+                                <div class="page-about__timeline-title">全国展開・オンラインストア開設</div>
+                                <div class="page-about__timeline-description">全国の主要百貨店への展開を開始し、同時にオンラインストアを本格稼働。より多くの方に、いつでもどこでもLEAFIAの商品をお届けできるようになりました。</div>
+                            </div>
+                        </div>
+
+                        <div class="page-about__timeline-item">
+                            <div class="page-about__timeline-dot"></div>
+                            <div class="page-about__timeline-content">
+                                <div class="page-about__timeline-year">2026</div>
+                                <div class="page-about__timeline-title">サステナブルパッケージ導入</div>
+                                <div class="page-about__timeline-description">地球環境への配慮から、完全生分解性パッケージへの切り替えを完了。自然の力を活かす企業として、次世代への責任を果たしています。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Team Section ===== -->
+        <section class="section section--alt">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">チーム紹介</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">LEAFIAを支える3人のリーダー</p>
+
+                <div class="page-about__team-grid grid" data-aos="fade-up" data-aos-delay="200">
+                    <!-- Team Member 1 -->
+                    <div class="page-about__team-card">
+                        <div class="page-about__team-image">
+                            <img src="https://placehold.co/200x200/f0f5f3/5fa8a0?text=CEO" alt="代表取締役社長 田中太郎">
+                        </div>
+                        <h3 class="page-about__team-name">田中 太郎</h3>
+                        <span class="page-about__team-role">代表取締役社長</span>
+                        <p class="page-about__team-bio">東京大学農学部卒業。20年以上の健康食品業界でのキャリアを経て、LEAFIAを創業。「自然と科学の融合」を理念に、革新的なサプリメント開発に取り組んでいます。</p>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="page-about__team-card">
+                        <div class="page-about__team-image">
+                            <img src="https://placehold.co/200x200/f0f5f3/5fa8a0?text=Manager" alt="栄養顧問 鈴木由美">
+                        </div>
+                        <h3 class="page-about__team-name">鈴木 由美</h3>
+                        <span class="page-about__team-role">栄養顧問・管理栄養士</span>
+                        <p class="page-about__team-bio">厚生労働省認定管理栄養士。大学での栄養学研究を経て、現在も複数の学術機関と連携。最新の栄養学知見をLEAFIAの製品開発に活かしています。</p>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="page-about__team-card">
+                        <div class="page-about__team-image">
+                            <img src="https://placehold.co/200x200/f0f5f3/5fa8a0?text=R&D" alt="研究開発リーダー 山本健二">
+                        </div>
+                        <h3 class="page-about__team-name">山本 健二</h3>
+                        <span class="page-about__team-role">研究開発リーダー・医学博士</span>
+                        <p class="page-about__team-bio">PhD in Pharmacology。国内外の製薬企業でのR&D経験を経て、現在LEAFIAの新製品開発を統括。科学的根拠に基づいた革新的な製品を生み出しています。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA Section ===== -->
+        <section class="section">
+            <div class="container container--narrow">
+                <div class="page-about__cta" data-aos="fade-up">
+                    <h2>あなたの健康の旅を、私たちと共に</h2>
+                    <p>LEAFIAのこだわりを実感してみませんか？自然由来の成分で、毎日をもっと輝かせるお手伝いをさせください。</p>
+                    <div class="page-about__cta-buttons">
+                        <a href="./products.html" class="btn btn--primary btn--lg">商品一覧を見る</a>
+                        <a href="./contact.html" class="btn btn--outline btn--lg">お問い合わせ</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== Scripts ===== -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // AOS (Animate On Scroll) initialization
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50
+        });
+
+        // Header scroll effect
+        const header = document.querySelector('.site-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        const hamburger = document.querySelector('.nav__hamburger');
+        const navMenu = document.querySelector('.nav__menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        // Close menu when link is clicked
+        const navLinks = document.querySelectorAll('.nav__link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.header__nav') && !e.target.closest('.nav__hamburger')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>

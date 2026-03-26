@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIAへのお問い合わせページ。商品に関するご質問、ご注文、定期購入についてのお問い合わせはこちらからお気軽にご連絡ください。">
+    <meta property="og:title" content="お問い合わせ | LEAFIA">
+    <meta property="og:description" content="LEAFIAへのお問い合わせページ。商品に関するご質問やご注文についてお気軽にご連絡ください。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://leafia.jp/contact.html">
+    <meta property="og:image" content="https://placehold.co/1200x630/81cabe/ffffff?text=LEAFIA">
+
+    <title>お問い合わせ | LEAFIA</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Page-specific CSS -->
+    <style>
+        /* ===== Hero Section ===== */
+        .page-contact__hero {
+            height: 40vh;
+            background: linear-gradient(135deg, var(--color-primary-light) 0%, rgba(129, 202, 190, 0.08) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: var(--header-height);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-contact__hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(232, 200, 122, 0.15) 0%, transparent 50%);
+            animation: drift 8s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
+        }
+
+        .page-contact__hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-contact__hero h1 {
+            font-size: var(--font-size-hero);
+            margin-bottom: var(--gap-md);
+            color: var(--color-text);
+        }
+
+        .page-contact__hero p {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+        }
+
+        /* ===== Form Section ===== */
+        .page-contact__form-section {
+            padding: var(--section-padding);
+        }
+
+        .page-contact__form-wrapper {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-contact__form-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap-2xl);
+            align-items: start;
+        }
+
+        /* Form Styles */
+        .page-contact__form {
+            background: var(--color-bg);
+            padding: var(--gap-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-contact__form-group {
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-contact__form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            margin-bottom: var(--gap-xs);
+            color: var(--color-text);
+        }
+
+        .page-contact__form-label .required {
+            color: var(--color-accent);
+            margin-left: 4px;
+        }
+
+        .page-contact__form-input,
+        .page-contact__form-textarea,
+        .page-contact__form-select {
+            width: 100%;
+            padding: 0.75em 1em;
+            font-size: var(--font-size-base);
+            font-family: var(--font-body);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-bg);
+            color: var(--color-text);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .page-contact__form-input:focus,
+        .page-contact__form-textarea:focus,
+        .page-contact__form-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+
+        .page-contact__form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .page-contact__form-checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--gap-sm);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-contact__form-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .page-contact__form-checkbox-label {
+            font-size: var(--font-size-sm);
+            line-height: 1.5;
+            cursor: pointer;
+            color: var(--color-text);
+        }
+
+        .page-contact__form-checkbox-label a {
+            color: var(--color-primary);
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+        }
+
+        .page-contact__form-checkbox-label a:hover {
+            color: var(--color-primary-dark);
+        }
+
+        .page-contact__form-button {
+            width: 100%;
+        }
+
+        .page-contact__form-error {
+            color: var(--color-accent);
+            font-size: var(--font-size-sm);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .page-contact__form-error.show {
+            display: block;
+        }
+
+        /* Contact Info */
+        .page-contact__info {
+            background: var(--color-bg-alt);
+            padding: var(--gap-xl);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border-light);
+        }
+
+        .page-contact__info-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--gap-lg);
+            color: var(--color-text);
+        }
+
+        .page-contact__info-item {
+            margin-bottom: var(--gap-lg);
+            padding-bottom: var(--gap-lg);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .page-contact__info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .page-contact__info-label {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .page-contact__info-content {
+            font-size: var(--font-size-md);
+            color: var(--color-text);
+            line-height: var(--line-height-loose);
+        }
+
+        .page-contact__info-content a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .page-contact__info-content a:hover {
+            color: var(--color-primary-dark);
+            text-decoration: underline;
+        }
+
+        /* FAQ Section */
+        .page-contact__faq-section {
+            padding: var(--section-padding);
+            background-color: var(--color-bg-alt);
+        }
+
+        .page-contact__faq-wrapper {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-contact__faq-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--gap-lg);
+            background: var(--color-bg);
+            padding: var(--gap-xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-contact__faq-text {
+            flex: 1;
+        }
+
+        .page-contact__faq-heading {
+            font-size: var(--font-size-xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-contact__faq-description {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-contact__faq-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            padding: 0.875em 2em;
+            background-color: var(--color-primary);
+            color: var(--color-text-on-primary);
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all var(--transition-base);
+        }
+
+        .page-contact__faq-link:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-contact__faq-icon {
+            font-size: var(--font-size-2xl);
+            color: var(--color-primary);
+            flex-shrink: 0;
+        }
+
+        /* Success Message */
+        .page-contact__success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-bg);
+            padding: 3rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            z-index: 2000;
+            display: none;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .page-contact__success-message.show {
+            display: block;
+        }
+
+        .page-contact__success-message-icon {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-contact__success-message-title {
+            font-size: var(--font-size-xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-contact__success-message-text {
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-contact__success-message-button {
+            padding: 0.75em 2em;
+            background-color: var(--color-primary);
+            color: var(--color-text-on-primary);
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .page-contact__success-message-button:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .page-contact__success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1999;
+            display: none;
+        }
+
+        .page-contact__success-overlay.show {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-contact__form-container {
+                grid-template-columns: 1fr;
+                gap: var(--gap-lg);
+            }
+
+            .page-contact__faq-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .page-contact__faq-icon {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-contact__hero {
+                height: 35vh;
+                margin-top: var(--header-height-mobile);
+            }
+
+            .page-contact__hero h1 {
+                font-size: var(--font-size-3xl);
+            }
+
+            .page-contact__form,
+            .page-contact__info {
+                padding: var(--gap-lg);
+            }
+
+            .page-contact__form-section {
+                padding: 60px 0;
+            }
+
+            .page-contact__faq-section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-contact__hero h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-contact__hero p {
+                font-size: var(--font-size-base);
+            }
+
+            .page-contact__form,
+            .page-contact__info {
+                padding: var(--gap-md);
+            }
+
+            .page-contact__form-button {
+                width: 100%;
+            }
+
+            .page-contact__success-message {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link nav__link--active">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== Main Content ===== -->
+    <main>
+        <!-- Hero Section -->
+        <section class="page-contact__hero">
+            <div class="page-contact__hero-content" data-aos="fade-up">
+                <h1>お気軽にお問い合わせください</h1>
+                <p>ご不明な点やご不安なことがあれば、いつでもお気軽にお問い合わせください。丁寧にサポートさせていただきます。</p>
+            </div>
+        </section>
+
+        <!-- Contact Form & Info Section -->
+        <section class="page-contact__form-section">
+            <div class="page-contact__form-wrapper">
+                <div class="page-contact__form-container">
+                    <!-- Form -->
+                    <form class="page-contact__form" id="contactForm" data-aos="fade-right" data-aos-delay="100">
+                        <!-- Name -->
+                        <div class="page-contact__form-group">
+                            <label for="name" class="page-contact__form-label">
+                                お名前
+                                <span class="required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="page-contact__form-input"
+                                placeholder="田中太郎"
+                                required
+                            >
+                            <div class="page-contact__form-error" id="nameError">お名前を入力してください</div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="page-contact__form-group">
+                            <label for="email" class="page-contact__form-label">
+                                メールアドレス
+                                <span class="required">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="page-contact__form-input"
+                                placeholder="example@example.com"
+                                required
+                            >
+                            <div class="page-contact__form-error" id="emailError">正しいメールアドレスを入力してください</div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="page-contact__form-group">
+                            <label for="phone" class="page-contact__form-label">電話番号</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                class="page-contact__form-input"
+                                placeholder="09012345678"
+                            >
+                        </div>
+
+                        <!-- Inquiry Type -->
+                        <div class="page-contact__form-group">
+                            <label for="inquiryType" class="page-contact__form-label">
+                                お問い合わせ種別
+                                <span class="required">*</span>
+                            </label>
+                            <select
+                                id="inquiryType"
+                                name="inquiryType"
+                                class="page-contact__form-select"
+                                required
+                            >
+                                <option value="">選択してください</option>
+                                <option value="product">商品について</option>
+                                <option value="order">ご注文について</option>
+                                <option value="subscription">定期購入について</option>
+                                <option value="other">その他</option>
+                            </select>
+                            <div class="page-contact__form-error" id="inquiryTypeError">お問い合わせ種別を選択してください</div>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="page-contact__form-group">
+                            <label for="message" class="page-contact__form-label">
+                                お問い合わせ内容
+                                <span class="required">*</span>
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                class="page-contact__form-textarea"
+                                placeholder="具体的なお問い合わせ内容をお入力ください"
+                                required
+                            ></textarea>
+                            <div class="page-contact__form-error" id="messageError">お問い合わせ内容を入力してください</div>
+                        </div>
+
+                        <!-- Privacy Policy Agreement -->
+                        <div class="page-contact__form-checkbox-group">
+                            <input
+                                type="checkbox"
+                                id="privacy"
+                                name="privacy"
+                                class="page-contact__form-checkbox"
+                                required
+                            >
+                            <label for="privacy" class="page-contact__form-checkbox-label">
+                                <a href="#">プライバシーポリシー</a>に同意します
+                            </label>
+                        </div>
+                        <div class="page-contact__form-error" id="privacyError">プライバシーポリシーに同意してください</div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn--primary btn--lg page-contact__form-button">
+                            送信する
+                        </button>
+                    </form>
+
+                    <!-- Contact Info -->
+                    <div class="page-contact__info" data-aos="fade-left" data-aos-delay="100">
+                        <h3 class="page-contact__info-title">ご連絡先</h3>
+
+                        <!-- Phone -->
+                        <div class="page-contact__info-item">
+                            <div class="page-contact__info-label">電話番号</div>
+                            <div class="page-contact__info-content">
+                                <a href="tel:0312345678">03-1234-5678</a>
+                            </div>
+                        </div>
+
+                        <!-- Business Hours -->
+                        <div class="page-contact__info-item">
+                            <div class="page-contact__info-label">営業時間</div>
+                            <div class="page-contact__info-content">
+                                平日 10:00 - 18:00<br>
+                                <small>（土日祝日は休業）</small>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="page-contact__info-item">
+                            <div class="page-contact__info-label">メールアドレス</div>
+                            <div class="page-contact__info-content">
+                                <a href="mailto:support@leafia.jp">support@leafia.jp</a>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="page-contact__info-item">
+                            <div class="page-contact__info-label">所在地</div>
+                            <div class="page-contact__info-content">
+                                東京都渋谷区代々木1-1-1<br>
+                                LEAFIA BUILDING 3F
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="page-contact__faq-section">
+            <div class="page-contact__faq-wrapper">
+                <div class="page-contact__faq-content" data-aos="fade-up">
+                    <div class="page-contact__faq-text">
+                        <h2 class="page-contact__faq-heading">よくある質問もチェック</h2>
+                        <p class="page-contact__faq-description">
+                            お問い合わせいただく前に、よくある質問をご確認いただくと、より迅速にご対応できる場合があります。ぜひご参考ください。
+                        </p>
+                        <a href="./faq.html" class="page-contact__faq-link">
+                            よくある質問へ
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="page-contact__faq-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Message -->
+    <div class="page-contact__success-overlay" id="successOverlay"></div>
+    <div class="page-contact__success-message" id="successMessage">
+        <div class="page-contact__success-message-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 class="page-contact__success-message-title">送信完了しました</h2>
+        <p class="page-contact__success-message-text">
+            お問い合わせありがとうございます。<br>
+            確認後、ご返信させていただきます。
+        </p>
+        <button class="page-contact__success-message-button" id="closeSuccessButton">
+            閉じる
+        </button>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS (Animate On Scroll) -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Page-specific Scripts -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Form Validation and Submit
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+        const successOverlay = document.getElementById('successOverlay');
+        const closeSuccessButton = document.getElementById('closeSuccessButton');
+
+        // Validate form
+        function validateForm() {
+            let isValid = true;
+
+            // Name validation
+            const nameInput = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+            if (!nameInput.value.trim()) {
+                nameError.classList.add('show');
+                isValid = false;
+            } else {
+                nameError.classList.remove('show');
+            }
+
+            // Email validation
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailInput.value.trim() || !emailRegex.test(emailInput.value)) {
+                emailError.classList.add('show');
+                isValid = false;
+            } else {
+                emailError.classList.remove('show');
+            }
+
+            // Inquiry Type validation
+            const inquiryTypeSelect = document.getElementById('inquiryType');
+            const inquiryTypeError = document.getElementById('inquiryTypeError');
+            if (!inquiryTypeSelect.value) {
+                inquiryTypeError.classList.add('show');
+                isValid = false;
+            } else {
+                inquiryTypeError.classList.remove('show');
+            }
+
+            // Message validation
+            const messageInput = document.getElementById('message');
+            const messageError = document.getElementById('messageError');
+            if (!messageInput.value.trim()) {
+                messageError.classList.add('show');
+                isValid = false;
+            } else {
+                messageError.classList.remove('show');
+            }
+
+            // Privacy Policy agreement validation
+            const privacyCheckbox = document.getElementById('privacy');
+            const privacyError = document.getElementById('privacyError');
+            if (!privacyCheckbox.checked) {
+                privacyError.classList.add('show');
+                isValid = false;
+            } else {
+                privacyError.classList.remove('show');
+            }
+
+            return isValid;
+        }
+
+        // Handle form submit
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (validateForm()) {
+                // Show success message
+                successOverlay.classList.add('show');
+                successMessage.classList.add('show');
+
+                // Reset form
+                contactForm.reset();
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Close success message
+        closeSuccessButton.addEventListener('click', () => {
+            successOverlay.classList.remove('show');
+            successMessage.classList.remove('show');
+        });
+
+        successOverlay.addEventListener('click', () => {
+            successOverlay.classList.remove('show');
+            successMessage.classList.remove('show');
+        });
+
+        // Remove error message on input
+        ['name', 'email', 'inquiryType', 'message', 'privacy'].forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(fieldId + 'Error');
+
+            field.addEventListener('input', () => {
+                if (field.type === 'checkbox') {
+                    if (field.checked) {
+                        errorElement.classList.remove('show');
+                    }
+                } else if (field.value.trim()) {
+                    errorElement.classList.remove('show');
+                }
+            });
+
+            field.addEventListener('change', () => {
+                if (field.type === 'checkbox') {
+                    if (field.checked) {
+                        errorElement.classList.remove('show');
+                    }
+                } else if (field.value.trim()) {
+                    errorElement.classList.remove('show');
+                }
+            });
+        });
+    </script>
+
+    <!-- Header Scroll Control & Hamburger Menu -->
+    <script>
+        // Header scroll behavior
+        const header = document.querySelector('.site-header');
+        const hamburger = document.querySelector('.nav__hamburger');
+        const navMenu = document.querySelector('.nav__menu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger menu toggle
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        // Close menu when link is clicked
+        const navLinks = document.querySelectorAll('.nav__link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav__hamburger') && !e.target.closest('.nav__menu')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>

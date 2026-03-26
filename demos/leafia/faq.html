@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIAのよくある質問ページ。商品、注文、配送、その他のご質問にお答えします。">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="よくある質問 | LEAFIA">
+    <meta property="og:description" content="LEAFIAのよくある質問ページ。商品、注文、配送、その他のご質問にお答えします。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://placehold.co/1200x630/81cabe/ffffff?text=LEAFIA+FAQ">
+
+    <title>よくある質問 | LEAFIA</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <style>
+        /* ===== ページ固有スタイル: FAQ ===== */
+
+        /* Hero Section */
+        .page-faq__hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40vh;
+            background: linear-gradient(135deg, var(--color-primary-light) 0%, rgba(129, 202, 190, 0.08) 100%);
+            margin-top: var(--header-height);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .page-faq__hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(129, 202, 190, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .page-faq__hero::after {
+            content: '';
+            position: absolute;
+            bottom: -5%;
+            left: -5%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(232, 200, 122, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .page-faq__hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-faq__hero-label {
+            display: block;
+            font-family: var(--font-accent);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary-dark);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-faq__hero-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-md);
+            font-weight: 700;
+        }
+
+        .page-faq__hero-subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            max-width: 600px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
+
+        /* FAQ Sections */
+        .page-faq__section {
+            padding: var(--section-padding);
+        }
+
+        .page-faq__section--alt {
+            background-color: var(--color-bg-alt);
+        }
+
+        .page-faq__section-title {
+            font-size: var(--font-size-3xl);
+            text-align: left;
+            margin-bottom: var(--gap-lg);
+            position: relative;
+            font-weight: 700;
+        }
+
+        .page-faq__section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -12px;
+            width: 50px;
+            height: 3px;
+            background: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        .page-faq__content {
+            max-width: var(--container-narrow);
+            margin: 0;
+        }
+
+        /* Accordion Item */
+        .page-faq__accordion-item {
+            margin-bottom: var(--gap-md);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: box-shadow var(--transition-base);
+        }
+
+        .page-faq__accordion-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-faq__accordion-item.active {
+            border-color: var(--color-primary);
+            background-color: var(--color-primary-light);
+        }
+
+        .page-faq__accordion-trigger {
+            width: 100%;
+            padding: var(--gap-md);
+            background: var(--color-bg);
+            text-align: left;
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--gap-md);
+        }
+
+        .page-faq__accordion-item.active .page-faq__accordion-trigger {
+            color: var(--color-primary-dark);
+            background-color: rgba(129, 202, 190, 0.06);
+        }
+
+        .page-faq__accordion-trigger:hover {
+            background-color: var(--color-bg-alt);
+            color: var(--color-primary-dark);
+        }
+
+        .page-faq__accordion-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary-light);
+            border-radius: 50%;
+            font-size: var(--font-size-md);
+            color: var(--color-primary);
+            transition: transform var(--transition-base), background-color var(--transition-base);
+            flex-shrink: 0;
+        }
+
+        .page-faq__accordion-item.active .page-faq__accordion-icon {
+            transform: rotate(180deg);
+            background-color: var(--color-primary);
+            color: var(--color-text-on-primary);
+        }
+
+        .page-faq__accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-base), padding var(--transition-base), background-color var(--transition-base);
+            background-color: var(--color-bg);
+        }
+
+        .page-faq__accordion-item.active .page-faq__accordion-content {
+            max-height: 1000px;
+            background-color: rgba(129, 202, 190, 0.03);
+        }
+
+        .page-faq__accordion-text {
+            padding: 0 var(--gap-md) var(--gap-md) var(--gap-md);
+            font-size: var(--font-size-base);
+            color: var(--color-text);
+            line-height: var(--line-height-loose);
+        }
+
+        .page-faq__accordion-text p {
+            margin: 0;
+        }
+
+        .page-faq__accordion-text p + p {
+            margin-top: 1em;
+        }
+
+        /* CTA Section */
+        .page-faq__cta {
+            padding: var(--section-padding);
+            background: linear-gradient(135deg, var(--color-primary-light) 0%, rgba(232, 200, 122, 0.08) 100%);
+            text-align: center;
+        }
+
+        .page-faq__cta-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-faq__cta-title {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--gap-md);
+            font-weight: 700;
+        }
+
+        .page-faq__cta-text {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-lg);
+            line-height: var(--line-height-loose);
+        }
+
+        .page-faq__cta-buttons {
+            display: flex;
+            gap: var(--gap-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .page-faq__hero {
+                height: 35vh;
+                margin-top: var(--header-height-mobile);
+            }
+
+            .page-faq__hero-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-faq__hero-subtitle {
+                font-size: var(--font-size-base);
+            }
+
+            .page-faq__section {
+                padding: var(--section-padding-sm);
+            }
+
+            .page-faq__section-title {
+                font-size: var(--font-size-2xl);
+                margin-bottom: var(--gap-md);
+            }
+
+            .page-faq__accordion-trigger {
+                padding: var(--gap-sm) var(--gap-md);
+                font-size: var(--font-size-base);
+            }
+
+            .page-faq__accordion-text {
+                padding: 0 var(--gap-sm) var(--gap-sm) var(--gap-sm);
+                font-size: var(--font-size-sm);
+            }
+
+            .page-faq__cta-buttons {
+                flex-direction: column;
+            }
+
+            .page-faq__cta-buttons .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-faq__hero {
+                height: 30vh;
+            }
+
+            .page-faq__hero-title {
+                font-size: var(--font-size-xl);
+            }
+
+            .page-faq__section-title {
+                font-size: var(--font-size-xl);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link nav__link--active">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+    <!-- Hero Section -->
+    <section class="page-faq__hero">
+        <div class="page-faq__hero-content" data-aos="fade-up">
+            <span class="page-faq__hero-label">Help & Support</span>
+            <h1 class="page-faq__hero-title">お客様からよくいただくご質問</h1>
+            <p class="page-faq__hero-subtitle">商品選びから購入後のサポートまで、よくいただくご質問にお答えします。不安なことがあればお気軽にお問い合わせください。</p>
+        </div>
+    </section>
+
+    <!-- FAQ: 商品について -->
+    <section class="page-faq__section">
+        <div class="container page-faq__content">
+            <h2 class="page-faq__section-title" data-aos="fade-up">商品について</h2>
+
+            <!-- Question 1 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>サプリメントの原材料はどこから仕入れていますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAの全ての原材料は、厳選された国内外のサプライヤーから仕入れています。特に植物由来の成分については、有機認証を取得した農場からの調達を優先しています。</p>
+                        <p>例えば、モリンガやスピルリナなどの主要成分は、東南アジアの農業協同組合と長年の信頼関係を築いており、定期的に品質検査を実施しています。また、国内産の成分も積極的に採用しており、地域農業の支援も心がけています。</p>
+                        <p>全ての仕入れ先は、国際的な品質基準（GMP認定工場など）を満たしており、お客様に安心してご使用いただける環境整備に努めています。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>アレルギー成分は含まれていますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAの製品は、一般的なアレルゲン（卵、乳、小麦、そば、落花生、えび、かになど）を使用していません。植物由来の成分を中心とした配合になっています。</p>
+                        <p>ただし、製造工場では複数の製品を取り扱っているため、アレルギーが非常に強い方は、各製品の詳細なアレルゲン情報をお客様サポートセンターまでお問い合わせください。また、ご使用前には必ず成分表示をご確認いただくことをお勧めします。</p>
+                        <p>アレルギーに関する詳細情報は、商品ページまたは製品に同梱されている成分表で確認できます。ご不明な点はお気軽にお問い合わせください。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>子どもや妊婦でも飲めますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAの製品は、天然由来の成分を使用した一般向けサプリメントです。ただし、妊娠中・授乳中の方、お子さんへのご使用については、お医者さんや薬剤師にご相談いただくことをお勧めしています。</p>
+                        <p>特に妊娠中は、ホルモンバランスの変化によって予期しない反応が起こる可能性があります。また、お子さんの場合、成長段階に応じて栄養摂取のニーズが異なるため、専門家のアドバイスが必要です。</p>
+                        <p>ご不安な点やご質問がございましたら、お気軽にお客様サポートセンターにお問い合わせください。また、かかりつけの医師にご相談いただいた上でのご使用をお勧めします。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>他のサプリメントと併用しても大丈夫ですか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAの製品は、天然由来の成分を使用しており、一般的には他のサプリメントとの併用に問題ないよう設計されています。ただし、成分が重複していないかの確認が重要です。</p>
+                        <p>例えば、複数の製品で同じ成分（ビタミンやミネラルなど）を摂取すると、過剰摂取になる可能性があります。特に医薬品を服用されている場合は、相互作用がないか確認が必要です。</p>
+                        <p>複数のサプリメントを組み合わせてご使用される場合は、事前にお医者さんや薬剤師にご相談いただくことを強くお勧めします。ご不明な点は、お気軽にお問い合わせください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ: ご注文・配送について -->
+    <section class="page-faq__section page-faq__section--alt">
+        <div class="container page-faq__content">
+            <h2 class="page-faq__section-title" data-aos="fade-up">ご注文・配送について</h2>
+
+            <!-- Question 1 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>注文後、何日で届きますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>ご注文いただいた商品は、通常3営業日以内に発送いたします。発送完了後は、メールでお知らせするお荷物追跡番号を使用して、配送状況をご確認いただけます。</p>
+                        <p>配送にかかる期間は、お住まいのエリアによって異なります。関東圏内は発送から1～2日、その他の地域は2～4日程度を目安としてください。日時指定のご希望がございましたら、注文時のお届け先情報入力画面でお選びいただけます。</p>
+                        <p>ゴールデンウィークやお正月などの長期休暇期間中は、お届けに多少のお時間をいただく場合がございます。その際は、事前にメールでお知らせいたします。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>送料はかかりますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAでは、全国どちらへのお届けでも送料無料サービスを実施しております。商品の金額に関わらず、お客様のご負担はございません。</p>
+                        <p>定期購入コースをご利用の場合も、送料は一切かかりません。毎月、お得な割引価格で商品をお届けできるだけでなく、送料無料で継続的にご利用いただけます。</p>
+                        <p>また、複数の商品をまとめてご購入いただいても、追加の送料は発生いたしません。お好きな商品を組み合わせてご注文ください。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>定期購入の解約方法を教えてください</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>定期購入のご解約は、いつでも簡単に行えます。マイページのご登録情報から「定期購入管理」を選択し、該当する定期配送便の「解約」ボタンをクリックしてください。その場で解約手続きが完了します。</p>
+                        <p>ご解約の際に、理由をお伺いするアンケートが表示されますが、ご記入は任意です。貴重なご意見がございましたら、ぜひお聞かせください。</p>
+                        <p>定期購入の解約には、回数制限や違約金は一切ございません。次回配送予定日の7日前までであれば、当月分のご解約が可能です。ご不明な点がございましたら、お客様サポートセンターにお気軽にお問い合わせください。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>支払い方法は何がありますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>LEAFIAでは、複数のお支払い方法をご用意しております。クレジットカード（VISA、MasterCard、American Express、JCB）、銀行振込、Amazon Pay、PayPay、楽天ペイなど、お客様のご都合に合わせてお選びいただけます。</p>
+                        <p>クレジットカード払いのご場合、セキュアな暗号化通信を使用しており、カード情報は安全に保護されます。銀行振込をお選びの場合、振込手数料はお客様のご負担となります。</p>
+                        <p>定期購入をご利用の場合、クレジットカード払いをお勧めしています。その他のお支払い方法をご希望の場合は、お気軽にお問い合わせください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ: その他 -->
+    <section class="page-faq__section">
+        <div class="container page-faq__content">
+            <h2 class="page-faq__section-title" data-aos="fade-up">その他</h2>
+
+            <!-- Question 1 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>返品・交換はできますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>商品に破損や不良がある場合、また商品が説明と異なる場合は、お気軽にお問い合わせください。到着から7日以内であれば、無料で返品・交換いたします。</p>
+                        <p>返品の際は、購入時のメールに記載されている注文番号をご確認の上、お客様サポートセンターへご連絡ください。返送に必要な送料はLEAFIAで負担いたしますので、ご安心ください。</p>
+                        <p>ただし、お客様のご都合での返品の場合、到着から7日以内であれば応じますが、返送送料はお客様のご負担とさせていただきます。未開封の商品であることが条件となります。詳しくは、ご注文時の利用規約をご確認ください。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>効果を実感するまでどのくらいかかりますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>サプリメントは医薬品ではなく、栄養補助食品です。そのため、即効性を期待するものではなく、毎日継続してご使用いただくことで、体の変化を感じていただくことをお勧めしています。</p>
+                        <p>個人差はございますが、多くのお客様が3ヶ月から6ヶ月の継続使用で、体調の変化を実感されています。体は毎日新しい細胞に生まれ変わるため、サプリメントの成分が十分に機能するには時間が必要です。</p>
+                        <p>効果的にご使用いただくため、毎日同じ時間に、水またはぬるま湯でご飲用ください。また、バランスの良い食事や適度な運動など、生活習慣の改善と組み合わせることで、より良い結果が期待できます。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="page-faq__accordion-item" data-aos="fade-up">
+                <button class="page-faq__accordion-trigger" aria-expanded="false">
+                    <span>実店舗での購入はできますか？</span>
+                    <span class="page-faq__accordion-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                </button>
+                <div class="page-faq__accordion-content">
+                    <div class="page-faq__accordion-text">
+                        <p>現在、LEAFIAは公式オンラインストアでのみ販売しております。実店舗での販売は行っていません。すべてのお客様に同じ品質と価格でご提供することで、信頼性を保つようにしています。</p>
+                        <p>オンラインストアでのご購入は、24時間いつでも簡単にご注文いただけます。また、定期購入コースなら毎月お得な割引価格でご利用いただけます。さらに詳しい情報やお問い合わせについては、お気軽にLINEやメールでご連絡ください。</p>
+                        <p>将来的に、百貨店や健康食品専門店での販売を検討しておりますが、現在のところ予定はございません。最新情報は、公式SNSやメールマガジンでお知らせいたしますので、ぜひご登録ください。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="page-faq__cta">
+        <div class="page-faq__cta-inner" data-aos="fade-up">
+            <h2 class="page-faq__cta-title">それでも解決しない場合は</h2>
+            <p class="page-faq__cta-text">ご不明な点やご不安なことがございましたら、お気軽にお問い合わせください。お客様サポートセンターが、丁寧にサポートさせていただきます。</p>
+            <div class="page-faq__cta-buttons">
+                <a href="./contact.html" class="btn btn--primary btn--lg">お問い合わせフォーム</a>
+                <a href="./index.html" class="btn btn--outline btn--lg">ホームに戻る</a>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <!-- Page Scripts -->
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 50
+        });
+
+        // Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionItems = document.querySelectorAll('.page-faq__accordion-item');
+
+            accordionItems.forEach(item => {
+                const trigger = item.querySelector('.page-faq__accordion-trigger');
+
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Close all items if needed (optional)
+                    // Uncomment below if only one item should be open at a time
+                    /*
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.page-faq__accordion-trigger').setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    */
+
+                    // Toggle current item
+                    item.classList.toggle('active');
+                    const isExpanded = item.classList.contains('active');
+                    trigger.setAttribute('aria-expanded', isExpanded);
+                });
+            });
+        });
+
+        // Header Scroll Control
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.site-header');
+            if (window.scrollY > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.nav__hamburger');
+        const navMenu = document.querySelector('.nav__menu');
+        const navLinks = document.querySelectorAll('.nav__link');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+        });
+
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>

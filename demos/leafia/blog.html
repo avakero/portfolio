@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIA公式ブログ。健康やサプリメントに関する情報を発信しています。栄養知識、サプリメントの活用術、ライフスタイルなど、健康な毎日のためのコンテンツをお届けします。">
+    <title>ブログ | LEAFIA</title>
+
+    <!-- OG Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ブログ | LEAFIA">
+    <meta property="og:description" content="LEAFIA公式ブログ。健康やサプリメントに関する情報を発信しています。">
+    <meta property="og:image" content="https://placehold.co/1200x630/f0f5f3/5fa8a0?text=LEAFIA+Blog">
+    <meta property="og:url" content="https://leafia.jp/blog.html">
+
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <style>
+        /* ===== Page Blog Styles ===== */
+
+        .page-blog__hero {
+            height: 40vh;
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.15) 0%, rgba(232, 200, 122, 0.08) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: var(--header-height);
+            padding: var(--gap-xl) var(--gap-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-blog__hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: rgba(129, 202, 190, 0.08);
+            border-radius: 50%;
+        }
+
+        .page-blog__hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 200px;
+            height: 200px;
+            background: rgba(232, 200, 122, 0.08);
+            border-radius: 50%;
+        }
+
+        .page-blog__hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+
+        .page-blog__hero-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-md);
+            line-height: var(--line-height-tight);
+            font-weight: 600;
+        }
+
+        .page-blog__hero-subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+        }
+
+        /* Featured Article */
+        .page-blog__featured {
+            padding: var(--section-padding);
+            background-color: var(--color-bg-alt);
+        }
+
+        .page-blog__featured-inner {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-blog__featured-label {
+            font-family: var(--font-accent);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-blog__featured-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-lg);
+            line-height: var(--line-height-tight);
+            font-weight: 600;
+        }
+
+        .page-blog__featured-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap-xl);
+            align-items: center;
+        }
+
+        .page-blog__featured-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-blog__featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .page-blog__featured-meta {
+            display: flex;
+            gap: var(--gap-md);
+            align-items: center;
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-blog__featured-category {
+            display: inline-block;
+            padding: 0.35em 1em;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+        }
+
+        .page-blog__featured-date {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        .page-blog__featured-article-title {
+            font-size: var(--font-size-2xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-md);
+            line-height: var(--line-height-tight);
+            font-weight: 600;
+        }
+
+        .page-blog__featured-excerpt {
+            font-size: var(--font-size-base);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            margin-bottom: var(--gap-lg);
+        }
+
+        .page-blog__featured-btn {
+            align-self: flex-start;
+        }
+
+        /* Articles Grid */
+        .page-blog__articles {
+            padding: var(--section-padding);
+        }
+
+        .page-blog__articles-inner {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-blog__articles-header {
+            margin-bottom: var(--gap-xl);
+        }
+
+        .page-blog__articles-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-blog__articles-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--color-primary);
+            margin: var(--gap-sm) auto 0;
+            border-radius: 2px;
+        }
+
+        .page-blog__articles-subtitle {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            text-align: center;
+        }
+
+        .page-blog__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+        }
+
+        .page-blog__card {
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-blog__card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-blog__card-image {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+        }
+
+        .page-blog__card-body {
+            padding: var(--gap-md);
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .page-blog__card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--gap-sm);
+            gap: var(--gap-sm);
+        }
+
+        .page-blog__card-category {
+            display: inline-block;
+            padding: 0.25em 0.75em;
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            white-space: nowrap;
+        }
+
+        .page-blog__card-date {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-light);
+        }
+
+        .page-blog__card-title {
+            font-size: var(--font-size-lg);
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+            line-height: var(--line-height-tight);
+            font-weight: 600;
+        }
+
+        .page-blog__card-excerpt {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            flex-grow: 1;
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-blog__card-link {
+            color: var(--color-primary);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+            transition: gap var(--transition-fast), color var(--transition-fast);
+        }
+
+        .page-blog__card-link:hover {
+            color: var(--color-primary-dark);
+            gap: 0.75em;
+        }
+
+        /* Categories Sidebar */
+        .page-blog__sidebar {
+            padding: var(--section-padding);
+            background-color: var(--color-primary-light);
+        }
+
+        .page-blog__sidebar-inner {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-blog__categories {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-blog__categories-title {
+            font-size: var(--font-size-2xl);
+            color: var(--color-text);
+            text-align: center;
+            margin-bottom: var(--gap-xl);
+            font-weight: 600;
+        }
+
+        .page-blog__categories-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap-lg);
+        }
+
+        .page-blog__category-item {
+            background: var(--color-bg);
+            padding: var(--gap-lg);
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .page-blog__category-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-blog__category-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .page-blog__category-name {
+            font-size: var(--font-size-md);
+            color: var(--color-text);
+            font-weight: 600;
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-blog__category-count {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+        }
+
+        /* Newsletter CTA */
+        .page-blog__newsletter {
+            padding: var(--section-padding);
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.12) 0%, rgba(232, 200, 122, 0.08) 100%);
+        }
+
+        .page-blog__newsletter-inner {
+            max-width: var(--container-narrow);
+            margin: 0 auto;
+            padding: 0 var(--gap-md);
+            text-align: center;
+        }
+
+        .page-blog__newsletter-title {
+            font-size: var(--font-size-2xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-blog__newsletter-subtitle {
+            font-size: var(--font-size-base);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-lg);
+            line-height: var(--line-height-loose);
+        }
+
+        .page-blog__newsletter-form {
+            display: flex;
+            gap: var(--gap-sm);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .page-blog__newsletter-input {
+            flex: 1;
+            padding: 0.875em 1.25em;
+            font-size: var(--font-size-base);
+            font-family: var(--font-body);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            background: var(--color-bg);
+            color: var(--color-text);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        .page-blog__newsletter-input::placeholder {
+            color: var(--color-text-light);
+        }
+
+        .page-blog__newsletter-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+
+        .page-blog__newsletter-btn {
+            padding: 0.875em 2em;
+            background-color: var(--color-primary);
+            color: var(--color-text-on-primary);
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+            white-space: nowrap;
+        }
+
+        .page-blog__newsletter-btn:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-blog__featured-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-blog__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-blog__categories-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-blog__hero {
+                height: 35vh;
+                margin-top: var(--header-height-mobile);
+            }
+
+            .page-blog__hero-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-blog__featured-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-blog__articles-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-blog__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-blog__newsletter-form {
+                flex-direction: column;
+            }
+
+            .page-blog__newsletter-input,
+            .page-blog__newsletter-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-blog__hero {
+                height: 30vh;
+            }
+
+            .page-blog__hero-title {
+                font-size: var(--font-size-xl);
+            }
+
+            .page-blog__featured-article-title {
+                font-size: var(--font-size-xl);
+            }
+
+            .page-blog__card-title {
+                font-size: var(--font-size-base);
+            }
+
+            .page-blog__newsletter-title {
+                font-size: var(--font-size-xl);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link nav__link--active">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+    <!-- Hero Section -->
+    <section class="page-blog__hero">
+        <div class="page-blog__hero-inner" data-aos="fade-up">
+            <h1 class="page-blog__hero-title">知って、選んで、健やかに。</h1>
+            <p class="page-blog__hero-subtitle">LEAFIAのブログでは、栄養知識、サプリメントの活用術、ライフスタイルなど、健康な毎日を応援する情報をお届けします。</p>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="page-blog__featured">
+        <div class="page-blog__featured-inner">
+            <div data-aos="fade-up">
+                <p class="page-blog__featured-label">注目記事</p>
+                <h2 class="page-blog__featured-title">腸内フローラを整える5つの習慣</h2>
+            </div>
+            <div class="page-blog__featured-container" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://placehold.co/500x400/f0f5f3/5fa8a0?text=Gut+Health" alt="腸内フローラを整える5つの習慣" class="page-blog__featured-image">
+                <div class="page-blog__featured-content">
+                    <div class="page-blog__featured-meta">
+                        <span class="page-blog__featured-category">栄養コラム</span>
+                        <span class="page-blog__featured-date">2026.03.25</span>
+                    </div>
+                    <h3 class="page-blog__featured-article-title">腸内フローラを整える5つの習慣</h3>
+                    <p class="page-blog__featured-excerpt">腸内環境は全身の健康に大きな影響を与えます。毎日の食事、生活習慣の中で実践できる5つの習慣をご紹介。善玉菌を増やし、免疫力向上、肌質改善などの効果が期待できます。栄養バランス、発酵食品の活用、運動習慣について、詳しく解説しています。</p>
+                    <a href="#" class="page-blog__featured-btn btn btn--primary">記事を読む</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="page-blog__articles">
+        <div class="page-blog__articles-inner">
+            <div class="page-blog__articles-header" data-aos="fade-up">
+                <h2 class="page-blog__articles-title">最新の記事</h2>
+                <p class="page-blog__articles-subtitle">健康とサプリメントに関する最新情報をチェック</p>
+            </div>
+
+            <div class="page-blog__grid">
+                <!-- Article 1 -->
+                <article class="page-blog__card" data-aos="fade-up">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Vitamins" alt="春の体調管理に欠かせないビタミンとは？" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">栄養コラム</span>
+                            <span class="page-blog__card-date">2026.03.20</span>
+                        </div>
+                        <h3 class="page-blog__card-title">春の体調管理に欠かせないビタミンとは？</h3>
+                        <p class="page-blog__card-excerpt">季節の変わり目は体調の変化が起こりやすい時期です。春の体調管理に必須なビタミン類について、栄養学的観点から解説します。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="page-blog__card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Supplements" alt="管理栄養士が教える、サプリメントの正しい飲み方" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">サプリ活用術</span>
+                            <span class="page-blog__card-date">2026.03.15</span>
+                        </div>
+                        <h3 class="page-blog__card-title">管理栄養士が教える、サプリメントの正しい飲み方</h3>
+                        <p class="page-blog__card-excerpt">サプリメントの効果を引き出すには、正しい飲み方が重要です。タイミング、水分量、食事との組み合わせなど、プロが教えるコツをご紹介。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="page-blog__card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Sustainability" alt="LEAFIAのサステナブルへの取り組み" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">ブランドニュース</span>
+                            <span class="page-blog__card-date">2026.03.10</span>
+                        </div>
+                        <h3 class="page-blog__card-title">LEAFIAのサステナブルへの取り組み</h3>
+                        <p class="page-blog__card-excerpt">自然由来成分にこだわるLEAFIAが実践する、環境への責任ある取り組みについてご紹介。パッケージング、原材料調達、製造プロセスの工夫。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="page-blog__card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Sleep" alt="睡眠の質を高める夜のルーティン" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">ライフスタイル</span>
+                            <span class="page-blog__card-date">2026.03.05</span>
+                        </div>
+                        <h3 class="page-blog__card-title">睡眠の質を高める夜のルーティン</h3>
+                        <p class="page-blog__card-excerpt">質の良い睡眠は健康の基本です。寝る前の1時間で実践できる、睡眠の質を向上させるルーティンをご紹介します。習慣化のコツも。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="page-blog__card" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Omega3" alt="オメガ3脂肪酸が注目される理由" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">栄養コラム</span>
+                            <span class="page-blog__card-date">2026.02.28</span>
+                        </div>
+                        <h3 class="page-blog__card-title">オメガ3脂肪酸が注目される理由</h3>
+                        <p class="page-blog__card-excerpt">オメガ3脂肪酸は心臓、脳、関節の健康に欠かせない成分です。その効果、効率的な摂取方法、食事での取り入れ方について詳しく解説します。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="page-blog__card" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://placehold.co/400x300/f0f5f3/5fa8a0?text=Customer" alt="お客様インタビュー：半年間の変化" class="page-blog__card-image">
+                    <div class="page-blog__card-body">
+                        <div class="page-blog__card-meta">
+                            <span class="page-blog__card-category">お客様の声</span>
+                            <span class="page-blog__card-date">2026.02.20</span>
+                        </div>
+                        <h3 class="page-blog__card-title">お客様インタビュー：半年間の変化</h3>
+                        <p class="page-blog__card-excerpt">LEAFIAのサプリメントを継続利用されているお客様にインタビュー。半年間での体の変化、生活の質の向上についてお話いただきました。</p>
+                        <a href="#" class="page-blog__card-link">続きを読む →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Sidebar -->
+    <section class="page-blog__sidebar">
+        <div class="page-blog__sidebar-inner">
+            <div class="page-blog__categories" data-aos="fade-up">
+                <h2 class="page-blog__categories-title">カテゴリーから探す</h2>
+                <ul class="page-blog__categories-list">
+                    <li class="page-blog__category-item">
+                        <a href="#" class="page-blog__category-link">
+                            <div class="page-blog__category-name">栄養コラム</div>
+                            <div class="page-blog__category-count">8件</div>
+                        </a>
+                    </li>
+                    <li class="page-blog__category-item">
+                        <a href="#" class="page-blog__category-link">
+                            <div class="page-blog__category-name">サプリ活用術</div>
+                            <div class="page-blog__category-count">6件</div>
+                        </a>
+                    </li>
+                    <li class="page-blog__category-item">
+                        <a href="#" class="page-blog__category-link">
+                            <div class="page-blog__category-name">ライフスタイル</div>
+                            <div class="page-blog__category-count">5件</div>
+                        </a>
+                    </li>
+                    <li class="page-blog__category-item">
+                        <a href="#" class="page-blog__category-link">
+                            <div class="page-blog__category-name">ブランドニュース</div>
+                            <div class="page-blog__category-count">4件</div>
+                        </a>
+                    </li>
+                    <li class="page-blog__category-item">
+                        <a href="#" class="page-blog__category-link">
+                            <div class="page-blog__category-name">お客様の声</div>
+                            <div class="page-blog__category-count">3件</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="page-blog__newsletter">
+        <div class="page-blog__newsletter-inner" data-aos="fade-up">
+            <h2 class="page-blog__newsletter-title">最新情報をメールでお届け</h2>
+            <p class="page-blog__newsletter-subtitle">健康やサプリメントに関する最新情報、キャンペーン情報をいち早くお届けします。</p>
+            <form class="page-blog__newsletter-form" onsubmit="event.preventDefault(); alert('メールマガジン登録ありがとうございます。確認メールをお送りします。');">
+                <input type="email" class="page-blog__newsletter-input" placeholder="your@email.com" required>
+                <button type="submit" class="page-blog__newsletter-btn">登録する</button>
+            </form>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+
+        // Hamburger Menu
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.nav__hamburger');
+            const navMenu = document.querySelector('.nav__menu');
+
+            if (hamburger) {
+                hamburger.addEventListener('click', function () {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                    hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+                });
+            }
+
+            // Close menu when link is clicked
+            const navLinks = document.querySelectorAll('.nav__link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', false);
+                });
+            });
+        });
+
+        // Header Scroll Effect
+        let lastScrollTop = 0;
+        const header = document.querySelector('.site-header');
+
+        window.addEventListener('scroll', function () {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > 10) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+</body>
+
+</html>

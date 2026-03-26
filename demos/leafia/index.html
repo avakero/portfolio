@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIA（リーフィア）は自然由来成分にこだわった健康サプリメントブランド。科学的エビデンスに基づく品質で、毎日の健康をサポート。">
+
+    <!-- OGタグ -->
+    <meta property="og:title" content="LEAFIA（リーフィア） | 葉から始まる、いきいきとした毎日">
+    <meta property="og:description" content="自然由来成分100%のこだわりサプリメント。科学的エビデンスと管理栄養士監修で、毎日の健康をサポート。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://placehold.co/1200x630/81cabe/ffffff?text=LEAFIA">
+    <meta property="og:url" content="https://leafia.jp/">
+
+    <!-- ファビコン -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' font-family='Quicksand' fill='%2381cabe' font-weight='700'>L</text></svg>">
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS 2.3.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+    <!-- ページ固有CSS -->
+    <style>
+        /* ===== ページ固有スタイル ===== */
+
+        /* Heroセクション */
+        .page-index__hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.15) 0%, rgba(232, 200, 122, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: var(--header-height);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-index__hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(129, 202, 190, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page-index__hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(232, 200, 122, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page-index__hero-inner {
+            text-align: center;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-index__hero-label {
+            display: block;
+            font-family: var(--font-accent);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .page-index__hero-title {
+            font-size: var(--font-size-hero);
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: var(--gap-md);
+            line-height: var(--line-height-tight);
+            animation: fadeIn 0.8s ease-out 0.1s both;
+        }
+
+        .page-index__hero-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-xl);
+            line-height: var(--line-height-loose);
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .page-index__hero-buttons {
+            display: flex;
+            gap: var(--gap-md);
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeIn 1.2s ease-out 0.3s both;
+        }
+
+        /* ブランドコンセプト */
+        .page-index__concept {
+            padding: var(--section-padding);
+            background-color: var(--color-bg-alt);
+        }
+
+        .page-index__concept-inner {
+            max-width: var(--container-narrow);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .page-index__concept-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text);
+            margin-bottom: var(--gap-md);
+            font-weight: 700;
+        }
+
+        .page-index__concept-text {
+            font-size: var(--font-size-md);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            margin-bottom: var(--gap-lg);
+        }
+
+        .page-index__concept-highlight {
+            color: var(--color-primary-dark);
+            font-weight: 600;
+        }
+
+        /* 人気商品セクション */
+        .page-index__products {
+            padding: var(--section-padding);
+        }
+
+        .page-index__products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+            margin-top: var(--gap-xl);
+        }
+
+        .page-index__product-card {
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .page-index__product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-index__product-image {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            background: linear-gradient(135deg, #f0f5f3 0%, #e8eeeb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .page-index__product-badge {
+            position: absolute;
+            top: var(--gap-md);
+            right: var(--gap-md);
+            background-color: var(--color-primary);
+            color: var(--color-text-on-primary);
+            padding: 0.5em 1em;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .page-index__product-body {
+            padding: var(--gap-md);
+        }
+
+        .page-index__product-name {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-index__product-desc {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-index__product-price {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-primary-dark);
+        }
+
+        .page-index__product-price-unit {
+            font-size: 0.6em;
+            margin-left: 0.5em;
+        }
+
+        /* 選ばれる理由セクション */
+        .page-index__reasons {
+            padding: var(--section-padding);
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.08) 0%, rgba(212, 135, 110, 0.05) 100%);
+        }
+
+        .page-index__reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+            margin-top: var(--gap-xl);
+        }
+
+        .page-index__reason-item {
+            background: var(--color-bg);
+            padding: var(--gap-lg);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+        }
+
+        .page-index__reason-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-index__reason-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--gap-md);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            color: var(--color-text-on-primary);
+        }
+
+        .page-index__reason-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-index__reason-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+        }
+
+        /* お客様の声セクション */
+        .page-index__reviews {
+            padding: var(--section-padding);
+            background-color: var(--color-bg-alt);
+        }
+
+        .page-index__reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+            margin-top: var(--gap-xl);
+        }
+
+        .page-index__review-card {
+            background: var(--color-bg);
+            padding: var(--gap-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .page-index__review-stars {
+            color: var(--color-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-index__review-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-text);
+            line-height: var(--line-height-loose);
+            margin-bottom: var(--gap-md);
+            font-style: italic;
+        }
+
+        .page-index__review-author {
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: var(--font-size-sm);
+        }
+
+        .page-index__review-meta {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-light);
+            margin-top: var(--gap-xs);
+        }
+
+        /* ブログセクション */
+        .page-index__blog {
+            padding: var(--section-padding);
+        }
+
+        .page-index__blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+            margin-top: var(--gap-xl);
+        }
+
+        .page-index__blog-card {
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-index__blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-index__blog-image {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            background: linear-gradient(135deg, #f0f5f3 0%, #e8eeeb 100%);
+            overflow: hidden;
+        }
+
+        .page-index__blog-body {
+            padding: var(--gap-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-index__blog-category {
+            display: inline-block;
+            font-size: var(--font-size-xs);
+            color: var(--color-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--gap-sm);
+        }
+
+        .page-index__blog-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-sm);
+            line-height: var(--line-height-tight);
+        }
+
+        .page-index__blog-excerpt {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-loose);
+            flex: 1;
+            margin-bottom: var(--gap-md);
+        }
+
+        .page-index__blog-date {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-light);
+        }
+
+        /* CTAセクション */
+        .page-index__cta {
+            padding: var(--section-padding);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: var(--color-text-on-primary);
+            text-align: center;
+        }
+
+        .page-index__cta-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-text-on-primary);
+            margin-bottom: var(--gap-md);
+            font-weight: 700;
+        }
+
+        .page-index__cta-text {
+            font-size: var(--font-size-md);
+            margin-bottom: var(--gap-lg);
+            opacity: 0.95;
+            line-height: var(--line-height-loose);
+        }
+
+        .page-index__cta-buttons {
+            display: flex;
+            gap: var(--gap-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-index__cta-btn-white {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .page-index__cta-btn-white:hover {
+            background-color: #fff;
+            color: var(--color-primary-dark);
+        }
+
+        /* レスポンシブ調整 */
+        @media (max-width: 1024px) {
+            .page-index__hero-title {
+                font-size: var(--font-size-4xl);
+            }
+
+            .page-index__products-grid,
+            .page-index__reasons-grid,
+            .page-index__reviews-grid,
+            .page-index__blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-index__hero {
+                margin-top: var(--header-height-mobile);
+                height: auto;
+                min-height: 70vh;
+                padding: var(--gap-xl) 0;
+            }
+
+            .page-index__hero-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-index__hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .page-index__hero-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .page-index__concept-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-index__products-grid,
+            .page-index__reasons-grid,
+            .page-index__reviews-grid,
+            .page-index__blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-index__reason-item {
+                padding: var(--gap-md);
+            }
+
+            .page-index__cta-title {
+                font-size: var(--font-size-2xl);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-index__hero-title {
+                font-size: var(--font-size-xl);
+            }
+
+            .page-index__hero-buttons {
+                gap: var(--gap-sm);
+            }
+
+            .page-index__concept-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-index__reason-icon {
+                width: 60px;
+                height: 60px;
+                font-size: var(--font-size-xl);
+            }
+        }
+    </style>
+
+    <title>LEAFIA（リーフィア） | 葉から始まる、いきいきとした毎日</title>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link nav__link--active">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+        <!-- Heroセクション -->
+        <section class="page-index__hero">
+            <div class="page-index__hero-inner">
+                <span class="page-index__hero-label">Welcome to LEAFIA</span>
+                <h1 class="page-index__hero-title">葉から始まる、<br>いきいきとした毎日</h1>
+                <p class="page-index__hero-subtitle">自然由来成分にこだわったサプリメントで、あなたの健康を支えます。<br>科学的エビデンスに基づく品質を、毎日の習慣に。</p>
+                <div class="page-index__hero-buttons">
+                    <a href="./products.html" class="btn btn--primary btn--lg">商品を見る</a>
+                    <a href="./about.html" class="btn btn--outline btn--lg">ブランドストーリー</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ブランドコンセプト -->
+        <section class="page-index__concept" data-aos="fade-up">
+            <div class="page-index__concept-inner">
+                <h2 class="page-index__concept-title">自然のちからを、毎日のちからに。</h2>
+                <p class="page-index__concept-text">
+                    LEAFIAは、<span class="page-index__concept-highlight">自然由来成分へのこだわり</span>と
+                    <span class="page-index__concept-highlight">科学的エビデンス</span>を結びつけたサプリメントブランドです。
+                    葉から始まる、厳選された成分を、毎日続けやすい形でお届けします。
+                    健康意識の高いあなたの、いきいきとした毎日を応援します。
+                </p>
+            </div>
+        </section>
+
+        <!-- 人気商品ピックアップ -->
+        <section class="page-index__products">
+            <div class="container">
+                <span class="section-label" data-aos="fade-up">Popular Products</span>
+                <h2 class="section-title" data-aos="fade-up">人気商品ピックアップ</h2>
+                <p class="section-subtitle" data-aos="fade-up">厳選された自然由来成分で、あなたの健康目標をサポート</p>
+
+                <div class="page-index__products-grid">
+                    <!-- 商品1: マルチビタミン -->
+                    <div class="page-index__product-card" data-aos="fade-up">
+                        <div class="page-index__product-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=マルチビタミン" alt="LEAFIA マルチビタミン＆ミネラル">
+                            <span class="page-index__product-badge">ベストセラー</span>
+                        </div>
+                        <div class="page-index__product-body">
+                            <h3 class="page-index__product-name">マルチビタミン<br>＆ミネラル</h3>
+                            <p class="page-index__product-desc">毎日に必要な12種類のビタミンと8種類のミネラルを、バランスよく配合。植物由来成分で、体にやさしく吸収されます。</p>
+                            <p class="page-index__product-price">¥2,980<span class="page-index__product-price-unit">（30日分）</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 商品2: 腸活サプリ -->
+                    <div class="page-index__product-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="page-index__product-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=腸活サプリ" alt="LEAFIA 腸活プロバイオティクス">
+                            <span class="page-index__product-badge">注目商品</span>
+                        </div>
+                        <div class="page-index__product-body">
+                            <h3 class="page-index__product-name">腸活<br>プロバイオティクス</h3>
+                            <p class="page-index__product-desc">厳選された3種類の乳酸菌と食物繊維を配合。腸内フローラのバランスをサポートし、毎日の健やかさを応援します。</p>
+                            <p class="page-index__product-price">¥3,480<span class="page-index__product-price-unit">（30日分）</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 商品3: 睡眠サポート -->
+                    <div class="page-index__product-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="page-index__product-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=睡眠サポート" alt="LEAFIA スリープナイト">
+                            <span class="page-index__product-badge">新商品</span>
+                        </div>
+                        <div class="page-index__product-body">
+                            <h3 class="page-index__product-name">スリープナイト<br>＆リラックス</h3>
+                            <p class="page-index__product-desc">カモミールとラベンダーの自然由来成分に、グリシンとテアニンをブレンド。質の良い眠りへ、やさしくサポートします。</p>
+                            <p class="page-index__product-price">¥2,680<span class="page-index__product-price-unit">（30日分）</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEAFIAが選ばれる3つの理由 -->
+        <section class="page-index__reasons">
+            <div class="container">
+                <span class="section-label" data-aos="fade-up">Why Choose LEAFIA</span>
+                <h2 class="section-title" data-aos="fade-up">LEAFIAが選ばれる理由</h2>
+
+                <div class="page-index__reasons-grid">
+                    <!-- 理由1 -->
+                    <div class="page-index__reason-item" data-aos="fade-up">
+                        <div class="page-index__reason-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="page-index__reason-title">自然由来成分<br>100%使用</h3>
+                        <p class="page-index__reason-text">化学合成成分を一切使用せず、植物・鉱物由来成分のみで製造。自然の恵みをそのままお届けします。</p>
+                    </div>
+
+                    <!-- 理由2 -->
+                    <div class="page-index__reason-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="page-index__reason-icon">
+                            <i class="fas fa-vial"></i>
+                        </div>
+                        <h3 class="page-index__reason-title">第三者機関の<br>品質検査</h3>
+                        <p class="page-index__reason-text">すべての製品が、国際的な第三者認定機関による厳格な検査に合格。安全性と品質に絶対の自信があります。</p>
+                    </div>
+
+                    <!-- 理由3 -->
+                    <div class="page-index__reason-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="page-index__reason-icon">
+                            <i class="fas fa-user-nurse"></i>
+                        </div>
+                        <h3 class="page-index__reason-title">管理栄養士<br>監修製品</h3>
+                        <p class="page-index__reason-text">栄養学の専門家による監修で、科学的エビデンスに基づいた配合。毎日の健康ニーズを真摯に考えた製品設計です。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- お客様の声 -->
+        <section class="page-index__reviews">
+            <div class="container">
+                <span class="section-label" data-aos="fade-up">Customer Reviews</span>
+                <h2 class="section-title" data-aos="fade-up">お客様の声</h2>
+                <p class="section-subtitle" data-aos="fade-up">LEAFIAを信頼いただいているお客様からのご感想</p>
+
+                <div class="page-index__reviews-grid">
+                    <!-- レビュー1 -->
+                    <div class="page-index__review-card" data-aos="fade-up">
+                        <div class="page-index__review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="page-index__review-text">「毎日の疲れが軽くなった気がします。自然由来の成分ということで安心して飲み続けられています。」</p>
+                        <div class="page-index__review-author">田中 美咲さん</div>
+                        <div class="page-index__review-meta">マルチビタミン＆ミネラル利用中 / 3ヶ月</div>
+                    </div>
+
+                    <!-- レビュー2 -->
+                    <div class="page-index__review-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="page-index__review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="page-index__review-text">「腸活プロバイオティクスを飲み始めて、おなかの調子がすごく良くなりました。継続購入を決めました。」</p>
+                        <div class="page-index__review-author">鈴木 健太郎さん</div>
+                        <div class="page-index__review-meta">腸活プロバイオティクス利用中 / 2ヶ月</div>
+                    </div>
+
+                    <!-- レビュー3 -->
+                    <div class="page-index__review-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="page-index__review-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="page-index__review-text">「スリープナイトで、夜ぐっすり眠れるようになりました。朝起きた時の体の軽さが違います。」</p>
+                        <div class="page-index__review-author">鈴木 裕子さん</div>
+                        <div class="page-index__review-meta">スリープナイト利用中 / 6週間</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ブログ最新記事 -->
+        <section class="page-index__blog">
+            <div class="container">
+                <span class="section-label" data-aos="fade-up">Latest Blog</span>
+                <h2 class="section-title" data-aos="fade-up">ブログ最新記事</h2>
+                <p class="section-subtitle" data-aos="fade-up">健康と栄養に関する、最新の知識とTipsをお届けします</p>
+
+                <div class="page-index__blog-grid">
+                    <!-- 記事1 -->
+                    <article class="page-index__blog-card" data-aos="fade-up">
+                        <div class="page-index__blog-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=ビタミン入門" alt="初心者向け、ビタミンの基礎知識">
+                        </div>
+                        <div class="page-index__blog-body">
+                            <span class="page-index__blog-category">栄養知識</span>
+                            <h3 class="page-index__blog-title">初心者向け、ビタミンの基礎知識</h3>
+                            <p class="page-index__blog-excerpt">ビタミンとは何か、身体にどのような役割があるのかを分かりやすく解説。毎日の食事では不足しがちなビタミンについて知りましょう。</p>
+                            <span class="page-index__blog-date">2026年3月25日</span>
+                        </div>
+                    </article>
+
+                    <!-- 記事2 -->
+                    <article class="page-index__blog-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="page-index__blog-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=腸活の秘訣" alt="腸活を始める前に知りたいこと">
+                        </div>
+                        <div class="page-index__blog-body">
+                            <span class="page-index__blog-category">健康習慣</span>
+                            <h3 class="page-index__blog-title">腸活を始める前に知りたいこと</h3>
+                            <p class="page-index__blog-excerpt">腸内フローラのバランスが健康に与える影響や、効果的な腸活の方法について。管理栄養士が科学的根拠に基づいてお答えします。</p>
+                            <span class="page-index__blog-date">2026年3月20日</span>
+                        </div>
+                    </article>
+
+                    <!-- 記事3 -->
+                    <article class="page-index__blog-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="page-index__blog-image">
+                            <img src="https://placehold.co/400x300/81cabe/ffffff?text=春の睡眠" alt="季節の変わり目の睡眠について">
+                        </div>
+                        <div class="page-index__blog-body">
+                            <span class="page-index__blog-category">睡眠の質</span>
+                            <h3 class="page-index__blog-title">春の睡眠が乱れやすい理由と対策</h3>
+                            <p class="page-index__blog-excerpt">気温変化や日照時間の増加が睡眠に与える影響を解説。季節の変わり目を快適に過ごすためのコツをご紹介します。</p>
+                            <span class="page-index__blog-date">2026年3月18日</span>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="text-center mt-lg">
+                    <a href="./blog.html" class="btn btn--outline">ブログをもっと見る</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA（お問い合わせ・定期購入への誘導） -->
+        <section class="page-index__cta" data-aos="fade-up">
+            <div class="container">
+                <h2 class="page-index__cta-title">あなたの健康を、<br class="d-mobile">毎日のちからに変えよう</h2>
+                <p class="page-index__cta-text">
+                    定期購入なら、毎月10%OFF。<br class="d-mobile">
+                    続けやすいサプリメントで、いきいきとした毎日をお届けします。
+                </p>
+                <div class="page-index__cta-buttons">
+                    <a href="./products.html" class="btn btn--secondary btn--lg">定期購入を始める</a>
+                    <a href="./contact.html" class="btn btn--outline btn--lg page-index__cta-btn-white">ご質問・相談する</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+    <!-- ページ固有JavaScript -->
+    <script>
+        // ===== AOS初期化 =====
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            offset: 100,
+            once: true
+        });
+
+        // ===== ハンバーガーメニュー制御 =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.nav__hamburger');
+            const navMenu = document.querySelector('.nav__menu');
+            const navLinks = document.querySelectorAll('.nav__link');
+
+            // ハンバーガーボタンクリック
+            hamburger.addEventListener('click', function() {
+                const isActive = hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                hamburger.setAttribute('aria-expanded', isActive);
+            });
+
+            // ナビゲーションリンククリック時にメニューを閉じる
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // 外側をクリックしてメニューを閉じる
+            document.addEventListener('click', function(event) {
+                const isClickInsideNav = event.target.closest('.header__nav') !== null;
+                const isClickHamburger = event.target.closest('.nav__hamburger') !== null;
+
+                if (!isClickInsideNav && !isClickHamburger && navMenu.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // ===== ヘッダースクロール制御 =====
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.site-header');
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

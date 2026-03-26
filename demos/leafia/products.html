@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LEAFIAの商品一覧。自然由来の成分にこだわったサプリメントをご紹介します。葉から始まる、いきいきとした毎日をお届けします。">
+
+    <!-- OGタグ -->
+    <meta property="og:title" content="商品一覧 | LEAFIA">
+    <meta property="og:description" content="自然由来の成分にこだわったサプリメントの全ラインナップ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://leafia.example.com/products.html">
+    <meta property="og:image" content="https://leafia.example.com/og-image.jpg">
+
+    <title>商品一覧 | LEAFIA</title>
+
+    <!-- 共通CSS -->
+    <link rel="stylesheet" href="./common.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6.4.0 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS 2.3.4 -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <!-- ページ固有CSS -->
+    <style>
+        /* Hero Section */
+        .page-products__hero {
+            min-height: 45vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(129, 202, 190, 0.08) 0%, rgba(232, 200, 122, 0.06) 100%);
+            margin-top: var(--header-height);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-products__hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(129, 202, 190, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page-products__hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(232, 200, 122, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page-products__hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 700px;
+            padding: 0 var(--gap-md);
+        }
+
+        .page-products__hero-label {
+            font-family: var(--font-accent);
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: var(--gap-sm);
+            font-weight: 600;
+        }
+
+        .page-products__hero-title {
+            font-size: var(--font-size-hero);
+            margin-bottom: var(--gap-md);
+            color: var(--color-text);
+            line-height: var(--line-height-tight);
+        }
+
+        .page-products__hero-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-light);
+            line-height: var(--line-height-base);
+        }
+
+        /* Category Navigation */
+        .page-products__category-nav {
+            padding: var(--gap-xl) var(--gap-md);
+            background: var(--color-bg-alt);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--gap-md);
+            position: sticky;
+            top: var(--header-height);
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .page-products__category-btn {
+            padding: 0.75em 1.5em;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-full);
+            background: var(--color-bg);
+            color: var(--color-text);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            letter-spacing: 0.02em;
+        }
+
+        .page-products__category-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .page-products__category-btn.active {
+            background: var(--color-primary);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary);
+        }
+
+        /* Products Section */
+        .page-products__section {
+            padding: var(--section-padding);
+        }
+
+        .page-products__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-xl);
+            margin-bottom: var(--gap-xl);
+        }
+
+        .page-products__card {
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-products__card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .page-products__card-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        .page-products__card-body {
+            padding: var(--gap-md);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-products__card-title {
+            font-size: var(--font-size-md);
+            margin-bottom: var(--gap-sm);
+            color: var(--color-text);
+            font-weight: 600;
+            line-height: var(--line-height-tight);
+        }
+
+        .page-products__card-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            margin-bottom: var(--gap-md);
+            flex-grow: 1;
+            line-height: var(--line-height-base);
+        }
+
+        .page-products__card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-products__card-price {
+            font-family: var(--font-accent);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-primary-dark);
+        }
+
+        .page-products__card-btn {
+            padding: 0.625em 1.25em;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            background: var(--color-primary);
+            color: var(--color-text-on-primary);
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+        }
+
+        .page-products__card-btn:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Subscription Benefits */
+        .page-products__benefits {
+            background: var(--color-primary-light);
+            border-radius: var(--radius-lg);
+            padding: var(--gap-xl);
+            margin-bottom: var(--gap-xl);
+        }
+
+        .page-products__benefits-title {
+            font-size: var(--font-size-2xl);
+            text-align: center;
+            margin-bottom: var(--gap-xl);
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        .page-products__benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap-lg);
+        }
+
+        .page-products__benefit-item {
+            text-align: center;
+        }
+
+        .page-products__benefit-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: var(--gap-sm);
+            display: block;
+        }
+
+        .page-products__benefit-label {
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: var(--gap-xs);
+        }
+
+        .page-products__benefit-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-light);
+            line-height: var(--line-height-base);
+        }
+
+        /* CTA Section */
+        .page-products__cta {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: var(--color-text-on-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--gap-xl);
+            text-align: center;
+        }
+
+        .page-products__cta-title {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--gap-md);
+            font-weight: 600;
+        }
+
+        .page-products__cta-description {
+            font-size: var(--font-size-md);
+            margin-bottom: var(--gap-lg);
+            opacity: 0.95;
+            line-height: var(--line-height-base);
+        }
+
+        .page-products__cta-buttons {
+            display: flex;
+            gap: var(--gap-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .page-products__cta-btn {
+            padding: 0.875em 2.5em;
+            font-size: var(--font-size-md);
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            transition: all var(--transition-base);
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+        }
+
+        .page-products__cta-btn--primary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .page-products__cta-btn--primary:hover {
+            background: #d4b56a;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .page-products__cta-btn--secondary {
+            background: transparent;
+            color: var(--color-text-on-primary);
+            border: 2px solid var(--color-text-on-primary);
+        }
+
+        .page-products__cta-btn--secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-products__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-products__benefits-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-products__hero {
+                min-height: 40vh;
+            }
+
+            .page-products__hero-title {
+                font-size: var(--font-size-4xl);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-products__hero {
+                min-height: 35vh;
+                margin-top: var(--header-height-mobile);
+            }
+
+            .page-products__grid {
+                grid-template-columns: 1fr;
+                gap: var(--gap-lg);
+            }
+
+            .page-products__benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-products__category-nav {
+                top: var(--header-height-mobile);
+                padding: var(--gap-md);
+            }
+
+            .page-products__cta-buttons {
+                flex-direction: column;
+            }
+
+            .page-products__cta-btn {
+                width: 100%;
+            }
+
+            .page-products__hero-title {
+                font-size: var(--font-size-3xl);
+            }
+
+            .page-products__benefits {
+                padding: var(--gap-lg);
+            }
+
+            .page-products__cta {
+                padding: var(--gap-lg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-products__hero {
+                min-height: 30vh;
+            }
+
+            .page-products__hero-title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .page-products__card-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--gap-sm);
+            }
+
+            .page-products__card-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .page-products__category-nav {
+                padding: var(--gap-sm);
+                gap: var(--gap-sm);
+            }
+
+            .page-products__category-btn {
+                padding: 0.625em 1.25em;
+                font-size: var(--font-size-xs);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header__inner">
+            <a href="./index.html" class="header__logo">LEAFIA</a>
+            <nav class="header__nav">
+                <ul class="nav__menu">
+                    <li><a href="./index.html" class="nav__link">ホーム</a></li>
+                    <li><a href="./products.html" class="nav__link nav__link--active">商品一覧</a></li>
+                    <li><a href="./about.html" class="nav__link">ブランドストーリー</a></li>
+                    <li><a href="./blog.html" class="nav__link">ブログ</a></li>
+                    <li><a href="./faq.html" class="nav__link">よくある質問</a></li>
+                    <li><a href="./contact.html" class="nav__link">お問い合わせ</a></li>
+                </ul>
+            </nav>
+            <button class="nav__hamburger" aria-label="メニューを開く" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main>
+    <!-- Hero Section -->
+    <section class="page-products__hero">
+        <div class="page-products__hero-content" data-aos="fade-up" data-aos-duration="600">
+            <span class="page-products__hero-label">あなたの健康パートナー</span>
+            <h1 class="page-products__hero-title">あなたに合ったサプリメントを見つけよう</h1>
+            <p class="page-products__hero-description">自然由来の成分にこだわった、6つの健康サポートサプリメント。毎日の健康習慣をもっと豊かに。</p>
+        </div>
+    </section>
+
+    <!-- Category Navigation -->
+    <nav class="page-products__category-nav">
+        <button class="page-products__category-btn active">全商品</button>
+        <button class="page-products__category-btn">ビタミン・ミネラル</button>
+        <button class="page-products__category-btn">腸活・消化</button>
+        <button class="page-products__category-btn">睡眠・リラックス</button>
+        <button class="page-products__category-btn">美容サポート</button>
+    </nav>
+
+    <!-- Products Section -->
+    <section class="page-products__section">
+        <div class="container">
+            <!-- Products Grid -->
+            <div class="page-products__grid">
+                <!-- Product 1 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="0">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=LEAF+" alt="マルチビタミン LEAF+" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">マルチビタミン<br>LEAF+</h3>
+                        <p class="page-products__card-description">1日分の必須ビタミン13種を配合。毎日の健康維持をしっかりサポートします。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥3,980</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 2 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=Green+Fiber" alt="腸活グリーンファイバー" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">腸活グリーン<br>ファイバー</h3>
+                        <p class="page-products__card-description">乳酸菌と食物繊維の力で、腸内環境をしっかり整えます。毎日スッキリを応援。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥3,480</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 3 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=Sleep+Herb" alt="スリープハーブ" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">スリープ<br>ハーブ</h3>
+                        <p class="page-products__card-description">バレリアンとテアニン配合。心地よい睡眠へと導き、朝の目覚めをサポート。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥4,280</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 4 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="300">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=Collagen+Boost" alt="コラーゲンブースト" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">コラーゲン<br>ブースト</h3>
+                        <p class="page-products__card-description">低分子コラーゲンとビタミンC配合。内側からの美しさを引き出します。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥4,580</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 5 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="400">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=Omega+Balance" alt="オメガバランス3" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">オメガ<br>バランス3</h3>
+                        <p class="page-products__card-description">高純度DHA/EPA配合。心と体の健康維持に欠かせない栄養素をバランスよく。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥3,780</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Product 6 -->
+                <article class="page-products__card" data-aos="fade-up" data-aos-duration="600" data-aos-delay="500">
+                    <img src="https://placehold.co/400x400/f0f5f3/5fa8a0?text=Immunity+Guard" alt="イミュニティガード" class="page-products__card-image">
+                    <div class="page-products__card-body">
+                        <h3 class="page-products__card-title">イミュニティ<br>ガード</h3>
+                        <p class="page-products__card-description">エキナセア・亜鉛・ビタミンD配合。季節の変わり目の健康をしっかり守ります。</p>
+                        <div class="page-products__card-footer">
+                            <span class="page-products__card-price">¥3,680</span>
+                            <button class="page-products__card-btn">詳しく見る</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Subscription Benefits -->
+            <div class="page-products__benefits" data-aos="fade-up" data-aos-duration="600">
+                <h2 class="page-products__benefits-title">定期購入のメリット</h2>
+                <div class="page-products__benefits-grid">
+                    <div class="page-products__benefit-item">
+                        <span class="page-products__benefit-icon">🎁</span>
+                        <h3 class="page-products__benefit-label">初回30%OFF</h3>
+                        <p class="page-products__benefit-description">初回のお届け分から30%割引。始めやすい価格でお試しいただけます。</p>
+                    </div>
+                    <div class="page-products__benefit-item">
+                        <span class="page-products__benefit-icon">⏸</span>
+                        <h3 class="page-products__benefit-label">いつでも解約OK</h3>
+                        <p class="page-products__benefit-description">定期購入の期間縛りなし。ご都合のいい時期にいつでも解約できます。</p>
+                    </div>
+                    <div class="page-products__benefit-item">
+                        <span class="page-products__benefit-icon">🚚</span>
+                        <h3 class="page-products__benefit-label">送料無料</h3>
+                        <p class="page-products__benefit-description">全国どこへでも送料無料。お得にお届けします。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="page-products__cta" data-aos="fade-up" data-aos-duration="600">
+                <h2 class="page-products__cta-title">毎日の健康、始めませんか？</h2>
+                <p class="page-products__cta-description">LEAFIAのサプリメントで、葉から始まる健やかな毎日をお届けします。<br>ご不明な点やご質問は、いつでもお気軽にお問い合わせください。</p>
+                <div class="page-products__cta-buttons">
+                    <button class="page-products__cta-btn page-products__cta-btn--primary">定期購入を始める</button>
+                    <button class="page-products__cta-btn page-products__cta-btn--secondary">お問い合わせ</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer__inner">
+            <div class="footer__top">
+                <div class="footer__brand">
+                    <div class="footer__logo">LEAFIA</div>
+                    <p>自然の恵みから生まれたサプリメントで、あなたの毎日をもっと健やかに。LEAFIAは「葉から始まる、いきいきとした毎日」をお届けします。</p>
+                    <div class="footer__social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>メニュー</h4>
+                    <ul>
+                        <li><a href="./index.html">ホーム</a></li>
+                        <li><a href="./products.html">商品一覧</a></li>
+                        <li><a href="./about.html">ブランドストーリー</a></li>
+                        <li><a href="./blog.html">ブログ</a></li>
+                    </ul>
+                </div>
+                <div class="footer__nav-group">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="./faq.html">よくある質問</a></li>
+                        <li><a href="./contact.html">お問い合わせ</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 LEAFIA. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+    </script>
+
+    <!-- Header Scroll Effect & Mobile Menu Toggle -->
+    <script>
+        const header = document.querySelector('.site-header');
+        const hamburger = document.querySelector('.nav__hamburger');
+        const navMenu = document.querySelector('.nav__menu');
+        const navLinks = document.querySelectorAll('.nav__link');
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
+        });
+
+        // Close menu when clicking nav links
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.header__nav') && !e.target.closest('.nav__hamburger')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
