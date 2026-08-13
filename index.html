@@ -4,7 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRAFT — ホームページ制作サービス</title>
+  <title>デザインデモギャラリー | PixelCraft</title>
+  <meta name="description" content="PixelCraft が制作したホームページのデザインデモを42本公開しています。飲食・クリニック・サロン・士業・D2C など業種別に、実際に開いて操作しながらデザインの方向性をご確認いただけます。">
+  <meta property="og:title" content="デザインデモギャラリー | PixelCraft">
+  <meta property="og:description" content="業種・トーン別に42本のデザインデモを公開中。実際に触って、ホームページの方向性を確かめられます。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://works.pixelcraft.jp/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@200;400;700;900&family=Inter:wght@200;400;600;800&display=swap"
@@ -87,6 +92,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-decoration: none;
     }
 
     .nav-links {
@@ -749,6 +755,19 @@
       color: var(--text-sub);
     }
 
+    footer .footer-home {
+      color: var(--text-sub);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+      padding-bottom: 2px;
+      transition: var(--transition);
+    }
+
+    footer .footer-home:hover {
+      color: var(--text);
+      border-bottom-color: currentColor;
+    }
+
     /* ---- MODAL ---- */
     .modal-overlay {
       display: none;
@@ -1035,12 +1054,13 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <div class="nav-logo">CRAFT</div>
+    <a class="nav-logo" href="https://pixelcraft.jp/pixelcraft-home/">PixelCraft</a>
     <ul class="nav-links">
       <li><a href="#works">WORKS</a></li>
       <li><a href="#features">FEATURES</a></li>
       <li><a href="#process">PROCESS</a></li>
       <li><a href="#contact">CONTACT</a></li>
+      <li><a href="https://pixelcraft.jp/pixelcraft-home/">本体サイト ↗</a></li>
     </ul>
     <a href="#contact" class="nav-cta">無料相談</a>
   </nav>
@@ -1066,7 +1086,7 @@
   <!-- STATS -->
   <div class="stats">
     <div class="stat-item fade-in">
-      <div class="stat-number" data-count="41">0</div>
+      <div class="stat-number" data-count="42">0</div>
       <div class="stat-label">デザインテンプレート</div>
     </div>
     <div class="stat-item fade-in">
@@ -1125,6 +1145,7 @@
       <div class="section-label">Works</div>
       <h2 class="section-title">制作イメージ</h2>
       <p class="section-desc" style="margin:0 auto 2rem;">あらゆる業種に対応する豊富なデザインパターン。<br>すべてあなたに合わせた形で構築可能です。</p>
+      <p class="section-desc" style="margin:0 auto; font-size:.75rem; opacity:.7;">※ 掲載しているブランド名・店舗名はすべて架空のものです。デザインの方向性をご確認いただくためのサンプルであり、実在の取引先ではありません。</p>
     </div>
 
     <div class="filter-tabs">
@@ -1223,8 +1244,9 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">CRAFT</div>
-    <p>© 2026 CRAFT Web Design Service. All rights reserved.</p>
+    <div class="footer-logo">PixelCraft</div>
+    <p><a class="footer-home" href="https://pixelcraft.jp/pixelcraft-home/">pixelcraft.jp — サービス内容・料金・制作実績はこちら ↗</a></p>
+    <p style="margin-top:.75rem;">© 2026 PixelCraft. All rights reserved.</p>
     <div class="footer-social">
       <a href="https://discord.gg/8VeH9daenT" target="_blank" rel="noopener noreferrer" aria-label="Discord">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -1697,6 +1719,17 @@
         colors: ["#F4F3F0", "#111110", "#BF3B1B", "#6E6B63"],
         copy: "建てないことも、設計する。",
         file: "41_awai.html",
+        textDark: true
+      },
+      {
+        id: 42, title: "湯宿 月白", subtitle: "越後の温泉旅館",
+        category: "luxury", tags: [{ t: "和モダン", c: "tag-luxury" }, { t: "エディトリアル", c: "tag-editorial" }],
+        emoji: "♨️",
+        bg: "linear-gradient(135deg, #F3F3F2 0%, #D6D7D4 45%, #2B3A55 100%)",
+        desc: "藍鉄と白練の和紙的な誌面設計。スクロールで開く襖、季節で振れる紙色、横スクロールの献立帖。",
+        colors: ["#F3F3F2", "#2B3A55", "#E2725B", "#5A6478"],
+        copy: "湯に、用は要らない。",
+        file: "42_tsukishiro_ryokan.html",
         textDark: true
       },
     ];
