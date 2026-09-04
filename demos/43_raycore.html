@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAYCORE（レイコア）| HEXAFLUX — エッジAI推論エンジン</title>
+<meta name="description" content="エッジAI推論エンジン RAYCORE。濡れた現場でも圏外でも、判定はその場で完結。既設カメラの隣に置くだけで動き出します。">
+<style>html,body{margin:0;padding:0;background:#04080d}</style>
+</head>
+<body>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
+
+/* ============================================================
+   HEXAFLUX / RAYCORE — 3Dインタラクティブ・デザイン見本
+   接頭辞: hxf- （すべてのセレクタを .hxf-root 配下に限定）
+   ============================================================ */
+
+.hxf-root{
+  --hxf-bg:#04080d;
+  --hxf-bg2:#071019;
+  --hxf-cyan:#2ae4ff;
+  --hxf-cyan-dim:#0b90a8;
+  --hxf-ink:#04262e;
+  --hxf-ink-soft:#0b3a44;
+  --hxf-text:#dce8ef;
+  --hxf-dim:#93a9b6;
+  --hxf-line:rgba(140,224,244,.16);
+  --hxf-glass:rgba(10,24,33,.46);
+  --hxf-radius:18px;
+  --hxf-en:'Space Grotesk','Helvetica Neue',Arial,sans-serif;
+  font-family:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN','Yu Gothic Medium','Yu Gothic',sans-serif;
+  background:
+    radial-gradient(1100px 700px at 82% -8%, rgba(42,228,255,.07), transparent 62%),
+    radial-gradient(900px 640px at 8% 34%, rgba(42,228,255,.05), transparent 60%),
+    var(--hxf-bg);
+  color:var(--hxf-text);
+  font-size:16px;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+.hxf-root *{box-sizing:border-box;margin:0;padding:0}
+.hxf-root img{display:block;max-width:100%;height:auto}
+.hxf-root a{color:inherit}
+.hxf-root a:focus-visible,
+.hxf-root button:focus-visible{outline:2px solid var(--hxf-cyan);outline-offset:3px;border-radius:6px}
+
+.hxf-wrap{max-width:1180px;margin-inline:auto;padding-inline:24px}
+.hxf-glassy{background:var(--hxf-glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--hxf-line)}
+.hxf-section{padding-block:clamp(90px,14vh,160px)}
+.hxf-slabel{font-family:var(--hxf-en);color:var(--hxf-cyan);letter-spacing:.3em;font-size:12px;font-weight:700;display:flex;align-items:center;gap:14px;text-transform:uppercase}
+.hxf-slabel::after{content:"";height:1px;flex:1;background:var(--hxf-line)}
+.hxf-h2{font-size:clamp(24px,3.6vw,42px);font-weight:900;line-height:1.45;margin-top:18px;letter-spacing:.01em}
+
+/* 出現アニメーション（IntersectionObserverでhxf-in付与） */
+.hxf-root [data-hxf-reveal]{opacity:0;transform:translateY(26px);transition:opacity .7s ease var(--hxf-d,0ms),transform .7s ease var(--hxf-d,0ms)}
+.hxf-root [data-hxf-reveal].hxf-in{opacity:1;transform:none}
+
+/* ------------------------------------------------------------
+   1. HERO — sticky 3Dステージ（スクロールで分解→再構築）
+   ------------------------------------------------------------ */
+.hxf-hero{position:relative;height:280vh}
+.hxf-stage{position:sticky;top:0;height:100vh;overflow:hidden}
+@supports(height:100svh){.hxf-stage{height:100svh}}
+.hxf-stage::before{ /* 奥のグリッド */
+  content:"";position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(80,200,230,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80,200,230,.055) 1px, transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 75% 62% at 50% 46%, #000 25%, transparent 78%);
+  mask-image:radial-gradient(ellipse 75% 62% at 50% 46%, #000 25%, transparent 78%);
+}
+.hxf-stage::after{ /* 中心のグロー */
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(640px 460px at 50% 47%, rgba(42,228,255,.10), transparent 72%);
+}
+.hxf-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hxf-stage-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:26px clamp(20px,4vw,48px) 30px}
+
+.hxf-brandrow{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.hxf-logo{font-family:var(--hxf-en);font-weight:700;letter-spacing:.14em;font-size:15px;color:#fff;transition:text-shadow .3s ease}
+.hxf-logo b{color:var(--hxf-cyan)}
+.hxf-logo:hover{text-shadow:0 0 14px rgba(42,228,255,.9)} /* micro: ロゴ発光 */
+.hxf-badge{font-family:var(--hxf-en);font-size:11px;letter-spacing:.22em;padding:8px 16px;border-radius:999px;color:var(--hxf-text)}
+
+.hxf-hero-copy{text-align:center;max-width:880px;margin-inline:auto;padding-inline:8px}
+.hxf-eyebrow{font-family:var(--hxf-en);color:var(--hxf-cyan);letter-spacing:.34em;font-size:12px;font-weight:700}
+.hxf-h1{display:grid;font-weight:900;font-size:clamp(30px,5.6vw,64px);line-height:1.32;margin-top:16px;letter-spacing:.01em}
+.hxf-h1>span{grid-area:1/1;transition:opacity .7s ease,transform .7s ease,filter .7s ease}
+.hxf-h1b{opacity:0;transform:translateY(24px);filter:blur(10px)}
+.hxf-hero.hxf-phase2 .hxf-h1a{opacity:0;transform:translateY(-24px);filter:blur(10px)}
+.hxf-hero.hxf-phase2 .hxf-h1b{opacity:1;transform:none;filter:none}
+.hxf-h1 em{font-style:normal;color:var(--hxf-cyan)}
+.hxf-lead{margin-top:20px;color:var(--hxf-dim);font-size:clamp(14px,1.6vw,17px);line-height:2}
+.hxf-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.hxf-chip{font-family:var(--hxf-en);font-size:12px;font-weight:700;letter-spacing:.1em;padding:9px 16px;border-radius:999px;cursor:default;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.hxf-chip:hover{transform:translateY(-3px);border-color:rgba(42,228,255,.55);box-shadow:0 8px 22px rgba(42,228,255,.16)} /* micro: スペックチップ浮上 */
+
+.hxf-cue{display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--hxf-en);font-size:11px;letter-spacing:.3em;color:var(--hxf-dim)}
+.hxf-cue i{width:1px;height:46px;display:block;background:linear-gradient(var(--hxf-cyan),transparent);animation:hxf-drip 1.9s ease-in-out infinite}
+@keyframes hxf-drip{
+  0%{transform:scaleY(0);transform-origin:top}
+  55%{transform:scaleY(1);transform-origin:top}
+  56%{transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+/* ------------------------------------------------------------
+   2. MANIFESTO — スクロールで1行ずつ「点灯」して文が完成する
+   ------------------------------------------------------------ */
+.hxf-manifesto{background:linear-gradient(180deg, transparent, rgba(7,16,25,.7) 30%, transparent)}
+.hxf-mlines{margin-top:40px;display:grid;gap:12px}
+.hxf-mline{font-size:clamp(20px,3.4vw,36px);font-weight:700;line-height:1.65;color:rgba(220,232,239,.14);transform:translateY(14px);filter:blur(4px);transition:color .8s ease var(--hxf-d,0ms),transform .8s ease var(--hxf-d,0ms),filter .8s ease var(--hxf-d,0ms)}
+.hxf-mline.hxf-in{color:var(--hxf-text);transform:none;filter:none}
+.hxf-mline em{font-style:normal;color:inherit;transition:color .8s ease .25s}
+.hxf-mline.hxf-in em{color:var(--hxf-cyan)}
+
+/* ------------------------------------------------------------
+   3. STATS — カウントアップ + カーソル追従グロー
+   ------------------------------------------------------------ */
+.hxf-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+.hxf-stat{position:relative;overflow:hidden;padding:28px 24px;border-radius:var(--hxf-radius);transition:transform .3s ease,border-color .3s ease}
+.hxf-stat::before{content:"";position:absolute;inset:0;background:radial-gradient(230px 230px at var(--hxf-mx,50%) var(--hxf-my,50%),rgba(42,228,255,.15),transparent 70%);opacity:0;transition:opacity .35s ease;pointer-events:none}
+.hxf-stat:hover{transform:translateY(-5px);border-color:rgba(42,228,255,.4)} /* micro: グロー追従カード */
+.hxf-stat:hover::before{opacity:1}
+.hxf-stat-num{font-family:var(--hxf-en);font-weight:700;font-size:clamp(34px,3.8vw,52px);line-height:1.1;color:#fff;display:flex;align-items:baseline;gap:2px;white-space:nowrap}
+.hxf-stat-num .hxf-unit{font-size:.44em;color:var(--hxf-cyan);font-weight:700}
+.hxf-stat-label{margin-top:12px;color:var(--hxf-dim);font-size:13px;line-height:1.7}
+.hxf-note{margin-top:22px;color:var(--hxf-dim);font-size:12px}
+
+/* ------------------------------------------------------------
+   4. PIPELINE — 3ステップ（チルトカード + 伸びるコネクタ）
+   ------------------------------------------------------------ */
+.hxf-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px;perspective:900px}
+.hxf-step{position:relative;padding:32px 28px;border-radius:var(--hxf-radius);transition:transform .18s ease,border-color .3s ease;will-change:transform}
+.hxf-step:hover{border-color:rgba(42,228,255,.45)} /* micro: 3Dチルト(JS)+枠発光 */
+.hxf-step:not(:last-child)::after{content:"";position:absolute;top:50%;right:-26px;width:26px;height:1px;background:linear-gradient(90deg,var(--hxf-cyan),transparent);transform:scaleX(0);transform-origin:left;transition:transform .9s ease .35s}
+.hxf-step.hxf-in:not(:last-child)::after{transform:scaleX(1)}
+.hxf-step-no{font-family:var(--hxf-en);color:var(--hxf-cyan);font-size:13px;font-weight:700;letter-spacing:.24em}
+.hxf-step h3{font-size:20px;font-weight:900;margin-top:12px}
+.hxf-step h3 span{font-family:var(--hxf-en);font-size:12px;color:var(--hxf-dim);letter-spacing:.18em;margin-left:10px;font-weight:700}
+.hxf-step p{margin-top:14px;color:var(--hxf-dim);font-size:14px}
+.hxf-teaser{margin-top:76px;text-align:center;color:var(--hxf-dim);font-size:14px;letter-spacing:.12em}
+
+/* ------------------------------------------------------------
+   5. FIELD — 色反転 × 全幅 × 横スクロール（リズムを壊す異質section）
+   ------------------------------------------------------------ */
+.hxf-field{width:100vw;margin-inline:calc(50% - 50vw);background:var(--hxf-cyan);color:var(--hxf-ink);padding-block:clamp(80px,12vh,140px);overflow:hidden}
+.hxf-field .hxf-slabel{color:var(--hxf-ink)}
+.hxf-field .hxf-slabel::after{background:rgba(4,38,46,.3)}
+.hxf-field-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.hxf-field-hint{font-family:var(--hxf-en);font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--hxf-ink-soft);padding-bottom:6px}
+.hxf-field p.hxf-field-lead{margin-top:14px;color:var(--hxf-ink-soft);font-size:15px;max-width:640px}
+.hxf-hstrip{display:flex;gap:20px;overflow-x:auto;padding:38px max(24px,calc(50vw - 590px)) 22px;scroll-snap-type:x mandatory;cursor:grab;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(4,38,46,.55) transparent}
+.hxf-hstrip.hxf-dragging{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.hxf-hstrip::-webkit-scrollbar{height:6px}
+.hxf-hstrip::-webkit-scrollbar-thumb{background:rgba(4,38,46,.45);border-radius:3px}
+.hxf-hstrip::-webkit-scrollbar-track{background:transparent}
+.hxf-fcard{flex:0 0 auto;width:min(78vw,330px);scroll-snap-align:start;background:rgba(3,24,29,.94);color:var(--hxf-text);border-radius:var(--hxf-radius);overflow:hidden;transition:transform .35s ease,box-shadow .35s ease}
+.hxf-fcard:hover{transform:translateY(-8px);box-shadow:0 20px 44px rgba(2,20,25,.4)}
+.hxf-fcard-img{overflow:hidden;aspect-ratio:4/3;background:#06232b}
+.hxf-fcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.hxf-fcard:hover .hxf-fcard-img img{transform:scale(1.07)} /* micro: 画像ズーム */
+.hxf-fcard-body{padding:20px 20px 26px}
+.hxf-ftag{display:inline-block;font-family:var(--hxf-en);font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--hxf-cyan);transition:transform .35s ease}
+.hxf-fcard:hover .hxf-ftag{transform:translateX(6px)} /* micro: タグのスライド */
+.hxf-fcard h3{font-size:16px;font-weight:900;margin-top:10px;line-height:1.6}
+.hxf-fcard p{margin-top:8px;font-size:13px;color:var(--hxf-dim)}
+
+/* ------------------------------------------------------------
+   6. TEAM
+   ------------------------------------------------------------ */
+.hxf-team{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px}
+.hxf-member{border-radius:var(--hxf-radius);overflow:hidden;transition:transform .45s ease}
+.hxf-member:hover{transform:translateY(-6px)}
+.hxf-member-img{overflow:hidden;aspect-ratio:6/7;background:var(--hxf-bg2)}
+.hxf-member-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.15) contrast(1.05);transition:filter .6s ease,transform .6s ease}
+.hxf-member:hover .hxf-member-img img{filter:saturate(1) contrast(1);transform:scale(1.03)} /* micro: モノクロ→カラー */
+.hxf-member-body{padding:18px 20px 24px}
+.hxf-member-body strong{font-size:17px;font-weight:900;display:block}
+.hxf-member-role{font-family:var(--hxf-en);color:var(--hxf-cyan);font-size:12px;font-weight:700;letter-spacing:.18em;display:block;margin-top:4px}
+.hxf-member-body p{margin-top:10px;color:var(--hxf-dim);font-size:13px}
+
+/* ------------------------------------------------------------
+   7. CTA + FOOTER
+   ------------------------------------------------------------ */
+.hxf-cta-panel{max-width:800px;margin-inline:auto;text-align:center;padding:clamp(44px,7vw,72px) clamp(24px,5vw,64px);border-radius:26px;position:relative;overflow:hidden}
+.hxf-cta-panel::before{content:"";position:absolute;inset:-40%;background:radial-gradient(520px 340px at 50% 0%,rgba(42,228,255,.14),transparent 70%);pointer-events:none}
+.hxf-cta-panel h2{font-size:clamp(26px,4vw,40px);font-weight:900;line-height:1.5;position:relative}
+.hxf-cta-panel>p{margin-top:16px;color:var(--hxf-dim);font-size:15px;position:relative}
+.hxf-btn{display:inline-block;background:var(--hxf-cyan);color:var(--hxf-ink);font-weight:900;font-size:16px;padding:17px 42px;border-radius:999px;text-decoration:none;margin-top:32px;position:relative;transition:box-shadow .3s ease;will-change:transform}
+.hxf-btn:hover{box-shadow:0 12px 38px rgba(42,228,255,.38)} /* micro: マグネットボタン(JS) */
+.hxf-cta-sub{margin-top:20px;font-size:13px;position:relative}
+.hxf-ulink{color:var(--hxf-cyan);text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-repeat:no-repeat;background-position:0 100%;padding-bottom:2px;transition:background-size .35s ease}
+.hxf-ulink:hover{background-size:100% 1px} /* micro: 下線スイープ */
+.hxf-footer{border-top:1px solid var(--hxf-line);margin-top:clamp(80px,12vh,140px);padding:26px 0 8px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--hxf-dim);font-size:12px}
+.hxf-footer .hxf-en{font-family:var(--hxf-en);letter-spacing:.1em}
+
+/* ------------------------------------------------------------
+   レスポンシブ（375 / 768 / 1440）
+   ------------------------------------------------------------ */
+@media(max-width:1023px){
+  .hxf-steps{grid-template-columns:1fr;gap:18px;max-width:560px;margin-inline:auto;margin-top:40px}
+  .hxf-step:not(:last-child)::after{top:auto;bottom:-19px;right:auto;left:32px;width:1px;height:12px;background:linear-gradient(var(--hxf-cyan),transparent);transform:scaleY(0);transform-origin:top}
+  .hxf-step.hxf-in:not(:last-child)::after{transform:scaleY(1)}
+}
+@media(max-width:767px){
+  .hxf-hero{height:240vh}
+  .hxf-stage-inner{padding:20px 18px 24px}
+  .hxf-badge{display:none}
+  .hxf-stats{grid-template-columns:1fr 1fr;gap:12px}
+  .hxf-stat{padding:20px 16px}
+  .hxf-team{grid-template-columns:1fr;max-width:420px;margin-inline:auto;margin-top:40px}
+  .hxf-section{padding-block:80px}
+  .hxf-chips{gap:8px}
+  .hxf-chip{padding:8px 13px;font-size:11px}
+  .hxf-lead br{display:none}
+}
+
+/* reduced-motion: 動きを止めても情報が欠けない */
+@media(prefers-reduced-motion:reduce){
+  .hxf-root [data-hxf-reveal],.hxf-root .hxf-mline{opacity:1;transform:none;filter:none;color:var(--hxf-text);transition:none}
+  .hxf-root .hxf-cue i{animation:none}
+  .hxf-root .hxf-h1>span,.hxf-root .hxf-step,.hxf-root .hxf-fcard,.hxf-root .hxf-member,.hxf-root .hxf-chip{transition:none}
+}
+</style>
+
+<div class="hxf-root" id="hxf-raycore">
+
+  <!-- ============ 1. HERO（sticky 3Dステージ） ============ -->
+  <section class="hxf-hero" aria-label="RAYCORE — エッジAI推論エンジン">
+    <div class="hxf-stage">
+      <canvas class="hxf-canvas" aria-hidden="true"></canvas>
+      <div class="hxf-stage-inner">
+        <header class="hxf-brandrow">
+          <span class="hxf-logo">HEXAFLUX<b>▲</b></span>
+          <span class="hxf-badge hxf-glassy">EDGE AI INFERENCE ENGINE</span>
+        </header>
+        <div class="hxf-hero-copy">
+          <p class="hxf-eyebrow">RAYCORE — レイコア</p>
+          <h2 class="hxf-h1">
+            <span class="hxf-h1a">クラウドに聞くな。<br>その場で<em>答えろ</em>。</span>
+            <span class="hxf-h1b" aria-hidden="true">散らばる現場が、<br><em>0.8ms</em>で答えになる。</span>
+          </h2>
+          <p class="hxf-lead">濡れた現場でも、圏外でも、判定はその場で完結。<br>エッジAI推論エンジン RAYCORE は、既設カメラの隣に置くだけで動き出します。</p>
+          <div class="hxf-chips">
+            <span class="hxf-chip hxf-glassy">0.8ms LATENCY</span>
+            <span class="hxf-chip hxf-glassy">INT4 / 99.2%</span>
+            <span class="hxf-chip hxf-glassy">OFFLINE READY</span>
+          </div>
+        </div>
+        <div class="hxf-cue">SCROLL<i></i>分解 → 再構築</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. MANIFESTO（スクロールで文が完成する） ============ -->
+  <section class="hxf-section hxf-manifesto" aria-label="私たちの考え">
+    <div class="hxf-wrap">
+      <p class="hxf-slabel">Manifesto / 現場の言い分</p>
+      <div class="hxf-mlines">
+        <p class="hxf-mline">現場のデータは、きれいじゃない。</p>
+        <p class="hxf-mline" style="--hxf-d:80ms">濡れて、ブレて、逆光で、途切れる。</p>
+        <p class="hxf-mline" style="--hxf-d:160ms">クラウドに送れば、往復<em>200ms</em>。</p>
+        <p class="hxf-mline" style="--hxf-d:240ms">その間に魚は流れ、傷は通過し、水は堤防を越える。</p>
+        <p class="hxf-mline" style="--hxf-d:320ms">だから私たちは、<em>考える場所ごと現場に置いた</em>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3. STATS（カウントアップ） ============ -->
+  <section class="hxf-section" aria-label="実績数値">
+    <div class="hxf-wrap">
+      <p class="hxf-slabel">Traction / 数字は現場でつくった</p>
+      <h2 class="hxf-h2" data-hxf-reveal>速さは、機能ではなく<br>前提条件だと思っている。</h2>
+      <div class="hxf-stats">
+        <div class="hxf-stat hxf-glassy" data-hxf-reveal>
+          <p class="hxf-stat-num"><span data-hxf-count="0.8" data-hxf-decimals="1">0.8</span><span class="hxf-unit">ms</span></p>
+          <p class="hxf-stat-label">推論レイテンシ中央値（端末単体・入力から判定まで）</p>
+        </div>
+        <div class="hxf-stat hxf-glassy" data-hxf-reveal style="--hxf-d:90ms">
+          <p class="hxf-stat-num"><span data-hxf-count="99.2" data-hxf-decimals="1">99.2</span><span class="hxf-unit">%</span></p>
+          <p class="hxf-stat-label">INT4量子化後の精度維持率（RayForgeコンパイル基準）</p>
+        </div>
+        <div class="hxf-stat hxf-glassy" data-hxf-reveal style="--hxf-d:180ms">
+          <p class="hxf-stat-num"><span class="hxf-unit">−</span><span data-hxf-count="68" data-hxf-decimals="0">68</span><span class="hxf-unit">%</span></p>
+          <p class="hxf-stat-label">クラウドGPU推論との比較消費電力（同一ワークロード）</p>
+        </div>
+        <div class="hxf-stat hxf-glassy" data-hxf-reveal style="--hxf-d:270ms">
+          <p class="hxf-stat-num"><span data-hxf-count="214" data-hxf-decimals="0">214</span><span class="hxf-unit">lines</span></p>
+          <p class="hxf-stat-label">稼働中の現場ライン数（製造・水産・防災・物流）</p>
+        </div>
+      </div>
+      <p class="hxf-note">※ 2026年7月時点。自社ベンチマーク RayBench v2 による社内計測値。</p>
+    </div>
+  </section>
+
+  <!-- ============ 4. PIPELINE（3ステップ・チルトカード） ============ -->
+  <section class="hxf-section" aria-label="RAYCOREの仕組み">
+    <div class="hxf-wrap">
+      <p class="hxf-slabel">How it works / 仕組みは3つだけ</p>
+      <h2 class="hxf-h2" data-hxf-reveal>接続、蒸留、即答。</h2>
+      <div class="hxf-steps">
+        <article class="hxf-step hxf-glassy hxf-tilt" data-hxf-reveal>
+          <p class="hxf-step-no">01</p>
+          <h3>つなぐ<span>CONNECT</span></h3>
+          <p>既設のカメラ・センサーにそのまま接続。RTSP / GigE / USB3 対応で、配線工事はほぼゼロ。稼働中のラインを止めません。</p>
+        </article>
+        <article class="hxf-step hxf-glassy hxf-tilt" data-hxf-reveal style="--hxf-d:120ms">
+          <p class="hxf-step-no">02</p>
+          <h3>蒸留する<span>DISTILL</span></h3>
+          <p>独自コンパイラ RayForge が学習済みモデルを INT4 へ量子化。精度99.2%を保ったまま、サイズは1/17に。</p>
+        </article>
+        <article class="hxf-step hxf-glassy hxf-tilt" data-hxf-reveal style="--hxf-d:240ms">
+          <p class="hxf-step-no">03</p>
+          <h3>即答する<span>ANSWER</span></h3>
+          <p>判定は端末の上で0.8ms。クラウドへ送るのは映像ではなく「結果だけ」。回線が切れても現場は止まりません。</p>
+        </article>
+      </div>
+      <p class="hxf-teaser" data-hxf-reveal>▼ ここから先は、きれいなオフィスの話ではない。</p>
+    </div>
+  </section>
+
+  <!-- ============ 5. FIELD（色反転 × 横スクロール） ============ -->
+  <section class="hxf-field" aria-label="導入現場">
+    <div class="hxf-wrap">
+      <div class="hxf-field-head">
+        <div>
+          <p class="hxf-slabel">Field Notes</p>
+          <h2 class="hxf-h2" data-hxf-reveal>きれいなデモは、しない。</h2>
+          <p class="hxf-field-lead" data-hxf-reveal style="--hxf-d:100ms">RAYCOREが立っているのは、展示会のブースではなく、氷と粉塵と雨の中です。</p>
+        </div>
+        <p class="hxf-field-hint" aria-hidden="true">← DRAG → 現場を巡回</p>
+      </div>
+    </div>
+    <div class="hxf-hstrip" tabindex="0" aria-label="導入事例の横スクロールリスト">
+      <article class="hxf-fcard">
+        <div class="hxf-fcard-img">
+          <!-- ▼ src をメディアライブラリのURLに置換 -->
+          <img src="https://picsum.photos/seed/hxf-fishery/640/480" width="640" height="480" loading="lazy" decoding="async" alt="長崎の水産加工場で魚種選別ラインが稼働している様子">
+        </div>
+        <div class="hxf-fcard-body">
+          <span class="hxf-ftag">FISHERY / 冷蔵4℃</span>
+          <h3>氷とウロコの上で、魚種判定。</h3>
+          <p>長崎・松浦の選別ライン。1尾0.9msで魚種と規格を判定。手袋は濡れたまま、作業は止まらない。</p>
+        </div>
+      </article>
+      <article class="hxf-fcard">
+        <div class="hxf-fcard-img">
+          <!-- ▼ src をメディアライブラリのURLに置換 -->
+          <img src="https://picsum.photos/seed/hxf-factory/640/480" width="640" height="480" loading="lazy" decoding="async" alt="アルミ鋳造部品の外観検査ラインの様子">
+        </div>
+        <div class="hxf-fcard-body">
+          <span class="hxf-ftag">FACTORY / 粉塵環境</span>
+          <h3>0.02mmの傷は、根性では見えない。</h3>
+          <p>アルミ鋳造部品の全数外観検査。夜勤明けの目には見えない欠陥を、照度が揺れる現場のまま検出。</p>
+        </div>
+      </article>
+      <article class="hxf-fcard">
+        <div class="hxf-fcard-img">
+          <!-- ▼ src をメディアライブラリのURLに置換 -->
+          <img src="https://picsum.photos/seed/hxf-river/640/480" width="640" height="480" loading="lazy" decoding="async" alt="増水した河川を監視カメラで捉えた映像">
+        </div>
+        <div class="hxf-fcard-body">
+          <span class="hxf-ftag">DISASTER / 圏外運用</span>
+          <h3>増水は、電波が切れた夜に来る。</h3>
+          <p>山間部の河川監視。通信が落ちてもオフラインで水位と漂流物を検知し、復帰後に結果だけを送信する。</p>
+        </div>
+      </article>
+      <article class="hxf-fcard">
+        <div class="hxf-fcard-img">
+          <!-- ▼ src をメディアライブラリのURLに置換 -->
+          <img src="https://picsum.photos/seed/hxf-logistics/640/480" width="640" height="480" loading="lazy" decoding="async" alt="物流倉庫の仕分けラインを流れる段ボール">
+        </div>
+        <div class="hxf-fcard-body">
+          <span class="hxf-ftag">LOGISTICS / 24H稼働</span>
+          <h3>荷物は、読めない字で届く。</h3>
+          <p>手書き伝票とつぶれたバーコードの救済読解。人が2度見する荷物だけを、静かにレーンの外へ。</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 6. TEAM ============ -->
+  <section class="hxf-section" aria-label="チーム">
+    <div class="hxf-wrap">
+      <p class="hxf-slabel">Team</p>
+      <h2 class="hxf-h2" data-hxf-reveal>回路と、魚市場と、コンパイラ。</h2>
+      <div class="hxf-team">
+        <figure class="hxf-member hxf-glassy" data-hxf-reveal>
+          <div class="hxf-member-img">
+            <!-- ▼ src をメディアライブラリのURLに置換 -->
+            <img src="https://picsum.photos/seed/hxf-ceo/480/560" width="480" height="560" loading="lazy" decoding="async" alt="代表取締役 深澤瑛太のポートレート">
+          </div>
+          <figcaption class="hxf-member-body">
+            <strong>深澤 瑛太</strong>
+            <span class="hxf-member-role">CEO / Co-founder</span>
+            <p>元・車載SoCアーキテクト。渋滞の首都高で「クラウド往復では間に合わない」と悟った人。</p>
+          </figcaption>
+        </figure>
+        <figure class="hxf-member hxf-glassy" data-hxf-reveal style="--hxf-d:120ms">
+          <div class="hxf-member-img">
+            <!-- ▼ src をメディアライブラリのURLに置換 -->
+            <img src="https://picsum.photos/seed/hxf-cto/480/560" width="480" height="560" loading="lazy" decoding="async" alt="CTO 白鳥理沙のポートレート">
+          </div>
+          <figcaption class="hxf-member-body">
+            <strong>白鳥 理沙</strong>
+            <span class="hxf-member-role">CTO / Co-founder</span>
+            <p>量子化コンパイラ RayForge の設計者。「精度を落とさずに削る」が趣味であり本業。</p>
+          </figcaption>
+        </figure>
+        <figure class="hxf-member hxf-glassy" data-hxf-reveal style="--hxf-d:240ms">
+          <div class="hxf-member-img">
+            <!-- ▼ src をメディアライブラリのURLに置換 -->
+            <img src="https://picsum.photos/seed/hxf-vp/480/560" width="480" height="560" loading="lazy" decoding="async" alt="VP of Field 権藤大地のポートレート">
+          </div>
+          <figcaption class="hxf-member-body">
+            <strong>権藤 大地</strong>
+            <span class="hxf-member-role">VP of Field</span>
+            <p>元・水産加工プラント長。現場の「そんなの無理」を仕様書に翻訳する、社内で一番声が大きい人。</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7. CTA + FOOTER ============ -->
+  <section class="hxf-section" aria-label="お問い合わせ">
+    <div class="hxf-wrap">
+      <div class="hxf-cta-panel hxf-glassy" data-hxf-reveal>
+        <h2>PoCは、会議室ではなく<br>現場でやりましょう。</h2>
+        <p>最短5営業日で、御社のラインに RAYCORE を設置します。<br>効果が数字で出なければ、そのまま撤収 — 費用はいただきません。</p>
+        <a class="hxf-btn hxf-mag" href="#hxf-raycore">現場デモを申し込む</a>
+        <p class="hxf-cta-sub"><a class="hxf-ulink" href="#hxf-raycore">技術白書『RAYCORE Architecture v3』を読む</a></p>
+      </div>
+      <div class="hxf-footer">
+        <span>株式会社ヘキサフラックス — 東京都墨田区横川1-16-3 KOBOビル4F ・ 2023年創業 ・ シリーズA</span>
+        <span class="hxf-en">© 2026 HEXAFLUX Inc.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ============================================================
+     HEXAFLUX / RAYCORE — Vanilla JS
+     - IIFE / グローバル汚染なし
+     - data-hxf-init による多重初期化ガード
+     - IntersectionObserver ベース（scrollイベント連打なし）
+     - 低スペック端末はFPS計測で静止画へ自動フォールバック
+     ============================================================ */
+
+  function init(root){
+    root.setAttribute('data-hxf-init','1');
+    var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var FINE = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var hasIO = 'IntersectionObserver' in window;
+
+    /* --- 出現アニメーション --- */
+    var reveals = root.querySelectorAll('[data-hxf-reveal], .hxf-mline');
+    if(hasIO && !RM){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ en.target.classList.add('hxf-in'); io.unobserve(en.target); }
+        });
+      }, {threshold:0.25, rootMargin:'0px 0px -40px 0px'});
+      reveals.forEach(function(el){ io.observe(el); });
+    }else{
+      reveals.forEach(function(el){ el.classList.add('hxf-in'); });
+    }
+
+    /* --- カウントアップ --- */
+    var nums = root.querySelectorAll('[data-hxf-count]');
+    function animateNum(el){
+      var target = parseFloat(el.getAttribute('data-hxf-count'));
+      var dec = parseInt(el.getAttribute('data-hxf-decimals') || '0', 10);
+      var dur = 1600, t0 = null;
+      function frame(ts){
+        if(t0 === null) t0 = ts;
+        var k = Math.min(1, (ts - t0) / dur);
+        var e = 1 - Math.pow(1 - k, 3);
+        el.textContent = (target * e).toFixed(dec);
+        if(k < 1){ requestAnimationFrame(frame); } else { el.textContent = target.toFixed(dec); }
+      }
+      requestAnimationFrame(frame);
+    }
+    if(hasIO && !RM){
+      nums.forEach(function(el){ el.textContent = (0).toFixed(parseInt(el.getAttribute('data-hxf-decimals') || '0', 10)); });
+      var io2 = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ animateNum(en.target); io2.unobserve(en.target); }
+        });
+      }, {threshold:0.6});
+      nums.forEach(function(el){ io2.observe(el); });
+    }
+
+    /* --- チルトカード（hover環境のみ） --- */
+    if(FINE && !RM){
+      root.querySelectorAll('.hxf-tilt').forEach(function(card){
+        card.addEventListener('mousemove', function(e){
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = 'perspective(800px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 9).toFixed(2) + 'deg) translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+      });
+    }
+
+    /* --- 統計カード: カーソル追従グロー --- */
+    if(FINE){
+      root.querySelectorAll('.hxf-stat').forEach(function(card){
+        card.addEventListener('mousemove', function(e){
+          var r = card.getBoundingClientRect();
+          card.style.setProperty('--hxf-mx', (e.clientX - r.left) + 'px');
+          card.style.setProperty('--hxf-my', (e.clientY - r.top) + 'px');
+        });
+      });
+    }
+
+    /* --- マグネットボタン --- */
+    if(FINE && !RM){
+      root.querySelectorAll('.hxf-mag').forEach(function(btn){
+        btn.addEventListener('mousemove', function(e){
+          var r = btn.getBoundingClientRect();
+          var dx = e.clientX - (r.left + r.width / 2);
+          var dy = e.clientY - (r.top + r.height / 2);
+          btn.style.transform = 'translate(' + (dx * 0.18).toFixed(1) + 'px,' + (dy * 0.3).toFixed(1) + 'px)';
+        });
+        btn.addEventListener('mouseleave', function(){
+          btn.style.transition = 'transform .35s ease, box-shadow .3s ease';
+          btn.style.transform = '';
+          setTimeout(function(){ btn.style.transition = 'box-shadow .3s ease'; }, 380);
+        });
+      });
+    }
+
+    /* --- 横スクロール: ドラッグ操作（マウス環境のみ・タッチはネイティブ） --- */
+    var strip = root.querySelector('.hxf-hstrip');
+    if(strip && FINE){
+      var down = false, sx = 0, sl = 0;
+      strip.addEventListener('pointerdown', function(e){
+        if(e.pointerType !== 'mouse') return;
+        down = true; sx = e.clientX; sl = strip.scrollLeft;
+        strip.classList.add('hxf-dragging');
+      });
+      strip.addEventListener('pointermove', function(e){
+        if(!down) return;
+        strip.scrollLeft = sl - (e.clientX - sx);
+      });
+      var up = function(){ down = false; strip.classList.remove('hxf-dragging'); };
+      strip.addEventListener('pointerup', up);
+      strip.addEventListener('pointercancel', up);
+      strip.addEventListener('mouseleave', up);
+    }
+
+    /* --- ヒーロー3D --- */
+    initHero(root, RM, FINE, hasIO);
+  }
+
+  function initHero(root, RM, FINE, hasIO){
+    var hero = root.querySelector('.hxf-hero');
+    var stage = root.querySelector('.hxf-stage');
+    var canvas = root.querySelector('.hxf-canvas');
+    if(!hero || !stage || !canvas) return;
+    var ctx = canvas.getContext && canvas.getContext('2d');
+    var lowSpec = (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+                  (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    var fallback = RM || !ctx || lowSpec;   // 低スペック端末 → 静止画
+    var W = 0, H = 0, DPR = 1;
+
+    function resize(){
+      DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = stage.clientWidth; H = stage.clientHeight;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      if(ctx) ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    resize();
+
+    /* --- 形状データ: 球(A) → トーラス(B)、飛散ベクトル(S) --- */
+    var N = (W < 640) ? 420 : 720;
+    var GA = 2.399963229728653;
+    var A = [], B = [], S = [];
+    var i, j;
+    for(i = 0; i < N; i++){
+      var yy = 1 - (i / (N - 1)) * 2;
+      var rr = Math.sqrt(Math.max(0, 1 - yy * yy));
+      var th = i * GA;
+      A.push(Math.cos(th) * rr, yy, Math.sin(th) * rr);
+      var u = Math.PI * 2 * ((i * 0.618034) % 1);
+      var v = Math.PI * 2 * ((i * 0.324719) % 1);
+      var TR = 1.04, tr = 0.36;
+      B.push((TR + tr * Math.cos(v)) * Math.cos(u), tr * Math.sin(v), (TR + tr * Math.cos(v)) * Math.sin(u));
+      var dx = Math.random() * 2 - 1, dy = Math.random() * 2 - 1, dz = Math.random() * 2 - 1;
+      var dl = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+      var mag = 1.8 + Math.random() * 1.9;
+      S.push(dx / dl * mag, dy / dl * mag, dz / dl * mag);
+    }
+    /* 球面上の近傍をエッジとして接続（初期化時に一度だけ計算） */
+    var edges = [];
+    var thr = (N < 500) ? 0.23 : 0.165, thr2 = thr * thr;
+    for(i = 0; i < N; i++){
+      for(j = i + 1; j < N; j++){
+        var ex = A[i*3] - A[j*3], ey = A[i*3+1] - A[j*3+1], ez = A[i*3+2] - A[j*3+2];
+        if(ex*ex + ey*ey + ez*ez < thr2){ edges.push(i, j); }
+      }
+    }
+    var maxE = 1100;
+    if(edges.length / 2 > maxE){
+      var step = Math.ceil(edges.length / 2 / maxE), e2 = [];
+      for(i = 0; i < edges.length; i += 2 * step){ e2.push(edges[i], edges[i+1]); }
+      edges = e2;
+    }
+
+    /* グロー用スプライト（shadowBlurより高速） */
+    var sp = document.createElement('canvas');
+    sp.width = 48; sp.height = 48;
+    var sg = sp.getContext('2d');
+    if(sg){
+      var grad = sg.createRadialGradient(24, 24, 0, 24, 24, 24);
+      grad.addColorStop(0, 'rgba(190,250,255,1)');
+      grad.addColorStop(0.3, 'rgba(42,228,255,0.55)');
+      grad.addColorStop(1, 'rgba(42,228,255,0)');
+      sg.fillStyle = grad;
+      sg.fillRect(0, 0, 48, 48);
+    }
+
+    var proj = new Array(N * 4);
+    var mx = 0, my = 0, tmx = 0, tmy = 0;
+    if(FINE && !fallback){
+      stage.addEventListener('mousemove', function(e){
+        var r = stage.getBoundingClientRect();
+        tmx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+        tmy = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      });
+    }
+
+    function progress(){
+      var top = hero.getBoundingClientRect().top;
+      var span = hero.offsetHeight - H;
+      if(span <= 0) return 0;
+      return Math.max(0, Math.min(1, -top / span));
+    }
+    function sm(t){ return t * t * (3 - 2 * t); }
+
+    function draw(p, rx, ry){
+      ctx.clearRect(0, 0, W, H);
+      var e = sm(p);
+      var burst = Math.pow(Math.sin(Math.PI * p), 1.4);
+      var R = Math.min(W, H) * 0.31, cx = W / 2, cy = H * 0.5, fov = 3.4;
+      var cX = Math.cos(rx), sX = Math.sin(rx), cY = Math.cos(ry), sY = Math.sin(ry);
+      var k;
+      for(k = 0; k < N; k++){
+        var x = A[k*3]     + (B[k*3]     - A[k*3])     * e + S[k*3]     * burst;
+        var y = A[k*3 + 1] + (B[k*3 + 1] - A[k*3 + 1]) * e + S[k*3 + 1] * burst;
+        var z = A[k*3 + 2] + (B[k*3 + 2] - A[k*3 + 2]) * e + S[k*3 + 2] * burst;
+        var x1 = x * cY + z * sY,  z1 = -x * sY + z * cY;
+        var y1 = y * cX - z1 * sX, z2 = y * sX + z1 * cX;
+        var s = fov / (fov + z2);
+        proj[k*4]     = cx + x1 * s * R;
+        proj[k*4 + 1] = cy + y1 * s * R;
+        proj[k*4 + 2] = s;
+        proj[k*4 + 3] = Math.max(0, Math.min(1, (1.6 - z2) / 3.2));
+      }
+      ctx.globalCompositeOperation = 'lighter';
+      var la = (1 - burst) * 0.55;
+      if(la > 0.03){
+        ctx.lineWidth = 1;
+        for(k = 0; k < edges.length; k += 2){
+          var a4 = edges[k] * 4, b4 = edges[k+1] * 4;
+          var al = la * Math.min(proj[a4+3], proj[b4+3]);
+          if(al < 0.04) continue;
+          ctx.strokeStyle = 'rgba(70,225,252,' + al.toFixed(3) + ')';
+          ctx.beginPath();
+          ctx.moveTo(proj[a4], proj[a4+1]);
+          ctx.lineTo(proj[b4], proj[b4+1]);
+          ctx.stroke();
+        }
+      }
+      for(k = 0; k < N; k++){
+        var o = k * 4, sh = proj[o+3];
+        var sz = ((k % 9 === 0) ? 3.2 : 1.9) * proj[o+2] * (1.2 + sh * 1.6);
+        ctx.globalAlpha = 0.22 + sh * 0.78;
+        ctx.drawImage(sp, proj[o] - sz, proj[o+1] - sz, sz * 2, sz * 2);
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function drawStatic(){ if(ctx){ draw(0, -0.34, 0.6); } }
+
+    var active = false, last = 0, acc = 0, fr = 0;
+    var probed = fallback, staticDone = false;
+
+    function loop(ts){
+      if(!active) return;
+      requestAnimationFrame(loop);
+      var p = progress();
+      if(p > 0.5){ hero.classList.add('hxf-phase2'); } else { hero.classList.remove('hxf-phase2'); }
+      if(fallback){
+        if(!staticDone){ drawStatic(); staticDone = true; }
+        return;
+      }
+      var dt = ts - last; last = ts;
+      if(!probed && dt > 0 && dt < 200){
+        acc += dt; fr++;
+        if(acc > 2200){
+          probed = true;
+          if(fr / (acc / 1000) < 26){   /* 実測FPSが低い → 静止画へ */
+            fallback = true; drawStatic(); staticDone = true; return;
+          }
+        }
+      }
+      mx += (tmx - mx) * 0.06;
+      my += (tmy - my) * 0.06;
+      var rx = -0.32 + my * 0.35 + p * 1.35;
+      var ry = ts * 0.00013 + mx * 0.6 + p * 2.3;
+      draw(p, rx, ry);
+    }
+
+    if(fallback){ drawStatic(); staticDone = true; }
+
+    if(hasIO){
+      var vio = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){
+            if(!active){ active = true; last = performance.now(); requestAnimationFrame(loop); }
+          }else{
+            active = false;
+          }
+        });
+      }, {threshold:0});
+      vio.observe(hero);
+    }else{
+      active = true; last = performance.now(); requestAnimationFrame(loop);
+    }
+
+    var rto = null;
+    window.addEventListener('resize', function(){
+      clearTimeout(rto);
+      rto = setTimeout(function(){
+        resize();
+        if(fallback){ staticDone = false; drawStatic(); staticDone = true; }
+      }, 160);
+    });
+  }
+
+  function initAll(){
+    var roots = document.querySelectorAll('.hxf-root:not([data-hxf-init])');
+    for(var i = 0; i < roots.length; i++){ init(roots[i]); }
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initAll);
+  }else{
+    initAll();
+  }
+})();
+</script>
+
+</body>
+</html>
